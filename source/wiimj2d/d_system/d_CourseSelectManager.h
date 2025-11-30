@@ -1,5 +1,6 @@
 #pragma once
 
+#include "d_bases/d_Continue.h"
 #include "d_system/d_CourseSelectGuide.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_base.h"
@@ -77,7 +78,11 @@ public:
     /* 0x534 */ dMessageWindow_c* mpMessageWindow; // MESSAGE_WINDOW
     /* 0x538 */ dLetterWindow_c* mpLetterWindow; // LETTER_WINDOW
 
-    FILL(0x53C, 0x560);
+    FILL(0x53C, 0x541);
+
+    /* 0x541 */ bool mContinueActive;
+
+    FILL(0x542, 0x560);
 
     /* 0x560 */ PLAYER_MODE_e REMOVED(maPlayerPowerup)[4];
 

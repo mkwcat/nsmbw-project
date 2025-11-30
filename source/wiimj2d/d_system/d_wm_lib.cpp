@@ -12,6 +12,9 @@ float sc_0x8031D6B4;
 [[address(0x800FBAF0)]]
 void procCourseClear(bool isSecretExit, bool isSuperGuide, WORLD_e world, STAGE_e stage);
 
+[[address(0x800FBE40)]]
+void procCourseGameOver(bool keepKinokoMessageState);
+
 [[address(0x800FCAD0)]]
 bool IsSingleEntry();
 

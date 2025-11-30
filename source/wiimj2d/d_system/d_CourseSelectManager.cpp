@@ -55,6 +55,41 @@ fBase_c::PACK_RESULT_e dCourseSelectManager_c::preExecute()
     return PACK_RESULT_e::SUCCEEDED;
 }
 
+[[address(0x8092F770)]]
+void dCourseSelectManager_c::executeState_ContinueCheck()
+{
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+        // Original function is flawed like in dGameCom::chkContinue()
+        if (daPyMng_c::mRest[i] == 0) {
+            mStateMgr.changeState(StateID_ContinueEndWait);
+            return;
+        }
+    }
+
+    mContinueActive = false;
+    mStateMgr.changeState(StateID_KeyWait);
+}
+
+[[address(0x8092F830)]]
+void dCourseSelectManager_c::executeState_ContinueEndWait()
+{
+    if (mpContinue->mDoExit) {
+        mpContinue->mVisible = false;
+        mpContinue->mIsOpen = false;
+        mpContinue->mIsGameOver = false;
+
+        mpContinue->mLayout.ReverseAnimeStartSetup(0, false);
+        for (int i = 0; i < PLAYER_COUNT; i++) {
+            int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e)i);
+            int newRest = mpContinue->mRestNum[i];
+            daPyMng_c::mRest[daPyMng_c::mPlayerType[player]] = newRest;
+        }
+
+        mStateMgr.changeState(StateID_KeyWait);
+        mCrsSelectGuide.mRestDispNeeded = true;
+    }
+}
+
 [[address(0x8092F940)]]
 void dCourseSelectManager_c::executeState_KeyWait() ASM_METHOD(
   // clang-format off

@@ -8,6 +8,9 @@ namespace dWmLib
 /* 0x800FBAF0 @unofficial */
 void procCourseClear(bool isSecretExit, bool isSuperGuide, WORLD_e world, STAGE_e stage);
 
+/* 0x800FBE40 */
+void procCourseGameOver(bool keepKinokoMessageState);
+
 /* 0x800FCAD0 */
 bool IsSingleEntry();
 

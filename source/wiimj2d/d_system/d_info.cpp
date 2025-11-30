@@ -73,7 +73,8 @@ u8 dInfo_c::getStockItem(int item) const
     return dSaveMng_c::m_instance->getSaveGame(-1)->getStockItem(item);
 }
 
-EXTERN_SYMBOL(0x800BB410, "clsStockItem__7dInfo_cFi");
+[[address(0x800BB410)]]
+void dInfo_c::clsStockItem(int item);
 
 EXTERN_SYMBOL(0x800BB450, "initGame__7dInfo_cFv");
 

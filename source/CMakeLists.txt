@@ -221,7 +221,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8008F460 - 0x8008F920
   # wiimj2d/d_system/d_dylink.cpp
 # NSMBW          .text:  0x8008F920 - 0x8008FE30
-  # wiimj2d/d_system/d_ef.cpp
+    wiimj2d/d_system/d_ef.cpp
 # NSMBW          .text:  0x8008FE30 - 0x800909A0
   # wiimj2d/d_system/d_eff_big_block_fragment.cpp
 # NSMBW          .text:  0x800909A0 - 0x80091100
@@ -509,7 +509,7 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80776570 - 0x807775E0
   # wiimj2d/d_bases/d_CollectionCoinDate.cpp
 # NSMBW   d_bases.text:  0x807775E0 - 0x80779650
-  # wiimj2d/d_bases/d_Continue.cpp
+    wiimj2d/d_bases/d_Continue.cpp
 # NSMBW   d_bases.text:  0x80779650 - 0x8077A750
   # wiimj2d/d_bases/d_CourseClear.cpp
 # NSMBW   d_bases.text:  0x8077A750 - 0x8077BB00
@@ -529,7 +529,7 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80782AB0 - 0x80788510
   # wiimj2d/d_bases/d_FileSelect.cpp
 # NSMBW   d_bases.text:  0x80788510 - 0x80789810
-  # wiimj2d/d_bases/d_GameOver.cpp
+    wiimj2d/d_bases/d_GameOver.cpp
 # NSMBW   d_bases.text:  0x80789810 - 0x80789BB0
   # wiimj2d/d_bases/d_InfoWindow.cpp
 # NSMBW   d_bases.text:  0x80789BB0 - 0x8078AD30

@@ -61,6 +61,8 @@ public:
      */
     bool isMultiWorldOpenFlag(WORLD_e world);
 
+    inline u8 getSelectFileNo() {return mLastSelectedFile;}
+
 private:
     /**
      * Ensures that the save's major revision number matches the current one.

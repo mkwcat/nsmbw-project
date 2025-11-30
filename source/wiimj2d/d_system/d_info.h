@@ -108,6 +108,9 @@ public:
     /* 0x800BB3D0 */
     u8 getStockItem(int item) const;
 
+    /* 0x800BB410 */
+    void clsStockItem(int item);
+
     /* 0x800BB7D0 */
     void startGame(const StartGameInfo_s& startGameInfo);
 

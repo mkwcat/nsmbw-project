@@ -59,13 +59,6 @@ fBase_c::PACK_RESULT_e daWmPlayer_c::create()
 
     mPad::setCurrentChannel(mPad::CH_e::CHAN_0);
 
-    // TODO: Support continues for players 5+. For now, just set their lives to 5 here
-    for (int i = 4; i < PLAYER_COUNT; i++) {
-        if (daPyMng_c::mRest[i] == 0) {
-            daPyMng_c::mRest[i] = 5;
-        }
-    }
-
     UNDEF_80903930();
 
     mModelManager.mModel = nullptr;

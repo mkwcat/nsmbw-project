@@ -15,6 +15,7 @@
 #include "d_system/d_save_manager.h"
 #include "d_system/d_scene.h"
 #include "framework/f_feature.h"
+#include "machine/m_vec.h"
 #include "state/s_Lib.h"
 #include <algorithm>
 #include <nw4r/lyt/Window.h>
@@ -37,6 +38,9 @@ f32 rndF(f32 max);
 
 [[address(0x800B30C0)]]
 f32 getDispCenterX();
+
+[[address(0x800B2FB0)]]
+void initGame();
 
 [[address(0x800B32E0)]]
 mVec3_c ScalePosForAspectRatio(const mVec3_c&);
@@ -97,6 +101,9 @@ void GoalScoreExecute(const mVec3_c& pos, int playerNo)
       pos, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
     );
 }
+
+[[address(0x800B37E0)]]
+void ScalePosForLayoutEffect(const mVec3_c&, bool);
 
 [[address(0x800B3980)]]
 short CalculateTilt(int, float, float);
@@ -208,6 +215,9 @@ bool isGameStop(u32 flag);
 
 [[address(0x800B3B60)]]
 void LayoutDispNumber(const int& value, const int& maxChars, LytTextBox_c* textBox, bool itoaType);
+
+[[address(0x800B3BE0)]]
+void LayoutDispNumberDigit(int const& value, LytTextBox_c* textBox, bool itoaType);
 
 [[address(0x800B3C50)]]
 void WindowPaneColorSet(nw4r::lyt::Window* window, int playerNum)

@@ -11,6 +11,16 @@ set(DVD_FILES
     rels/project.SMAP
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/blyt/characterChangeSelectContents_05.brlyt
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/timg/Im_plofileMario_00.tpl
+    Layout/continue/continue.arc/arc/anim/continue_05_colorRecover.brlan
+    Layout/continue/continue.arc/arc/anim/continue_05_countContinue.brlan
+    Layout/continue/continue.arc/arc/anim/continue_05_inWindow.brlan
+    Layout/continue/continue.arc/arc/anim/continue_05_outWindow.brlan
+    Layout/continue/continue.arc/arc/anim/continue_05_zankiRecover.brlan
+    Layout/continue/continue.arc/arc/blyt/continue_05.brlyt
+    Layout/continue/continue.arc/arc/timg/im_kinopicoIcon_01.tpl
+    Layout/continue/continue.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl
+    Layout/continue/continue.arc/arc/timg/im_kinopioIcon_Black_01.tpl
+    Layout/continue/continue.arc/arc/timg/im_kinopioIcon_Orange_01.tpl
     Layout/corseSelectUIGuide/corseSelectUIGuide.arc/arc/blyt/corseSelectUIGuide_37.brlyt
     Layout/corseSelectUIGuide/corseSelectUIGuide.arc/arc/timg/im_kinopicoIcon_01.tpl
     Layout/corseSelectUIGuide/corseSelectUIGuide.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl
