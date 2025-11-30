@@ -74,7 +74,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8001F6C0 - 0x800208B0
   # wiimj2d/d_system/d_a_en_bigpile.cpp
 # NSMBW          .text:  0x800208B0 - 0x80023C60
-    wiimj2d/d_system/d_a_en_block_main.cpp
+    wiimj2d/d_system/d_a_en_blockmain.cpp
 # NSMBW          .text:  0x80023C60 - 0x80026BB0
   # wiimj2d/d_system/d_a_en_bros_base.cpp
 # NSMBW          .text:  0x80026BB0 - 0x800272F0
