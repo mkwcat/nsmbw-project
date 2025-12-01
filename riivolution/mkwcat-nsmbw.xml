@@ -60,6 +60,14 @@
                     <patch id="FUKIDASHI_HIDE_ALWAYS"/>
                 </choice>
             </option>
+            <option name="Yoshi Color Modifier">
+                <choice name="Random Colors">
+                    <patch id="YOSHI_RANDOM_COLORS"/>
+                </choice>
+                <choice name="Always Green">
+                    <patch id="YOSHI_ALL_GREEN"/>
+                </choice>
+            </option>
         </section>
     </options>
     <patch id="UNLOCKED_ALL_WORLDS">
@@ -97,6 +105,12 @@
     </patch>
     <patch id="FUKIDASHI_HIDE_ALWAYS">
         <memory offset="0x8000678D" value="02"/>
+    </patch>
+    <patch id="YOSHI_RANDOM_COLORS">
+        <memory offset="0x8000678E" value="01"/>
+    </patch>
+    <patch id="YOSHI_ALL_GREEN">
+        <memory offset="0x8000678E" value="02"/>
     </patch>
     <patch id="loader">
         <!-- Call Custom Module Loader -->

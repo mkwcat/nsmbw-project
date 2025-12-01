@@ -32,4 +32,10 @@ extern enum class FUKIDASHI_MODE_e : u8 {
     ALWAYS_HIDE = 2,
 } FUKIDASHI_MODE;
 
+extern enum class YOSHI_COLOR_MODE_e : u8 {
+    NORMAL = 0,
+    RANDOM = 1,
+    ALL_GREEN = 2,
+} YOSHI_COLOR_MODE;
+
 } // namespace fFeature

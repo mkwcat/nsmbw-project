@@ -12,7 +12,7 @@ public:
     bool isYossyColor(u16 yoshiColor);
 
     /* 0x80021B30 */
-    u32 yossy_color_search();
+    s16 yossy_color_search();
 
     /* 0x80022810 */
     void FUN_80022810();

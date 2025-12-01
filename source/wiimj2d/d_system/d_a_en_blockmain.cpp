@@ -5,39 +5,50 @@
 #include "d_player/d_a_yoshi.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actorcreate_mng.h"
+#include "d_system/d_game_common.h"
 #include "d_system/d_yoshi_model.h"
+#include "framework/f_feature.h"
 
 [[address(0x80021AB0)]]
 bool daEnBlockMain_c::isYossyColor(u16 yoshiColor)
 {
+    int index = 0;
     int checkColor = dYoshiMdl_c::sc_yoshiColors[yoshiColor];
     daYoshi_c* yoshi;
-    dYoshiMdl_c* yoshiMdl;
-    for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
-        yoshi = daPyMng_c::getYoshi(i);
-        if (yoshi == nullptr) {
+    while (yoshi = daPyMng_c::getYoshi(index),
+           yoshi == nullptr ||
+             checkColor != static_cast<dYoshiMdl_c*>(yoshi->mModelMng.mModel)->mColor) {
+        index++;
+        if (index > dYoshiMdl_c::COLOR_COUNT) {
             return false;
         }
-        yoshiMdl = static_cast<dYoshiMdl_c*>(yoshi->mModelMng.mModel);
-        if (checkColor != yoshiMdl->mColor) {
-            return true;
-        }
     }
-    return false;
+    return true;
 }
 
 [[address(0x80021B30)]]
-u32 daEnBlockMain_c::yossy_color_search()
+s16 daEnBlockMain_c::yossy_color_search()
 {
-    u16 yoshiColor = dActorCreateMng_c::m_instance->m0xBC8;
+    s16 yoshiColor;
+    switch (fFeature::YOSHI_COLOR_MODE) {
+    case fFeature::YOSHI_COLOR_MODE_e::NORMAL:
+        yoshiColor = dActorCreateMng_c::m_instance->m0xBC8;
 
-    for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
-        if (!isYossyColor(yoshiColor)) {
-            dActorCreateMng_c::m_instance->m0xBC8++;
-            return yoshiColor;
+        for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
+            if (!isYossyColor(yoshiColor)) {
+                dActorCreateMng_c::m_instance->m0xBC8 = yoshiColor;
+                dActorCreateMng_c::m_instance->m0xBC8++;
+                return yoshiColor;
+            }
+            yoshiColor++;
         }
+        return -1;
+    case fFeature::YOSHI_COLOR_MODE_e::RANDOM:
+        // TODO: Add check for existing Yoshi colors
+        return dGameCom::rndInt(dYoshiMdl_c::COLOR_COUNT);
+    case fFeature::YOSHI_COLOR_MODE_e::ALL_GREEN:
+        return 0;
     }
-    return -1;
 }
 
 [[address(0x80022810)]]

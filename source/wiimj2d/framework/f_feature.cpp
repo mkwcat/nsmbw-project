@@ -38,4 +38,7 @@ bool SHAKE_WITH_BUTTON;
 [[address_data(0x8000678D)]]
 FUKIDASHI_MODE_e FUKIDASHI_MODE;
 
+[[address_data(0x8000678E)]]
+YOSHI_COLOR_MODE_e YOSHI_COLOR_MODE;
+
 } // namespace fFeature
