@@ -3,6 +3,7 @@
 
 #include "SndObjectPlayer.h"
 
+#include "d_system/d_a_player_manager.h"
 #include "d_system/d_game_common.h"
 #include "sound/SndID.h"
 #include <nw4r/snd/SoundHandle.h>
@@ -450,6 +451,11 @@ nw4r::snd::SoundHandle* SndObjctPly::startVoiceSound(PLAYER_VOICE_e voice, u32 r
 
     if (handle != nullptr && handle->mpSound != nullptr) {
         handle->mpSound->SetPitch(pitch);
+    }
+
+    // Increase volume for COURSE_IN_MULTI if needed
+    if (voice == PLAYER_VOICE_e::CS_COURSE_IN_MULTI && daPyMng_c::getNumInGame() == 1) {
+        handle->mpSound->SetVolume(2.0, 0);
     }
 
     return handle;

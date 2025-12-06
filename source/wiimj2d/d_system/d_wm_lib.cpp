@@ -9,6 +9,12 @@ namespace dWmLib
 [[address_data(0x8031D6B4)]]
 float sc_0x8031D6B4;
 
+[[address(0x800F9640)]]
+STAGE_e GetCourseNoFromPointName(const char*);
+
+[[address(0x800F9950)]]
+STAGE_TYPE_e GetCourseTypeFromCourseNo(int);
+
 [[address(0x800FBAF0)]]
 void procCourseClear(bool isSecretExit, bool isSuperGuide, WORLD_e world, STAGE_e stage);
 
