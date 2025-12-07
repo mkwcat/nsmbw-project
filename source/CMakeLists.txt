@@ -456,7 +456,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800F2C00 - 0x800F3570
   # wiimj2d/d_system/d_wm_connect.cpp
 # NSMBW          .text:  0x800F3570 - 0x800F60E0
-  # wiimj2d/d_system/d_wm_csvdata.cpp
+    wiimj2d/d_system/d_wm_csvdata.cpp
 # NSMBW          .text:  0x800F60E0 - 0x800F7050
     wiimj2d/d_system/d_wm_demo_actor.cpp
 # NSMBW          .text:  0x800F7050 - 0x800F7510

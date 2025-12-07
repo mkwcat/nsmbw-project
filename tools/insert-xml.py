@@ -15,18 +15,6 @@ xml = xml.replace('    ', '').replace('\r', '').replace('\n', '')
 # Find and remove comments
 xml = re.sub(r'<!--.*?-->', '', xml)
 
-# Replace patch IDs with shortened versions
-matches = re.findall(r'\sid="(.*?)"', xml)
-unique_matches = set(matches)
-m = 0
-for match in unique_matches:
-    if m < 10:
-        short_id = f'{m}'
-    else:
-        short_id = chr(ord('a') + m - 10)
-    xml = xml.replace(f'id="{match}"', f'id="{short_id}"')
-    m += 1
-
 xml = xml.replace("${INSERT_VERSION}", argv[3])
 xml = xml.replace("${INSERT_LOADER_DATA}", text_section.data().hex().upper())
 output.write(xml)

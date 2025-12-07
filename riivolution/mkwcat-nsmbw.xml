@@ -8,7 +8,7 @@
         <region type="C"/>
     </id>
     <options>
-        <section name="mkwcat-nsmbw ${INSERT_VERSION}">
+        <section name="mkwcat-nsmbw ${INSERT_VERSION}" id="mkwcat">
             <option name="Core (Required)" default="1">
                 <choice name="Enabled">
                     <patch id="loader"/>
