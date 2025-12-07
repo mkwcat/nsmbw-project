@@ -9,6 +9,7 @@
 #include "d_system/d_nand_thread.h"
 #include "d_system/d_remocon_mng.h"
 #include "d_system/d_save_manager.h"
+#include "d_system/d_yoshi_model.h"
 #include "machine/m_heap.h"
 #include "machine/m_pad.h"
 #include "sound/SndAudioMgr.h"
@@ -156,6 +157,8 @@ void dSys_c::initCModule()
     daPyMng_c::initGame();
 
     SndAudioMgr::sInstance->loadKinopicoSound();
+
+    dYoshiMdl_c::setDefaultColors();
 
     ms_RootHeapMem1->mFlags.setBit(0);
     ms_RootHeapMem2->mFlags.setBit(0);

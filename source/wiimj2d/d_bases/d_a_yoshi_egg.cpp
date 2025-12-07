@@ -8,7 +8,7 @@
 #include "machine/m_ef.h"
 
 extern const float c_eggColorFrames[dYoshiMdl_c::COLOR_COUNT] = {
-  0.0, 2.0, 3.0, 1.0, 7.0, 5.0, 6.0, 4.0,
+  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,
 };
 
 [[address(0x80911380)]]
@@ -137,8 +137,8 @@ void daYoshiEgg_c::spawnEggBreakEffect()
 {
     // TODO: Add effects for new egg colors
     const char* eggBreakEffects[dYoshiMdl_c::COLOR_COUNT] = {
-      "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl", "Wm_ob_eggbreak_rd",
-      "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_gr",
+      "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_rd", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl",
+      "Wm_ob_eggbreak_rd", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl", "Wm_ob_eggbreak_bl",
     };
 
     mEf::createEffect(eggBreakEffects[mColor], 0, &mPos, nullptr, nullptr);
@@ -148,7 +148,7 @@ void daYoshiEgg_c::spawnEggBreakEffect()
 void daYoshiEgg_c::hatchYoshi()
 {
     spawnEggBreakEffect();
-    daPyMng_c::createYoshi(mPos, dYoshiMdl_c::sc_yoshiColors[mColor], nullptr);
+    daPyMng_c::createYoshi(mPos, mColor, nullptr);
     deleteRequest();
 }
 

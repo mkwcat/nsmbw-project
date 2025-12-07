@@ -32,11 +32,7 @@ public:
         COLOR_COUNT,
     };
 
-    static constexpr int sc_yoshiColors[dYoshiMdl_c::COLOR_COUNT] = {
-      dYoshiMdl_c::COLOR_GREEN,  dYoshiMdl_c::COLOR_YELLOW,  dYoshiMdl_c::COLOR_BLUE,
-      dYoshiMdl_c::COLOR_RED,    dYoshiMdl_c::COLOR_AZURE,   dYoshiMdl_c::COLOR_ORANGE,
-      dYoshiMdl_c::COLOR_PURPLE, dYoshiMdl_c::COLOR_CRIMSON,
-    };
+    static int s_yoshiColors[dYoshiMdl_c::COLOR_COUNT];
 
 public:
     // Instance Methods
@@ -59,4 +55,10 @@ public:
     /* 0x250 */ nw4r::g3d::ResFile mColorResFile;
 
     FILL(0x254, 0x404);
+
+public:
+    // Static Methods
+    // ^^^^^
+
+    static void setDefaultColors();
 };

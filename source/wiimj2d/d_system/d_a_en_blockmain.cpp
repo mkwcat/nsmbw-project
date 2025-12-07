@@ -5,7 +5,6 @@
 #include "d_player/d_a_yoshi.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actorcreate_mng.h"
-#include "d_system/d_game_common.h"
 #include "d_system/d_yoshi_model.h"
 #include "framework/f_feature.h"
 
@@ -13,7 +12,7 @@
 bool daEnBlockMain_c::isYossyColor(u16 yoshiColor)
 {
     int index = 0;
-    int checkColor = dYoshiMdl_c::sc_yoshiColors[yoshiColor];
+    int checkColor = dYoshiMdl_c::s_yoshiColors[yoshiColor];
     daYoshi_c* yoshi;
     while (yoshi = daPyMng_c::getYoshi(index),
            yoshi == nullptr ||
@@ -31,30 +30,16 @@ s16 daEnBlockMain_c::yossy_color_search()
 {
     s16 yoshiColor;
     switch (fFeature::YOSHI_COLOR_MODE) {
-    case fFeature::YOSHI_COLOR_MODE_e::NORMAL:
+    default:
         yoshiColor = dActorCreateMng_c::m_instance->m0xBC8;
 
         for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
             if (!isYossyColor(yoshiColor)) {
                 dActorCreateMng_c::m_instance->m0xBC8 = yoshiColor;
                 dActorCreateMng_c::m_instance->m0xBC8++;
-                return yoshiColor;
+                return dYoshiMdl_c::s_yoshiColors[yoshiColor];
             }
             yoshiColor++;
-        }
-        return -1;
-    case fFeature::YOSHI_COLOR_MODE_e::RANDOM:
-        yoshiColor = dGameCom::rndInt(dYoshiMdl_c::COLOR_COUNT);
-        
-        for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
-            daYoshi_c* yoshi = daPyMng_c::getYoshi(i);
-            if (yoshi == nullptr) {
-                return yoshiColor;
-            } else if (static_cast<dYoshiMdl_c*>(yoshi->mModelMng.mModel)->mColor != yoshiColor) {
-                return yoshiColor;
-            } else {
-                yoshiColor = dGameCom::rndInt(dYoshiMdl_c::COLOR_COUNT);
-            }
         }
         return -1;
     case fFeature::YOSHI_COLOR_MODE_e::ALL_GREEN:

@@ -2,6 +2,8 @@
 // NSMBW .text: 0x800FE2E0 - 0x800FFF80
 
 #include "d_yoshi_model.h"
+#include "d_system/d_game_common.h"
+#include "framework/f_feature.h"
 
 extern const char* const c_yoshiColorNames[dYoshiMdl_c::COLOR_COUNT] = {
   "Y_TexGreen",   "Y_TexRed",    "Y_TexYellow", "Y_TexBlue",
@@ -108,3 +110,27 @@ UNDEF_800fe640:;
 /* 800FE664 4E800020 */  blr;
   // clang-format on
 )
+
+int dYoshiMdl_c::s_yoshiColors[dYoshiMdl_c::COLOR_COUNT] = {
+    dYoshiMdl_c::COLOR_GREEN,
+    dYoshiMdl_c::COLOR_YELLOW,
+    dYoshiMdl_c::COLOR_BLUE,
+    dYoshiMdl_c::COLOR_RED,
+    dYoshiMdl_c::COLOR_AZURE,
+    dYoshiMdl_c::COLOR_ORANGE,
+    dYoshiMdl_c::COLOR_PURPLE,
+    dYoshiMdl_c::COLOR_CRIMSON,
+};
+
+void dYoshiMdl_c::setDefaultColors()
+{
+    if (fFeature::YOSHI_COLOR_MODE == fFeature::YOSHI_COLOR_MODE_e::RANDOM) {
+        // Shuffle the s_yoshiColors array
+        for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
+            int j = dGameCom::rndInt(i);
+            int temp = s_yoshiColors[i];
+            s_yoshiColors[i] = s_yoshiColors[j];
+            s_yoshiColors[j] = temp;
+        }
+    }
+}
