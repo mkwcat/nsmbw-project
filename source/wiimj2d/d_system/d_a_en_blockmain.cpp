@@ -44,8 +44,19 @@ s16 daEnBlockMain_c::yossy_color_search()
         }
         return -1;
     case fFeature::YOSHI_COLOR_MODE_e::RANDOM:
-        // TODO: Add check for existing Yoshi colors
-        return dGameCom::rndInt(dYoshiMdl_c::COLOR_COUNT);
+        yoshiColor = dGameCom::rndInt(dYoshiMdl_c::COLOR_COUNT);
+        
+        for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
+            daYoshi_c* yoshi = daPyMng_c::getYoshi(i);
+            if (yoshi == nullptr) {
+                return yoshiColor;
+            } else if (static_cast<dYoshiMdl_c*>(yoshi->mModelMng.mModel)->mColor != yoshiColor) {
+                return yoshiColor;
+            } else {
+                yoshiColor = dGameCom::rndInt(dYoshiMdl_c::COLOR_COUNT);
+            }
+        }
+        return -1;
     case fFeature::YOSHI_COLOR_MODE_e::ALL_GREEN:
         return 0;
     }
