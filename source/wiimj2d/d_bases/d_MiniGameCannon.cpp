@@ -278,10 +278,10 @@ void dMiniGameCannon_c::setPlayerPanePositions()
 
             nw4r::lyt::Pane* posPane = mpN8pPos[paneIdx];
             const auto& gmtx = posPane->GetGlobalMtx();
-            mpNPlayer[playerType]->SetTranslate(nw4r::math::VEC3(gmtx[0][3], gmtx[1][3], 0.0));
-            mpNPlayer[playerType]->SetScale(nw4r::math::VEC2(gmtx[0][0], gmtx[1][1]));
-            mpT1up[playerType]->SetAlpha(posPane->GetGlobalAlpha());
-            mpPPlayer[playerType]->SetAlpha(posPane->GetGlobalAlpha());
+            mpNPlayer[i]->SetTranslate(nw4r::math::VEC3(gmtx[0][3], gmtx[1][3], 0.0));
+            mpNPlayer[i]->SetScale(nw4r::math::VEC2(gmtx[0][0], gmtx[1][1]));
+            mpT1up[i]->SetAlpha(posPane->GetGlobalAlpha());
+            mpPPlayer[i]->SetAlpha(posPane->GetGlobalAlpha());
         }
     }
 }
@@ -296,19 +296,14 @@ void dMiniGameCannon_c::setAllText()
             continue;
         }
 
-        int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-        if (playerType >= 8) {
-            continue;
-        }
-
-        int rest = mNumWon[playerType];
+        int rest = mNumWon[i];
         int digits = 1;
         for (int r = rest; r >= 10; digits++) {
             r /= 10;
         }
         wchar_t restStr[16];
         dMessage_c::itoaCustom(rest, restStr, std::size(restStr), digits, 0);
-        mpT1up[playerType]->setMessage(msgRes, 300, 4, 1, restStr);
+        mpT1up[i]->setMessage(msgRes, 300, 4, 1, restStr);
     }
 }
 
@@ -451,7 +446,9 @@ void dMiniGameCannon_c::finalizeState_StartWait()
 {
     mNumPlayers = 0;
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
-        if (dGameCom::PlayerEnterCheck(i)) {
+        int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e)i);
+
+        if (dGameCom::PlayerEnterCheck(player)) {
             mPlayerEntry[i] = true;
             mNumPlayers++;
         } else {
@@ -477,13 +474,8 @@ void dMiniGameCannon_c::initializeState_OpenAnimeEndWait()
         mpNInfo->SetVisible(false);
         if (isWin()) {
             for (int i = 0; i < PLAYER_COUNT; i++) {
-                int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-                if (playerType >= 8) {
-                    continue;
-                }
-
-                mpNPlayer[playerType]->SetVisible(true);
-                mLayout.ReverseAnimeStartSetup(playerType + 3, false);
+                mpNPlayer[i]->SetVisible(true);
+                mLayout.ReverseAnimeStartSetup(i + 3, false);
             }
             mpNResult->SetVisible(true);
             mpNResult2->SetVisible(false);
@@ -554,19 +546,14 @@ void dMiniGameCannon_c::initializeState_ResultDispAnimeEndWait()
     setAllText();
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-        if (playerType >= 8) {
+        if (!mPlayerEntry[i]) {
+            mpNPlayer[i]->SetVisible(false);
             continue;
         }
 
-        if (!mPlayerEntry[playerType]) {
-            mpNPlayer[playerType]->SetVisible(false);
-            continue;
-        }
-
-        dGameCom::Player1upColor(mpT1up[playerType], playerType);
-        mLayout.AnimeStartSetup(playerType + 3, false);
-        mpNPlayer[playerType]->SetVisible(true);
+        dGameCom::Player1upColor(mpT1up[i], i);
+        mLayout.AnimeStartSetup(i + 3, false);
+        mpNPlayer[i]->SetVisible(true);
     }
 
     mAnimationActive = true;
@@ -583,7 +570,7 @@ void dMiniGameCannon_c::initializeState_ResultNowDisp()
         if (mPlayerEntry[i]) {
             int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
             if (playerType < 8) {
-                mLayout.LoopAnimeStartSetup(playerType + 11);
+                mLayout.LoopAnimeStartSetup(i + 11);
             }
         }
     }
