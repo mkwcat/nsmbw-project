@@ -9,6 +9,7 @@
 #include "d_bases/d_wm_seManager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_audio.h"
+#include "d_system/d_game_common.h"
 #include "d_system/d_mj2d_game.h"
 #include "sound/SndSceneMgr.h"
 #include <iterator>
@@ -21,6 +22,180 @@ dStockItem_c* dStockItem_c_classInit()
 
 [[address(0x807AF3A0)]]
 dStockItem_c::dStockItem_c();
+
+[[address(0x807AF8D0)]]
+bool dStockItem_c::createLayout() {
+    if (!mLayout.ReadResource("stockItem/stockItem.arc", false)) {
+      return false;
+    }
+
+    mLayout.build("stockItem_27.brlyt", nullptr);
+
+    using StringArray = const char*[];
+    using IntArray = const int[];
+
+    mLayout.AnimeResRegister(
+      StringArray{
+        "stockItem_27_inWindow.brlan",
+        "stockItem_27_itemOnButton.brlan",
+        "stockItem_27_itemIdleButton.brlan",
+        "stockItem_27_itemHitButton.brlan",
+        "stockItem_27_itemOffButton.brlan",
+        "stockItem_27_outWindow.brlan",
+      },
+      6
+    );
+
+    mLayout.GroupRegister(
+      StringArray{
+        "A00_Window",
+        "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton",
+        "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton",
+        "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton",
+        "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton",
+        "A00_Window",
+      },
+      IntArray{
+        0,
+        1, 1, 1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2, 2, 2,
+        3, 3, 3, 3, 3, 3, 3,
+        4, 4, 4, 4, 4, 4, 4,
+        5,
+      },
+      0x1E
+    );
+
+    mpRootPane = mLayout.getRootPane();
+
+    mLayout.NPaneRegister(
+      mpNullPanes,
+      {
+        "N_forUse_1PPos",
+        "N_forUse_2PPos",
+        "N_forUse_3PPos",
+        "N_forUse_4PPos",
+        "N_iconKinoko_00",
+        "N_iconFlower_00",
+        "N_iconPro_00",
+        "N_iconIce_00",
+        "N_iconPen_00",
+        "N_mameKinoko_00",
+        "N_iconStar_00",
+        "N_stockItem",
+        "N_stockItem_01",
+        "N_itemSelect_00",
+      }
+    );
+
+    mLayout.TPaneNameRegister(
+      StringArray{
+        "T_titleStock_00",
+        "T_titleUse_01",
+      },
+      IntArray{
+        0x1E,
+        0x2F,
+      },
+      0x2, 2
+    );
+
+    mLayout.PPaneRegister(
+      mpPicturePanes,
+      {
+        "P_iconKinoko_00",
+        "P_iconFlower_00",
+        "P_iconPro_00",
+        "P_iconIce_00",
+        "P_iconPen_00",
+        "P_mameKinoko_00",
+        "P_iconStar_00",
+        "P_buttonBase_00",
+        "P_buttonBase_01",
+        "P_buttonBase_02",
+        "P_buttonBase_06",
+        "P_buttonBase_04",
+        "P_buttonBase_05",
+        "P_buttonBase_03",
+        "P_iconBase_00",
+        "P_iconBase_01",
+        "P_iconBase_02",
+        "P_iconBase_03",
+        "P_iconBase_04",
+        "P_iconBase_05",
+        "P_iconBase_06",
+        "P_iconBase_07",
+        "P_iconBase_08",
+        "P_iconBase_09",
+      }
+    );
+
+    // New
+    mLayout.NPaneRegister(
+      mpNForUsePos,
+      {
+        "N_forUse_1PPos",
+        "N_forUse_2PPos",
+        "N_forUse_3PPos",
+        "N_forUse_4PPos",
+        "N_forUse_5PPos",
+        "N_forUse_5PPos",
+        "N_forUse_5PPos",
+        "N_forUse_5PPos",
+      }
+    );
+
+    mLayout.PPaneRegister(
+      mpPIconBase4P,
+      {
+        "P_iconBase_00",
+        "P_iconBase_01",
+        "P_iconBase_02",
+        "P_iconBase_03",
+
+        "P_iconBase_04",
+        "P_iconBase_05",
+
+        "P_iconBase_06",
+        "P_iconBase_07",
+        "P_iconBase_08",
+
+        "P_iconBase_09",
+
+        "P_iconBase_10",
+        "P_iconBase_11",
+        "P_iconBase_12",
+        "P_iconBase_13",
+        "P_iconBase_14",
+
+        "P_iconBase_15",
+        "P_iconBase_16",
+        "P_iconBase_17",
+        "P_iconBase_18",
+        "P_iconBase_19",
+        "P_iconBase_20",
+
+        "P_iconBase_21",
+        "P_iconBase_22",
+        "P_iconBase_23",
+        "P_iconBase_24",
+        "P_iconBase_25",
+        "P_iconBase_26",
+        "P_iconBase_27",
+
+        "P_iconBase_28",
+        "P_iconBase_29",
+        "P_iconBase_30",
+        "P_iconBase_31",
+        "P_iconBase_32",
+        "P_iconBase_33",
+        "P_iconBase_34",
+        "P_iconBase_35",
+      }
+    );
+
+    return true;
+}
 
 [[address(0x807AFB90)]]
 dStockItem_c::PANE_LIST_e dStockItem_c::getPosPaneForPlayer(int player)
@@ -47,38 +222,38 @@ dStockItem_c::PANE_LIST_e dStockItem_c::getPosPaneForPlayer(int player)
         PANE_LIST_e::P_iconBase_03,
       },
       {
-        PANE_LIST_e::P_iconBase_00,
-        PANE_LIST_e::P_iconBase_01,
-        PANE_LIST_e::P_iconBase_02,
-        PANE_LIST_e::P_iconBase_03,
-        PANE_LIST_e::P_iconBase_04,
+        PANE_LIST_e::P_iconBase_10,
+        PANE_LIST_e::P_iconBase_11,
+        PANE_LIST_e::P_iconBase_12,
+        PANE_LIST_e::P_iconBase_13,
+        PANE_LIST_e::P_iconBase_14,
       },
       {
-        PANE_LIST_e::P_iconBase_00,
-        PANE_LIST_e::P_iconBase_01,
-        PANE_LIST_e::P_iconBase_02,
-        PANE_LIST_e::P_iconBase_03,
-        PANE_LIST_e::P_iconBase_04,
-        PANE_LIST_e::P_iconBase_05,
+        PANE_LIST_e::P_iconBase_15,
+        PANE_LIST_e::P_iconBase_16,
+        PANE_LIST_e::P_iconBase_17,
+        PANE_LIST_e::P_iconBase_18,
+        PANE_LIST_e::P_iconBase_19,
+        PANE_LIST_e::P_iconBase_20,
       },
       {
-        PANE_LIST_e::P_iconBase_00,
-        PANE_LIST_e::P_iconBase_01,
-        PANE_LIST_e::P_iconBase_02,
-        PANE_LIST_e::P_iconBase_03,
-        PANE_LIST_e::P_iconBase_04,
-        PANE_LIST_e::P_iconBase_05,
-        PANE_LIST_e::P_iconBase_06,
+        PANE_LIST_e::P_iconBase_21,
+        PANE_LIST_e::P_iconBase_22,
+        PANE_LIST_e::P_iconBase_23,
+        PANE_LIST_e::P_iconBase_24,
+        PANE_LIST_e::P_iconBase_25,
+        PANE_LIST_e::P_iconBase_26,
+        PANE_LIST_e::P_iconBase_27,
       },
       {
-        PANE_LIST_e::P_iconBase_00,
-        PANE_LIST_e::P_iconBase_01,
-        PANE_LIST_e::P_iconBase_02,
-        PANE_LIST_e::P_iconBase_03,
-        PANE_LIST_e::P_iconBase_04,
-        PANE_LIST_e::P_iconBase_05,
-        PANE_LIST_e::P_iconBase_06,
-        PANE_LIST_e::P_iconBase_08,
+        PANE_LIST_e::P_iconBase_28,
+        PANE_LIST_e::P_iconBase_29,
+        PANE_LIST_e::P_iconBase_30,
+        PANE_LIST_e::P_iconBase_31,
+        PANE_LIST_e::P_iconBase_32,
+        PANE_LIST_e::P_iconBase_33,
+        PANE_LIST_e::P_iconBase_34,
+        PANE_LIST_e::P_iconBase_35,
       },
     }[mPresentPlayerCount - 1][player];
 
@@ -138,13 +313,13 @@ UNDEF_807afc54:;
 /* 807AFC68 7FC3F378 */  mr       r3, r30;
 /* 807AFC6C 7EA4AB78 */  mr       r4, r21;
 /* 807AFC70 4BFFFF21 */  bl       UNDEF_807afb90;
-/* 807AFC74 2C030018 */  cmpwi    r3, 24;
+/* 807AFC74          */  cmpwi    r3, PANE_LIST_e_NONE;
 /* 807AFC78 418200EC */  beq-     UNDEF_807afd64;
 /* 807AFC7C 5460103A */  slwi     r0, r3, 2;
 /* 807AFC80 38610054 */  addi     r3, r1, 84;
 /* 807AFC84 7CBE0214 */  add      r5, r30, r0;
 /* 807AFC88 38810084 */  addi     r4, r1, 132;
-/* 807AFC8C 82250284 */  lwz      r17, 644(r5);
+/* 807AFC8C          */  lwz      r17, dStockItem_c_OFFSET_mpNForUsePos(r5);
 /* 807AFC90 80B10090 */  lwz      r5, 144(r17);
 /* 807AFC94 90A10144 */  stw      r5, 324(r1);
 /* 807AFC98 801100A0 */  lwz      r0, 160(r17);
