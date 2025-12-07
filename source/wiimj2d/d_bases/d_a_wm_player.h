@@ -1,5 +1,6 @@
 #pragma once
 
+#include "d_bases/d_wm_seManager.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_player_model_manager.h"
@@ -146,8 +147,14 @@ public:
     // Static Methods
     // ^^^^^^
 
+    /* 0x80100A50 */
+    static int getSubPlayerNum();
+    
     /* 0x80100B60 @unofficial */
     static const char* getSkeletonRoot(dPyMdlMng_c::ModelType_e character);
+
+    /* 0x80100C50 */
+    static dWmSeManager_c::WmPlyVoice_e getCourseInVoiceId(int node);
 
     /* 0x801011A0 */
     static bool isPlayerStarMode();

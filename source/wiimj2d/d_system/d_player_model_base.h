@@ -118,7 +118,7 @@ public:
     virtual void offStarEffect();
 
     /* VT+0x50 0x800D5820 */
-    virtual void getJointMtx();
+    virtual void getJointMtx(mMtx_c*, int);
     /* VT+0x54 0x800D6D50 */
     virtual bool getHeadPropelJointMtx(mMtx_c*);
     /* VT+0x58 0x800D6930 */

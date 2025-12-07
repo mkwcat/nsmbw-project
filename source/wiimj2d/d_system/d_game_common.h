@@ -67,6 +67,9 @@ bool CalculateTiltShoulder(
 /* 0x800B3600 */
 void FUN_800B3600(int, int);
 
+/* 0x800B4CF0 @unofficial */
+void MiniGameWireFacePosEffect(const mVec3_c&);
+
 /* 0x800B5340 */
 bool chkContinue();
 

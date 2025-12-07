@@ -1,14 +1,15 @@
 #pragma once
 
-#include "component/c_bitmask.h"
+#include "System.h"
 #include "d_system/d_base.h"
 #include "d_system/d_lytbase.h"
-#include "d_system/d_mj2d_game.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 
 class dMiniGameCannon_c : public dBase_c
 {
+    SIZE_ASSERT(0x2E8 + 0xE8);
+
 public:
     // Structors
     // ^^^^^^
@@ -69,7 +70,7 @@ public:
     // ^^^^^^
 
     /* 0x8078C250 */
-    nw4r::lyt::Pane* getPositionPane(int player);
+    int getPosPaneIdx(int player);
 
     /* 0x8078C280 */
     void setPlayerPanePositions();
@@ -89,20 +90,20 @@ public:
 
     /* 0x244 */ nw4r::lyt::Pane* mpRootPane;
 
-    /* 0x248 */ nw4r::lyt::Pane* mpN4pPos[4];
-    /* 0x258 */ nw4r::lyt::Pane* mpN3pPos[3];
-    /* 0x264 */ nw4r::lyt::Pane* mpN2pPos[2];
-    /* 0x26C */ nw4r::lyt::Pane* mpN1pPos;
+    /* 0x248 */ nw4r::lyt::Pane* REMOVED(mpN4pPos)[4];
+    /* 0x258 */ nw4r::lyt::Pane* REMOVED(mpN3pPos)[3];
+    /* 0x264 */ nw4r::lyt::Pane* REMOVED(mpN2pPos)[2];
+    /* 0x26C */ nw4r::lyt::Pane* REMOVED(mpN1pPos);
     /* 0x270 */ nw4r::lyt::Pane* mpNInfo;
     /* 0x274 */ nw4r::lyt::Pane* mpNResult;
     /* 0x278 */ nw4r::lyt::Pane* mpNGameCannon;
     /* 0x27C */ nw4r::lyt::Pane* mpNResult2;
-    /* 0x280 */ nw4r::lyt::Pane* mpNPlayer[4];
+    /* 0x280 */ nw4r::lyt::Pane* REMOVED(mpNPlayer)[4];
 
-    /* 0x290 */ LytTextBox_c* mpT1up[4];
+    /* 0x290 */ LytTextBox_c* REMOVED(mpT1up)[4];
     /* 0x2A0 */ LytTextBox_c* mpTInfo;
 
-    /* 0x2A4 */ nw4r::lyt::Picture* mpPPlayer[4];
+    /* 0x2A4 */ nw4r::lyt::Picture* REMOVED(mpPPlayer)[4];
     /* 0x2B4 */ nw4r::lyt::Picture* mpPBg;
     /* 0x2B8 */ nw4r::lyt::Picture* mpPTitleBase;
 
@@ -111,19 +112,39 @@ public:
     // Offsets assume PLAYER_COUNT is 4. We can completely rework this structure as we replace
     // everything that uses it.
 
-    /* 0x2C0 */ int m0x2C0;
-    /* 0x2C4 */ int mNumWon[PLAYER_COUNT];
+    /* 0x2C0 */ int mCurrentState;
+    /* 0x2C4 */ int REMOVED(mWonRestNum)[4];
     /* 0x2D4 */ int mNumPlayers;
+
     /* 0x2D8 */ bool mReady;
     /* 0x2D9 */ bool mActive;
-    /* 0x2DA */ bool m0x2DA;
-    /* 0x2DB */ // bool mPlayerEntry[5];
-    cBitmask_c<PLAYER_COUNT> mPlayerEntry;
-    /* 0x2E0 */ bool m0x2E0;
-    /* 0x2E1 */ bool m0x2E1;
-    /* 0x2E2 */ bool m0x2E2;
-    /* 0x2E3 */ bool m0x2E3;
-    /* 0x2E4 */ bool m0x2E4;
+    /* 0x2DA */ bool mIsWindowOpen;
+    /* 0x2DB */ bool REMOVED(mPlayerEntry)[4];
+    /* 0x2DF */ bool m_2DF;
+    /* 0x2E0 */ bool mIsTitleOpen;
+    /* 0x2E1 */ bool mAnimationActive;
+    /* 0x2E2 */ bool mCloseTitle;
+    /* 0x2E3 */ bool mCloseOperate;
+    /* 0x2E4 */ bool mCloseResult;
+
+    FILL(0x2E5, 0x2E8);
+
+    // New (added 0xE8 bytes)
+    /* 0x2E8 */ nw4r::lyt::Pane* mpN8pPos[4];//0
+    /* 0x2F8 */ nw4r::lyt::Pane* mpN7pPos[3];//4
+    /* 0x304 */ nw4r::lyt::Pane* mpN6pPos[2];//7
+    /* 0x30C */ nw4r::lyt::Pane* mpN5pPos;//9
+    /* 0x310 */ nw4r::lyt::Pane* mpN4pPosEx[4];//10
+    /* 0x320 */ nw4r::lyt::Pane* mpN4pPos[4];//14
+    /* 0x330 */ nw4r::lyt::Pane* mpN3pPos[3];//18
+    /* 0x33C */ nw4r::lyt::Pane* mpN2pPos[2];//21
+    /* 0x344 */ nw4r::lyt::Pane* mpN1pPos;//23
+
+    /* 0x348 */ nw4r::lyt::Pane* mpNPlayer[8];//24
+    /* 0x368 */ LytTextBox_c* mpT1up[8];
+    /* 0x388 */ nw4r::lyt::Picture* mpPPlayer[8];
+    /* 0x3A8 */ int mNumWon[8];
+    /* 0x3C8 */ bool mPlayerEntry[8];
 
 public:
     // State IDs

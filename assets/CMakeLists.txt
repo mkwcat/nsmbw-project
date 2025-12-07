@@ -40,6 +40,13 @@ set(DVD_FILES
     Layout/miniGameWire/miniGameWire.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl
     Layout/miniGameWire/miniGameWire.arc/arc/timg/im_kinopioIcon_Black_01.tpl
     Layout/miniGameWire/miniGameWire.arc/arc/timg/im_kinopioIcon_Orange_01.tpl
+    Layout/miniGameCannon/miniGameCannon.arc/arc/anim/miniGameCannon_15_inPlayer.brlan
+    Layout/miniGameCannon/miniGameCannon.arc/arc/anim/miniGameCannon_15_loop1UP.brlan
+    Layout/miniGameCannon/miniGameCannon.arc/arc/blyt/miniGameCannon_15.brlyt
+    Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopicoIcon_01.tpl
+    Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl
+    Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopioIcon_Black_01.tpl
+    Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopioIcon_Orange_01.tpl
     Layout/preGame/preGame.arc/arc/blyt/preGame_19.brlyt
     Layout/preGame/preGame.arc/arc/timg/im_kinopicoIcon_01.tpl
     Layout/preGame/preGame.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl

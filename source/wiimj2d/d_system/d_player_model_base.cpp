@@ -2,6 +2,7 @@
 // NSMBW .text: 0x800D5420 - 0x800D6DB0
 
 #include "d_player_model_base.h"
+#include "machine/m_mtx.h"
 
 /* VT+0x10 */
 [[address(0x800D5720)]]
@@ -25,7 +26,7 @@ void dPyMdlBase_c::_calc();
 
 /* VT+0x50 */
 [[address(0x800D5820)]]
-void dPyMdlBase_c::getJointMtx();
+void dPyMdlBase_c::getJointMtx(mMtx_c*, int);
 
 /* VT+0x28 */
 [[address(0x800D5870)]]

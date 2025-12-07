@@ -2,8 +2,29 @@
 
 #include "d_system/d_mj2d_game.h"
 
+enum class STAGE_TYPE_e {
+    NORMAL = 0,
+    GHOST = 1,
+    TOWER = 2,
+    CASTLE = 3,
+    TOAD = 4,
+    ENEMY = 5,
+    WARP = 6,
+    STAGE_37 = 7, // @unused
+    DOOMSHIP = 8,
+    HOME = 9,
+    PEACH = 10,
+    INVALID = 11,
+};
+
 namespace dWmLib
 {
+
+/* 0x800F9640 */
+STAGE_e GetCourseNoFromPointName(const char*);
+
+/* 0x800F9950 */
+STAGE_TYPE_e GetCourseTypeFromCourseNo(int);
 
 /* 0x800FBAF0 @unofficial */
 void procCourseClear(bool isSecretExit, bool isSuperGuide, WORLD_e world, STAGE_e stage);

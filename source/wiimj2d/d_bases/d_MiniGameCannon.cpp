@@ -21,12 +21,12 @@ dMiniGameCannon_c::dMiniGameCannon_c()
 {
     mReady = false;
     mActive = false;
-    m0x2DA = false;
-    m0x2E0 = false;
-    m0x2E1 = false;
-    m0x2E2 = false;
-    m0x2E3 = false;
-    m0x2E4 = false;
+    mIsWindowOpen = false;
+    mIsTitleOpen = false;
+    mAnimationActive = false;
+    mCloseTitle = false;
+    mCloseOperate = false;
+    mCloseResult = false;
 }
 
 [[address(0x8078BEA0)]]
@@ -54,13 +54,13 @@ fBase_c::PACK_RESULT_e dMiniGameCannon_c::create()
 
     mpRootPane->SetVisible(false);
 
-    m0x2C0 = false;
+    mCurrentState = false;
     for (std::size_t i = 0; i < std::size(mNumWon); i++) {
         mNumWon[i] = 0;
     }
 
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
-        mPlayerEntry.clearBit(i);
+        mPlayerEntry[i] = false;
     }
 
     mReady = true;
@@ -96,10 +96,18 @@ bool dMiniGameCannon_c::createLayout()
        {"D01_2P_00", 3},
        {"D02_3P_00", 3},
        {"D03_4P_00", 3},
+       {"D04_5P_00", 3},
+       {"D05_6P_00", 3},
+       {"D06_7P_00", 3},
+       {"D07_8P_00", 3},
        {"D00_1P_00", 4},
        {"D01_2P_00", 4},
        {"D02_3P_00", 4},
        {"D03_4P_00", 4},
+       {"D04_5P_00", 4},
+       {"D05_6P_00", 4},
+       {"D06_7P_00", 4},
+       {"D07_8P_00", 4},
        {"E00_title", 5},
        {"E00_title", 6},
        {"E00_title", 7},
@@ -119,7 +127,34 @@ bool dMiniGameCannon_c::createLayout()
     );
     mpRootPane = mLayout.getRootPane();
     mLayout.NPaneRegister(
-      &mpN4pPos[0], {
+      &mpNInfo, {
+                      "N_info_00",
+                      "N_result_00",
+                      "N_gameCannon_00",
+                      "N_result_01",
+                    }
+    );
+    mLayout.NPaneRegister(
+      &mpN8pPos[0], {
+                      "N_8P_Pos_00",
+                      "N_8P_Pos_01",
+                      "N_8P_Pos_02",
+                      "N_8P_Pos_03",
+
+                      "N_7P_Pos_00",
+                      "N_7P_Pos_01",
+                      "N_7P_Pos_02",
+
+                      "N_6P_Pos_00",
+                      "N_6P_Pos_01",
+
+                      "N_5P_Pos_00",
+
+                      "N_4P_Pos_10",
+                      "N_4P_Pos_11",
+                      "N_4P_Pos_12",
+                      "N_4P_Pos_13",
+
                       "N_4P_Pos_00",
                       "N_4P_Pos_01",
                       "N_4P_Pos_02",
@@ -134,35 +169,41 @@ bool dMiniGameCannon_c::createLayout()
 
                       "N_1P_Pos_00",
 
-                      "N_info_00",
-                      "N_result_00",
-                      "N_gameCannon_00",
-                      "N_result_01",
-
                       "N_1P_00",
                       "N_2P_00",
                       "N_3P_00",
                       "N_4P_00",
+                      "N_5P_00",
+                      "N_6P_00",
+                      "N_7P_00",
+                      "N_8P_00",
                     }
     );
+    mLayout.TPaneRegister(&mpTInfo, {"T_info_04", });
     mLayout.TPaneRegister(
       &mpT1up[0], {
                     "T_1Up_00",
                     "T_1Up_01",
                     "T_1Up_02",
                     "T_1Up_03",
-                    "T_info_04",
+                    "T_1Up_04",
+                    "T_1Up_05",
+                    "T_1Up_06",
+                    "T_1Up_07",
                   }
     );
     mpTInfo->setMessage(dMessage_c::getMesRes(), 301, 7, 0);
+    mLayout.PPaneRegister(&mpPBg, {"P_BG_00", "P_titleBase_00",});
     mLayout.PPaneRegister(
       &mpPPlayer[0], {
                        "P_1P_00",
                        "P_2P_00",
                        "P_3P_00",
                        "P_4P_00",
-                       "P_BG_00",
-                       "P_titleBase_00",
+                       "P_5P_00",
+                       "P_6P_00",
+                       "P_7P_00",
+                       "P_8P_00",
                      }
     );
     mLayout.WPaneRegister(&mpWGameCannon, {"W_gameCannon_00"});
@@ -207,93 +248,35 @@ fBase_c::PACK_RESULT_e dMiniGameCannon_c::doDelete()
 }
 
 [[address(0x8078C250)]]
-nw4r::lyt::Pane* dMiniGameCannon_c::getPositionPane(int player)
+int dMiniGameCannon_c::getPosPaneIdx(int player)
 {
-    using PaneList = u8[8][8];
-
-#define OFFSET(_member)                                                                            \
-    u8(((offsetof(dMiniGameCannon_c, _member) - offsetof(dMiniGameCannon_c, mpN4pPos[0])) >> 2) + 1)
-
-    u8 posPane = PaneList{
-      {
-        OFFSET(mpN1pPos),
-      },
-      {
-        OFFSET(mpN2pPos[0]),
-        OFFSET(mpN2pPos[1]),
-      },
-      {
-        OFFSET(mpN3pPos[0]),
-        OFFSET(mpN3pPos[1]),
-        OFFSET(mpN3pPos[2]),
-      },
-      {
-        OFFSET(mpN4pPos[0]),
-        OFFSET(mpN4pPos[1]),
-        OFFSET(mpN4pPos[2]),
-        OFFSET(mpN4pPos[3]),
-      },
-      {
-        OFFSET(mpN4pPos[0]),
-        OFFSET(mpN4pPos[1]),
-        OFFSET(mpN4pPos[2]),
-        OFFSET(mpN4pPos[3]),
-        OFFSET(mpN3pPos[1]),
-      },
-      {
-        OFFSET(mpN4pPos[0]),
-        OFFSET(mpN4pPos[1]),
-        OFFSET(mpN4pPos[2]),
-        OFFSET(mpN4pPos[3]),
-        OFFSET(mpN3pPos[0]),
-        OFFSET(mpN3pPos[2]),
-      },
-      {
-        OFFSET(mpN4pPos[0]),
-        OFFSET(mpN4pPos[1]),
-        OFFSET(mpN4pPos[2]),
-        OFFSET(mpN4pPos[3]),
-        OFFSET(mpN3pPos[0]),
-        OFFSET(mpN3pPos[1]),
-        OFFSET(mpN3pPos[2]),
-      },
-      {
-        OFFSET(mpN4pPos[0]),
-        OFFSET(mpN4pPos[1]),
-        OFFSET(mpN4pPos[2]),
-        OFFSET(mpN4pPos[3]),
-        OFFSET(mpN3pPos[0]),
-        OFFSET(mpN3pPos[1]),
-        OFFSET(mpN3pPos[2]),
-        OFFSET(mpN2pPos[0]),
-      },
-    }[mNumPlayers - 1][player];
-
-#undef OFFSET
-
-    if (posPane == 0) {
-        return nullptr;
-    }
-
-    return mpN4pPos[posPane - 1];
+    int paneIdxArray[PLAYER_COUNT][PLAYER_COUNT] = {
+        {23, 24, 24, 24, 24, 24, 24, 24},
+        {21, 22, 24, 24, 24, 24, 24, 24},
+        {18, 19, 20, 24, 24, 24, 24, 24},
+        {14, 15, 16, 17, 24, 24, 24, 24},
+        {10, 11, 12, 13, 9,  24, 24, 24},
+        {10, 11, 12, 13, 7,  8,  24, 24},
+        {10, 11, 12, 13, 4,  5,  6,  24},
+        {10, 11, 12, 13, 0,  1,  2,  3},
+    };
+    return paneIdxArray[mNumPlayers-1][player];
 }
 
 [[address(0x8078C280)]]
 void dMiniGameCannon_c::setPlayerPanePositions()
 {
     for (std::size_t i = 0, j = 0; i < PLAYER_COUNT; i++) {
-        if (!mPlayerEntry[i]) {
-            continue;
-        }
-
-        nw4r::lyt::Pane* posPane = getPositionPane(j);
-        if (posPane == nullptr) {
-            continue;
-        }
-
         int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-        if (playerType < 4) {
+        if (playerType >= 8) {
+            continue;
+        }
+
+        int paneIdx = getPosPaneIdx(j);
+        if (mPlayerEntry[i] && paneIdx != 24) {
             j++;
+
+            nw4r::lyt::Pane* posPane = mpN8pPos[paneIdx];
             const auto& gmtx = posPane->GetGlobalMtx();
             mpNPlayer[playerType]->SetTranslate(nw4r::math::VEC3(gmtx[0][3], gmtx[1][3], 0.0));
             mpNPlayer[playerType]->SetScale(nw4r::math::VEC2(gmtx[0][0], gmtx[1][1]));
@@ -314,7 +297,7 @@ void dMiniGameCannon_c::setAllText()
         }
 
         int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-        if (playerType >= 4) {
+        if (playerType >= 8) {
             continue;
         }
 
@@ -344,17 +327,17 @@ bool dMiniGameCannon_c::isWin() const
 void dMiniGameCannon_c::initializeState_TitleOpenWait()
 {
     mpRootPane->SetVisible(false);
-    m0x2E1 = false;
-    m0x2E2 = false;
+    mAnimationActive = false;
+    mCloseTitle = false;
 }
 
 [[address(0x8078C550)]]
 void dMiniGameCannon_c::executeState_TitleOpenWait()
 {
-    if (!m0x2E0) {
+    if (!mIsTitleOpen) {
         return;
     }
-    m0x2E0 = false;
+    mIsTitleOpen = false;
     return mStateMgr.changeState(StateID_TitleOpenAnimeEndWait);
 }
 
@@ -378,8 +361,8 @@ void dMiniGameCannon_c::initializeState_TitleOpenAnimeEndWait()
     }
     mpNGameCannon->SetAlpha(255);
     mLayout.AllAnimeEndSetup();
-    mLayout.AnimeStartSetup(11, false);
-    m0x2E1 = true;
+    mLayout.AnimeStartSetup(19, false);
+    mAnimationActive = true;
 }
 
 [[address(0x8078C6B0)]]
@@ -393,19 +376,19 @@ void dMiniGameCannon_c::executeState_TitleOpenAnimeEndWait()
 [[address(0x8078C710)]]
 void dMiniGameCannon_c::finalizeState_TitleOpenAnimeEndWait()
 {
-    m0x2E1 = false;
+    mAnimationActive = false;
 }
 
 [[address(0x8078C720)]]
 void dMiniGameCannon_c::initializeState_TitleDisp()
 {
-    mLayout.LoopAnimeStartSetup(12);
+    mLayout.LoopAnimeStartSetup(20);
 }
 
 [[address(0x8078C730)]]
 void dMiniGameCannon_c::executeState_TitleDisp()
 {
-    if (!m0x2E2) {
+    if (!mCloseTitle) {
         return;
     }
     return mStateMgr.changeState(StateID_TitleExitAnimeEndWait);
@@ -414,14 +397,14 @@ void dMiniGameCannon_c::executeState_TitleDisp()
 [[address(0x8078C760)]]
 void dMiniGameCannon_c::finalizeState_TitleDisp()
 {
-    mLayout.AnimeEndSetup(12);
+    mLayout.AnimeEndSetup(20);
 }
 
 [[address(0x8078C770)]]
 void dMiniGameCannon_c::initializeState_TitleExitAnimeEndWait()
 {
-    mLayout.AnimeStartSetup(13, false);
-    m0x2E1 = true;
+    mLayout.AnimeStartSetup(21, false);
+    mAnimationActive = true;
 }
 
 [[address(0x8078C7B0)]]
@@ -442,9 +425,9 @@ void dMiniGameCannon_c::finalizeState_TitleExitAnimeEndWait()
     mpNResult->SetVisible(true);
     mpWGameCannon->SetVisible(true);
     mpPTitleBase->SetVisible(false);
-    m0x2E1 = false;
-    m0x2E3 = false;
-    m0x2E4 = false;
+    mAnimationActive = false;
+    mCloseOperate = false;
+    mCloseResult = false;
 }
 
 [[address(0x8078C8A0)]]
@@ -455,11 +438,11 @@ void dMiniGameCannon_c::initializeState_StartWait()
 [[address(0x8078C8B0)]]
 void dMiniGameCannon_c::executeState_StartWait()
 {
-    if (!m0x2DA) {
+    if (!mIsWindowOpen) {
         return;
     }
 
-    m0x2DA = 0;
+    mIsWindowOpen = 0;
     return mStateMgr.changeState(StateID_OpenAnimeEndWait);
 }
 
@@ -469,10 +452,10 @@ void dMiniGameCannon_c::finalizeState_StartWait()
     mNumPlayers = 0;
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
         if (dGameCom::PlayerEnterCheck(i)) {
-            mPlayerEntry.setBit(i);
+            mPlayerEntry[i] = true;
             mNumPlayers++;
         } else {
-            mPlayerEntry.clearBit(i);
+            mPlayerEntry[i] = false;
         }
     }
 }
@@ -483,33 +466,38 @@ void dMiniGameCannon_c::initializeState_OpenAnimeEndWait()
     mLayout.AllAnimeEndSetup();
 
     mpRootPane->SetVisible(true);
-    if (m0x2C0 == 0) {
+    if (mCurrentState == 0) {
         mpNInfo->SetVisible(true);
         mpNResult->SetVisible(false);
         mpNResult2->SetVisible(false);
-        for (std::size_t i = 0; i < std::size(mpNPlayer); i++) {
+        for (int i = 0; i < PLAYER_COUNT; i++) {
             mpNPlayer[i]->SetVisible(false);
         }
     } else {
         mpNInfo->SetVisible(false);
         if (isWin()) {
-            for (std::size_t i = 0; i < std::size(mpNPlayer); i++) {
-                mpNPlayer[i]->SetVisible(true);
-                mLayout.ReverseAnimeStartSetup(i + 3, false);
+            for (int i = 0; i < PLAYER_COUNT; i++) {
+                int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
+                if (playerType >= 8) {
+                    continue;
+                }
+
+                mpNPlayer[playerType]->SetVisible(true);
+                mLayout.ReverseAnimeStartSetup(playerType + 3, false);
             }
             mpNResult->SetVisible(true);
             mpNResult2->SetVisible(false);
         } else {
             mpNResult->SetVisible(false);
             mpNResult2->SetVisible(true);
-            for (std::size_t i = 0; i < std::size(mpNPlayer); i++) {
+            for (int i = 0; i < PLAYER_COUNT; i++) {
                 mpNPlayer[i]->SetVisible(false);
             }
         }
     }
 
     mLayout.AnimeStartSetup(0, false);
-    m0x2E1 = true;
+    mAnimationActive = true;
 }
 
 [[address(0x8078CB80)]]
@@ -520,7 +508,7 @@ void dMiniGameCannon_c::executeState_OpenAnimeEndWait()
     }
 
     const auto* id = &StateID_NowDisp;
-    if (m0x2C0 != 0) {
+    if (mCurrentState != 0) {
         if (isWin()) {
             id = &StateID_ResultDispAnimeEndWait;
         } else {
@@ -534,7 +522,7 @@ void dMiniGameCannon_c::executeState_OpenAnimeEndWait()
 [[address(0x8078CC40)]]
 void dMiniGameCannon_c::finalizeState_OpenAnimeEndWait()
 {
-    m0x2E1 = false;
+    mAnimationActive = false;
 }
 
 [[address(0x8078CC50)]]
@@ -546,7 +534,7 @@ void dMiniGameCannon_c::initializeState_NowDisp()
 [[address(0x8078CC60)]]
 void dMiniGameCannon_c::executeState_NowDisp()
 {
-    if (!m0x2E3) {
+    if (!mCloseOperate) {
         return;
     }
 
@@ -565,14 +553,15 @@ void dMiniGameCannon_c::initializeState_ResultDispAnimeEndWait()
     setPlayerPanePositions();
     setAllText();
 
-    for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
+    for (int i = 0; i < PLAYER_COUNT; i++) {
         int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-        if (playerType >= 4) {
+        if (playerType >= 8) {
             continue;
         }
-        if (!mPlayerEntry[i]) {
+
+        if (!mPlayerEntry[playerType]) {
             mpNPlayer[playerType]->SetVisible(false);
-            return;
+            continue;
         }
 
         dGameCom::Player1upColor(mpT1up[playerType], playerType);
@@ -580,7 +569,7 @@ void dMiniGameCannon_c::initializeState_ResultDispAnimeEndWait()
         mpNPlayer[playerType]->SetVisible(true);
     }
 
-    m0x2E1 = true;
+    mAnimationActive = true;
 }
 
 [[address(0x8078CE10)]]
@@ -593,8 +582,8 @@ void dMiniGameCannon_c::initializeState_ResultNowDisp()
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i]) {
             int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
-            if (playerType < 4) {
-                mLayout.LoopAnimeStartSetup(playerType + 7);
+            if (playerType < 8) {
+                mLayout.LoopAnimeStartSetup(playerType + 11);
             }
         }
     }
@@ -603,7 +592,7 @@ void dMiniGameCannon_c::initializeState_ResultNowDisp()
 [[address(0x8078CE90)]]
 void dMiniGameCannon_c::executeState_ResultNowDisp()
 {
-    if (!m0x2E4) {
+    if (!mCloseResult) {
         return;
     }
     return mStateMgr.changeState(StateID_ExitAnimeEndWait);
@@ -620,8 +609,8 @@ void dMiniGameCannon_c::finalizeState_ResultNowDisp()
 [[address(0x8078CF00)]]
 void dMiniGameCannon_c::initializeState_ExitAnimeEndWait()
 {
-    mLayout.AnimeStartSetup(14, false);
-    m0x2E1 = true;
+    mLayout.AnimeStartSetup(22, false);
+    mAnimationActive = true;
 }
 
 [[address(0x8078CF40)]]
@@ -637,5 +626,5 @@ void dMiniGameCannon_c::executeState_ExitAnimeEndWait()
 [[address(0x8078CFB0)]]
 void dMiniGameCannon_c::finalizeState_ExitAnimeEndWait()
 {
-    m0x2E1 = false;
+    mAnimationActive = false;
 }

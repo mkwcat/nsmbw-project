@@ -456,7 +456,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800F2C00 - 0x800F3570
   # wiimj2d/d_system/d_wm_connect.cpp
 # NSMBW          .text:  0x800F3570 - 0x800F60E0
-  # wiimj2d/d_system/d_wm_csvdata.cpp
+    wiimj2d/d_system/d_wm_csvdata.cpp
 # NSMBW          .text:  0x800F60E0 - 0x800F7050
     wiimj2d/d_system/d_wm_demo_actor.cpp
 # NSMBW          .text:  0x800F7050 - 0x800F7510
@@ -539,7 +539,7 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x8078BC60 - 0x8078DA20
     wiimj2d/d_bases/d_MiniGameCannon.cpp
 # NSMBW   d_bases.text:  0x8078DA20 - 0x80790450
-  # wiimj2d/d_bases/d_MiniGameWire.cpp
+    wiimj2d/d_bases/d_MiniGameWire.cpp
 # NSMBW   d_bases.text:  0x80790450 - 0x807916F0
   # wiimj2d/d_bases/d_ModeSelect.cpp
 # NSMBW   d_bases.text:  0x807916F0 - 0x80792B00

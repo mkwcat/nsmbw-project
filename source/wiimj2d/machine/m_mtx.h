@@ -1,6 +1,7 @@
 #pragma once
 
 #include "machine/m_angle.h"
+#include "nw4r/math/vec.h"
 
 /**
  * A 3x4 matrix.
@@ -73,7 +74,8 @@ public:
     /**
      * Extracts the translation vector from the matrix.
      */
-    // void multVecZero(nw4r::math::VEC3& out) const;
+    [[address(0x8016F270)]]
+    void multVecZero(nw4r::math::VEC3& out) const;
 
     /**
      * Zeroes out the matrix.

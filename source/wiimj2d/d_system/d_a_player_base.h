@@ -4,6 +4,7 @@
 #include "d_system/d_a_player_key.h"
 #include "d_system/d_actor.h"
 #include "d_system/d_mj2d_game.h"
+#include "d_system/d_player_model_manager.h"
 #include "machine/m_mtx.h"
 #include "sound/SndID.h"
 #include "sound/SndObjectPlayer.h"
@@ -772,6 +773,9 @@ public:
     {
         return isStatus(static_cast<int>(flag));
     }
+
+    /* 0x80056E30 */
+    dPyMdlBase_c *getModel();
 
     /* 0x80057E70 */
     void playSound(SndID::Type, long);

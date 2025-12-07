@@ -3,6 +3,7 @@
 
 #include "d_a_player_key.h"
 #include "d_game_key.h"
+#include "d_system/d_game_key_core.h"
 [[address(0x8005E040)]]
 void dAcPyKey_c::update() ASM_METHOD(
   // clang-format off
@@ -183,6 +184,7 @@ u16 dAcPyKey_c::triggerOne() const
 {
     dGameKeyCore_c* core = dGameKey_c::m_instance->mpCores[mRemoconID];
     switch (core->mType) {
+    case dGameKeyCore_c::Type_e::DOLPHIN:
     case dGameKeyCore_c::Type_e::FREESTYLE:
         // Nunchuk mode
         return mTriggeredButtons & dGameKeyCore_c::BTN_B;
@@ -198,6 +200,7 @@ u16 dAcPyKey_c::buttonOne() const
 {
     dGameKeyCore_c* core = dGameKey_c::m_instance->mpCores[mRemoconID];
     switch (core->mType) {
+    case dGameKeyCore_c::Type_e::DOLPHIN:
     case dGameKeyCore_c::Type_e::FREESTYLE:
         // Nunchuk mode
         return mDownButtons & dGameKeyCore_c::BTN_B;
