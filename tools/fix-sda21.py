@@ -15,6 +15,30 @@ for root, dirs, files in os.walk("../source"):
             with open(os.path.join(root, file), 'r') as f:
                 lines = f.readlines()
             for i, line in enumerate(lines):
+                m = lwz_r13.match(line)
+                if not m:
+                    continue
+
+                print(m.groups())
+
+                reg = m.group(3)
+                if (reg == "r13"):
+                    reg_addr = r13_addr
+                elif (reg == "r2"):
+                    reg_addr = r2_addr
+                else:
+                    exit("Invalid register")
+
+                offset = int(m.group(2))
+
+                address = 'UNDEF_' + hex(reg_addr + offset)[2:]
+
+                new_line = m.group(1) + address + '@sda21' + m.group(4) + '\n'
+                print(new_line)
+                lines[i] = new_line
+                modified = True
+
+            for i, line in enumerate(lines):
                 m = addi_r13.match(line)
                 if not m:
                     continue
@@ -31,7 +55,7 @@ for root, dirs, files in os.walk("../source"):
                 elif (reg == "r2"):
                     reg_addr = r2_addr
                 else:
-                    throw("Invalid register")
+                    exit("Invalid register")
 
                 address = 'UNDEF_' + hex(reg_addr + offset)[2:]
 
