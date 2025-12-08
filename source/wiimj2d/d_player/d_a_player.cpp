@@ -217,6 +217,9 @@ void dAcPy_c::setFallDownDemoNoMsg()
     changeDemoState(StateID_DemoFallDown, 0);
 }
 
+[[address(0x8013FBE0)]]
+void dAcPy_c::endDemoDokanCannon(mVec3_c &);
+
 /**
  * VT+0x28C
  */
@@ -910,3 +913,6 @@ bool dAcPy_c::setForcedDamage(dActor_c* source, DamageType_e type)
 
     return true;
 }
+
+[[address(0x80146F60)]]
+void dAcPy_c::setCannonJump(float, float, int);

@@ -39,6 +39,9 @@ public:
     /* 0x8013DB30 */
     void playOtherDownDemo();
 
+    /* 0x8013FBE0 */
+    void endDemoDokanCannon(mVec3_c &);
+
     /* 0x80141020 */
     void initChangeInit();
 
@@ -50,6 +53,9 @@ public:
 
     /* 0x80144C60 */
     void setSceneChangeInfo();
+
+    /* 0x80146F60 */
+    void setCannonJump(float, float, int);
 
     void setFallDownDemoNoMsg();
 

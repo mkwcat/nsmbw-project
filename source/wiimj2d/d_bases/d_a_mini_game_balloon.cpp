@@ -2,9 +2,12 @@
 // NSMBW: 0x808638C0 - 0x80864A80
 
 #include "d_a_mini_game_balloon.h"
+#include "d_bases/d_a_mini_game_gun_battery_mgr.h"
+#include "machine/m_ef.h"
+#include "machine/m_vec.h"
 
 [[address(0x80864170)]]
-void daMiniGameBalloon_c::hitCallback_Cannon(dCc_c* self, dCc_c* other) ASM_METHOD(
+bool daMiniGameBalloon_c::hitCallback_Cannon(dCc_c* self, dCc_c* other) ASM_METHOD(
   // clang-format off
 /* 80864170 9421FFA0 */  stwu     r1, -96(r1);
 /* 80864174 7C0802A6 */  mflr     r0;
@@ -196,35 +199,14 @@ UNDEF_808643dc:;
 /* 80864430 387D0724 */  addi     r3, r29, 1828;
 /* 80864434 818C0094 */  lwz      r12, 148(r12);
 /* 80864438 7D8903A6 */  mtctr    r12;
-/* 8086443C 4E800421 */  bctrl;
-/* 80864440 801E14D4 */  lwz      r0, 5332(r30);
-/* 80864444 2C000000 */  cmpwi    r0, 0;
-/* 80864448 41820020 */  beq-     UNDEF_80864468;
-/* 8086444C 2C000001 */  cmpwi    r0, 1;
-/* 80864450 41820020 */  beq-     UNDEF_80864470;
-/* 80864454 2C000002 */  cmpwi    r0, 2;
-/* 80864458 41820020 */  beq-     UNDEF_80864478;
-/* 8086445C 2C000003 */  cmpwi    r0, 3;
-/* 80864460 41820020 */  beq-     UNDEF_80864480;
-/* 80864464 48000020 */  b        UNDEF_80864484;
-UNDEF_80864468:;
-/* 80864468 3BDF0064 */  addi     r30, r31, 100;
-/* 8086446C 48000018 */  b        UNDEF_80864484;
-UNDEF_80864470:;
-/* 80864470 3BDF0078 */  addi     r30, r31, 120;
-/* 80864474 48000010 */  b        UNDEF_80864484;
-UNDEF_80864478:;
-/* 80864478 3BDF008C */  addi     r30, r31, 140;
-/* 8086447C 48000008 */  b        UNDEF_80864484;
-UNDEF_80864480:;
-/* 80864480 3BDF00A0 */  addi     r30, r31, 160;
-UNDEF_80864484:;
-/* 80864484 7FC3F378 */  mr       r3, r30;
-/* 80864488 38A10030 */  addi     r5, r1, 48;
-/* 8086448C 38800000 */  li       r4, 0;
-/* 80864490 38C00000 */  li       r6, 0;
-/* 80864494 38E00000 */  li       r7, 0;
-/* 80864498 4B908539 */  bl       UNDEF_8016c9d0;
+/* 8086443C 4E800421 */  bctrl    ;
+/* 80864440          */  lwz      r4, 5332(r30);
+
+// REMOVED 80864444 - 8086449C
+                         mr       r3, r29;
+                         addi     r5, r1, 0x30;
+                         bl       EffectBalloonGet__19daMiniGameBalloon_cFiP7mVec3_c;
+
 /* 8086449C 7FA3EB78 */  mr       r3, r29;
 /* 808644A0 4B8FE1B1 */  bl       UNDEF_80162650;
 /* 808644A4 39610060 */  addi     r11, r1, 96;
@@ -236,3 +218,20 @@ UNDEF_80864484:;
 /* 808644BC 4E800020 */  blr;
   // clang-format on
 );
+
+void daMiniGameBalloon_c::EffectBalloonGet(int playerType, mVec3_c *effPos) {
+    const char *PLY_EFFECT_NAME[] = {
+        "Wm_mg_balloonget_r",
+        "Wm_mg_balloonget_g",
+        "Wm_mg_balloonget_b",
+        "Wm_mg_balloonget_y",
+        // TODO: figure out how to handle these
+        "Wm_mg_balloonget_r",
+        "Wm_mg_balloonget_r",
+        "Wm_mg_balloonget_r",
+        "Wm_mg_balloonget_r",
+    };
+
+    const char *effName = PLY_EFFECT_NAME[playerType];
+    mEf::createEffect(effName, 0, effPos, nullptr, nullptr);
+}

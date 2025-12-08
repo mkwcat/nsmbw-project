@@ -618,6 +618,9 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80859440 - 0x8085BCB0
     wiimj2d/d_bases/d_a_line_train.cpp
 
+# NSMBW   d_bases.text:  0x808638C0 - 0x80864A80
+    wiimj2d/d_bases/d_a_mini_game_balloon.cpp
+
 # NSMBW   d_bases.text:  0x808660F0 - 0x808672B0
     wiimj2d/d_bases/d_a_mini_game_gun_battery_mgr.cpp
 

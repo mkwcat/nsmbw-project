@@ -8,5 +8,12 @@ public:
     // ^^^^^^
 
     /* 0x80864170 */
-    void hitCallback_Cannon(dCc_c* self, dCc_c* other);
+    bool hitCallback_Cannon(dCc_c* self, dCc_c* other);
+
+public:
+    // Instance Methods
+    // ^^^^^^
+
+    /* unofficial */
+    void EffectBalloonGet(int playerType, mVec3_c *effPos);
 };
