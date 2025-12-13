@@ -47,6 +47,24 @@ set(DVD_FILES
     Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl
     Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopioIcon_Black_01.tpl
     Layout/miniGameCannon/miniGameCannon.arc/arc/timg/im_kinopioIcon_Orange_01.tpl
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_hitArrow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_inArrow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_inPause.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_inWindow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_loopArrow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_loopBG.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_offArrow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_onArrow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_outArrow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_outPause.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_outWindow.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_toBefore.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/anim/MultiCourseSelect_32_toNext.brlan
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/blyt/MultiCourseSelect_32.brlyt
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/timg/im_kinopioIcon_Black_01.tpl
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/timg/im_kinopioIcon_Orange_01.tpl
+    Layout/MultiCourseSelect/MultiCourseSelect.arc/arc/timg/im_kinopicoIcon_01.tpl
     Layout/preGame/preGame.arc/arc/blyt/preGame_19.brlyt
     Layout/preGame/preGame.arc/arc/timg/im_kinopicoIcon_01.tpl
     Layout/preGame/preGame.arc/arc/timg/im_kinopicoIcon_Purple_01.tpl

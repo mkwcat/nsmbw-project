@@ -79,7 +79,33 @@ void dInfo_c::clsStockItem(int item);
 
 EXTERN_SYMBOL(0x800BB450, "initGame__7dInfo_cFv");
 
-EXTERN_SYMBOL(0x800BB5B0, "initMultiMode__7dInfo_cFv");
+[[address(0x800BB5B0)]]
+void dInfo_c::initMultiMode() {
+    // Reset win counts
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+        if (i < 4)
+            mCoinBattleWin[i] = 0;
+        else
+            mExCoinBattleWin[i-4] = 0;
+    }
+
+    // Reset clear states
+    for (int i = 0; i < 100; i++) {
+        mCoinCourse[i].mClearState = MultiClearState_e::NONE;
+        mFreeCourse[i].mClearState = MultiClearState_e::NONE;
+    }
+
+    // Reset favorited slots
+    for (int i = 0; i < 10; i++) {
+        mCoinCourse[i].mWorld = 10;
+        mCoinCourse[i].mLevel = 42;
+        mCoinCourse[i].mClearState = MultiClearState_e::NONE;
+
+        mFreeCourse[i].mWorld = 10;
+        mFreeCourse[i].mLevel = 42;
+        mFreeCourse[i].mClearState = MultiClearState_e::NONE;
+    }
+}
 
 EXTERN_SYMBOL(0x800BB7D0, "startGame__7dInfo_cFRCQ27dInfo_c15StartGameInfo_s");
 

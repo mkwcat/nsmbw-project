@@ -1,0 +1,2100 @@
+{
+    "version": 10,
+    "sections": [
+        {
+            "magic": "pat1",
+            "id": 12,
+            "groups": [
+                {
+                    "name": "C00_BG",
+                },
+            ],
+            "name": "loopBG",
+            "start frame": 1000,
+            "end frame": 1240,
+            "descending bind": false,
+        },
+        {
+            "magic": "pai1",
+            "frame count": 240,
+            "loop": true,
+            "tpls": [
+                "msk_check_ani00.tpl",
+                "msk_check_ani01.tpl",
+                "msk_check_ani02.tpl",
+                "msk_check_ani03.tpl",
+                "msk_check_ani04.tpl",
+                "msk_check_ani05.tpl",
+                "msk_check_ani06.tpl",
+                "msk_check_ani07.tpl",
+            ],
+            "contents": [
+                {
+                    "name": "P_Bg_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": 0.0,
+                                            "value": -14.1108,
+                                            "slope": 0.555628,
+                                        },
+                                        {
+                                            "frame": 240.0,
+                                            "value": 119.239998,
+                                            "slope": 0.555628,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "translate y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": 0.0,
+                                            "value": 10.0,
+                                            "slope": -0.277792,
+                                        },
+                                        {
+                                            "frame": 240.0,
+                                            "value": -56.669998,
+                                            "slope": -0.277792,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_Bg_01",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": 0.0,
+                                            "value": 0.0,
+                                            "slope": -0.279583,
+                                        },
+                                        {
+                                            "frame": 240.0,
+                                            "value": -67.099998,
+                                            "slope": -0.279583,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_Bg_00_vs",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": 0.0,
+                                            "value": -14.1108,
+                                            "slope": 0.555628,
+                                        },
+                                        {
+                                            "frame": 240.0,
+                                            "value": 119.239998,
+                                            "slope": 0.555628,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "translate y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": 0.0,
+                                            "value": 10.0,
+                                            "slope": -0.277792,
+                                        },
+                                        {
+                                            "frame": 240.0,
+                                            "value": -56.669998,
+                                            "slope": -0.277792,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_MCC_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -180.0,
+                                            "value": 410.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -180.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_title_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -430.0,
+                                            "value": -750.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -444.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_title_01",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -430.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -432.0,
+                                            "value": 255.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_cInfoBase_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -430.0,
+                                            "value": -750.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_cInfoBase_01",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -430.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_coursePos_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -430.0,
+                                            "value": -750.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_coursePos_01",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -430.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowL_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -690.0,
+                                            "value": -240.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowCL_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -692.0,
+                                            "value": -228.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -750.0,
+                                            "value": 255.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowR_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -692.0,
+                                            "value": 240.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowCR_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "translate x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -692.0,
+                                            "value": 228.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale x",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 0,
+                                    "kind": "scale y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -675.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -785.0,
+                                            "value": 255.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_playerInfo_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLPA",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "scale y",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -192.0,
+                                            "value": 0.4,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -192.0,
+                                            "value": 0.0,
+                                            "slope": -31.875,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowLShine_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -690.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowCL_S_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -690.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowRShine_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -690.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowCR_S_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -690.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowCR_01",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -785.0,
+                                            "value": 255.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "N_guideViewR_00",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -190.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_BG_MultiCourse",
+                    "kind": "pane",
+                    "animations": [
+                        {
+                            "magic": "RLVC",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "pane alpha",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -870.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowL_00",
+                    "kind": "material",
+                    "animations": [
+                        {
+                            "magic": "RLTS",
+                            "targets": [
+                                {
+                                    "id": 1,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_arrowR_00",
+                    "kind": "material",
+                    "animations": [
+                        {
+                            "magic": "RLTS",
+                            "targets": [
+                                {
+                                    "id": 1,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 1,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 2,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 3,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 4,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 5,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 6,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 7,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 8,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "translate s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "translate t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "scale s",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "scale t",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 1.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                                {
+                                    "id": 9,
+                                    "kind": "rotate",
+                                    "curve type": "hermite",
+                                    "keys": [
+                                        {
+                                            "frame": -721.0,
+                                            "value": 0.0,
+                                            "slope": 0.0,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    "name": "P_Bg_00_vs",
+                    "kind": "material",
+                    "animations": [
+                        {
+                            "magic": "RLTP",
+                            "targets": [
+                                {
+                                    "id": 0,
+                                    "kind": "image",
+                                    "curve type": "step",
+                                    "keys": [
+                                        {
+                                            "frame": 0.0,
+                                            "value": 0,
+                                        },
+                                        {
+                                            "frame": 5.0,
+                                            "value": 1,
+                                        },
+                                        {
+                                            "frame": 10.0,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "frame": 15.0,
+                                            "value": 3,
+                                        },
+                                        {
+                                            "frame": 20.0,
+                                            "value": 4,
+                                        },
+                                        {
+                                            "frame": 25.0,
+                                            "value": 5,
+                                        },
+                                        {
+                                            "frame": 30.0,
+                                            "value": 6,
+                                        },
+                                        {
+                                            "frame": 35.0,
+                                            "value": 7,
+                                        },
+                                        {
+                                            "frame": 40.0,
+                                            "value": 0,
+                                        },
+                                        {
+                                            "frame": 45.0,
+                                            "value": 1,
+                                        },
+                                        {
+                                            "frame": 50.0,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "frame": 55.0,
+                                            "value": 3,
+                                        },
+                                        {
+                                            "frame": 60.0,
+                                            "value": 4,
+                                        },
+                                        {
+                                            "frame": 65.0,
+                                            "value": 5,
+                                        },
+                                        {
+                                            "frame": 70.0,
+                                            "value": 6,
+                                        },
+                                        {
+                                            "frame": 75.0,
+                                            "value": 7,
+                                        },
+                                        {
+                                            "frame": 80.0,
+                                            "value": 0,
+                                        },
+                                        {
+                                            "frame": 85.0,
+                                            "value": 1,
+                                        },
+                                        {
+                                            "frame": 90.0,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "frame": 95.0,
+                                            "value": 3,
+                                        },
+                                        {
+                                            "frame": 100.0,
+                                            "value": 4,
+                                        },
+                                        {
+                                            "frame": 105.0,
+                                            "value": 5,
+                                        },
+                                        {
+                                            "frame": 110.0,
+                                            "value": 6,
+                                        },
+                                        {
+                                            "frame": 115.0,
+                                            "value": 7,
+                                        },
+                                        {
+                                            "frame": 120.0,
+                                            "value": 0,
+                                        },
+                                        {
+                                            "frame": 125.0,
+                                            "value": 1,
+                                        },
+                                        {
+                                            "frame": 130.0,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "frame": 135.0,
+                                            "value": 3,
+                                        },
+                                        {
+                                            "frame": 140.0,
+                                            "value": 4,
+                                        },
+                                        {
+                                            "frame": 145.0,
+                                            "value": 5,
+                                        },
+                                        {
+                                            "frame": 150.0,
+                                            "value": 6,
+                                        },
+                                        {
+                                            "frame": 155.0,
+                                            "value": 7,
+                                        },
+                                        {
+                                            "frame": 160.0,
+                                            "value": 0,
+                                        },
+                                        {
+                                            "frame": 165.0,
+                                            "value": 1,
+                                        },
+                                        {
+                                            "frame": 170.0,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "frame": 175.0,
+                                            "value": 3,
+                                        },
+                                        {
+                                            "frame": 180.0,
+                                            "value": 4,
+                                        },
+                                        {
+                                            "frame": 185.0,
+                                            "value": 5,
+                                        },
+                                        {
+                                            "frame": 190.0,
+                                            "value": 6,
+                                        },
+                                        {
+                                            "frame": 195.0,
+                                            "value": 7,
+                                        },
+                                        {
+                                            "frame": 200.0,
+                                            "value": 0,
+                                        },
+                                        {
+                                            "frame": 205.0,
+                                            "value": 1,
+                                        },
+                                        {
+                                            "frame": 210.0,
+                                            "value": 2,
+                                        },
+                                        {
+                                            "frame": 215.0,
+                                            "value": 3,
+                                        },
+                                        {
+                                            "frame": 220.0,
+                                            "value": 4,
+                                        },
+                                        {
+                                            "frame": 225.0,
+                                            "value": 5,
+                                        },
+                                        {
+                                            "frame": 230.0,
+                                            "value": 6,
+                                        },
+                                        {
+                                            "frame": 235.0,
+                                            "value": 7,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+}

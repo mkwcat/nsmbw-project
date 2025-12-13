@@ -1,5 +1,6 @@
 #pragma once
 
+#include "System.h"
 #include "d_system/d_cyuukan.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_start_info.h"
@@ -19,6 +20,15 @@ public:
         TITLE = 2,
         TITLE_REPLAY = 3,
         HINT_MOVIE = 4,
+    };
+
+    /* @unofficial */
+    enum class MultiClearState_e {
+        NONE = 0,           ///< Course is uncleared
+        NOW_CLEAR = 1,      ///< Cleared by some players, activates the button frame
+        CLEAR = 2,          ///< Cleared by some players, button frame is already active
+        NOW_TEAM_CLEAR = 3, ///< Cleared by all players, activates the button frame
+        TEAM_CLEAR = 4,     ///< Cleared by all players, button frame is already active
     };
 
     enum class IbaraMode_e {
@@ -71,6 +81,16 @@ public:
         /* 0x0C */ u8 mRevivalCnt;
     };
 
+    /* @unofficial */
+    struct MultiCourse_s {
+        SIZE_ASSERT(0x8);
+
+        /* 0x00 */ u8 mWorld;
+        /* 0x01 */ u8 mLevel;
+        FILL(0x2, 0x4);
+        /* 0x04 */ MultiClearState_e mClearState;
+    };
+
     static constexpr u32 ORIGINAL_SIZE = 0xB5C;
 
 public:
@@ -109,6 +129,9 @@ public:
 
     /* 0x800BB410 */
     void clsStockItem(int item);
+
+    /* 0x800BB5B0 */
+    void initMultiMode();
 
     /* 0x800BB7D0 */
     void startGame(const StartGameInfo_s& startGameInfo);
@@ -196,7 +219,18 @@ public:
 
     /* 0x3CC */ int mPlayerCount;
 
-    FILL(0x3D0, 0xAF4);
+    FILL(0x3D0, 0x3EC);
+
+    /* 0x3EC */ int mCoinBattleWin[4];
+
+    FILL(0x3FC, 0x400);
+
+    /* 0x400 */ MultiCourse_s mCoinCourse[100];
+    /* 0x720 */ MultiCourse_s mCoinFavorite[10];
+    /* 0x770 */ MultiCourse_s mFreeCourse[100];
+    /* 0xA90 */ MultiCourse_s mFreeFavorite[10];
+
+    FILL(0xAE0, 0xAF4);
 
     /* 0xAF4 */ int mCyuukanState;
 
@@ -223,6 +257,8 @@ public:
 #define OFFSET_dInfo_c_mEx0xB56 (OFFSET_dInfo_c_mEx0xAFE + (PLAYER_COUNT - 4) * 22)
 #define ADJUST_dInfo_c_mEx0xB56 (OFFSET_dInfo_c_mEx0xB56 - 0xB56 - 4)
     /* 0xBC4? */ u8 mEx0xB56[PLAYER_COUNT - 4] = {};
+
+    /* 0xBC8 */  int mExCoinBattleWin[PLAYER_COUNT - 4];
 
 public:
     // Static Variables

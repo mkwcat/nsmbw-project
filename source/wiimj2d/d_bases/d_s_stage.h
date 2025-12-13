@@ -80,7 +80,7 @@ public:
 
     /* 0x80102370 @unofficial */
     static void
-    goToSceneAfterLevel(int profile, int param2, int param3, dFader_c::fader_type_e faderType);
+    goToSceneAfterLevel(int profile, int sceneParam, int exitMode, dFader_c::fader_type_e faderType);
 
 public:
     // Static Inline Methods
