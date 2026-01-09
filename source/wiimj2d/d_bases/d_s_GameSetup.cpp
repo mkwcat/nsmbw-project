@@ -21,9 +21,11 @@
 #include "d_system/d_base_actor.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
+#include "d_system/d_player_model_base.h"
 #include "d_system/d_save_manager.h"
 #include "d_system/d_scene.h"
 #include "framework/f_feature.h"
+#include "sound/SndSceneMgr.h"
 
 [[address(0x80917C80)]]
 bool dScGameSetup_c::Phase_CreateLayoutManagers()
@@ -221,6 +223,30 @@ void dScGameSetup_c::executeState_StartMember()
     numPyChg->mPlayerCount = selPly->mCurrentButton + 1;
 
     mStateMgr.changeState(dScGameSetup_c::StateID_ConnectionCheck);
+}
+
+[[address(0x80918C10)]]
+void dScGameSetup_c::initializeState_ConnectionCheck()
+{
+    if ((dInfo_c::mGameFlag & 0x10) != 0) {
+        for (int i = 0; i < PLAYER_COUNT; i++) {
+            PLAYER_TYPE_e type = daPyMng_c::mPlayerType[i];
+            daPyMng_c::mPlayerMode[type] = PLAYER_MODE_e::NONE;
+
+            dPyMdlBase_c *mdl = mpNumPyChg->mp2DPlayer[i]->mModelMng->mModel;
+            if ((mdl->mVisibilityFlags & 0x100) != 0) {
+                mdl->offStarAnm();
+            }
+            if ((mdl->mVisibilityFlags & 0x200) != 0) {
+                mdl->offStarEffect();
+            }
+
+            if ((int)(daPyMng_c::mCreateItem[type] & PLAYER_CREATE_ITEM_e::STAR_POWER) != 0) {
+                daPyMng_c::mCreateItem[type] &= (PLAYER_CREATE_ITEM_e)0xFFFFFFFE;
+            }
+        }
+    }
+    SndSceneMgr::sInstance->setGameSetupTrack(2);
 }
 
 [[address(0x80918DC0)]]

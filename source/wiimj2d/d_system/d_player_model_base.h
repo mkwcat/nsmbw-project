@@ -188,5 +188,9 @@ public:
     /* 0x160 */ u32 mFlags;
     /* 0x164 */ u32 mFlags2;
 
-    FILL(0x168, 0x20C);
+    FILL(0x168, 0x17C);
+
+    /* 0x17C */ u32 mVisibilityFlags;
+
+    FILL(0x180, 0x20C);
 };
