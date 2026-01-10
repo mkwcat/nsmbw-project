@@ -1,6 +1,7 @@
 #pragma once
 
 #include "d_bases/d_Continue.h"
+#include "d_bases/d_MessageWindow.h"
 #include "d_system/d_CourseSelectGuide.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_base.h"
@@ -9,6 +10,7 @@
 #include "state/s_State.h"
 #include "state/s_StateMethodUsr_FI.h"
 #include "state/s_StateMgr.h"
+
 
 class dCourseSelectMenu_c;
 class dNumberOfPeopleChange_c;
@@ -21,7 +23,6 @@ class da2DPlayer_c;
 class dEasyPairing_c;
 class dContinue_c;
 class dYesNoWindow_c;
-class dMessageWindow_c;
 class dLetterWindow_c;
 
 class dCourseSelectManager_c : public dBase_c
@@ -82,7 +83,12 @@ public:
 
     /* 0x541 */ bool mContinueActive;
 
-    FILL(0x542, 0x560);
+    FILL(0x542, 0x545);
+
+    /* 0x545 */ bool mStartedMsgChange;
+    /* 0x546 */ bool mEndedMsgChange;
+
+    FILL(0x547, 0x560);
 
     /* 0x560 */ PLAYER_MODE_e REMOVED(maPlayerPowerup)[4];
 

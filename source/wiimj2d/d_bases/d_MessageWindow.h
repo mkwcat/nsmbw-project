@@ -8,4 +8,5 @@ public:
     FILL(0x070, 0x254);
 
     /* 0x254 */ bool mReady;
+    /* 0x255 */ bool mVisible;
 };

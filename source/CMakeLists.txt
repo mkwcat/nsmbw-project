@@ -682,6 +682,9 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80910F00 - 0x809125E0
     wiimj2d/d_bases/d_a_yoshi_egg.cpp
 
+# NSMBW   d_bases.text:  0x80914680 - 0x80915690
+    wiimj2d/d_bases/d_cs_seq_mng.cpp
+
 # NSMBW   d_bases.text:  0x80917960 - 0x8091A2F0
     wiimj2d/d_bases/d_s_GameSetup.cpp
 # NSMBW   d_bases.text:  0x8091A2F0 - 0x8091BA50
