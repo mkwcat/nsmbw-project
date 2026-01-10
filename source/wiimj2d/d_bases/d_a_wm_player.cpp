@@ -5,12 +5,17 @@
 
 #include "d_bases/d_a_wm_KinoBalloon.h"
 #include "d_bases/d_a_wm_SubPlayer.h"
+#include "d_bases/d_cs_seq_mng.h"
 #include "d_bases/d_profile.h"
+#include "d_bases/d_world_camera.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_game_key_core.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_wm_lib.h"
+#include "egg/core/eggController.h"
 #include "machine/m_pad.h"
+#include "revolution/wpad.h"
 #include <d_system/d_CourseSelectManager.h>
 #include <revolution/os.h>
 
@@ -176,8 +181,8 @@ void daWmPlayer_c::updateActivePlayers()
 void daWmPlayer_c::setPlayerActive(u32 id, bool param2, bool param3);
 
 [[address(0x80902ED0)]]
-void daWmPlayer_c::UNDEF_80902ED0(u32 param_1, int param_2, PLAYER_CREATE_ITEM_e param_3)
-  ASM_METHOD(
+void daWmPlayer_c::
+  UNDEF_80902ED0(u32 param_1, int param_2, PLAYER_CREATE_ITEM_e param_3) ASM_METHOD(
     // clang-format off
 /* 80902ED0 9421FFE0 */  stwu     r1, -32(r1);
 /* 80902ED4 7C0802A6 */  mflr     r0;
@@ -263,8 +268,108 @@ void daWmPlayer_c::setSubPlayerPower()
     }
 }
 
+[[address(0x80904120)]]
+u32 daWmPlayer_c::UNDEF_80904120()
+{
+    if (!UNDEF_809087A0()) {
+        return 0;
+    }
+
+    if (dCsSeqMng_c::ms_instance->UNDEF_80915630() == 0 &&
+        !dCsSeqMng_c::ms_instance->UNDEF_80915600()) {
+        dGameKeyCore_c::Type_e contType = dWmLib::isYokoCon(0);
+        bool openWorldView;
+        switch (contType) {
+        case dGameKeyCore_c::Type_e::FREESTYLE:
+            openWorldView = mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_FS_C);
+            break;
+        case dGameKeyCore_c::Type_e::CLASSIC:
+            openWorldView =
+              mPad::g_currentCore->getClassicController()->mTrig & EGG::cCLASSIC_BUTTON_Y;
+            break;
+        case dGameKeyCore_c::Type_e::DOLPHIN:
+            openWorldView =
+              mPad::g_currentCore->getGCController()->mTrig & EGG::cDOLPHIN_BUTTON_Y;
+            break;
+        default:
+            openWorldView = mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_A);
+            break;
+        }
+
+        if (openWorldView) {
+            if (dCourseSelectManager_c::m_instance->mEndedMsgChange ||
+                dCourseSelectManager_c::m_instance->mpMessageWindow->mVisible) {
+                dCourseSelectManager_c::m_instance->mStartedMsgChange = true;
+            }
+            daWmKinoBalloon_c::UNDEF_808D8720();
+            // SMC_DEMO_VIEW_WORLD
+            return dCsSeqMng_c::ms_instance->addScriptToQueue(
+              0x1E, this, dWCamera_c::m_instance, 0x80
+            );
+        }
+        // Omitting some unused dWmLib::isYokoCon calls here...
+        if (mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_PLUS)) {
+            // SMC_DEMO_PAUSE_MENU
+            return dCsSeqMng_c::ms_instance->addScriptToQueue(0x2F, nullptr, nullptr, 0x80);
+        }
+
+        u32 checkButton;
+        switch (contType) {
+        case dGameKeyCore_c::Type_e::CORE:
+            checkButton = EGG::cCORE_BUTTON_1;
+            break;
+        default:
+            checkButton = (EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_B);
+            break;
+        }
+
+        if (mPad::g_currentCore->downTrigger(checkButton)) {
+            // SMC_DEMO_STOCK_MENU
+            return dCsSeqMng_c::ms_instance->addScriptToQueue(0x31, nullptr, nullptr, 0x80);
+        }
+
+        if (mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_MINUS)) {
+            // SMC_DEMO_WORLDSELECT_MENU
+            return dCsSeqMng_c::ms_instance->addScriptToQueue(0x32, nullptr, nullptr, 0x80);
+        }
+    }
+
+    u32 uVar6 = m0x288;
+    m0x28C = 4;
+    m0x288 = 4;
+    u32 uVar5 = UNDEF_80908DA0();
+    u32 uVar3 = UNDEF_80904370(uVar5);
+    if ((m0x259 & 0x10) == 0) {
+        if (m0x288 != 4) {
+            m0x300 = 0;
+            uVar3 = UNDEF_80904810();
+        }
+    } else {
+        uVar3 = UNDEF_80904440();
+    }
+    if (m0x288 == 4) {
+        m0x288 = uVar6;
+    }
+    return uVar3;
+}
+
+[[address(0x80904370)]]
+u32 daWmPlayer_c::UNDEF_80904370(u32);
+
+[[address(0x80904440)]]
+u32 daWmPlayer_c::UNDEF_80904440();
+
+[[address(0x80904810)]]
+u32 daWmPlayer_c::UNDEF_80904810();
+
 [[address(0x80907A60)]]
 daWmPlayer_c::PATH_DIR_e daWmPlayer_c::getMovementDirection();
+
+[[address(0x809087A0)]]
+bool daWmPlayer_c::UNDEF_809087A0();
+
+[[address(0x80908DA0)]]
+u32 daWmPlayer_c::UNDEF_80908DA0();
 
 /* VT+0x60 0x80909940 */
 [[address(0x80909940)]]

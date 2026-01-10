@@ -273,7 +273,7 @@ u32 dGameKeyCore_c::setConfigKey(u32 input)
         }
 
         if (input & EGG::cCLASSIC_BUTTON_MINUS) {
-            processed |= BTN_A;
+            processed |= (BTN_A | MINUS);
         }
 
         if (input & EGG::cCLASSIC_BUTTON_PLUS) {
@@ -309,7 +309,7 @@ u32 dGameKeyCore_c::setConfigKey(u32 input)
         }
 
         if (input & EGG::cDOLPHIN_BUTTON_Z) {
-            processed |= SHAKE;
+            processed |= (SHAKE | MINUS);
         }
 
         if (input & EGG::cDOLPHIN_BUTTON_X) {

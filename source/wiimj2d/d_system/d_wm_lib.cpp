@@ -30,4 +30,14 @@ void ClearKinopioChukan();
 [[address(0x800FD1C0)]]
 void RestoreKinopioHelpGameInfo();
 
+[[address(0x800FD4A0)]]
+dGameKeyCore_c::Type_e isYokoCon(int controllerNo)
+{
+    // Originally, this function returned true
+    // Only if the controller type was sideways Wii Remote
+    // Since we need to add Classic + GC support for the only caller of isYokoCon
+    // I'm changing how the function works completely
+    return dGameKey_c::m_instance->mpCores[controllerNo]->mType;
+}
+
 } // namespace dWmLib

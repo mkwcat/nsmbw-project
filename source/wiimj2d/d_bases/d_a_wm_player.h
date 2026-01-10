@@ -128,6 +128,18 @@ public:
     /* 0x80903ED0 */
     void UNDEF_80903ED0();
 
+    /* 0x80904120 */
+    u32 UNDEF_80904120();
+
+    /* 0x80904370 */
+    u32 UNDEF_80904370(u32);
+
+    /* 0x80904440 */
+    u32 UNDEF_80904440();
+
+    /* 0x80904810 */
+    u32 UNDEF_80904810();
+
     /* 0x80906FE0 */
     void UNDEF_80906FE0(s32 param_1, s32 param_2);
 
@@ -136,6 +148,12 @@ public:
 
     /* 0x80907A60 */
     PATH_DIR_e getMovementDirection();
+
+    /* 0x809087A0 */
+    bool UNDEF_809087A0();
+
+    /* 0x80908DA0 */
+    u32 UNDEF_80908DA0();
 
     /* 0x809093D0 */
     void initActiveCharaFlags();
@@ -177,8 +195,9 @@ public:
     /* 0x23C */ s32 m0x23C;
     /* 0x240 */ s32 m0x240;
 
-    FILL(0x244, 0x25A);
+    FILL(0x244, 0x259);
 
+    /* 0x259 */ u8 m0x259;
     /* 0x25A */ u8 m0x25A;
     /* 0x25B */ u8 m0x25B;
 
@@ -186,7 +205,12 @@ public:
 
     /* 0x27C */ s32 m0x27C;
 
-    FILL(0x280, 0x298);
+    FILL(0x280, 0x288);
+
+    /* 0x288 */ u32 m0x288;
+    /* 0x28C */ u32 m0x28C;
+
+    FILL(0x290, 0x298);
 
     /* 0x298 */ float m0x298;
     /* 0x29C */ daWmPlayer_c_0x29C* mp0x29C;
@@ -199,7 +223,11 @@ public:
 
     /* 0x2FC */ u8 m0x2FC;
 
-    FILL(0x2FD, 0x30C);
+    FILL(0x2FD, 0x300);
+
+    /* 0x300 */ u32 m0x300;
+
+    FILL(0x304, 0x30C);
 
     /* 0x8042A480 */ static daWmPlayer_c* ms_instance;
 
