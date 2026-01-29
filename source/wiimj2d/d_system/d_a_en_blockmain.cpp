@@ -30,7 +30,7 @@ bool daEnBlockMain_c::isYossyColor(u16 yoshiColor)
 s16 daEnBlockMain_c::yossy_color_search()
 {
     s16 yoshiColor;
-    switch (fFeature::YOSHI_COLOR_MODE) {
+    switch (fFeat::yoshi_color_mode) {
     default:
         yoshiColor = dActorCreateMng_c::m_instance->m0xBC8;
 
@@ -43,7 +43,7 @@ s16 daEnBlockMain_c::yossy_color_search()
             yoshiColor++;
         }
         return -1;
-    case fFeature::YOSHI_COLOR_MODE_e::ALL_GREEN:
+    case fFeat::YOSHI_COLOR_MODE_e::ALL_GREEN:
         return 0;
     }
 }

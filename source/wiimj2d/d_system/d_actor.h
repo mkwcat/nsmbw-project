@@ -3,6 +3,7 @@
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_base_actor.h"
 #include "machine/m_vec.h"
+#include "nw4r/ut/Rect.h"
 
 class dActor_c : public dBaseActor_c
 {
@@ -35,7 +36,7 @@ public:
     };
 
 public:
-    // Virtual Functions
+    // Virtual Methods
     // ^^^^^^
 
     /**
@@ -85,6 +86,12 @@ public:
      * post method for the draw operation.
      */
     virtual void postDraw(fBase_c::MAIN_STATE_e status) override;
+
+    /**
+     * VT+0x4C 0x800645F0
+     * Gets a string describing the kind of this base.
+     */
+    virtual const char* getKindString() const override;
 
     /* VT+0x60 0x80065080 */
     virtual bool ActorDrawCullCheck();
@@ -210,6 +217,30 @@ public:
         return nullptr;
     }
 
+    /* 0x800646E0 */
+    void setKind(u8);
+
+    /* 0x80064740 */
+    dAcPy_c* searchNearPlayer(mVec2_c&);
+
+    /* 0x80064AF0 */
+    void changePosAngle(mVec3_c*, mAng3_c*, int);
+
+    /* 0x80064B00 */
+    void setChangePosAngleFunc(int);
+
+    /* 0x80064B10 */
+    void setLoopFunc(int);
+
+    /* 0x80064B50 */
+    bool checkAreaNo();
+
+    /* 0x80064D10 */
+    void deleteActor(u8);
+
+    /* 0x80064DA0 @unofficial */
+    bool checkOutOfArea(const mVec3_c& pos, const nw4r::ut::Rect& rect, u8 area);
+
     /* 0x800651C0 */
     void carryFukidashiCheck(int param1, mVec2_c param2);
 
@@ -218,6 +249,9 @@ public:
 
     /* 0x80065520 */
     dAcPy_c* searchCarryFukidashiPlayer(int param1);
+
+    /* 0x80064F50 */
+    void ActorScrOutCheck(u16);
 
 public:
     // Instance Variables
@@ -251,6 +285,9 @@ public:
     // Static Methods
     // ^^^^^^
 
+    /* 0x80064600 */
+    static void setTmpCtData(u8);
+
     /* 0x80064610 */
     static dActor_c* construct(
       u16 profile, u32 settings, const mVec3_c* position, const mAng3_c* rotation, u8 layer
@@ -261,6 +298,45 @@ public:
       u16 profile, dBase_c* owner, u32 settings, const mVec3_c* position, const mAng3_c* rotation,
       u8 layer
     );
+
+    /* 0x80064720 */
+    static void setSearchNearPlayerFunc(int);
+
+    /* 0x80064790 */
+    static dAcPy_c* searchNearPlayer_Main(mVec2_c&, const mVec2_c&);
+
+    /* 0x800647A0 */
+    static dAcPy_c* searchNearPlayerNormal(mVec2_c&, const mVec2_c&);
+
+    /* 0x80064880 */
+    static dAcPy_c* searchNearPlayerLoop(mVec2_c&, const mVec2_c&);
+
+    /* 0x80064A10 */
+    static void setGetTrgToSrcDirFunc(int);
+
+    /* 0x80064A30 */
+    static bool getTrgToSrcDir_Main(f32, f32);
+
+    /* 0x80064A40 */
+    static bool getTrgToSrcDirNormal(f32, f32);
+
+    /* 0x80064A50 */
+    static bool getTrgToSrcDirLoop(f32, f32);
+
+    /* 0x80064BC0 */
+    static void setSoftLight_Player(m3d::bmdl_c& model);
+
+    /* 0x80064BD0 */
+    static void setSoftLight_Enemy(m3d::bmdl_c& model);
+
+    /* 0x80064BE0 */
+    static void setSoftLight_Map(m3d::bmdl_c& model);
+
+    /* 0x80064BF0 */
+    static void setSoftLight_MapObj(m3d::bmdl_c& model);
+
+    /* 0x80064C00 */
+    static void setSoftLight_Boss(m3d::bmdl_c& model);
 
     /* 0x80064C10 */
     static void setSoftLight_Item(m3d::bmdl_c& model);

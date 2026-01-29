@@ -190,7 +190,7 @@ UNDEF_801581b0:;
 fBase_c::PACK_RESULT_e dGameDisplay_c::draw()
 {
     if (m0x452 && mLayoutLoaded) {
-        if (fFeature::DEATH_MESSAGES != fFeature::DEATH_MESSAGES_MODE_e::DISABLED) {
+        if (fFeat::death_messages != fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
             mDeathMsgMgr.entry();
         }
         mLayout.entry();
@@ -783,16 +783,16 @@ void dGameDisplay_c::updatePlayNum(int* playNum)
             mEffectTimer[i] = Effect1Up(PLAYER_PANE_INDEX[i]) ? 15 : 0;
         }
 
-        if (!fFeature::INFINITE_LIVES && newPlayNum == 0 && !mPlayerGray[i]) {
+        if (!fFeat::infinite_lives && newPlayNum == 0 && !mPlayerGray[i]) {
             GrayColorSet(int(i));
             mPlayerGray[i] = 1;
-        } else if ((newPlayNum != 0 || fFeature::INFINITE_LIVES) && mPlayerGray[i]) {
+        } else if ((newPlayNum != 0 || fFeat::infinite_lives) && mPlayerGray[i]) {
             ReturnGrayColorSet(int(i));
             mPlayerGray[i] = 0;
         }
 
         int maxChars = 2;
-        if (fFeature::INFINITE_LIVES) {
+        if (fFeat::infinite_lives) {
             if (newPlayNum > 99) {
                 maxChars = 4;
             }

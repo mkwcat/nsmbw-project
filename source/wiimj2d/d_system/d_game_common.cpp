@@ -399,7 +399,7 @@ void MiniGameMessageClose();
 [[nsmbw(0x800B4E30)]]
 bool isNowCourseClear()
 {
-    if (fFeature::ALWAYS_CAN_EXIT_COURSE) {
+    if (fFeat::always_can_exit_course) {
         return true;
     }
 

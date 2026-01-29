@@ -192,7 +192,7 @@ u32 dGameKeyCore_c::setConfigKey(u32 input)
     default:
     case Type_e::CORE:
         processed = input;
-        if (fFeature::SHAKE_WITH_BUTTON && (input & EGG::cCORE_BUTTON_B)) {
+        if (fFeat::shake_with_button && (input & EGG::cCORE_BUTTON_B)) {
             processed |= SHAKE;
         }
         break;
@@ -218,7 +218,7 @@ u32 dGameKeyCore_c::setConfigKey(u32 input)
             processed |= LEFT;
         }
 
-        if (fFeature::SHAKE_WITH_BUTTON) {
+        if (fFeat::shake_with_button) {
             // C is replaced with shake
             if (input & EGG::cCORE_BUTTON_FS_C) {
                 processed |= SHAKE;

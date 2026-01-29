@@ -7,8 +7,6 @@ target_sources(project PRIVATE
     f_ba_helper.cpp
 # NSMBW          .text:  0x80161A60 - 0x80162C80
     f_base.cpp
-# nsmbw-project
-    f_feature.cpp
 # NSMBW          .text:  0x80162C80 - 0x80162E30
     f_list.cpp
 # NSMBW          .text:  0x80162E30 - 0x80163140

@@ -126,7 +126,7 @@ void daEnHatenaBalloon_c::createItem()
       SndID::SE_OBJ_CMN_BALLOON_BREAK, dAudio::cvtSndObjctPos(mPos), 0
     );
 
-    if (fFeature::BUBBLE_SWARM_MODE && dBalloonMng_c::mNoCloneTimer == 0) {
+    if (fFeat::bubble_swarm_mode && dBalloonMng_c::mNoCloneTimer == 0) {
         dBalloonMng_c::m_instance->mSwarmTimer = 1;
         dBalloonMng_c::m_instance->createSwarmBalloon();
         dBalloonMng_c::m_instance->createSwarmBalloon();
@@ -142,7 +142,7 @@ void daEnHatenaBalloon_c::remocon_times_check();
 [[nsmbw(0x801134F0)]]
 void daEnHatenaBalloon_c::remocon_shake_check()
 {
-    if (!mHasItem && !fFeature::BUBBLE_SWARM_MODE) {
+    if (!mHasItem && !fFeat::bubble_swarm_mode) {
         return;
     }
 
@@ -151,7 +151,7 @@ void daEnHatenaBalloon_c::remocon_shake_check()
         return;
     }
 
-    if (mHasItem && fFeature::BUBBLE_SWARM_MODE) {
+    if (mHasItem && fFeat::bubble_swarm_mode) {
         m_shake_check_timer = 30;
         m_countdown_anm = 31;
         anm_set(1);

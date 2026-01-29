@@ -75,7 +75,7 @@ void dBalloonMng_c::execute()
         }
     }
 
-    if (fFeature::BUBBLE_SWARM_MODE) {
+    if (fFeat::bubble_swarm_mode) {
         return execute1UpSwarm();
     }
 

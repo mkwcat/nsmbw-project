@@ -17,15 +17,15 @@ void dfukidashiInfo_c::draw()
     if (!mDisplayed) {
         return;
     }
-    switch (fFeature::FUKIDASHI_MODE) {
-    case fFeature::FUKIDASHI_MODE_e::ALWAYS_SHOW:
+    switch (fFeat::fukidashi_mode) {
+    case fFeat::FUKIDASHI_MODE_e::ALWAYS_SHOW:
         return mLayout.entry();
-    case fFeature::FUKIDASHI_MODE_e::HIDE_IF_5_TO_8_PLAYER:
+    case fFeat::FUKIDASHI_MODE_e::HIDE_IF_5_TO_8_PLAYER:
         if (daPyMng_c::getNumInGame() < 5) {
             return mLayout.entry();
         }
         break;
-    case fFeature::FUKIDASHI_MODE_e::ALWAYS_HIDE:
+    case fFeat::FUKIDASHI_MODE_e::ALWAYS_HIDE:
         return;
     }
 }

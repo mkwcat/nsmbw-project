@@ -164,7 +164,7 @@ void dMj2dGame_c::setCollectCoin(WORLD_e world, STAGE_e level, COURSE_COMPLETION
 [[nsmbw(0x800CE280)]]
 int dMj2dGame_c::getTotalWorldCollectCoin(WORLD_e world)
 {
-    if (fFeature::UNLOCKED_ALL_WORLDS) {
+    if (fFeat::unlocked_all_worlds) {
         return STAR_COIN_COUNT * STAGE_COUNT;
     }
 
@@ -266,7 +266,7 @@ void dMj2dGame_c::setStockItem(int item, s8 count)
 dMj2dGame_c::WORLD_COMPLETION_e
 dMj2dGame_c::isWorldDataFlag(WORLD_e world, WORLD_COMPLETION_e flag) const
 {
-    if (fFeature::UNLOCKED_ALL_WORLDS) {
+    if (fFeat::unlocked_all_worlds) {
         return flag;
     }
 
@@ -292,7 +292,7 @@ dMj2dGame_c::COURSE_COMPLETION_e dMj2dGame_c::getCourseDataFlag(WORLD_e world, S
     u8 levelIndex = static_cast<u8>(level);
     dMj2dGame_c::COURSE_COMPLETION_e completion = mCourseCompletion[worldIndex][levelIndex];
 
-    if (fFeature::COMPLETED_ALL_LEVELS) {
+    if (fFeat::completed_all_levels) {
         completion |= COURSE_COMPLETION_e::GOAL_MASK;
     }
 
@@ -302,7 +302,7 @@ dMj2dGame_c::COURSE_COMPLETION_e dMj2dGame_c::getCourseDataFlag(WORLD_e world, S
 [[nsmbw(0x800CE4B0)]]
 bool dMj2dGame_c::isCourseDataFlag(WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag) const
 {
-    if (fFeature::COMPLETED_ALL_LEVELS) {
+    if (fFeat::completed_all_levels) {
         return true;
     }
 

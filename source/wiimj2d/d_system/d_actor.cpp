@@ -18,61 +18,35 @@ dActor_c::dActor_c();
 [[nsmbw(0x800642B0)]]
 dActor_c::~dActor_c();
 
-/**
- * VT+0x0C
- * pre method for the create operation.
- */
 [[nsmbw(0x80064350)]]
 fBase_c::PACK_RESULT_e dActor_c::preCreate();
 
-/**
- * VT+0x10
- * post method for the create operation.
- */
 [[nsmbw(0x80064380)]]
 void dActor_c::postCreate(fBase_c::MAIN_STATE_e status);
 
-/**
- * VT+0x18
- * pre method for the delete operation.
- */
 [[nsmbw(0x80064390)]]
 fBase_c::PACK_RESULT_e dActor_c::preDelete();
 
-/**
- * VT+0x1C
- * post method for the delete operation.
- */
 [[nsmbw(0x800643E0)]]
 void dActor_c::postDelete(fBase_c::MAIN_STATE_e status);
 
-/**
- * VT+0x24
- * pre method for the execute operation.
- */
 [[nsmbw(0x800643F0)]]
 fBase_c::PACK_RESULT_e dActor_c::preExecute();
 
-/**
- * VT+0x28
- * post method for the execute operation.
- */
 [[nsmbw(0x80064490)]]
 void dActor_c::postExecute(fBase_c::MAIN_STATE_e status);
 
-/**
- * VT+0x30
- * pre method for the draw operation.
- */
 [[nsmbw(0x80064540)]]
 fBase_c::PACK_RESULT_e dActor_c::preDraw();
 
-/**
- * VT+0x34
- * post method for the draw operation.
- */
 [[nsmbw(0x800645E0)]]
 void dActor_c::postDraw(fBase_c::MAIN_STATE_e status);
+
+[[nsmbw(0x800645F0)]]
+const char* dActor_c::getKindString() const;
+
+[[nsmbw(0x80064600)]]
+void dActor_c::setTmpCtData(u8);
 
 [[nsmbw(0x80064610)]]
 dActor_c* dActor_c::construct(
@@ -85,11 +59,77 @@ dActor_c* dActor_c::construct(
   u8 layer
 );
 
+[[nsmbw(0x800646E0)]]
+void dActor_c::setKind(u8);
+
+[[nsmbw(0x80064720)]]
+void dActor_c::setSearchNearPlayerFunc(int);
+
+[[nsmbw(0x80064740)]]
+dAcPy_c* dActor_c::searchNearPlayer(mVec2_c&);
+
+[[nsmbw(0x80064790)]]
+dAcPy_c* dActor_c::searchNearPlayer_Main(mVec2_c&, const mVec2_c&);
+
+[[nsmbw(0x800647A0)]]
+dAcPy_c* dActor_c::searchNearPlayerNormal(mVec2_c&, const mVec2_c&);
+
+[[nsmbw(0x80064880)]]
+dAcPy_c* dActor_c::searchNearPlayerLoop(mVec2_c&, const mVec2_c&);
+
+[[nsmbw(0x80064A10)]]
+void dActor_c::setGetTrgToSrcDirFunc(int);
+
+[[nsmbw(0x80064A30)]]
+bool dActor_c::getTrgToSrcDir_Main(f32, f32);
+
+[[nsmbw(0x80064A40)]]
+bool dActor_c::getTrgToSrcDirNormal(f32, f32);
+
+[[nsmbw(0x80064A50)]]
+bool dActor_c::getTrgToSrcDirLoop(f32, f32);
+
+[[nsmbw(0x80064AF0)]]
+void dActor_c::changePosAngle(mVec3_c*, mAng3_c*, int);
+
+[[nsmbw(0x80064B00)]]
+void dActor_c::setChangePosAngleFunc(int);
+
+[[nsmbw(0x80064B10)]]
+void dActor_c::setLoopFunc(int);
+
+[[nsmbw(0x80064B50)]]
+bool dActor_c::checkAreaNo();
+
+[[nsmbw(0x80064BC0)]]
+void dActor_c::setSoftLight_Player(m3d::bmdl_c&);
+
+[[nsmbw(0x80064BD0)]]
+void dActor_c::setSoftLight_Enemy(m3d::bmdl_c&);
+
+[[nsmbw(0x80064BE0)]]
+void dActor_c::setSoftLight_Map(m3d::bmdl_c&);
+
+[[nsmbw(0x80064BF0)]]
+void dActor_c::setSoftLight_MapObj(m3d::bmdl_c&);
+
+[[nsmbw(0x80064C00)]]
+void dActor_c::setSoftLight_Boss(m3d::bmdl_c&);
+
 [[nsmbw(0x80064C10)]]
 void dActor_c::setSoftLight_Item(m3d::bmdl_c& model);
 
+[[nsmbw(0x80064D10)]]
+void dActor_c::deleteActor(u8);
+
+[[nsmbw(0x80064DA0)]]
+bool dActor_c::checkOutOfArea(const mVec3_c& pos, const nw4r::ut::Rect& rect, u8 area);
+
 [[nsmbw(0x80065080)]]
 bool dActor_c::ActorDrawCullCheck();
+
+[[nsmbw(0x80064F50)]]
+void dActor_c::ActorScrOutCheck(u16);
 
 [[nsmbw(0x800651C0)]]
 void dActor_c::carryFukidashiCheck(int param1, mVec2_c param2) ASM_METHOD(

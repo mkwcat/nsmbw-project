@@ -397,7 +397,7 @@ static int mDeathCount[PLAYER_COUNT] = {};
 void daPyMng_c::update()
 {
     // Hack for incrementing death count
-    if (fFeature::INFINITE_LIVES) {
+    if (fFeat::infinite_lives) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             if (mRest[i] == 4) {
                 mDeathCount[i]++;
@@ -408,7 +408,7 @@ void daPyMng_c::update()
 
     checkLastAlivePlayer();
     if (dGameDisplay_c* display = dScStage_c::getGameDisplay()) {
-        if (fFeature::INFINITE_LIVES) {
+        if (fFeat::infinite_lives) {
             display->updatePlayNum(mDeathCount);
         } else {
             display->updatePlayNum(mRest);
@@ -798,7 +798,7 @@ void daPyMng_c::incRestAll(bool playEffect)
 {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i] != 0) {
-            addRest(i, fFeature::INFINITE_LIVES ? 0 : 1, playEffect);
+            addRest(i, fFeat::infinite_lives ? 0 : 1, playEffect);
         }
     }
 }
@@ -882,7 +882,7 @@ void daPyMng_c::setHipAttackQuake(int type, u8 player)
     }
 
     if (dScStage_c::m_isStaffCredit ||
-        (!fFeature::ONE_PLAYER_SPECIAL_HIP_ATTACK_QUAKE && count == 0)) {
+        (!fFeat::one_player_special_hip_attack_quake && count == 0)) {
         if (type == 1) {
             dQuake_c::m_instance->startShock(
               player, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK, 3, 0, false
@@ -901,7 +901,7 @@ void daPyMng_c::setHipAttackQuake(int type, u8 player)
 
         SndAudioMgr::sInstance->startSystemSe(l_QUAKE_SOUND_LIST[std::clamp(count - 1, 0, 2)], 1);
 
-        if (fFeature::BUBBLE_SWARM_MODE) {
+        if (fFeat::bubble_swarm_mode) {
             dBalloonMng_c::m_instance->popAll();
         }
 

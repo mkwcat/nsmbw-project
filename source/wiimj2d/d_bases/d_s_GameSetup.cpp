@@ -266,7 +266,7 @@ void dScGameSetup_c::finalizeState_EasyPairingWait()
 void dScGameSetup_c::finalizeState_VoiceEndWait()
 {
     dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame();
-    if (save->isEmpty() && !fFeature::DISABLE_OPENING_MOVIE) {
+    if (save->isEmpty() && !fFeat::disable_opening_movie) {
         dScene_c::setNextScene(dProf::MOVIE, 0, false);
     } else {
         dScene_c::setNextScene(dProf::WORLD_MAP, dScWMap_c::CreateBootParam(), false);

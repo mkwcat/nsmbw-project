@@ -133,10 +133,10 @@ static fBaseID_e s_lastHitEnemy[PLAYER_COUNT] = {};
 void daPlBase_c::addDeathMessage(dActor_c* source, DamageType_e type, bool death)
 {
     // TODO: Use BMG for messages
-    if (fFeature::DEATH_MESSAGES == fFeature::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (fFeat::death_messages == fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
         return;
     }
-    if (fFeature::DEATH_MESSAGES == fFeature::DEATH_MESSAGES_MODE_e::DEATH_ONLY && !death) {
+    if (fFeat::death_messages == fFeat::DEATH_MESSAGES_MODE_e::DEATH_ONLY && !death) {
         return;
     }
 

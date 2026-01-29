@@ -96,7 +96,7 @@ public:
 
     static inline bool isGameStopAllowed()
     {
-        if (!fFeature::DISABLE_POWERUP_CHANGE_PAUSE) {
+        if (!fFeat::disable_mode_change_pause) {
             return true;
         }
 

@@ -1,50 +1,39 @@
 #pragma once
 
-namespace fFeature
+namespace fFeat
 {
 
-extern bool UNLOCKED_ALL_WORLDS;
-extern bool COMPLETED_ALL_LEVELS;
-extern bool DISABLE_POWERUP_CHANGE_PAUSE;
+// Use alignment padding space in .text functions for storing settings set by Riivolution
 
-// Replace life counter with a death counter
-extern bool INFINITE_LIVES;
-
-// Enable death messages in the bottom left of the screen
-extern enum class DEATH_MESSAGES_MODE_e : u8 {
+[[nsmbw_data(0x80006784)]] bool unlocked_all_worlds;
+[[nsmbw_data(0x80006785)]] bool completed_all_levels;
+[[nsmbw_data(0x80006786)]] bool disable_mode_change_pause;
+[[nsmbw_data(0x80006787)]] bool infinite_lives;
+[[nsmbw_data(0x80006788)]] enum class DEATH_MESSAGES_MODE_e : u8 {
     DISABLED = 0,
     DEATH_AND_DAMAGE = 1,
     DEATH_ONLY = 2,
-} DEATH_MESSAGES;
-
-// Enable fall damage mod
-extern bool FALL_DAMAGE;
-
-extern bool DISABLE_OPENING_MOVIE;
-
-extern bool ALWAYS_CAN_EXIT_COURSE;
-
-extern bool SHAKE_WITH_BUTTON;
-
-extern enum class FUKIDASHI_MODE_e : u8 {
+} death_messages;
+[[nsmbw_data(0x80006789)]] bool fall_damage;
+[[nsmbw_data(0x8000678A)]] bool disable_opening_movie;
+[[nsmbw_data(0x8000678B)]] bool always_can_exit_course;
+[[nsmbw_data(0x8000678C)]] bool shake_with_button;
+[[nsmbw_data(0x8000678D)]] enum class FUKIDASHI_MODE_e : u8 {
     ALWAYS_SHOW = 0,
     HIDE_IF_5_TO_8_PLAYER = 1,
     ALWAYS_HIDE = 2,
-} FUKIDASHI_MODE;
-
-extern enum class YOSHI_COLOR_MODE_e : u8 {
+} fukidashi_mode;
+[[nsmbw_data(0x8000678E)]] enum class YOSHI_COLOR_MODE_e : u8 {
     NORMAL = 0,
     RANDOM = 1,
     ALL_GREEN = 2,
-} YOSHI_COLOR_MODE;
-
-constexpr inline bool BUBBLE_SWARM_MODE = false;
-
-constexpr inline bool ONE_UP_KILLS_PLAYERS = false;
+} yoshi_color_mode;
+constexpr bool bubble_swarm_mode = false;
+constexpr bool deadly_1up = false;
 
 // Debugging features
 // ^^^^^^
 
-constexpr inline bool ONE_PLAYER_SPECIAL_HIP_ATTACK_QUAKE = false;
+constexpr bool one_player_special_hip_attack_quake = false;
 
-} // namespace fFeature
+} // namespace fFeat

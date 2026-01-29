@@ -580,7 +580,7 @@ bool daEnItem_c::collectItem()
     ITEM_e item = static_cast<ITEM_e>(mItemType);
 
     if (item == ITEM_e::ONE_UP) {
-        if (fFeature::ONE_UP_KILLS_PLAYERS) {
+        if (fFeat::deadly_1up) {
             player->set1UpKinokoEffect();
             player->setForcedDamage(this, daPlBase_c::DamageType_e::POISON_FOG);
         } else {

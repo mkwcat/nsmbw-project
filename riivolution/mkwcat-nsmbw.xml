@@ -16,100 +16,100 @@
             </option>
             <option name="All worlds available">
                 <choice name="Enabled">
-                    <patch id="UNLOCKED_ALL_WORLDS"/>
+                    <patch id="unlocked_all_worlds"/>
                 </choice>
             </option>
             <option name="All courses available">
                 <choice name="Enabled">
-                    <patch id="COMPLETED_ALL_LEVELS"/>
+                    <patch id="completed_all_levels"/>
                 </choice>
             </option>
             <option name="Death counter (unlimited lives)">
                 <choice name="Enabled">
-                    <patch id="INFINITE_LIVES"/>
+                    <patch id="infinite_lives"/>
                 </choice>
             </option>
             <option name="No pause on powerup state change">
                 <choice name="Enabled">
-                    <patch id="DISABLE_POWERUP_CHANGE_PAUSE"/>
+                    <patch id="disable_mode_change_pause"/>
                 </choice>
             </option>
             <option name="Display death messages">
                 <choice name="On all damage">
-                    <patch id="DEATH_MESSAGES_DEATH_AND_DAMAGE"/>
+                    <patch id="death_messages_death_and_damage"/>
                 </choice>
                 <choice name="Only on death">
-                    <patch id="DEATH_MESSAGES_DEATH_ONLY"/>
+                    <patch id="death_messages_death_only"/>
                 </choice>
             </option>
             <option name="Always allow Exit Course">
                 <choice name="Enabled">
-                    <patch id="ALWAYS_CAN_EXIT_COURSE"/>
+                    <patch id="always_can_exit_course"/>
                 </choice>
             </option>
             <option name="Shake with Buttons">
                 <choice name="Enabled">
-                    <patch id="SHAKE_WITH_BUTTON"/>
+                    <patch id="shake_with_button"/>
                 </choice>
             </option>
 			<option name="Hide Motion Control Guides">
                 <choice name="With 5+ Players">
-                    <patch id="FUKIDASHI_HIDE_PLAYERS"/>
+                    <patch id="fukidashi_hide_players"/>
                 </choice>
                 <choice name="Always">
-                    <patch id="FUKIDASHI_HIDE_ALWAYS"/>
+                    <patch id="fukidashi_hide_always"/>
                 </choice>
             </option>
             <option name="Yoshi Color Modifier">
                 <choice name="Random Colors">
-                    <patch id="YOSHI_RANDOM_COLORS"/>
+                    <patch id="yoshi_random_colors"/>
                 </choice>
                 <choice name="Always Green">
-                    <patch id="YOSHI_ALL_GREEN"/>
+                    <patch id="yoshi_all_green"/>
                 </choice>
             </option>
         </section>
     </options>
-    <patch id="UNLOCKED_ALL_WORLDS">
+    <patch id="unlocked_all_worlds">
         <memory offset="0x80006784" value="01"/>
     </patch>
-    <patch id="COMPLETED_ALL_LEVELS">
+    <patch id="completed_all_levels">
         <memory offset="0x80006785" value="01"/>
     </patch>
-    <patch id="DISABLE_POWERUP_CHANGE_PAUSE">
+    <patch id="disable_mode_change_pause">
         <memory offset="0x80006786" value="01"/>
     </patch>
-    <patch id="INFINITE_LIVES">
+    <patch id="infinite_lives">
         <memory offset="0x80006787" value="01"/>
     </patch>
-    <patch id="DEATH_MESSAGES_DEATH_AND_DAMAGE">
+    <patch id="death_messages_death_and_damage">
         <memory offset="0x80006788" value="01"/>
     </patch>
-    <patch id="DEATH_MESSAGES_DEATH_ONLY">
+    <patch id="death_messages_death_only">
         <memory offset="0x80006788" value="02"/>
     </patch>
-    <patch id="FALL_DAMAGE">
+    <patch id="fall_damage">
         <memory offset="0x80006789" value="01"/>
     </patch>
-    <patch id="DISABLE_OPENING_MOVIE">
+    <patch id="disable_opening_movie">
         <memory offset="0x8000678A" value="01"/>
     </patch>
-    <patch id="ALWAYS_CAN_EXIT_COURSE">
+    <patch id="always_can_exit_course">
         <memory offset="0x8000678B" value="01"/>
     </patch>
-    <patch id="SHAKE_WITH_BUTTON">
+    <patch id="shake_with_button">
         <memory offset="0x8000678C" value="01"/>
     </patch>
-    <patch id="FUKIDASHI_HIDE_PLAYERS">
+    <patch id="fukidashi_hide_players">
         <memory offset="0x8000678D" value="01"/>
     </patch>
-    <patch id="FUKIDASHI_HIDE_ALWAYS">
+    <patch id="fukidashi_hide_always">
         <memory offset="0x8000678D" value="02"/>
     </patch>
-    <patch id="YOSHI_RANDOM_COLORS">
+    <patch id="yoshi_random_colors">
         <memory offset="0x8000678E" value="01"/>
     </patch>
-    <patch id="YOSHI_ALL_GREEN">
+    <patch id="yoshi_all_green">
         <memory offset="0x8000678E" value="02"/>
     </patch>
     <patch id="loader">
