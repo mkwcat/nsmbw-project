@@ -7,7 +7,10 @@
 #include "d_system/d_a_player_manager.h"
 
 [[nsmbw_data(0x8042A0B0)]]
-dBgGm_c* dBg_c::m_bg_p;
+dBg_c* dBg_c::m_bg_p;
+
+[[nsmbw(0x80078520)]]
+dPanelObjMgr_c* dBg_c::getPanelObjMgr(int);
 
 [[nsmbw(0x800785E0)]]
 bool dBg_c::UNDEF_800785E0()

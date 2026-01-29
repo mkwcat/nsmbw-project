@@ -2,10 +2,10 @@
 // NSMBW .text: 0x80126650 - 0x8014A830
 
 #include "d_a_player.h"
-
 #include "d_bases/d_s_stage.h"
 #include "d_player/d_a_yoshi.h"
 #include "d_player/d_bg_gm.h"
+#include "d_profile/d_profile.h"
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_audio.h"
@@ -15,12 +15,58 @@
 #include "d_system/d_quake.h"
 #include "framework/f_base.h"
 #include "framework/f_feature.h"
+#include "framework/f_manager.h"
+#include "revolution/os/OSError.h"
 
 [[nsmbw(0x801275B0)]]
 float dAcPy_c::getJumpSpeed();
 
 [[nsmbw(0x8012DD20)]]
 dAcPy_c* dAcPy_c::getCarryPlayer();
+
+[[nsmbw(0x8012DFC0)]]
+mVec3_c dAcPy_c::getCarryPos();
+
+[[nsmbw(0x8012E260)]]
+void dAcPy_c::clearSpinLiftUpReserve();
+
+[[nsmbw(0x8012E330)]]
+void dAcPy_c::setSpinLiftUpReserve()
+{
+    if (!isStatus(0x7A) && !isDemo() && !isCarry() && !isStatus(0x04) && !isStatus(0x06) &&
+        !isStatus(0x08)) {
+        dActor_c* actor = (dActor_c*) fManager_c::searchBaseByID(m0x27D4);
+        if (actor != nullptr && actor->isSpinLiftUpEnable()) {
+            mCarryActorID = actor->mUniqueID;
+            m0x27E0 = 0;
+            mPyMdlMng.mModel->mVisibilityFlags |= 4;
+            if (actor->mActorType == ACTOR_TYPE_e::PLAYER) {
+                dAcPy_c* player = (dAcPy_c*) actor;
+                mPyMdlMng.mModel->mpSpinLiftParentMdl = player->getModel();
+            }
+            changeState(StateID_LiftUp, 0);
+            dQuake_c::m_instance->shockMotor(
+              mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
+            );
+            actor->setSpinLiftUpActor(this);
+        } else if (mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
+            // No actor found to lift, spawn a liftable tile
+            dActor_c* liftBg = construct(dProf::AC_BG_LIFT, 0, &mPos, nullptr, 0);
+            mCarryActorID = liftBg->mUniqueID;
+            m0x27E0 = 0;
+            mPyMdlMng.mModel->mVisibilityFlags |= 4;
+            changeState(StateID_LiftUp, 0);
+            dQuake_c::m_instance->shockMotor(
+              mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
+            );
+            liftBg->setSpinLiftUpActor(this);
+        }
+        clearSpinLiftUpReserve();
+    }
+}
+
+[[nsmbw(0x8012E650)]]
+void dAcPy_c::cancelCarry(dActor_c* carriedActor);
 
 [[nsmbw(0x8012E6E0)]]
 bool dAcPy_c::releaseCarryActor();

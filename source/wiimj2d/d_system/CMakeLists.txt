@@ -15,9 +15,9 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80014330 - 0x800145B0
   # d_GXStateSave.cpp
 # NSMBW          .text:  0x800145B0 - 0x80014820
-  # d_PanelObjList.cpp
+    d_PanelObjList.cpp
 # NSMBW          .text:  0x80014820 - 0x80014970
-  # d_PanelObjMgr.cpp
+    d_PanelObjMgr.cpp
 # NSMBW          .text:  0x80014970 - 0x80014B30
   # d_SimpleCapture.cpp
 # NSMBW          .text:  0x80014B30 - 0x80014F10

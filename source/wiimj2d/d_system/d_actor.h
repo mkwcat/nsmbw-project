@@ -29,6 +29,11 @@ public:
         ENEMY = 3,
     };
 
+    enum CARRY_ACTION_e {
+        CARRY_RELEASE = EGG::BitFlag(0),
+        CARRY_THROW = EGG::BitFlag(1),
+    };
+
 public:
     // Virtual Functions
     // ^^^^^^
@@ -218,7 +223,13 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x125, 0x175);
+    /* 0x125 */ u8 mCarryPlayerNo;
+    /* 0x128 */ u32 mCarryFukidashiPlayerNo;
+    /* 0x12C */ u32 mCarryingFlags;
+    /* 0x130 */ u8 mThrowDirection;
+    /* 0x134 */ int mComboMultiplier;
+    
+    FILL(0x138, 0x175);
 
     /* 0x175 */ u8 m0x175;
     /* 0x178 */ u32 m0x178;
@@ -234,7 +245,7 @@ public:
     /* 0x38E */ u8 m0x38E;
     /* 0x38F */ u8 mLayer;
     /* 0x390 */ u8 m0x390;
-    /* 0x391 */ u8 mOnBackFence;
+    /* 0x391 */ u8 mAmiLayer;
 
 public:
     // Static Methods

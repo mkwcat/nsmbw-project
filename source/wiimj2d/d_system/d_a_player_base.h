@@ -3,6 +3,7 @@
 #include "d_profile/d_profile.h"
 #include "d_system/d_a_player_key.h"
 #include "d_system/d_actor.h"
+#include "d_system/d_cc.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_player_model_manager.h"
 #include "machine/m_mtx.h"
@@ -810,5 +811,12 @@ public:
     /* 0x10D0 */ f32 m0x10D0;
     /* 0x10D4 */ u32 m0x10D4;
 
-    FILL(0x10D8, 0x14D4);
+    FILL(0x10D8, 0x1164);
+
+    /* 0x1164 */ dCc_c mCc1;
+    /* 0x1208 */ dCc_c mAttCc1;
+    /* 0x12AC */ dCc_c mAttCc2;
+    /* 0x1350 */ dCc_c mAttCc3;
+
+    FILL(0x13F4, 0x14D4);
 };

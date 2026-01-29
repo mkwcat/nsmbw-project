@@ -72,6 +72,15 @@ public:
     virtual void finalizeState_GegnericMulti();
 
 public:
+    // Instance Methods
+    // ^^^^^^
+    
+    bool isState(const sStateIDIf_c& other) const
+    {
+        return *mStateMgr.getStateID() == other;
+    }
+
+public:
     // Instance Variables
     // ^^^^^^
 
