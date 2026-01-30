@@ -88,6 +88,12 @@ void _prolog(s32 param1, void* param2)
             volatile u16* ptr = reinterpret_cast<volatile u16*>(
               (&repl->references[i].addrP1)[static_cast<int>(codeRegion)]
             );
+            if (ptr == nullptr) {
+                OS_REPORT(
+                  "WARNING: Skipping relocation patch at P1 %08X\n", repl->references[i].addrP1
+                );
+                continue;
+            }
 
             if (repl->references[i].type == R_PPC_ADDR16_LO) {
                 offset &= 0xFFFF;
@@ -111,12 +117,23 @@ void _prolog(s32 param1, void* param2)
     // External replaced array
     for (mkwcat::Attribute::Entry* __restrict repl = _MRel_extern_array;
          repl != _MRel_extern_array_end; ++repl) {
+        if (repl->addr == nullptr) {
+            OS_REPORT("WARNING: Skipping extern patch with null address\n");
+            continue;
+        }
         *repl->dest.instruction = *repl->addr;
     }
 
     // Function patches
     for (mkwcat::Attribute::Entry* __restrict repl = _MRel_replace_array;
          repl != _MRel_replace_array_end; ++repl) {
+        if (repl->addr == nullptr) {
+            OS_REPORT(
+              "WARNING: Skipping replace patch #%d with null address (prev: 0x%08X)\n",
+              u32(repl - _MRel_replace_array), u32((repl - 1)->addr)
+            );
+            continue;
+        }
         *repl->addr = 0x48000000 | ((u32(repl->dest.instruction) - u32(repl->addr)) & 0x3FFFFFC);
     }
 

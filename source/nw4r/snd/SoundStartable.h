@@ -40,9 +40,9 @@ public:
         SIZE_ASSERT(0x18);
 
         enum class EnableFlag {
-            ENABLE_START_OFFSET = (1 << 0),
-            ENABLE_PLAYER_ID = (1 << 1),
-            ENABLE_PLAYER_PRIORITY = (1 << 2)
+            ENABLE_START_OFFSET = 0_bit,
+            ENABLE_PLAYER_ID = 1_bit,
+            ENABLE_PLAYER_PRIORITY = 2_bit
         };
 
         enum class StartOffsetType {

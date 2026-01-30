@@ -1,12 +1,12 @@
 #pragma once
 
+#include "component/c_json.h"
 #include "d_mj2d_game.h"
 #include "d_mj2d_header.h"
-#include <cstdint>
 #include <cstdio>
 #include <variant>
 
-class dMj2dJsonHandler_c
+class dMj2dJsonHandler_c final : public cJsonParser_c::HandlerIf_c
 {
 private:
     // Instance Methods
@@ -24,66 +24,46 @@ private:
     }
 
 public:
-    bool Null() const
+    bool null() override
     {
         return mFlags & UNKNOWN_OBJECT;
     }
 
-    bool Bool(bool value)
-    {
-        return Uint(value);
-    }
+    bool value(s64 number) override;
 
-    bool Int(int value)
-    {
-        return Uint(value);
-    }
-
-    bool Uint(unsigned int value);
-
-    bool Int64(std::int64_t value) const
+    bool rawNumber(const char* str, std::size_t length, bool copy) override
     {
         return mFlags & UNKNOWN_OBJECT;
     }
 
-    bool Uint64(std::uint64_t value) const
+    bool value(double number) override
     {
         return mFlags & UNKNOWN_OBJECT;
     }
 
-    bool RawNumber(const char* str, std::size_t length, bool copy) const
-    {
-        return mFlags & UNKNOWN_OBJECT;
-    }
+    bool string(const char* str, std::size_t length, bool copy) override;
 
-    bool Double(double value) const
-    {
-        return mFlags & UNKNOWN_OBJECT;
-    }
+    bool key(const char* str, std::size_t length, bool copy) override;
 
-    bool String(const char* str, std::size_t length, bool copy);
+    bool startObject() override;
+    bool endObject() override;
 
-    bool Key(const char* str, std::size_t length, bool copy);
-
-    bool StartObject();
-    bool EndObject(std::size_t memberCount);
-
-    bool StartArray();
-    bool EndArray(std::size_t elementCount);
+    bool startArray() override;
+    bool endArray() override;
 
 private:
     // Constants and Types
     // ^^^^^^
 
     enum Flag_e {
-        UNKNOWN_OBJECT = 1 << 0,
-        EXPECT_ARRAY_START = 1 << 1,
-        EXPECT_ARRAY_END = 1 << 2,
-        EXPECT_OBJECT_START = 1 << 3,
-        TEMP_SAVE = 1 << 4,
-        BIT_FLAGS_LE = 1 << 5,
-        JSON_END = 1 << 6,
-        SUBTRACT_1 = 1 << 7,
+        UNKNOWN_OBJECT = 0_bit,
+        EXPECT_ARRAY_START = 1_bit,
+        EXPECT_ARRAY_END = 2_bit,
+        EXPECT_OBJECT_START = 3_bit,
+        TEMP_SAVE = 4_bit,
+        BIT_FLAGS_LE = 5_bit,
+        JSON_END = 6_bit,
+        SUBTRACT_1 = 7_bit,
     };
 
     enum class Object_e {

@@ -3,6 +3,9 @@
 #define INT_MIN (-INT_MAX - 1)
 #define INT_MAX 2147483647
 
+#define LONG_MIN (-LONG_MAX - 1)
+#define LONG_MAX 2147483647
+
 #define FLT_MAX 3.402823466e+38F
 #define FLT_MIN 1.175494351e-38F
 

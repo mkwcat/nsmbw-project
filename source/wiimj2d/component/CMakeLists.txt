@@ -4,6 +4,8 @@
 # NSMBW          .text:  0x80160C10 - 0x80161A60
 #
 target_sources(project PRIVATE
+# nsmbw-project
+    c_json.cpp
 # NSMBW          .text:  0x80160C10 - 0x80161050
     c_lib.cpp
 # NSMBW          .text:  0x80161050 - 0x801611A0

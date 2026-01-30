@@ -199,7 +199,7 @@ UNDEF_80104858:;
 /* 80104860 4082018C */  bne-     UNDEF_801049ec;
 /* 80104864 83BE0020 */  lwz      r29, 32(r30);
 /* 80104868 3BE00000 */  li       r31, 0;
-/* 8010486C C002A174 */  lfs      f0, -24204(r2);
+/* 8010486C C002A174 */  lfs      f0, UNDEF_8042d4d4@sda21;
 /* 80104870 D01D00A4 */  stfs     f0, 164(r29);
 /* 80104874 D0010028 */  stfs     f0, 40(r1);
 /* 80104878 D001002C */  stfs     f0, 44(r1);
@@ -603,7 +603,7 @@ void dWmSeManager_c::UNDEF_80104dd0() ASM_METHOD(
   // clang-format off
 /* 80104DD0 9421FFC0 */  stwu     r1, -64(r1);
 /* 80104DD4 7C0802A6 */  mflr     r0;
-/* 80104DD8 C002A174 */  lfs      f0, -24204(r2);
+/* 80104DD8 C002A174 */  lfs      f0, UNDEF_8042d4d4@sda21;
 /* 80104DDC 90010044 */  stw      r0, 68(r1);
 /* 80104DE0 1C040034 */  mulli    r0, r4, 52;
 /* 80104DE4 93E1003C */  stw      r31, 60(r1);

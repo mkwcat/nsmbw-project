@@ -21,10 +21,10 @@ public:
 
     struct AmbientParamUpdateCallback {
         enum ParamUpdateFlags {
-            PARAM_UPDATE_VOLUME = (1 << 0),
-            PARAM_UPDATE_PAN = (1 << 1),
-            PARAM_UPDATE_SURROUND_PAN = (1 << 2),
-            PARAM_UPDATE_PRIORITY = (1 << 3),
+            PARAM_UPDATE_VOLUME = 0_bit,
+            PARAM_UPDATE_PAN = 1_bit,
+            PARAM_UPDATE_SURROUND_PAN = 2_bit,
+            PARAM_UPDATE_PRIORITY = 3_bit,
         };
 
         virtual void detail_Update(

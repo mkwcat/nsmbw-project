@@ -12,9 +12,10 @@ target_sources(project PRIVATE
 
 # NSMBW          .text:  0x801018C0 - 0x801018E0
     # d_profile_static.cpp # Moved to d_profile
-
 # NSMBW          .sbss:  0x8042A490 - 0x8042A498
     d_s_crsin_static.cpp
+# NSMBW          .text:  0x801018E0 - 0x80101A50
+    d_s_restart_crsin_static.cpp
 # NSMBW          .text:  0x80101A50 - 0x80102770
     d_s_stage_static.cpp
 # NSMBW          .text:  0x80101A50 - 0x80102770

@@ -748,38 +748,10 @@ void Four::Apply()
     auto codeRegion = dSys_c::m_codeRegion;
 
     for (const FourPatch& patch : FOUR_PATCH_LIST) {
-        u32 address;
-        switch (codeRegion) {
-        case mkwcat::Region::P1:
-            address = patch.addressP1;
-            break;
-        case mkwcat::Region::P2:
-            address = patch.addressP2;
-            break;
-        case mkwcat::Region::E1:
-            address = patch.addressE1;
-            break;
-        case mkwcat::Region::E2:
-            address = patch.addressE2;
-            break;
-        case mkwcat::Region::J1:
-            address = patch.addressJ1;
-            break;
-        case mkwcat::Region::J2:
-            address = patch.addressJ2;
-            break;
-        case mkwcat::Region::K:
-            address = patch.addressK;
-            break;
-        case mkwcat::Region::W:
-            address = patch.addressW;
-            break;
-        case mkwcat::Region::C:
-            address = patch.addressC;
-            break;
-
-        default:
-            OSPanic(__FILE_NAME__, __LINE__, "Invalid code region %d", codeRegion);
+        u32 address = (&patch.addressP1)[static_cast<u32>(codeRegion)];
+        if (address == 0) {
+            OS_REPORT("WARNING: Skipping Four patch at P1 0x%08X\n", patch.addressP1);
+            continue;
         }
 
         u8 size = patch.size;

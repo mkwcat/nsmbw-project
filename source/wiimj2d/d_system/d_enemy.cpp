@@ -470,7 +470,7 @@ void dEn_c::slipBound(dActor_c*) ASM_METHOD(
 /* 80097BD8 7FE3FB78 */  mr       r3, r31;
 /* 80097BDC 7C46042E */  lfsx     f2, r6, r0;
 /* 80097BE0 38800001 */  li       r4, 1;
-/* 80097BE4 C02291A0 */  lfs      f1, -28256(r2);
+/* 80097BE4 C02291A0 */  lfs      f1, UNDEF_8042c500@sda21;
 /* 80097BE8 38A00000 */  li       r5, 0;
 /* 80097BEC 38C00000 */  li       r6, 0;
 /* 80097BF0 7D8903A6 */  mtctr    r12;

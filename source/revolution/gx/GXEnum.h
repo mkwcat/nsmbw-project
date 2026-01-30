@@ -153,7 +153,7 @@ enum GXCITexFmt {
 
 enum GXClearZ {
     GX_CLEAR_Z_MIN = 0,
-    GX_CLEAR_Z_MAX = (1 << 24) - 1,
+    GX_CLEAR_Z_MAX = 24_bit - 1,
 };
 
 enum GXClipMode {
@@ -229,33 +229,33 @@ enum GXDiffuseFn {
 };
 
 enum GXDirtyFlag {
-    GX_DIRTY_SU_TEX = (1 << 0),
-    GX_DIRTY_BP_MASK = (1 << 1),
-    GX_DIRTY_GEN_MODE = (1 << 2),
-    GX_DIRTY_VCD = (1 << 3),
-    GX_DIRTY_VAT = (1 << 4),
+    GX_DIRTY_SU_TEX = 0_bit,
+    GX_DIRTY_BP_MASK = 1_bit,
+    GX_DIRTY_GEN_MODE = 2_bit,
+    GX_DIRTY_VCD = 3_bit,
+    GX_DIRTY_VAT = 4_bit,
     // . . .
-    GX_DIRTY_AMB_COLOR0 = (1 << 8),
-    GX_DIRTY_AMB_COLOR1 = (1 << 9),
-    GX_DIRTY_MAT_COLOR0 = (1 << 10),
-    GX_DIRTY_MAT_COLOR1 = (1 << 11),
-    GX_DIRTY_CHAN_COLOR0 = (1 << 12),
-    GX_DIRTY_CHAN_COLOR1 = (1 << 13),
-    GX_DIRTY_CHAN_ALPHA0 = (1 << 14),
-    GX_DIRTY_CHAN_ALPHA1 = (1 << 15),
-    GX_DIRTY_TEX0 = (1 << 16),
-    GX_DIRTY_TEX1 = (1 << 17),
-    GX_DIRTY_TEX2 = (1 << 18),
-    GX_DIRTY_TEX3 = (1 << 19),
-    GX_DIRTY_TEX4 = (1 << 20),
-    GX_DIRTY_TEX5 = (1 << 21),
-    GX_DIRTY_TEX6 = (1 << 22),
-    GX_DIRTY_TEX7 = (1 << 23),
-    GX_DIRTY_NUM_COLORS = (1 << 24),
-    GX_DIRTY_NUM_TEX = (1 << 25),
-    GX_DIRTY_MTX_IDX = (1 << 26),
-    GX_DIRTY_PROJECTION = (1 << 27),
-    GX_DIRTY_VIEWPORT = (1 << 28),
+    GX_DIRTY_AMB_COLOR0 = 8_bit,
+    GX_DIRTY_AMB_COLOR1 = 9_bit,
+    GX_DIRTY_MAT_COLOR0 = 10_bit,
+    GX_DIRTY_MAT_COLOR1 = 11_bit,
+    GX_DIRTY_CHAN_COLOR0 = 12_bit,
+    GX_DIRTY_CHAN_COLOR1 = 13_bit,
+    GX_DIRTY_CHAN_ALPHA0 = 14_bit,
+    GX_DIRTY_CHAN_ALPHA1 = 15_bit,
+    GX_DIRTY_TEX0 = 16_bit,
+    GX_DIRTY_TEX1 = 17_bit,
+    GX_DIRTY_TEX2 = 18_bit,
+    GX_DIRTY_TEX3 = 19_bit,
+    GX_DIRTY_TEX4 = 20_bit,
+    GX_DIRTY_TEX5 = 21_bit,
+    GX_DIRTY_TEX6 = 22_bit,
+    GX_DIRTY_TEX7 = 23_bit,
+    GX_DIRTY_NUM_COLORS = 24_bit,
+    GX_DIRTY_NUM_TEX = 25_bit,
+    GX_DIRTY_MTX_IDX = 26_bit,
+    GX_DIRTY_PROJECTION = 27_bit,
+    GX_DIRTY_VIEWPORT = 28_bit,
 
     GX_AMB_MAT_MASK =
       GX_DIRTY_AMB_COLOR0 | GX_DIRTY_AMB_COLOR1 | GX_DIRTY_MAT_COLOR0 | GX_DIRTY_MAT_COLOR1,
@@ -283,11 +283,11 @@ enum GXFogType {
     GX_FOG_PERSP_REVEXP2 = 7,
 
     // Fourth bit is set to mark orthographic
-    GX_FOG_ORTHO_LIN = 1 << 3 | GX_FOG_PERSP_LIN,
-    GX_FOG_ORTHO_EXP = 1 << 3 | GX_FOG_PERSP_EXP,
-    GX_FOG_ORTHO_EXP2 = 1 << 3 | GX_FOG_PERSP_EXP2,
-    GX_FOG_ORTHO_REVEXP = 1 << 3 | GX_FOG_PERSP_REVEXP,
-    GX_FOG_ORTHO_REVEXP2 = 1 << 3 | GX_FOG_PERSP_REVEXP2
+    GX_FOG_ORTHO_LIN = 3_bit | GX_FOG_PERSP_LIN,
+    GX_FOG_ORTHO_EXP = 3_bit | GX_FOG_PERSP_EXP,
+    GX_FOG_ORTHO_EXP2 = 3_bit | GX_FOG_PERSP_EXP2,
+    GX_FOG_ORTHO_REVEXP = 3_bit | GX_FOG_PERSP_REVEXP,
+    GX_FOG_ORTHO_REVEXP2 = 3_bit | GX_FOG_PERSP_REVEXP2
 };
 
 // Access components of the fog type
@@ -376,16 +376,16 @@ enum GXIndTexWrap {
 };
 
 enum GXLightID {
-    GX_LIGHT0 = (1 << 0),
-    GX_LIGHT1 = (1 << 1),
-    GX_LIGHT2 = (1 << 2),
-    GX_LIGHT3 = (1 << 3),
-    GX_LIGHT4 = (1 << 4),
-    GX_LIGHT5 = (1 << 5),
-    GX_LIGHT6 = (1 << 6),
-    GX_LIGHT7 = (1 << 7),
+    GX_LIGHT0 = 0_bit,
+    GX_LIGHT1 = 1_bit,
+    GX_LIGHT2 = 2_bit,
+    GX_LIGHT3 = 3_bit,
+    GX_LIGHT4 = 4_bit,
+    GX_LIGHT5 = 5_bit,
+    GX_LIGHT6 = 6_bit,
+    GX_LIGHT7 = 7_bit,
 
-    GX_MAX_LIGHT = (1 << 8),
+    GX_MAX_LIGHT = 8_bit,
     GX_LIGHT_NULL = 0
 };
 

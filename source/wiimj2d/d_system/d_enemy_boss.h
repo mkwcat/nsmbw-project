@@ -21,7 +21,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x594);
+    FILL(0x524, 0x5F8);
 
-    /* 0x594 */ dBossLifeCommon_c* mpBossLife;
+    /* 0x5F8 */ dBossLifeCommon_c* mpBossLife;
 };

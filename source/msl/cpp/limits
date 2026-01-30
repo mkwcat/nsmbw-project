@@ -21,6 +21,19 @@ struct numeric_limits<int> {
 };
 
 template <>
+struct numeric_limits<long> {
+    static constexpr unsigned long min()
+    {
+        return LONG_MIN;
+    }
+
+    static constexpr unsigned long max()
+    {
+        return LONG_MAX;
+    }
+};
+
+template <>
 struct numeric_limits<unsigned long> {
     static constexpr unsigned long min()
     {

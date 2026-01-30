@@ -81,6 +81,7 @@ add_compile_options(
     -Wno-frame-address
     -Wno-nested-anon-types
     -Wno-gnu-anonymous-struct
+    -Wno-gnu-case-range
     -Wno-c99-extensions
     -Wno-c++26-extensions
     -Wno-unused-private-field
@@ -176,6 +177,14 @@ foreach(out_name ${DVD_FILES})
                 COMMENT "Generating ${out_name}"
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${dst_directory}
                 COMMAND python ${GENSMAP} "${CMAKE_BINARY_DIR}/source/project${CMAKE_EXECUTABLE_SUFFIX}" "${dst}" "${MKWCAT_DOLPHIN_MAP_PATH}"
+            )
+        elseif("${out_name}" MATCHES "\\.LZ$")
+            string(REPLACE ".LZ" "" src_name "${out_name}")
+            add_custom_command(OUTPUT ${dst}
+                DEPENDS tools "${CMAKE_SOURCE_DIR}/assets/${src_name}"
+                COMMENT "Compressing ${out_name}"
+                COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
+                COMMAND ${LZX} -ewb "${CMAKE_SOURCE_DIR}/assets/${src_name}" "${dst}"
             )
         endif()
         list(APPEND DST_DVD_FILES ${dst})

@@ -3,6 +3,7 @@
 
 #include "d_nand_thread.h"
 
+#include "component/c_json.h"
 #include "d_system/d_mj2d_data.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_mj2d_json_handler.h"
@@ -14,21 +15,6 @@
 #include <revolution/fs.h>
 #include <revolution/nand.h>
 #include <revolution/os/OSError.h>
-
-static void* rapidjsonRealloc(void* ptr, size_t size)
-{
-    u8* newPtr = new u8[size];
-    if (newPtr && ptr) {
-        std::memcpy(newPtr, ptr, size);
-        delete[] (u8*) ptr;
-    }
-    return newPtr;
-}
-
-#define RAPIDJSON_MALLOC(size) new char[size]
-#define RAPIDJSON_FREE(ptr) delete[] (u8*) ptr
-#define RAPIDJSON_REALLOC rapidjsonRealloc
-#include <rapidjson/reader.h>
 
 [[nsmbw_data(0x8042A298)]]
 dNandThread_c* dNandThread_c::m_instance;
@@ -44,73 +30,6 @@ u8 l_nandBuf[0x4000];
 dMj2dData_c l_tmpSave = mkwcat::NoInitialize<dMj2dData_c>();
 
 NANDFileInfo l_fileInfo;
-
-struct NandFileStream_c {
-    using Ch = char;
-
-    Ch Peek() const
-    {
-        if (mPos >= mAmount) {
-            return 0;
-        }
-
-        return l_nandBuf[mPos];
-    }
-
-    Ch Take()
-    {
-        if (mPos >= mAmount) {
-            return 0;
-        }
-
-        Ch c = l_nandBuf[mPos++];
-        if (mPos >= mAmount && !mEof) {
-            mTotalSize += mAmount;
-            mAmount = 0;
-            mPos = 0;
-            mResult = NANDRead(&l_fileInfo, l_nandBuf, sizeof(l_nandBuf));
-            if (mResult >= NAND_RESULT_OK) {
-                mAmount = mResult;
-                mResult = NAND_RESULT_OK;
-                if (mAmount < sizeof(l_nandBuf)) {
-                    mEof = true;
-                }
-            }
-        }
-        return c;
-    }
-
-    size_t Tell() const
-    {
-        return mTotalSize + mPos;
-    }
-
-    Ch* PutBegin()
-    {
-        __builtin_unreachable();
-    }
-
-    void Put(Ch c)
-    {
-        __builtin_unreachable();
-    }
-
-    void Flush()
-    {
-        __builtin_unreachable();
-    }
-
-    size_t PutEnd(Ch* begin)
-    {
-        __builtin_unreachable();
-    }
-
-    size_t mAmount = 0;
-    size_t mTotalSize = 0;
-    size_t mPos = 0;
-    bool mEof = false;
-    NANDResult mResult = NAND_RESULT_OK;
-};
 
 } // namespace d_nand_thread_cpp
 
@@ -311,31 +230,26 @@ int dNandThread_c::load()
         return 1;
     }
 
-    result = NANDRead(&l_fileInfo, l_nandBuf, sizeof(l_nandBuf));
-    if (result < NAND_RESULT_OK) {
-        setNandError(result);
-        setNandError(NANDClose(&l_fileInfo));
-        return 2;
-    }
-
     for (int i = 0; i < SAVE_SLOT_COUNT; i++) {
         l_tmpSave.mSaveGames[i].setEmpty();
         l_tmpSave.mTempGames[i].setEmpty();
     }
 
-    NandFileStream_c stream{
-      .mAmount = static_cast<size_t>(result),
-      .mTotalSize = 0,
-      .mPos = 0,
-      .mEof = result < sizeof(l_nandBuf),
-      .mResult = NAND_RESULT_OK
-    };
-    rapidjson::Reader reader;
     dMj2dJsonHandler_c handler;
-    rapidjson::ParseResult parseresult = reader.Parse(stream, handler);
+    bool success = cJsonParser_c::parse(
+      &handler, reinterpret_cast<char*>(l_nandBuf), sizeof(l_nandBuf),
+      [](void* buffer, std::size_t size, void* userData) -> int {
+        NANDResult result = NANDRead(&l_fileInfo, reinterpret_cast<u8*>(buffer), size);
+        if (result < NAND_RESULT_OK) {
+            static_cast<dNandThread_c*>(userData)->setNandError(result);
+            return -1;
+        }
+        return static_cast<int>(result);
+    }, this
+    );
+
     setNandError(NANDClose(&l_fileInfo));
-    if (parseresult.IsError()) {
-        OS_REPORT("JSON parse error, offset: %d\n", parseresult.Offset());
+    if (!success) {
         std::memset(static_cast<void*>(&l_tmpSave), 0, sizeof(l_tmpSave));
         return 1;
     }

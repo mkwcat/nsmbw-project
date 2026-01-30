@@ -9,6 +9,7 @@ set(DVD_FILES
     rels/project_W1.rel.LZ
     rels/project_C1.rel.LZ
     rels/project.SMAP
+    Info/PipeRandomizer.jsonc.LZ
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/blyt/characterChangeSelectContents_05.brlyt
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/timg/Im_plofileMario_00.tpl
     Layout/continue/continue.arc/arc/anim/continue_05_colorRecover.brlan

@@ -18,7 +18,7 @@ enum OSThreadState {
 
 enum OSThreadFlags {
     OS_THREAD_NO_FLAGS = 0,
-    OS_THREAD_DETACHED = 1 << 0,
+    OS_THREAD_DETACHED = 0_bit,
 };
 
 struct OSThread;

@@ -1,6 +1,6 @@
 import os, re as regex
 
-lwz_r13 = regex.compile(r"^(.*(?:lbz|lhz|lha|lwz|stb|sth|stw|lfs|lfd|stfs|stfd)\s+r[0-9]+,\s*)(-?[0-9]+)\((r13|r2)\)(.*$)")
+lwz_r13 = regex.compile(r"^(.*(?:lbz|lhz|lha|lwz|stb|sth|stw|lfs|lfd|stfs|stfd)\s+(?:r|f)[0-9]+,\s*)(-?[0-9]+)\((r13|r2)\)(.*$)")
 addi_r13 = regex.compile(r"^(.*)(addi|subi)(\s+r[0-9]+,\s*)(r13|r2),\s*(-?[0-9]+)(.*$)")
 
 # search for r13 usage in all .cpp files in the source recursively

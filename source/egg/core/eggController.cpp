@@ -32,15 +32,15 @@ u32 getStickButton(const f32& x, const f32& y)
     u32 result = 0;
 
     if (x <= -0.5f) {
-        result |= (1 << 2);
+        result |= 2_bit;
     } else if (x >= 0.5f) {
-        result |= (1 << 3);
+        result |= 3_bit;
     }
 
     if (y <= -0.5f) {
-        result |= (1 << 1);
+        result |= 1_bit;
     } else if (y >= 0.5f) {
-        result |= (1 << 0);
+        result |= 0_bit;
     }
 
     return result;

@@ -75,7 +75,7 @@ public:
     };
 
     enum ScnObjOption {
-        OPTION_VISIBLE = (1 << 0)
+        OPTION_VISIBLE = 0_bit
     };
 
     typedef ForEachResult (*ForEachAction)(ScnObj*, void*);

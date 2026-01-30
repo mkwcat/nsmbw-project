@@ -61,7 +61,7 @@ public:
 
         HOME = EGG::cCORE_BUTTON_HOME,
 
-        SHAKE = 1 << 24,
+        SHAKE = 24_bit,
     };
 
 public:

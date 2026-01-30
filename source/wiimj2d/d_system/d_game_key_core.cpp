@@ -343,7 +343,7 @@ void dGameKeyCore_c::handleTilting()
 void dGameKeyCore_c::setShakeY()
 {
     if (dScStage_c::m_replayPlay_p[mPlayerNo] != nullptr) {
-        mShake = dScStage_c::m_replayPlay_p[mPlayerNo]->mFrameFlags & (1 << 29);
+        mShake = dScStage_c::m_replayPlay_p[mPlayerNo]->mFrameFlags & 29_bit;
         return;
     }
 

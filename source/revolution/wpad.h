@@ -147,20 +147,20 @@ enum WPADDeviceMode {
  */
 
 enum WPADButton : u16 {
-    WPAD_BUTTON_LEFT = (1 << 0),
-    WPAD_BUTTON_RIGHT = (1 << 1),
-    WPAD_BUTTON_DOWN = (1 << 2),
-    WPAD_BUTTON_UP = (1 << 3),
-    WPAD_BUTTON_PLUS = (1 << 4),
+    WPAD_BUTTON_LEFT = 0_bit,
+    WPAD_BUTTON_RIGHT = 1_bit,
+    WPAD_BUTTON_DOWN = 2_bit,
+    WPAD_BUTTON_UP = 3_bit,
+    WPAD_BUTTON_PLUS = 4_bit,
 
-    WPAD_BUTTON_2 = (1 << 8),
-    WPAD_BUTTON_1 = (1 << 9),
-    WPAD_BUTTON_B = (1 << 10),
-    WPAD_BUTTON_A = (1 << 11),
-    WPAD_BUTTON_MINUS = (1 << 12),
-    WPAD_BUTTON_FS_Z = (1 << 13),
-    WPAD_BUTTON_FS_C = (1 << 14),
-    WPAD_BUTTON_HOME = (1 << 15),
+    WPAD_BUTTON_2 = 8_bit,
+    WPAD_BUTTON_1 = 9_bit,
+    WPAD_BUTTON_B = 10_bit,
+    WPAD_BUTTON_A = 11_bit,
+    WPAD_BUTTON_MINUS = 12_bit,
+    WPAD_BUTTON_FS_Z = 13_bit,
+    WPAD_BUTTON_FS_C = 14_bit,
+    WPAD_BUTTON_HOME = 15_bit,
 
     WPAD_BUTTON_ALL = 0xFF1F,
 };
@@ -179,21 +179,21 @@ enum WPADButtonSideways : u16 {
  * Classic Controller button bitfield.
  */
 enum WPADClassicButton : u16 {
-    WPAD_BUTTON_CL_UP = (1 << 0),
-    WPAD_BUTTON_CL_LEFT = (1 << 1),
-    WPAD_BUTTON_CL_ZR = (1 << 2),
-    WPAD_BUTTON_CL_X = (1 << 3),
-    WPAD_BUTTON_CL_A = (1 << 4),
-    WPAD_BUTTON_CL_Y = (1 << 5),
-    WPAD_BUTTON_CL_B = (1 << 6),
-    WPAD_BUTTON_CL_ZL = (1 << 7),
-    WPAD_BUTTON_CL_FULL_R = (1 << 9),
-    WPAD_BUTTON_CL_PLUS = (1 << 10),
-    WPAD_BUTTON_CL_HOME = (1 << 11),
-    WPAD_BUTTON_CL_MINUS = (1 << 12),
-    WPAD_BUTTON_CL_FULL_L = (1 << 13),
-    WPAD_BUTTON_CL_DOWN = (1 << 14),
-    WPAD_BUTTON_CL_RIGHT = (1 << 15),
+    WPAD_BUTTON_CL_UP = 0_bit,
+    WPAD_BUTTON_CL_LEFT = 1_bit,
+    WPAD_BUTTON_CL_ZR = 2_bit,
+    WPAD_BUTTON_CL_X = 3_bit,
+    WPAD_BUTTON_CL_A = 4_bit,
+    WPAD_BUTTON_CL_Y = 5_bit,
+    WPAD_BUTTON_CL_B = 6_bit,
+    WPAD_BUTTON_CL_ZL = 7_bit,
+    WPAD_BUTTON_CL_FULL_R = 9_bit,
+    WPAD_BUTTON_CL_PLUS = 10_bit,
+    WPAD_BUTTON_CL_HOME = 11_bit,
+    WPAD_BUTTON_CL_MINUS = 12_bit,
+    WPAD_BUTTON_CL_FULL_L = 13_bit,
+    WPAD_BUTTON_CL_DOWN = 14_bit,
+    WPAD_BUTTON_CL_RIGHT = 15_bit,
 
     WPAD_BUTTON_CL_ALL = 0xFEFF,
 };
@@ -226,15 +226,15 @@ enum WPADBLCCommand : u8 {
 };
 
 enum WPADMPStatusFlags : u8 {
-    WPAD_MPLS_STATUS_DATA_VALID = (1 << 7),
-    WPAD_MPLS_STATUS_EXTENSION_DATA_VALID = (1 << 6),
+    WPAD_MPLS_STATUS_DATA_VALID = 7_bit,
+    WPAD_MPLS_STATUS_EXTENSION_DATA_VALID = 6_bit,
 
-    WPAD_MPLS_STATUS_YAW_SLOW_MODE = (1 << 3),
-    WPAD_MPLS_STATUS_PITCH_SLOW_MODE = (1 << 2),
-    WPAD_MPLS_STATUS_ROLL_SLOW_MODE = (1 << 1),
+    WPAD_MPLS_STATUS_YAW_SLOW_MODE = 3_bit,
+    WPAD_MPLS_STATUS_PITCH_SLOW_MODE = 2_bit,
+    WPAD_MPLS_STATUS_ROLL_SLOW_MODE = 1_bit,
 
     // Just that it's present; not that it's actually being used.
-    WPAD_MPLS_STATUS_EXTENSION_CONNECTED = (1 << 0),
+    WPAD_MPLS_STATUS_EXTENSION_CONNECTED = 0_bit,
 };
 
 enum WPADAccGravityUnitType {

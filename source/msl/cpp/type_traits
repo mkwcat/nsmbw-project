@@ -148,12 +148,14 @@ using void_t = void;
 __trait_expression(underlying_type, __underlying_type(T));
 __trait_identity(type_identity);
 
-__trait_expression(decay, //
-    conditional_t<__is_array(T),
-        add_pointer_t<remove_extent_t<remove_reference_t<T>>>,
-    conditional_t<__is_function(remove_reference_t<T>),
-        add_pointer_t<remove_reference_t<T>>,
-        remove_cvref_t<T>>>);
+__trait_expression(
+  decay, //
+  conditional_t<
+    __is_array(T), add_pointer_t<remove_extent_t<remove_reference_t<T>>>,
+    conditional_t<
+      __is_function(remove_reference_t<T>), add_pointer_t<remove_reference_t<T>>,
+      remove_cvref_t<T>>>
+);
 
 // Primary Types
 // ^^^^^^
@@ -206,12 +208,71 @@ __trait_predicate_c(bool, is_aggregate, __is_aggregate(T));
 // implemented in current Clang version
 __trait_predicate_c(bool, is_signed, __is_signed(T));
 __trait_predicate_c(bool, is_unsigned, __is_unsigned(T));
+__trait_predicate_c(bool, is_bounded_array, __is_bounded_array(T));
+__trait_predicate_c(bool, is_unbounded_array, __is_unbounded_array(T));
+__trait_predicate_c(bool, is_scoped_enum, __is_scoped_enum(T));
 
 // References
 // ^^^^^^
 
 __trait_expression(add_lvalue_reference, conditional_t<is_void_v<T>, T, T&>);
 __trait_expression(add_rvalue_reference, conditional_t<is_void_v<T>, T, T&&>);
+
+// Supported Operations
+// ^^^^^^
+
+template <class T, class... Args>
+struct is_constructible : integral_constant<bool, __is_constructible(T, Args...)> {
+};
+template <class T, class... Args>
+constexpr bool is_constructible_v = is_constructible<T, Args...>::value;
+
+template <class T, class... Args>
+struct is_trivially_constructible
+  : integral_constant<bool, __is_trivially_constructible(T, Args...)> {
+};
+template <class T, class... Args>
+constexpr bool is_trivially_constructible_v = is_trivially_constructible<T, Args...>::value;
+
+template <class T, class... Args>
+struct is_nothrow_constructible : integral_constant<bool, __is_nothrow_constructible(T, Args...)> {
+};
+template <class T, class... Args>
+constexpr bool is_nothrow_constructible_v = is_nothrow_constructible<T, Args...>::value;
+
+__trait_predicate_c(bool, is_default_constructible, is_constructible_v<T>);
+__trait_predicate_c(bool, is_trivially_default_constructible, is_trivially_constructible_v<T>);
+__trait_predicate_c(bool, is_nothrow_default_constructible, is_nothrow_constructible_v<T>);
+
+__trait_predicate_c(bool, is_copy_constructible, (is_constructible_v<T, const T&>) );
+__trait_predicate_c(
+  bool, is_trivially_copy_constructible, (is_trivially_constructible_v<T, const T&>)
+);
+__trait_predicate_c(
+  bool, is_nothrow_copy_constructible, (is_nothrow_constructible_v<T, const T&>)
+);
+
+__trait_predicate_c(bool, is_move_constructible, (is_constructible_v<T, T&&>) );
+__trait_predicate_c(bool, is_trivially_move_constructible, (is_trivially_constructible_v<T, T&&>) );
+__trait_predicate_c(bool, is_nothrow_move_constructible, (is_nothrow_constructible_v<T, T&&>) );
+
+__trait_predicate_cc(bool, is_assignable, __is_assignable(T, U));
+__trait_predicate_cc(bool, is_trivially_assignable, __is_trivially_assignable(T, U));
+__trait_predicate_cc(bool, is_nothrow_assignable, __is_nothrow_assignable(T, U));
+
+__trait_predicate_c(bool, is_copy_assignable, (is_assignable_v<T, const T&>) );
+__trait_predicate_c(bool, is_trivially_copy_assignable, (is_trivially_assignable_v<T, const T&>) );
+__trait_predicate_c(bool, is_nothrow_copy_assignable, (is_nothrow_assignable_v<T, const T&>) );
+
+__trait_predicate_c(bool, is_move_assignable, (is_assignable_v<T, T&&>) );
+__trait_predicate_c(bool, is_trivially_move_assignable, (is_trivially_assignable_v<T, T&&>) );
+__trait_predicate_c(bool, is_nothrow_move_assignable, (is_nothrow_assignable_v<T, T&&>) );
+
+__trait_predicate_c(bool, is_destructible, __is_destructible(T));
+__trait_predicate_c(bool, is_trivially_destructible, __is_trivially_destructible(T));
+__trait_predicate_c(bool, is_nothrow_destructible, __is_nothrow_destructible(T));
+
+__trait_predicate_c(bool, has_virtual_destructor, __has_virtual_destructor(T));
 
 // Property Queries
 // ^^^^^^
