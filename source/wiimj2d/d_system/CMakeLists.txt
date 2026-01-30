@@ -166,7 +166,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80081D20 - 0x800822E0
     d_bg_parameter.cpp
 # NSMBW          .text:  0x800822E0 - 0x80083490
-  # d_bg_texture.cpp
+    d_bg_texture.cpp
 # NSMBW          .text:  0x80083490 - 0x800872E0
   # d_bg_unit.cpp
 # NSMBW          .text:  0x800872E0 - 0x80087F40

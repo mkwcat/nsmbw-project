@@ -9,6 +9,7 @@
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_audio.h"
+#include "d_system/d_bc.h"
 #include "d_system/d_bg.h"
 #include "d_system/d_fader.h"
 #include "d_system/d_mj2d_game.h"
@@ -50,16 +51,28 @@ void dAcPy_c::setSpinLiftUpReserve()
             );
             actor->setSpinLiftUpActor(this);
         } else if (mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
-            // No actor found to lift, spawn a liftable tile
-            dActor_c* liftBg = construct(dProf::AC_BG_LIFT, 0, &mPos, nullptr, 0);
-            mCarryActorID = liftBg->mUniqueID;
-            m0x27E0 = 0;
-            mPyMdlMng.mModel->mVisibilityFlags |= 4;
-            changeState(StateID_LiftUp, 0);
-            dQuake_c::m_instance->shockMotor(
-              mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
-            );
-            liftBg->setSpinLiftUpActor(this);
+            // No actor found to lift
+            // Get foot sensor position
+            float footY = getFootBgPointData()->mOffsetY / 4096.0;
+            u16 worldX = ((u16) mPos.x) & 0xFFF0;
+            u16 worldY = ((u16) - (mPos.y - footY)) & 0xFFF0;
+            u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(worldX, worldY, mLayer, nullptr, false);
+            if (*tileBelow > 0)
+            {
+                // Clone it
+                dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
+                mCarryActorID = liftBg->mUniqueID;
+                m0x27E0 = 0;
+                mPyMdlMng.mModel->mVisibilityFlags |= 4;
+                changeState(StateID_LiftUp, 0);
+                dQuake_c::m_instance->shockMotor(
+                mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
+                );
+                liftBg->setSpinLiftUpActor(this);
+
+                // Delete the tile we're standing on
+                dBg_c::m_bg_p->BgUnitChange(worldX, worldY, mLayer, 0);
+            }
         }
         clearSpinLiftUpReserve();
     }

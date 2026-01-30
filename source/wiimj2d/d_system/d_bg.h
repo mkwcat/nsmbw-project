@@ -10,6 +10,12 @@ public:
     // Instance Methods
     // ^^^^^^
 
+    /* 0x80077520 */
+    u16* UNDEF_80077520(u16, u16, u8, int*, bool);
+
+    /* 0x80077860 */
+    void BgUnitChange(u16, u16, int, u16);
+
     /* 0x80078520 */
     dPanelObjMgr_c* getPanelObjMgr(int idx);
 

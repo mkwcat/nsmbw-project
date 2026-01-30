@@ -12,6 +12,15 @@ struct sBcSensorBase {
     u32 mFlags;
 };
 
+class sBcPointData
+{
+public:
+    u32 mFlags;
+    int mOffsetX;
+    int mOffsetY;
+    int mDist;
+};
+
 /// @unofficial
 struct sBcSensorPoint {
     operator const sBcSensorBase*() const

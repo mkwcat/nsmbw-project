@@ -2,18 +2,19 @@
 
 #include "d_system/d_PanelObjList.h"
 #include "d_system/d_actor_state.h"
+#include "d_system/d_bg_ctr.h"
 #include "state/s_State.h"
 
-class daBgLift_c : public dActorMultiState_c
+class daBgCarry_c : public dActorMultiState_c
 {
 public:
     // Structors
     // ^^^^^^
 
-    daBgLift_c();
+    daBgCarry_c();
 
     /* VT+0x48 */
-    virtual ~daBgLift_c();
+    virtual ~daBgCarry_c();
 
 public:
     // Virtual Functions
@@ -53,6 +54,8 @@ public:
 
     mVec3_c calcCarryPos(const mVec3_c &offset);
 
+    void placeTile();
+
 public:
     // Instance Variables
     // ^^^^^^
@@ -61,11 +64,24 @@ public:
     /* 0x418 */ dPanelObjList_c mPanelObj;
     /* 0x438 */ int mCarryNo;
     /* 0x43C */ mVec3_c mCarryOffset;
+    /* 0x448 */ dBg_ctr_c mBg;
+
+public:
+    // Static Methods
+    // ^^^^^^
+
+    static void callBackF(dActor_c *self, dActor_c *other);
+    static void callBackH(dActor_c *self, dActor_c *other);
+    static void callBackW(dActor_c *self, dActor_c *other, u8 direction);
+
+    static bool checkRevFoot(dActor_c *self, dActor_c *other);
+    static bool checkRevHead(dActor_c *self, dActor_c *other);
+    static bool checkRevWall(dActor_c *self, dActor_c *other, u8 direction);
 
 private:
     // State IDs
     // ^^^^^^
 
-    sState(daBgLift_c, Carry);
-    sState(daBgLift_c, Throw);
+    sState(daBgCarry_c, Carry);
+    sState(daBgCarry_c, Throw);
 };
