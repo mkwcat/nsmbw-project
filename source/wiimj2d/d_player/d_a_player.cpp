@@ -40,7 +40,7 @@ void dAcPy_c::setSpinLiftUpReserve()
             mCarryActorID = actor->mUniqueID;
             m0x27E0 = 0;
             mPyMdlMng.mModel->mVisibilityFlags |= 4;
-            if (actor->mActorType == ACTOR_TYPE_e::PLAYER) {
+            if (actor->mKind == ACTOR_TYPE_e::PLAYER) {
                 dAcPy_c* player = (dAcPy_c*) actor;
                 mPyMdlMng.mModel->mpSpinLiftParentMdl = player->getModel();
             }
@@ -215,12 +215,12 @@ void dAcPy_c::stopOtherDownDemo()
     for (int i = 0; i < PLAYER_COUNT; i++) {
         dAcPy_c* player = daPyMng_c::getPlayer(i);
         if (player != nullptr && !player->isStatus(83) && !player->isItemKinopio()) {
-            player->m0x38E &= 0xFD;
+            player->mExecStopMask &= 0xFD;
         }
 
         daPlBase_c* yoshi = daPyMng_c::getYoshi(i);
         if (yoshi != nullptr && !yoshi->isStatus(83)) {
-            yoshi->m0x38E &= 0xFD;
+            yoshi->mExecStopMask &= 0xFD;
         }
     }
 

@@ -26,8 +26,8 @@ u8 daLiftRemoconMain_c::UpdateControlPlayerNo(u8* rideCheck)
 
     for (dRc_c* chain = mRideRoll.mpChain; chain != nullptr; chain = chain->mpNext) {
         dActor_c* actor = chain->mpOwner;
-        if (actor == nullptr || (actor->mActorType != dActor_c::ACTOR_TYPE_e::PLAYER &&
-                                 actor->mActorType != dActor_c::ACTOR_TYPE_e::YOSHI)) {
+        if (actor == nullptr || (actor->mKind != dActor_c::ACTOR_TYPE_e::PLAYER &&
+                                 actor->mKind != dActor_c::ACTOR_TYPE_e::YOSHI)) {
             continue;
         }
 

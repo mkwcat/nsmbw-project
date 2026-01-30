@@ -150,7 +150,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8006C6D0 - 0x8006CF40
     d_base_actor.cpp
 # NSMBW          .text:  0x8006CF40 - 0x80076BC0
-  # d_bc.cpp
+    d_bc.cpp
 # NSMBW          .text:  0x80076BC0 - 0x80076FD0
     d_beans_kuribo_mng.cpp
 # NSMBW          .text:  0x80076FD0 - 0x8007E180

@@ -55,12 +55,12 @@ void daPlBase_c::stopGoalOther()
 
         dAcPy_c* player = daPyMng_c::getPlayer(i);
         if (player != nullptr) {
-            player->m0x38E &= ~0x2;
+            player->mExecStopMask &= ~0x2;
         }
 
         daYoshi_c* yoshi = daPyMng_c::getYoshi(i);
         if (yoshi != nullptr) {
-            yoshi->m0x38E &= ~0x2;
+            yoshi->mExecStopMask &= ~0x2;
         }
     }
 }
@@ -78,12 +78,12 @@ void daPlBase_c::playGoalOther()
 
         dAcPy_c* player = daPyMng_c::getPlayer(i);
         if (player != nullptr) {
-            player->m0x38E |= 0x2;
+            player->mExecStopMask |= 0x2;
         }
 
         daYoshi_c* yoshi = daPyMng_c::getYoshi(i);
         if (yoshi != nullptr) {
-            yoshi->m0x38E |= 0x2;
+            yoshi->mExecStopMask |= 0x2;
         }
     }
 }

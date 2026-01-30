@@ -2,8 +2,16 @@
 
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_base_actor.h"
+#include "d_system/d_bc.h"
+#include "d_system/d_cc.h"
+#include "d_system/d_rc.h"
+#include "framework/f_base_id.h"
 #include "machine/m_vec.h"
 #include "nw4r/ut/Rect.h"
+#include "state/s_RangeData.h"
+
+
+class dPropelParts_c;
 
 class dActor_c : public dBaseActor_c
 {
@@ -23,6 +31,12 @@ public:
     // Static Constants
     // ^^^^^^
 
+    enum EAT_POINTS_e : u32 {
+        EAT_POINTS_200,
+        EAT_POINTS_1000,
+        EAT_POINTS_NONE
+    };
+
     enum class ACTOR_TYPE_e : u8 {
         DEFAULT = 0,
         PLAYER = 1,
@@ -30,7 +44,7 @@ public:
         ENEMY = 3,
     };
 
-    enum CARRY_ACTION_e {
+    enum CARRY_ACTION_e : u32 {
         CARRY_RELEASE = EGG::BitFlag(0),
         CARRY_THROW = EGG::BitFlag(1),
     };
@@ -200,7 +214,7 @@ public:
     [[nodiscard]]
     daPlBase_c* castToPlayerBase()
     {
-        if (mActorType == ACTOR_TYPE_e::PLAYER || mActorType == ACTOR_TYPE_e::YOSHI) {
+        if (mKind == ACTOR_TYPE_e::PLAYER || mKind == ACTOR_TYPE_e::YOSHI) {
             return reinterpret_cast<daPlBase_c*>(this);
         }
 
@@ -210,7 +224,7 @@ public:
     [[nodiscard]]
     dAcPy_c* castToPlayer()
     {
-        if (mActorType == ACTOR_TYPE_e::PLAYER) {
+        if (mKind == ACTOR_TYPE_e::PLAYER) {
             return reinterpret_cast<dAcPy_c*>(this);
         }
 
@@ -262,23 +276,52 @@ public:
     /* 0x12C */ u32 mCarryingFlags;
     /* 0x130 */ u8 mThrowDirection;
     /* 0x134 */ int mComboMultiplier;
-    
-    FILL(0x138, 0x175);
 
-    /* 0x175 */ u8 m0x175;
-    /* 0x178 */ u32 m0x178;
+    /* 0x138 */ u8 m0x138;
+    /* 0x13C */ u32 m0x13C;
+    /* 0x140 */ float m0x140;
+    /* 0x144 */ u32 m0x144;
 
-    FILL(0x17C, 0x348);
+    /* 0x148 */ dCc_c mCc;
+    /* 0x1EC */ dBc_c mBc;
+    /* 0x2DC */ dRc_c mRc;
+
+    /* 0x310 */ mVec2_c m0x310;
+
+    /* 0x318 */ mVec2_c mVisibleAreaSize;
+    /* 0x320 */ mVec2_c mVisibleAreaOffset;
+    /* 0x328 */ sRangeDataF mMaxBound;
+    /* 0x338 */ sRangeDataF mDestroyBound;
 
     /* 0x348 */ u8 mDirection;
+    /* 0x349 */ u8 mAreaNo;
+    /* 0x34A */ u8 mBgCollFlags;
 
-    FILL(0x349, 0x38C);
+    /* 0x34C */ u8* mpSpawnFlags;
+    /* 0x350 */ u16* mpDeleteVal;
 
-    /* 0x38C */ ACTOR_TYPE_e mActorType;
+    /* 0x354 */ u8 mEventNums[2];
+    /* 0x358 */ u64 mEventMask;
+
+    /* 0x360 */ u32 m0x358;
+    /* 0x364 */ u16 mSpriteSpawnFlags;
+    /* 0x366 */ bool mBlockHit;
+
+    /* 0x368 */ fBaseID_e mEatenByID;
+    /* 0x36C */ u8 mEatState;
+    /* 0x36D */ u8 mEatBehavior;
+    /* 0x370 */ mVec3_c mPreEatScale;
+
+    /* 0x37C */ EAT_POINTS_e mEatPoints;
+    /* 0x380 */ int mAttentionMode;
+    /* 0x384 */ u32 mAttentionFlags;
+
+    /* 0x388 */ dPropelParts_c* mPropelParts;
+    /* 0x38C */ ACTOR_TYPE_e mKind;
     /* 0x38D */ u8 mPlayerNo;
-    /* 0x38E */ u8 m0x38E;
+    /* 0x38E */ u8 mExecStopMask;
     /* 0x38F */ u8 mLayer;
-    /* 0x390 */ u8 m0x390;
+    /* 0x390 */ u8 mNoRespawn;
     /* 0x391 */ u8 mAmiLayer;
 
 public:

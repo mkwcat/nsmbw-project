@@ -165,6 +165,12 @@ public:
     // {
     //     return ((EGG::Vector2f*) this)->normalise();
     // }
+
+    void set(float x, float y)
+    {
+        this->x = x;
+        this->y = y;
+    }
 };
 
 /**
@@ -316,6 +322,13 @@ public:
     static float distance(const mVec3_c& v1, const mVec3_c& v2)
     {
         return EGG::Math<float>::sqrt(VECSquareDistance(&v1, &v2));
+    }
+
+    void set(float x, float y, float z)
+    {
+        this->x = x;
+        this->y = y;
+        this->z = z;
     }
 
     /**
