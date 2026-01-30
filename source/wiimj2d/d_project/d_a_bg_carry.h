@@ -52,7 +52,7 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    mVec3_c calcCarryPos(const mVec3_c &offset);
+    mVec3_c calcCarryPos(const mVec3_c& offset);
 
     void placeTile();
 
@@ -70,13 +70,21 @@ public:
     // Static Methods
     // ^^^^^^
 
-    static void callBackF(dActor_c *self, dActor_c *other);
-    static void callBackH(dActor_c *self, dActor_c *other);
-    static void callBackW(dActor_c *self, dActor_c *other, u8 direction);
+    static void callBackF(dActor_c* self, dActor_c* other);
+    static void callBackH(dActor_c* self, dActor_c* other);
+    static void callBackW(dActor_c* self, dActor_c* other, u8 direction);
 
-    static bool checkRevFoot(dActor_c *self, dActor_c *other);
-    static bool checkRevHead(dActor_c *self, dActor_c *other);
-    static bool checkRevWall(dActor_c *self, dActor_c *other, u8 direction);
+    static bool checkRevFoot(dActor_c* self, dActor_c* other);
+    static bool checkRevHead(dActor_c* self, dActor_c* other);
+    static bool checkRevWall(dActor_c* self, dActor_c* other, u8 direction);
+
+    static void collisionCallback(dCc_c* self, dCc_c* other);
+
+public:
+    // Static Variables
+    // ^^^^^^
+
+    static const float smc_THROW_SPEED_X;
 
 private:
     // State IDs

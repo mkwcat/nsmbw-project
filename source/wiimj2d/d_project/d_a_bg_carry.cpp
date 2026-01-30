@@ -3,9 +3,10 @@
 
 #include "d_a_bg_carry.h"
 #include "d_player/d_a_player.h"
-#include "d_system/d_a_player_base.h"
+#include "d_system/d_actor.h"
 #include "d_system/d_bg.h"
 #include "d_system/d_mj2d_game.h"
+#include "egg/prim/eggBitFlag.h"
 
 void daBgCarry_c::callBackF(dActor_c* self, dActor_c* other)
 {
@@ -37,7 +38,7 @@ void daBgCarry_c::callBackW(dActor_c* self, dActor_c* other, u8 direction)
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
         daPlBase_c* player = (daPlBase_c*) other;
         if (direction == 1) {
-            if (self->mPosDelta.x > 0.f) {
+            if (self->mPosDelta.x > 0.0f) {
                 player->UNDEF_80056370(self, 6);
             } else {
                 player->UNDEF_80056370(self, 12);
@@ -71,14 +72,28 @@ bool daBgCarry_c::checkRevWall(dActor_c* self, dActor_c* other, u8 direction)
     }
 }
 
+void daBgCarry_c::collisionCallback(dCc_c* self, dCc_c* other)
+{
+    daBgCarry_c* bgCarry = (daBgCarry_c*) self->mpOwner;
+    if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
+        dAcPy_c* player = (dAcPy_c*) other->mpOwner;
+        if (player != daPyMng_c::getPlayer(bgCarry->mCarryNo)) {
+            player->setDamage(self->mpOwner, dAcPy_c::DamageType_e::KNOCKBACK_LONG);
+        }
+    }
+    return;
+}
+
 dBaseActorProfile_s g_profile_AC_BG_CARRY{
   {{
     .mClassInit = []() -> fBase_c* { return new daBgCarry_c(); },
     .mExecuteOrder = 412,
     .mDrawOrder = 523,
   }},
-  .mActorProps = 0x4,
+  .mActorProps = 0x14,
 };
+
+const float daBgCarry_c::smc_THROW_SPEED_X = 2.5f;
 
 const sBcSensorPoint l_bgcarry_foot = {{0}, 0, -0x8000};
 const sBcSensorPoint l_bgcarry_head = {{0}, 0, 0x8000};
@@ -87,6 +102,18 @@ const sBcSensorLine l_bgcarry_wall = {{1}, -0x5000, 0x5000, 0x8000};
 sBgSetInfo l_bgcarry_bgc_info = {
   mVec2_c(-8, 8), mVec2_c(8, -8), &daBgCarry_c::callBackF, &daBgCarry_c::callBackH,
   &daBgCarry_c::callBackW
+};
+
+sCcDatNewF l_bgcarry_cc = {
+  {0.0f, 0.0f},
+  {8.0f, 8.0f},
+  CC_KIND_ENEMY,
+  CC_ATTACK_NONE,
+  EGG::BitFlag(CC_KIND_PLAYER) | EGG::BitFlag(CC_KIND_PLAYER_ATTACK) | EGG::BitFlag(CC_KIND_YOSHI) |
+    EGG::BitFlag(CC_KIND_ENEMY) | EGG::BitFlag(CC_KIND_BALLOON) | EGG::BitFlag(CC_KIND_KILLER),
+  0x40000,
+  CC_STATUS_NONE,
+  &daBgCarry_c::collisionCallback,
 };
 
 daBgCarry_c::daBgCarry_c()
@@ -133,6 +160,9 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create()
 
     mBg.entry();
 
+    // Hitbox collider
+    mCc.set(this, (sCcDatNewF*) &l_bgcarry_cc);
+
     // Set y acceleration and max speed for gravity
     mAccelY = -0.1875f;
     mSpeedMax.y = -4.0f;
@@ -161,6 +191,7 @@ fBase_c::PACK_RESULT_e daBgCarry_c::doDelete()
 fBase_c::PACK_RESULT_e daBgCarry_c::execute()
 {
     mStateMgr.executeState();
+    ActorScrOutCheck(0);
 
     return fBase_c::PACK_RESULT_e::SUCCEEDED;
 }
@@ -224,6 +255,11 @@ void daBgCarry_c::initializeState_Carry()
     mPlayerNo = mCarryNo;
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
     mAmiLayer = player->mAmiLayer;
+
+    // mCc.mAmiLine = l_Ami_Line[mAmiLayer];
+    // mBc.mAmiLine = l_Ami_Line[mAmiLayer];
+    mCc.mCcData.mVsKind |= EGG::BitFlag(CC_KIND_KILLER) | EGG::BitFlag(CC_KIND_BALLOON);
+    mCc.mCcData.mAttack = CC_ATTACK_SHELL;
     mActorProperties &= ~0x2;
 }
 
@@ -231,6 +267,9 @@ void daBgCarry_c::finalizeState_Carry()
 {
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
     player->cancelCarry(this);
+    mCc.mCcData.mVsKind &= ~EGG::BitFlag(CC_KIND_KILLER);
+    mCc.mCcData.mAttack = CC_ATTACK_NONE;
+    mBc.mFlags = 0;
     mCarryingFlags &= ~(CARRY_RELEASE | CARRY_THROW);
     mActorProperties |= 0x2;
 }
@@ -243,19 +282,20 @@ void daBgCarry_c::executeState_Carry()
     }
 }
 
-float l_bgcarry_throw_speeds[2] = {2.5, -2.5};
-
 void daBgCarry_c::initializeState_Throw()
 {
+    static const float dirSpeed[] = {smc_THROW_SPEED_X, -smc_THROW_SPEED_X};
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
-    float xSpeed = 0.0;
+    float xSpeed = 0.0f;
     if (player != nullptr) {
-        xSpeed = l_bgcarry_throw_speeds[mDirection] + player->mSpeed.x * 0.75;
+        xSpeed = dirSpeed[mDirection] + player->mSpeed.x * 0.75f;
     }
-    mSpeed.set(xSpeed, -1.5, 0.0);
+    mSpeed.set(xSpeed, -1.5f, 0.0f);
 
+    mCc.mCcData.mAttack = CC_ATTACK_SHELL;
     mBg.mpCarryingActor = nullptr;
     mBg.release();
+    mCc.entry();
 }
 
 void daBgCarry_c::finalizeState_Throw()

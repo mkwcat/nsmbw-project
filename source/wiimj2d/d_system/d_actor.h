@@ -45,8 +45,8 @@ public:
     };
 
     enum CARRY_ACTION_e : u32 {
-        CARRY_RELEASE = EGG::BitFlag(0),
-        CARRY_THROW = EGG::BitFlag(1),
+        CARRY_RELEASE = 0_bit,
+        CARRY_THROW = 1_bit,
     };
 
 public:

@@ -17,7 +17,6 @@
 #include "framework/f_base.h"
 #include "framework/f_feature.h"
 #include "framework/f_manager.h"
-#include "revolution/os/OSError.h"
 
 [[nsmbw(0x801275B0)]]
 float dAcPy_c::getJumpSpeed();
@@ -59,7 +58,7 @@ void dAcPy_c::setSpinLiftUpReserve()
             u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(worldX, worldY, mLayer, nullptr, false);
             if (*tileBelow > 0)
             {
-                // Clone it
+                // We're standing on a tile, clone it
                 dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
                 mCarryActorID = liftBg->mUniqueID;
                 m0x27E0 = 0;
@@ -69,6 +68,9 @@ void dAcPy_c::setSpinLiftUpReserve()
                 mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
                 );
                 liftBg->setSpinLiftUpActor(this);
+
+                // Duplicate the tile on layer 0
+                // dBg_c::m_bg_p->BgUnitChange(worldX, worldY, 2, *tileBelow | 0x8000);
 
                 // Delete the tile we're standing on
                 dBg_c::m_bg_p->BgUnitChange(worldX, worldY, mLayer, 0);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "egg/prim/eggBitFlag.h"
 #include "machine/m_vec.h"
 
 class dActor_c;
@@ -16,13 +15,13 @@ enum CC_SHAPE_e {
 ///< @unofficial
 enum CC_STATUS_FLAG_e {
     CC_STATUS_NONE = 0,
-    CC_STATUS_NO_REVISION = EGG::BitFlag(0),
-    CC_STATUS_NO_PASS_INFO = EGG::BitFlag(2),
+    CC_STATUS_NO_REVISION = 0_bit,
+    CC_STATUS_NO_PASS_INFO = 2_bit,
 };
 
 ///< @unofficial
 enum CC_INFO_e {
-    CC_NO_HIT = EGG::BitFlag(1),
+    CC_NO_HIT = 1_bit,
 };
 
 ///< @unofficial
@@ -109,6 +108,9 @@ public:
 
     /* 0x8008C380 */
     void release();
+
+    /* 0x8008C3E0 */
+    void set(dActor_c* actor, sCcDatNewF* collInfo);
 
 public:
     // Static Methods
