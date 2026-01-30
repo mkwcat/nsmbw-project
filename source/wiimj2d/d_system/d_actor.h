@@ -392,3 +392,5 @@ public:
 
     /* 0x80429FDA */ static u8 mExecStop;
 };
+
+extern const u8 l_Ami_Line[];

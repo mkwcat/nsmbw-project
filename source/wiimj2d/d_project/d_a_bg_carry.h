@@ -55,6 +55,8 @@ public:
     mVec3_c calcCarryPos(const mVec3_c& offset);
 
     void placeTile();
+    
+    void destroyBrick();
 
 public:
     // Instance Variables

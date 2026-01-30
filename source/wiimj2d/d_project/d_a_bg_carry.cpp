@@ -4,6 +4,8 @@
 #include "d_a_bg_carry.h"
 #include "d_player/d_a_player.h"
 #include "d_system/d_actor.h"
+#include "d_system/d_audio.h"
+#include "d_system/d_effactor_mng.h"
 #include "d_system/d_bg.h"
 #include "d_system/d_mj2d_game.h"
 #include "egg/prim/eggBitFlag.h"
@@ -75,10 +77,23 @@ bool daBgCarry_c::checkRevWall(dActor_c* self, dActor_c* other, u8 direction)
 void daBgCarry_c::collisionCallback(dCc_c* self, dCc_c* other)
 {
     daBgCarry_c* bgCarry = (daBgCarry_c*) self->mpOwner;
-    if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
-        dAcPy_c* player = (dAcPy_c*) other->mpOwner;
-        if (player != daPyMng_c::getPlayer(bgCarry->mCarryNo)) {
-            player->setDamage(self->mpOwner, dAcPy_c::DamageType_e::KNOCKBACK_LONG);
+    if (bgCarry->isState(StateID_Throw)) {
+        if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
+            dAcPy_c* player = (dAcPy_c*) other->mpOwner;
+            if (player != daPyMng_c::getPlayer(bgCarry->mCarryNo)) {
+                // Knock players back if they git hit by a thrown block
+                player->setDamage(self->mpOwner, dAcPy_c::DamageType_e::KNOCKBACK_LONG);
+
+                if (bgCarry->mTileNum == 0x30) {
+                    // Brick Block, destroy it
+                    bgCarry->destroyBrick();
+                }
+            }
+        } else if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::ENEMY) {
+            if (bgCarry->mTileNum == 0x30) {
+                // Brick Block, destroy it
+                bgCarry->destroyBrick();
+            }
         }
     }
     return;
@@ -97,7 +112,7 @@ const float daBgCarry_c::smc_THROW_SPEED_X = 2.5f;
 
 const sBcSensorPoint l_bgcarry_foot = {{0}, 0, -0x8000};
 const sBcSensorPoint l_bgcarry_head = {{0}, 0, 0x8000};
-const sBcSensorLine l_bgcarry_wall = {{1}, -0x5000, 0x5000, 0x8000};
+const sBcSensorLine l_bgcarry_wall = {{1}, -0x5000, 0x5000, 0x6000};
 
 sBgSetInfo l_bgcarry_bgc_info = {
   mVec2_c(-8, 8), mVec2_c(8, -8), &daBgCarry_c::callBackF, &daBgCarry_c::callBackH,
@@ -162,6 +177,7 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create()
 
     // Hitbox collider
     mCc.set(this, (sCcDatNewF*) &l_bgcarry_cc);
+    mCc.entry();
 
     // Set y acceleration and max speed for gravity
     mAccelY = -0.1875f;
@@ -213,7 +229,6 @@ void daBgCarry_c::finalUpdate()
 
     // Update the tile renderer
     mPanelObj.setPos(mPos.x - 8, -(8 + mPos.y), mPos.z);
-    mPanelObj.setScaleFoot(mScale.x);
 
     mBg.calc();
 }
@@ -221,7 +236,13 @@ void daBgCarry_c::finalUpdate()
 void daBgCarry_c::setSpinLiftUpActor(dActor_c* actor)
 {
     mCarryNo = *actor->getPlrNo();
-    mCarryOffset.y = 4.0f;
+    mCarryOffset.y = 6.0f;
+
+    dAcPy_c* player = (dAcPy_c*) actor;
+    if (player->mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
+        mCarryOffset.y = 3.0f;
+    }
+
     mBg.mpCarryingActor = actor;
     changeState(StateID_Carry);
 }
@@ -250,16 +271,23 @@ void daBgCarry_c::placeTile()
     dBg_c::m_bg_p->BgUnitChange(worldX, worldY, mLayer, mTileNum | 0x8000);
 }
 
+void daBgCarry_c::destroyBrick()
+{
+    deleteActor(1);
+
+    // Play break sound and spawn shard effect
+    dAudio::g_pSndObjMap->startSound(SndID::SE_OBJ_BLOCK_BREAK, dAudio::cvtSndObjctPos(mPos), 0);
+    dEffActorMng_c::m_instance->createBlockFragEff(mPos, 0x3, -1);
+}
+
 void daBgCarry_c::initializeState_Carry()
 {
     mPlayerNo = mCarryNo;
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
     mAmiLayer = player->mAmiLayer;
 
-    // mCc.mAmiLine = l_Ami_Line[mAmiLayer];
-    // mBc.mAmiLine = l_Ami_Line[mAmiLayer];
-    mCc.mCcData.mVsKind |= EGG::BitFlag(CC_KIND_KILLER) | EGG::BitFlag(CC_KIND_BALLOON);
-    mCc.mCcData.mAttack = CC_ATTACK_SHELL;
+    mCc.mAmiLine = l_Ami_Line[mAmiLayer];
+    mBc.mAmiLine = l_Ami_Line[mAmiLayer];
     mActorProperties &= ~0x2;
 }
 
@@ -293,9 +321,7 @@ void daBgCarry_c::initializeState_Throw()
     mSpeed.set(xSpeed, -1.5f, 0.0f);
 
     mCc.mCcData.mAttack = CC_ATTACK_SHELL;
-    mBg.mpCarryingActor = nullptr;
     mBg.release();
-    mCc.entry();
 }
 
 void daBgCarry_c::finalizeState_Throw()
@@ -307,7 +333,7 @@ void daBgCarry_c::executeState_Throw()
     calcSpeedY();
     posMove();
 
-    if (mBc.checkFoot() || mBc.checkHead(0) || mBc.checkWall(0)) {
+    if (mBc.checkFootEnm() || mBc.checkHead(mBc.mFlags) || mBc.checkWallEnm(0)) {
         placeTile();
     }
 }
