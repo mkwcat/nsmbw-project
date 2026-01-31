@@ -235,7 +235,7 @@ void daBgCarry_c::finalUpdate()
 
 void daBgCarry_c::setSpinLiftUpActor(dActor_c* actor)
 {
-    mCarryNo = *actor->getPlrNo();
+    mCarryNo = actor->getPlrNo();
     mCarryOffset.y = 6.0f;
 
     dAcPy_c* player = (dAcPy_c*) actor;
@@ -249,7 +249,7 @@ void daBgCarry_c::setSpinLiftUpActor(dActor_c* actor)
 
 mVec3_c daBgCarry_c::calcCarryPos(const mVec3_c& offset)
 {
-    dAcPy_c* player = daPyMng_c::getPlayer(mPlayerNo);
+    dAcPy_c* player = daPyMng_c::getPlayer(mPlrNo);
     if (player->isStatus(4)) {
         return mPos;
     }
@@ -282,7 +282,7 @@ void daBgCarry_c::destroyBrick()
 
 void daBgCarry_c::initializeState_Carry()
 {
-    mPlayerNo = mCarryNo;
+    mPlrNo = mCarryNo;
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
     mAmiLayer = player->mAmiLayer;
 
