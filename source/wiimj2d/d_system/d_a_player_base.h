@@ -3,6 +3,7 @@
 #include "d_profile/d_profile.h"
 #include "d_system/d_a_player_key.h"
 #include "d_system/d_actor.h"
+#include "d_system/d_cc.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_player_model_manager.h"
 #include "machine/m_mtx.h"
@@ -98,13 +99,13 @@ public:
     virtual s32 getTailType(s8 param);
 
     /* VT+0x0EC 0x80048080 */
-    virtual s32 getHeadBgPointData();
+    virtual sBcPointData* getHeadBgPointData();
 
     /* VT+0x0F0 0x80054EE0 */
-    virtual s32 getWallBgPointData();
+    virtual sBcPointData* getWallBgPointData();
 
     /* VT+0x0F4 0x80056BB0 */
-    virtual s32 getFootBgPointData();
+    virtual sBcPointData* getFootBgPointData();
 
     /* VT+0x0F8 0x80048090 */
     virtual f32 VT_0x0F8();
@@ -751,6 +752,12 @@ public:
     /* 0x80052470 */
     bool isBossDemoLand();
 
+    /* 0x80056370 */
+    void UNDEF_80056370(dActor_c*, int);
+
+    /* 0x80056980 */
+    void setStatus5D(float f); ///< @unofficial
+
     /* 0x80056C70 */
     void onStatus(int flag);
 
@@ -814,5 +821,12 @@ public:
     /* 0x10D0 */ f32 m0x10D0;
     /* 0x10D4 */ u32 m0x10D4;
 
-    FILL(0x10D8, 0x14D4);
+    FILL(0x10D8, 0x1164);
+
+    /* 0x1164 */ dCc_c mCc1;
+    /* 0x1208 */ dCc_c mAttCc1;
+    /* 0x12AC */ dCc_c mAttCc2;
+    /* 0x1350 */ dCc_c mAttCc3;
+
+    FILL(0x13F4, 0x14D4);
 };

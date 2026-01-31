@@ -7,11 +7,11 @@
 void dEnemyCarry_c::initializeState_Throw()
 {
     setCollTimer(mPlrNo, 12);
-    m0x178 |= 0xA0;
+    mCc.mCcData.mVsKind |= 0xA0;
 
     if (m0x524) {
         return;
     }
 
-    m0x175 = 9;
+    mCc.mCcData.mAttack = 9;
 }

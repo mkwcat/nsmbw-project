@@ -1,6 +1,7 @@
 #pragma once
 
 #include "machine/m_angle.h"
+#include "machine/m_vec.h"
 #include "nw4r/math/vec.h"
 
 /**
@@ -81,6 +82,42 @@ public:
      * Zeroes out the matrix.
      */
     void zero();
+
+    static mMtx_c createTrans(const mVec3_c& v)
+    {
+        return createTrans(v.x, v.y, v.z);
+    }
+
+    static mMtx_c createTrans(float x, float y, float z)
+    {
+        mMtx_c mtx;
+        PSMTXTrans(&mtx.mData, x, y, z);
+        return mtx;
+    }
+
+    mMtx_c& concat(const mMtx_c& other)
+    {
+        PSMTXConcat(&mData, &other.mData, &mData);
+        return *this;
+    }
+
+    mMtx_c& trans(const mVec3_c& v)
+    {
+        PSMTXTrans(&mData, v.x, v.y, v.z);
+        return *this;
+    }
+
+    mMtx_c& trans(float x, float y, float z)
+    {
+        PSMTXTrans(&mData, x, y, z);
+        return *this;
+    }
+
+    mMtx_c& ZXYrotM(const mAng3_c& ang)
+    {
+        ZXYrotM(ang.x, ang.y, ang.z);
+        return *this;
+    }
 
     /**
      * The matrix components.

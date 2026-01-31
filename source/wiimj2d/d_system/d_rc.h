@@ -3,9 +3,13 @@
 #include "machine/m_vec.h"
 
 class dActor_c;
+class dRide_ctr_c;
+class dBc_c;
 
 class dRc_c
 {
+    SIZE_ASSERT(0x33);
+
 public:
     /* VT+0x08 */
     virtual ~dRc_c();
@@ -17,6 +21,15 @@ public:
     /* 0x04 */ dActor_c* mpOwner;
     /* 0x08 */ mVec3_c* mpOwnerPos;
     /* 0x0C */ dRc_c* mpNext;
+    /* 0x10 */ dRide_ctr_c* mpRide[2];
+    /* 0x18 */ dBc_c *mpBc;
+    /* 0x1C */ float m0x1C[4];
+    /* 0x2C */ short mRotation;
+    /* 0x2E */ u8 mLineKind;
+    /* 0x2F */ u8 mRideType;
+    /* 0x30 */ u8 m0x30;
+    /* 0x31 */ u8 m0x31;
+    /* 0x32 */ u8 mLayer;
 };
 
 class dRide_ctr_c

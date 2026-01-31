@@ -15,9 +15,9 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80014330 - 0x800145B0
   # d_GXStateSave.cpp
 # NSMBW          .text:  0x800145B0 - 0x80014820
-  # d_PanelObjList.cpp
+    d_PanelObjList.cpp
 # NSMBW          .text:  0x80014820 - 0x80014970
-  # d_PanelObjMgr.cpp
+    d_PanelObjMgr.cpp
 # NSMBW          .text:  0x80014970 - 0x80014B30
   # d_SimpleCapture.cpp
 # NSMBW          .text:  0x80014B30 - 0x80014F10
@@ -150,7 +150,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8006C6D0 - 0x8006CF40
     d_base_actor.cpp
 # NSMBW          .text:  0x8006CF40 - 0x80076BC0
-  # d_bc.cpp
+    d_bc.cpp
 # NSMBW          .text:  0x80076BC0 - 0x80076FD0
     d_beans_kuribo_mng.cpp
 # NSMBW          .text:  0x80076FD0 - 0x8007E180
@@ -166,7 +166,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80081D20 - 0x800822E0
     d_bg_parameter.cpp
 # NSMBW          .text:  0x800822E0 - 0x80083490
-  # d_bg_texture.cpp
+    d_bg_texture.cpp
 # NSMBW          .text:  0x80083490 - 0x800872E0
   # d_bg_unit.cpp
 # NSMBW          .text:  0x800872E0 - 0x80087F40

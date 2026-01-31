@@ -9,6 +9,7 @@
 class sStateMethodUsr_FI_c : public sStateMethod_c
 {
 public:
+    /* 0x8015FDD0 */
     sStateMethodUsr_FI_c(
       sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
     );

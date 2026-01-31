@@ -4,7 +4,9 @@
 #include "d_profile/d_profile.h"
 #include "d_system/d_a_player_base.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_cc.h"
 #include "d_system/d_mj2d_game.h"
+#include "d_system/d_player_model_manager.h"
 #include "state/s_State.h"
 
 class dAcPy_c : public daPlBase_c, public dProf::Info<dAcPy_c, dProf::PLAYER>
@@ -19,6 +21,18 @@ public:
 
     /* 0x8012DD20 */
     dAcPy_c* getCarryPlayer();
+
+    /* 0x8012DFC0 */
+    mVec3_c getCarryPos();
+
+    /* 0x8012E260 */
+    void clearSpinLiftUpReserve();
+
+    /* 0x8012E330 */
+    void setSpinLiftUpReserve();
+
+    /* 0x8012E650 */
+    void cancelCarry(dActor_c* carriedActor);
 
     /* 0x8012E6E0 */
     bool releaseCarryActor();
@@ -79,6 +93,14 @@ public:
     /* 0x80139AE0 */
     void setRideOnYoshi(daYoshi_c* yoshi);
 
+    mMtx_c getCarryMtx()
+    {
+        mMtx_c mtx;
+        mtx.trans(getCarryPos());
+        mtx.concat(getModel()->getMtx());
+        return mtx;
+    }
+
 public:
     // Virtual Functions
     // ^^^^^^
@@ -125,9 +147,26 @@ public:
 
     /* 0x1554 */ int m0x1554;
 
+    FILL(0x1558, 0x27D4);
+
+    /* 0x27D4 */ fBaseID_e m0x27D4;
+    /* 0x27D8 */ float m0x27D8;
+    /* 0x27DC */ float m0x27DC;
+    /* 0x27E0 */ int m0x27E0;
+
+    FILL(0x27E4, 0x2A60);
+
+    /* 0x2A60 */ dPyMdlMng_c mPyMdlMng;
+    /* 0x2A6C */ float m0x2A6C;
+    /* 0x2A70 */ float m0x2A70;
+    /* 0x2A74 */ u32 m0x2A74;
+    /* 0x2A78 */ fBaseID_e mCarryActorID;
+
 public:
     // State IDs
     // ^^^^^^
+
+    sState_Extern(0x803763F0, dAcPy_c, LiftUp);
 
     sState_Extern(0x80376A70, dAcPy_c, DemoFallDown);
 };

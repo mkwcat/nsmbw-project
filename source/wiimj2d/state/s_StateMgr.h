@@ -2,6 +2,9 @@
 
 #include "s_StateInterfaces.h"
 
+template <class T, class Method>
+class sFStateMgr_c;
+
 /**
  * An implementation of sStateMgrIf_c.
  * @tparam T The parent class for this state manager.
@@ -12,6 +15,8 @@
 template <class T, class Method, template <class> class Factory, class Check>
 class sStateMgr_c : public sStateMgrIf_c
 {
+    friend class sFStateMgr_c<T, Method>;
+
 public:
     sStateMgr_c(T& owner, const sStateIDIf_c& initialState)
       : mFactory(owner)

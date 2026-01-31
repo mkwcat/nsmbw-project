@@ -513,3 +513,6 @@ void dActor_c::removeCc();
 
 [[nsmbw(0x80066090)]]
 void dActor_c::reviveCc();
+
+
+const u8 l_Ami_Line[] = { 1, 2 };

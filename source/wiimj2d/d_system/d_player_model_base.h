@@ -4,6 +4,8 @@
 #include "machine/m_allocator.h"
 #include "machine/m_mtx.h"
 
+class dAcPy_c;
+
 namespace nw4r::lyt
 {
 class ResAnmChr;
@@ -171,12 +173,27 @@ public:
     }
 
 public:
+    // Instance Methods
+    // ^^^^^^
+
+    mMtx_c& getMtx()
+    {
+        return mMtx;
+    }
+
+public:
     // Instance Variables
     // ^^^^^^
 
     /* 0x004 */ mAllocator_c mAllocator;
+    /* 0x020 */ dAcPy_c* mpOwner;
+    /* 0x024 */ dPyMdlBase_c* mpSpinLiftParentMdl;
 
-    FILL(0x020, 0x150);
+    FILL(0x028, 0x108);
+
+    /* 0x108 */ mMtx_c mMtx;
+
+    FILL(0x138, 0x150);
 
     /* 0x150 */ u8 mPlayerNo;
     /* 0x151 */ u8 mCharaID;

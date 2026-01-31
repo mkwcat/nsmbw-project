@@ -55,12 +55,12 @@ void daPlBase_c::stopGoalOther()
 
         dAcPy_c* player = daPyMng_c::getPlayer(i);
         if (player != nullptr) {
-            player->m0x38E &= ~0x2;
+            player->mExecStopMask &= ~0x2;
         }
 
         daYoshi_c* yoshi = daPyMng_c::getYoshi(i);
         if (yoshi != nullptr) {
-            yoshi->m0x38E &= ~0x2;
+            yoshi->mExecStopMask &= ~0x2;
         }
     }
 }
@@ -78,12 +78,12 @@ void daPlBase_c::playGoalOther()
 
         dAcPy_c* player = daPyMng_c::getPlayer(i);
         if (player != nullptr) {
-            player->m0x38E |= 0x2;
+            player->mExecStopMask |= 0x2;
         }
 
         daYoshi_c* yoshi = daPyMng_c::getYoshi(i);
         if (yoshi != nullptr) {
-            yoshi->m0x38E |= 0x2;
+            yoshi->mExecStopMask |= 0x2;
         }
     }
 }
@@ -108,6 +108,12 @@ void daPlBase_c::setControlDemoAnm(int anim);
 
 [[nsmbw(0x80052470)]]
 bool daPlBase_c::isBossDemoLand();
+
+[[nsmbw(0x80056370)]]
+void daPlBase_c::UNDEF_80056370(dActor_c*, int);
+
+[[nsmbw(0x80056980)]]
+void daPlBase_c::setStatus5D(float f);
 
 [[nsmbw(0x80056C70)]]
 void daPlBase_c::onStatus(int flag);
