@@ -537,7 +537,7 @@ u8 dEn_c::setCollTimer(int player, u8 timer)
 
 u8 dEn_c::setCollTimer(dActor_c* player, u8 timer)
 {
-    return setCollTimer(*player->getPlrNo(), timer);
+    return setCollTimer(player->getPlrNo(), timer);
 }
 
 u8 dEn_c::getCollTimer(int player) const
@@ -551,7 +551,7 @@ u8 dEn_c::getCollTimer(int player) const
 
 u8 dEn_c::getCollTimer(dActor_c* player) const
 {
-    return getCollTimer(*player->getPlrNo());
+    return getCollTimer(player->getPlrNo());
 }
 
 u8 dEn_c::incrementCollTimer(int player, int increment)

@@ -24,7 +24,7 @@ bool daLiftRideMove_c::isAllPlayerOnLift()
         }
 
         if (daYoshi_c* yoshi = rc->mpOwner->DynamicCast<daYoshi_c>()) {
-            if (yoshi->mEatStage != 0 && *yoshi->getPlrNo() != 0xFF) {
+            if (yoshi->mEatStage != 0 && yoshi->getPlrNo() != -1) {
                 numPlayer++;
             }
         }

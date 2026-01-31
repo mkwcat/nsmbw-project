@@ -3,7 +3,10 @@
 
 #include "d_a_en_goalpole.h"
 
+#include "d_system/d_a_player_base.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_cc.h"
+#include <bit>
 
 [[nsmbw(0x80A096E0)]]
 daEnGlpole_c* daEnGlpole_c_classInit()
@@ -206,15 +209,40 @@ UNDEF_80a09c4c:;
   // clang-format on
 );
 
+[[nsmbw(0x80A0A550)]]
+void daEnGlpole_c::ccCallBackForPole2(dCc_c* self, dCc_c* other)
+{
+    if (other->mCcData.mAttack == CC_ATTACK_YOSHI_EAT) {
+        return;
+    }
+
+    daPlBase_c* player = other->mpOwner->DynamicCast<daPlBase_c>();
+    if (player == nullptr || player->m0x43C) {
+        return;
+    }
+
+    static_cast<daEnGlpole_c*>(self->mpOwner)->mPlrTouchPoleFlag2 |= (1u << player->getPlrNo());
+}
+
+[[nsmbw(0x80A0A5E0)]]
+void daEnGlpole_c::ccCallBackForPole(dCc_c* self, dCc_c* other)
+{
+    if (other->mCcData.mAttack == CC_ATTACK_YOSHI_EAT) {
+        return;
+    }
+
+    daPlBase_c* player = other->mpOwner->DynamicCast<daPlBase_c>();
+    if (player == nullptr || player->m0x43C) {
+        return;
+    }
+
+    static_cast<daEnGlpole_c*>(self->mpOwner)->mPlrTouchPoleFlag |= (1u << player->getPlrNo());
+}
+
 [[nsmbw(0x80A0A700)]]
 bool daEnGlpole_c::isTopOfFlagPole(u32 mask, int player)
 {
-    for (int i = 0; i < 7; i++) {
-        if (mask & (1 << i) && player == i) {
-            return true;
-        }
-    }
-    return false;
+    return mask & (1u << player);
 }
 
 float l_POLE_PLAYER_BASE_POS[PLAYER_COUNT] = {
@@ -521,10 +549,5 @@ UNDEF_80a0ab00:;
 [[nsmbw(0x80A0B020)]]
 bool daEnGlpole_c::isAllPlayerOnPole()
 {
-    int count = 0;
-    for (int i = 0; i < PLAYER_COUNT; i++) {
-        count += (mPlayerOnPoleFlag & (1 << i)) != 0;
-    }
-
-    return count == daPyMng_c::mNum;
+    return std::popcount(mPlrOnPoleFlag) == daPyMng_c::mNum;
 }

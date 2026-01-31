@@ -124,46 +124,6 @@ public:
     // ^^^^^^
 
     /* 0x04 */ dActor_c* mpOwner;
-    /* 0x08 */ dActor_c* mFriendActor;
-    /* 0x0C */ u32 m0x0C;
 
-    /* 0x10 */ dCc_c* mpNext;
-    /* 0x14 */ dCc_c* mpPrev;
-
-    /* 0x18 */ u32 mCanBounce;
-
-    /* 0x1C */ sCcDatNewF mCcData;
-
-    /* 0x40 */ float mTrpOffsets[4];
-    /* 0x50 */ float mCollOffsetX[8];
-    /* 0x70 */ float mCollOffsetY[8];
-
-    /* 0x90 */ mVec2_c mCollPos;
-
-    /* 0x98 */ u16 mCollidedWith;
-    /* 0x9A */ u16 mAttSent;
-    /* 0x9C */ u16 mAttReceived;
-
-    /* 0x9E */ u8 mShape;
-
-    /* 0x9F */ u8 mAmiLine;
-
-    /* 0xA0 */ u8 mLayer;
-
-    /* 0xA1 */ u8 mInfo;
-
-    /* 0xA2 */ bool mIsLinked;
-
-    FILL(0xA3, 0xA4);
-
-public:
-    // Static Variables
-    // ^^^^^^
-
-    typedef bool (*hitCheck)(dCc_c*, dCc_c*);
-
-    static hitCheck _hitCheck[4][4];
-
-    static dCc_c* mEntryN; ///< The first collider in the list.
-    static dCc_c* mEntryB; ///< The last collider in the list.
+    FILL(0x08, 0xA4);
 };

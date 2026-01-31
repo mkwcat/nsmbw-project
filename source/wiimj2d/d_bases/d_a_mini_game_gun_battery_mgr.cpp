@@ -45,7 +45,7 @@ void daMiniGameGunBatteryMgrObj_c::addResultRest()
 {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (dAcPy_c* player = daPyMng_c::getPlayer(i); player && mPlayers[i].mNumLives > 0) {
-            daPyMng_c::addRest(*player->getPlrNo(), mPlayers[i].mNumLives, false);
+            daPyMng_c::addRest(player->getPlrNo(), mPlayers[i].mNumLives, false);
         }
     }
 }

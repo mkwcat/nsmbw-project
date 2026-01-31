@@ -3,12 +3,12 @@
 
 #include "d_a_castle_kokoopa_demo_1st.h"
 
-#include <algorithm>
+#include "d_player/d_a_player.h"
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_block_mng.h"
 #include "d_system/d_enemy_manager.h"
-#include "d_player/d_a_player.h"
+#include <algorithm>
 #include <egg/math/eggMath.h>
 
 [[nsmbw(0x807DAC10)]]
@@ -126,7 +126,7 @@ bool daCastleKokoopaDemo1st_c::calcBattleStDemoControl()
 
         switch (mBattleStControlStep[i]) {
         case 1: {
-            f32& walkToPos = mWalkToPos[*player->getPlrNo()];
+            f32& walkToPos = mWalkToPos[player->getPlrNo()];
             walkToPos = playerDist * (i + 1) + (mRightBoundary - playerStandArea / 2);
 
             if (!(player->m0x10D4 & 0x1)) {
@@ -199,7 +199,7 @@ bool daCastleKokoopaDemo1st_c::calcIggyDemoScroll()
             }
 
             player->mKey.onDemoButton(0x104);
-            player->setControlDemoWalk(mWalkToPos[*player->getPlrNo()], 1.5);
+            player->setControlDemoWalk(mWalkToPos[player->getPlrNo()], 1.5);
             mIggyDemoScrollStep[i]++;
             break;
         }
@@ -211,7 +211,7 @@ bool daCastleKokoopaDemo1st_c::calcIggyDemoScroll()
             }
 
             if (player->mPos.y > mPos.y + yDist ||
-                player->mPos.x >= mWalkToPos[*player->getPlrNo()]) {
+                player->mPos.x >= mWalkToPos[player->getPlrNo()]) {
                 player->mKey.offDemoButton(0x104);
                 mIggyDemoScrollStep[i]++;
             }

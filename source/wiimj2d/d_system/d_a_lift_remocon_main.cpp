@@ -41,8 +41,8 @@ u8 daLiftRemoconMain_c::UpdateControlPlayerNo(u8* rideCheck)
         }
 
         player->onStatus(92);
-        playerMask |= 1 << *player->getPlrNo();
-        mpControlPlayerTimer[*player->getPlrNo()] = 40;
+        playerMask |= 1 << player->getPlrNo();
+        mpControlPlayerTimer[player->getPlrNo()] = 40;
     }
 
     for (u32 i = 0, b = 0b1; i < PLAYER_COUNT; i++, b <<= 1) {

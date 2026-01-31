@@ -6,7 +6,7 @@
 [[nsmbw(0x8009EF90)]]
 void dEnemyCarry_c::initializeState_Throw()
 {
-    setCollTimer(mPlayerNo, 12);
+    setCollTimer(mPlrNo, 12);
     mCc.mCcData.mVsKind |= 0xA0;
 
     if (m0x524) {

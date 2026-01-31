@@ -44,7 +44,7 @@ void daNextGotoBlock_c::normal_collcheck(dCc_c* self, dCc_c* other)
         return;
     }
 
-    int index = *player->getPlrNo();
+    int index = player->getPlrNo();
     if (nextGotoBlock->mPlayerInBlock[index]) {
         return;
     }

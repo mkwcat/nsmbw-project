@@ -22,13 +22,13 @@ void daYoshi_c::executeLastAll()
         if (isStatus(198)) {
             offStatus(198);
             stopOther();
-            daPyMng_c::mStopTimerInfo |= 1 << mPlayerNo;
+            daPyMng_c::mStopTimerInfo |= 1 << mPlrNo;
         }
 
         if (isStatus(199)) {
             offStatus(199);
             playOther();
-            daPyMng_c::mStopTimerInfo &= ~(1 << mPlayerNo);
+            daPyMng_c::mStopTimerInfo &= ~(1 << mPlrNo);
         }
     }
 }

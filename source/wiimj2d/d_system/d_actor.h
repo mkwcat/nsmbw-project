@@ -120,9 +120,9 @@ public:
     }
 
     /* VT+0x6C 0x8001D200 */
-    virtual u8* getPlrNo()
+    virtual const s8& getPlrNo()
     {
-        return &mPlayerNo;
+        return mPlrNo;
     }
 
     /* VT+0x70 0x80065620 */
@@ -318,7 +318,7 @@ public:
 
     /* 0x388 */ dPropelParts_c* mPropelParts;
     /* 0x38C */ ACTOR_TYPE_e mKind;
-    /* 0x38D */ u8 mPlayerNo;
+    /* 0x38D */ u8 mPlrNo;
     /* 0x38E */ u8 mExecStopMask;
     /* 0x38F */ u8 mLayer;
     /* 0x390 */ u8 mNoRespawn;

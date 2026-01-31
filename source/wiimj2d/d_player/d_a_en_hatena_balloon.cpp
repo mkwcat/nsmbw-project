@@ -142,7 +142,7 @@ void daEnHatenaBalloon_c::remocon_times_check();
 [[nsmbw(0x801134F0)]]
 void daEnHatenaBalloon_c::remocon_shake_check()
 {
-    if (!mHasItem && !fFeat::bubble_swarm_mode) {
+    if (mHasItem && !fFeat::bubble_swarm_mode) {
         return;
     }
 

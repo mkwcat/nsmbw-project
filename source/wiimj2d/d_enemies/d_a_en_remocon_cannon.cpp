@@ -217,25 +217,25 @@ void daEnRemoconCannon_c::setBodyColor()
 }
 
 static constinit const nw4r::ut::Color PLY_TRAIL_EFF_COLOR_1[] = {
-    "#FFCCDD", // Mario
-    "#CCFFCE", // Luigi
-    "#FFFFFF", // Blue Toad
-    "#FFFFAC", // Yellow Toad
-    "#FFCEFF", // Toadette
-    "#CCACFF", // Purple Toadette
-    "#FFCCAC", // Orange Toad
-    "#ACACAC", // Black Toad
+  "#FFCCDD", // Mario
+  "#CCFFCE", // Luigi
+  "#FFFFFF", // Blue Toad
+  "#FFFFAC", // Yellow Toad
+  "#FFCEFF", // Toadette
+  "#CCACFF", // Purple Toadette
+  "#FFCCAC", // Orange Toad
+  "#ACACAC", // Black Toad
 };
 
 static constinit const nw4r::ut::Color PLY_TRAIL_EFF_COLOR_2[] = {
-    "#FF2970", // Mario
-    "#29FF33", // Luigi
-    "#6CFFFF", // Blue Toad
-    "#FFFF00", // Yellow Toad
-    "#FF6CFF", // Toadette
-    "#AC6CFF", // Purple Toadette
-    "#FFAC70", // Orange Toad
-    "#6C6C6C", // Black Toad
+  "#FF2970", // Mario
+  "#29FF33", // Luigi
+  "#6CFFFF", // Blue Toad
+  "#FFFF00", // Yellow Toad
+  "#FF6CFF", // Toadette
+  "#AC6CFF", // Purple Toadette
+  "#FFAC70", // Orange Toad
+  "#6C6C6C", // Black Toad
 };
 
 [[nsmbw(0x80A95990)]]
@@ -244,7 +244,7 @@ void daEnRemoconCannon_c::EffectDischargeTail()
     GXColor color0, color1;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        dAcPy_c *ply = daPyMng_c::getPlayer(i);
+        dAcPy_c* ply = daPyMng_c::getPlayer(i);
         if (((ply != nullptr) && !ply->isStatus(0x7D)) && mCannonFired[i]) {
             mVec3_c effPos = {ply->mPos.x, ply->mPos.y, 5500.0};
 
@@ -258,12 +258,20 @@ void daEnRemoconCannon_c::EffectDischargeTail()
             }
 
             mEffectTrail[0].createEffect("Wm_mg_dischargetail01", 0, &effPos, nullptr, nullptr);
-            mEffectTrail[0].setRegisterColor(color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3);
-            mEffectTrail[0].setRegisterAlpha(color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3);
+            mEffectTrail[0].setRegisterColor(
+              color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
+            );
+            mEffectTrail[0].setRegisterAlpha(
+              color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
+            );
 
             mEffectTrail[1].createEffect("Wm_mg_dischargetail02", 0, &effPos, nullptr, nullptr);
-            mEffectTrail[1].setRegisterColor(color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3);
-            mEffectTrail[1].setRegisterAlpha(color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3);
+            mEffectTrail[1].setRegisterColor(
+              color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
+            );
+            mEffectTrail[1].setRegisterAlpha(
+              color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
+            );
         }
     }
 }
@@ -317,20 +325,19 @@ void daEnRemoconCannon_c::firePlayer(int playerType)
 {
     float modifiers[4] = {15.0, 7.0, 7.0, 7.0};
 
-    dAcPy_c *ply = daPyMng_c::getPlayer(playerType);
-    if (ply != nullptr) {
-        ply->endDemoDokanCannon(mStagePos);
+    dAcPy_c* player = daPyMng_c::getPlayer(playerType);
+    if (player != nullptr) {
+        player->endDemoDokanCannon(mStagePos);
         float mod = modifiers[mParam & 3];
         float accelF = nw4r::math::SinFIdx(mTargetAngle * 1.875 * 0.00390625);
         float speedY = nw4r::math::CosFIdx(mTargetAngle * 1.875 * 0.00390625);
 
-        ply->setCannonJump(mod * speedY, mod * accelF, 1000);
-        ply->onStatus(0x8E);
+        player->setCannonJump(mod * speedY, mod * accelF, 1000);
+        player->onStatus(0x8E);
 
-        mCannonFired[*ply->getPlrNo()] = true;
+        mCannonFired[player->getPlrNo()] = true;
     }
 }
-
 
 [[nsmbw(0x80A96210)]]
 mVec3_c daEnRemoconCannon_c::calcTiltPos();
@@ -343,81 +350,81 @@ bool daEnRemoconCannon_c::UNDEF_80a964e0(short target)
 
 [[nsmbw(0x80A96C10)]]
 void daEnRemoconCannon_c::initializeState_Fire() ASM_METHOD(
-/* 80A96C10 9421FFA0 */  stwu     r1, -96(r1);
-/* 80A96C14 7C0802A6 */  mflr     r0;
-/* 80A96C18 90010064 */  stw      r0, 100(r1);
-/* 80A96C1C 39610060 */  addi     r11, r1, 96;
-/* 80A96C20 4B846445 */  bl       UNDEF_802dd064;
-/* 80A96C24 7C7B1B78 */  mr       r27, r3;
-/* 80A96C28 3FA080AD */  lis      r29, UNDEF_80ad4018@ha;
-/* 80A96C2C 3FC080B0 */  lis      r30, UNDEF_80b05808@ha;
-/* 80A96C30 3BE00000 */  li       r31, 0;
-/* 80A96C34 B3E30500 */  sth      r31, 1280(r3);
-/* 80A96C38 7F64DB78 */  mr       r4, r27;
-/* 80A96C3C 3BBD4018 */  addi     r29, r29, UNDEF_80ad4018@l;
-/* 80A96C40 3BDE5808 */  addi     r30, r30, UNDEF_80b05808@l;
-/* 80A96C44 3861002C */  addi     r3, r1, 44;
-/* 80A96C48 4BFFF5C9 */  bl       UNDEF_80a96210;
-/* 80A96C4C C001002C */  lfs      f0, 44(r1);
-/* 80A96C50 3CA08043 */  lis      r5, UNDEF_8042a040@ha;
-/* 80A96C54 D01B078C */  stfs     f0, 1932(r27);
-/* 80A96C58 38610010 */  addi     r3, r1, 16;
-/* 80A96C5C 389B078C */  addi     r4, r27, 1932;
-/* 80A96C60 C0010030 */  lfs      f0, 48(r1);
-/* 80A96C64 D01B0790 */  stfs     f0, 1936(r27);
-/* 80A96C68 C0010034 */  lfs      f0, 52(r1);
-/* 80A96C6C D01B0794 */  stfs     f0, 1940(r27);
-/* 80A96C70 8385A040 */  lwz      r28, UNDEF_8042a040@l(r5);
-/* 80A96C74 4B5D383D */  bl       UNDEF_8006a4b0;
-/* 80A96C78 7F83E378 */  mr       r3, r28;
-/* 80A96C7C 38A10010 */  addi     r5, r1, 16;
-/* 80A96C80 388005F6 */  li       r4, 1526;
-/* 80A96C84 38C00000 */  li       r6, 0;
-/* 80A96C88 4B7020E9 */  bl       UNDEF_80198d70;
-/* 80A96C8C 38000001 */  li       r0, 1;
-/* 80A96C90 901B0360 */  stw      r0, 864(r27);
-/* 80A96C94 387B0540 */  addi     r3, r27, 1344;
-/* 80A96C98 389E00B4 */  addi     r4, r30, 180;
-/* 80A96C9C 4B7A3555 */  bl       UNDEF_8023a1f0;
-/* 80A96CA0 90610008 */  stw      r3, 8(r1);
-/* 80A96CA4 387B08C4 */  addi     r3, r27, 2244;
-/* 80A96CA8 389B0544 */  addi     r4, r27, 1348;
-/* 80A96CAC 38A10008 */  addi     r5, r1, 8;
-/* 80A96CB0 38C00001 */  li       r6, 1;
-/* 80A96CB4 4B6CE67D */  bl       UNDEF_80165330;
-/* 80A96CB8 C03D0024 */  lfs      f1, 36(r29);
-/* 80A96CBC 387B08C4 */  addi     r3, r27, 2244;
-/* 80A96CC0 4B6D1561 */  bl       UNDEF_80168220;
-/* 80A96CC4 C03D0028 */  lfs      f1, 40(r29);
-/* 80A96CC8 387B0544 */  addi     r3, r27, 1348;
-/* 80A96CCC 389B08C4 */  addi     r4, r27, 2244;
-/* 80A96CD0 4B6D33F1 */  bl       UNDEF_8016a0c0;
+  /* 80A96C10 9421FFA0 */ stwu r1, -96(r1);
+  /* 80A96C14 7C0802A6 */ mflr r0;
+  /* 80A96C18 90010064 */ stw r0, 100(r1);
+  /* 80A96C1C 39610060 */ addi r11, r1, 96;
+  /* 80A96C20 4B846445 */ bl UNDEF_802dd064;
+  /* 80A96C24 7C7B1B78 */ mr r27, r3;
+  /* 80A96C28 3FA080AD */ lis r29, UNDEF_80ad4018 @ha;
+  /* 80A96C2C 3FC080B0 */ lis r30, UNDEF_80b05808 @ha;
+  /* 80A96C30 3BE00000 */ li r31, 0;
+  /* 80A96C34 B3E30500 */ sth r31, 1280(r3);
+  /* 80A96C38 7F64DB78 */ mr r4, r27;
+  /* 80A96C3C 3BBD4018 */ addi r29, r29, UNDEF_80ad4018 @l;
+  /* 80A96C40 3BDE5808 */ addi r30, r30, UNDEF_80b05808 @l;
+  /* 80A96C44 3861002C */ addi r3, r1, 44;
+  /* 80A96C48 4BFFF5C9 */ bl UNDEF_80a96210;
+  /* 80A96C4C C001002C */ lfs f0, 44(r1);
+  /* 80A96C50 3CA08043 */ lis r5, UNDEF_8042a040 @ha;
+  /* 80A96C54 D01B078C */ stfs f0, 1932(r27);
+  /* 80A96C58 38610010 */ addi r3, r1, 16;
+  /* 80A96C5C 389B078C */ addi r4, r27, 1932;
+  /* 80A96C60 C0010030 */ lfs f0, 48(r1);
+  /* 80A96C64 D01B0790 */ stfs f0, 1936(r27);
+  /* 80A96C68 C0010034 */ lfs f0, 52(r1);
+  /* 80A96C6C D01B0794 */ stfs f0, 1940(r27);
+  /* 80A96C70 8385A040 */ lwz r28, UNDEF_8042a040 @l(r5);
+  /* 80A96C74 4B5D383D */ bl UNDEF_8006a4b0;
+  /* 80A96C78 7F83E378 */ mr r3, r28;
+  /* 80A96C7C 38A10010 */ addi r5, r1, 16;
+  /* 80A96C80 388005F6 */ li r4, 1526;
+  /* 80A96C84 38C00000 */ li r6, 0;
+  /* 80A96C88 4B7020E9 */ bl UNDEF_80198d70;
+  /* 80A96C8C 38000001 */ li r0, 1;
+  /* 80A96C90 901B0360 */ stw r0, 864(r27);
+  /* 80A96C94 387B0540 */ addi r3, r27, 1344;
+  /* 80A96C98 389E00B4 */ addi r4, r30, 180;
+  /* 80A96C9C 4B7A3555 */ bl UNDEF_8023a1f0;
+  /* 80A96CA0 90610008 */ stw r3, 8(r1);
+  /* 80A96CA4 387B08C4 */ addi r3, r27, 2244;
+  /* 80A96CA8 389B0544 */ addi r4, r27, 1348;
+  /* 80A96CAC 38A10008 */ addi r5, r1, 8;
+  /* 80A96CB0 38C00001 */ li r6, 1;
+  /* 80A96CB4 4B6CE67D */ bl UNDEF_80165330;
+  /* 80A96CB8 C03D0024 */ lfs f1, 36(r29);
+  /* 80A96CBC 387B08C4 */ addi r3, r27, 2244;
+  /* 80A96CC0 4B6D1561 */ bl UNDEF_80168220;
+  /* 80A96CC4 C03D0028 */ lfs f1, 40(r29);
+  /* 80A96CC8 387B0544 */ addi r3, r27, 1348;
+  /* 80A96CCC 389B08C4 */ addi r4, r27, 2244;
+  /* 80A96CD0 4B6D33F1 */ bl UNDEF_8016a0c0;
 
-// REMOVED 80A96CD4 - 80A96DBC
-                         mr       r3, r27;
-                         bl       EffectDischarge__19daEnRemoconCannon_cFv;
+  // REMOVED 80A96CD4 - 80A96DBC
+  mr r3, r27;
+  bl EffectDischarge__19daEnRemoconCannon_cFv;
 
-/* 80A96DBC 39610060 */  addi     r11, r1, 96;
-/* 80A96DC0 4B8462F1 */  bl       UNDEF_802dd0b0;
-/* 80A96DC4 80010064 */  lwz      r0, 100(r1);
-/* 80A96DC8 7C0803A6 */  mtlr     r0;
-/* 80A96DCC 38210060 */  addi     r1, r1, 96;
-/* 80A96DD0 4E800020 */  blr      ;
+  /* 80A96DBC 39610060 */ addi r11, r1, 96;
+  /* 80A96DC0 4B8462F1 */ bl UNDEF_802dd0b0;
+  /* 80A96DC4 80010064 */ lwz r0, 100(r1);
+  /* 80A96DC8 7C0803A6 */ mtlr r0;
+  /* 80A96DCC 38210060 */ addi r1, r1, 96;
+  /* 80A96DD0 4E800020 */ blr;
 );
 
 // Originally part of initializeState_Fire()
 void daEnRemoconCannon_c::EffectDischarge()
 {
-    const char *PLY_EFFECT_NAME[] = {
-        "Wm_mg_discharge03_r",
-        "Wm_mg_discharge03_g",
-        "Wm_mg_discharge03_b",
-        "Wm_mg_discharge03_y",
-        // TODO: figure out how to handle these
-        "Wm_mg_discharge03_r",
-        "Wm_mg_discharge03_r",
-        "Wm_mg_discharge03_r",
-        "Wm_mg_discharge03_r",
+    const char* PLY_EFFECT_NAME[] = {
+      "Wm_mg_discharge03_r",
+      "Wm_mg_discharge03_g",
+      "Wm_mg_discharge03_b",
+      "Wm_mg_discharge03_y",
+      // TODO: figure out how to handle these
+      "Wm_mg_discharge03_r",
+      "Wm_mg_discharge03_r",
+      "Wm_mg_discharge03_r",
+      "Wm_mg_discharge03_r",
     };
 
     mVec3_c tiltPos = calcTiltPos();
@@ -429,9 +436,9 @@ void daEnRemoconCannon_c::EffectDischarge()
     mEf::createEffect("Wm_mg_discharge01", 0, &effPos, &effAng, nullptr);
     mEf::createEffect("Wm_mg_discharge02", 0, &effPos, &effAng, nullptr);
 
-    dAcPy_c *ply = daPyMng_c::getPlayer(mPlayerNo);
-    if (ply != nullptr) {
-        const char *effName = PLY_EFFECT_NAME[*ply->getPlrNo()];
+    dAcPy_c* player = daPyMng_c::getPlayer(mPlayerNo);
+    if (player != nullptr) {
+        const char* effName = PLY_EFFECT_NAME[player->getPlrNo()];
         mEf::createEffect(effName, 0, &effPos, &effAng, nullptr);
     }
 

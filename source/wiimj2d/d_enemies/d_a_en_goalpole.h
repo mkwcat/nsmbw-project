@@ -21,7 +21,7 @@ public:
     daEnGlpole_c();
 
 public:
-    // Virtual Functions
+    // Virtual Methods
     // ^^^^^^
 
     /**
@@ -31,7 +31,7 @@ public:
     PACK_RESULT_e create() override;
 
 public:
-    // Functions
+    // Instance Methods
     // ^^^^^^
 
     /* 0x80A0A700 */
@@ -41,14 +41,26 @@ public:
     bool isAllPlayerOnPole();
 
 public:
+    // Static Methods
+    // ^^^^^^
+
+    /* 0x80A0A550 */
+    static void ccCallBackForPole2(dCc_c* self, dCc_c* other);
+
+    /* 0x80A0A5E0 */
+    static void ccCallBackForPole(dCc_c* self, dCc_c* other);
+
+public:
     // Instance Variables
     // ^^^^^^
 
     FILL(0x524, 0xAAC);
 
-    /* 0x0AAC */ u8 mPlayerOnPoleFlag;
+    /* 0x0AAC */ u8 mPlrOnPoleFlag;
+    /* 0x0AAD */ u8 mPlrTouchPoleFlag;
+    /* 0x0AAE */ u8 mPlrTouchPoleFlag2;
 
-    FILL(0xAAD, 0xAB0);
+    FILL(0xAAF, 0xAB0);
     OFFSET_ASSERT(0xAB0);
 
 #define daEnGlpole_c_OFFSET_mPlayerPos (0xAB0)

@@ -799,7 +799,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0392, 0x0DE8);
+    FILL(0x0392, 0x043C);
+
+    /* 0x043C */ int m0x43C;
+
+    FILL(0x0440, 0x0DE8);
 
     /* 0x0DE8 */ dPyMdlMng_c* mpModelMng;
 
