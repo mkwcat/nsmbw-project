@@ -46,7 +46,7 @@ void dAcPy_c::setSpinLiftUpReserve()
             }
             changeState(StateID_LiftUp, 0);
             dQuake_c::m_instance->shockMotor(
-              mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
+              mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
             );
             actor->setSpinLiftUpActor(this);
         } else if (mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
@@ -65,7 +65,7 @@ void dAcPy_c::setSpinLiftUpReserve()
                 mPyMdlMng.mModel->mVisibilityFlags |= 4;
                 changeState(StateID_LiftUp, 0);
                 dQuake_c::m_instance->shockMotor(
-                mPlayerNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
+                mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
                 );
                 liftBg->setSpinLiftUpActor(this);
 

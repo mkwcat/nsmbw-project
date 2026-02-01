@@ -318,7 +318,7 @@ public:
 
     /* 0x388 */ dPropelParts_c* mPropelParts;
     /* 0x38C */ ACTOR_TYPE_e mKind;
-    /* 0x38D */ u8 mPlrNo;
+    /* 0x38D */ s8 mPlrNo;
     /* 0x38E */ u8 mExecStopMask;
     /* 0x38F */ u8 mLayer;
     /* 0x390 */ u8 mNoRespawn;
