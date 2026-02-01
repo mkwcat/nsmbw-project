@@ -3,6 +3,7 @@
 
 #include "d_remocon_mng.h"
 
+#include "d_system/d_mj2d_game.h"
 #include "machine/m_pad.h"
 #include <egg/core/eggController.h>
 #include <revolution/os.h>
@@ -102,6 +103,39 @@ void dRemoconMng_c::execute()
     WPADSetAcceptConnection(allowConnect);
 }
 
+void dRemoconMng_c::setFirstConnect(int first)
+{
+    int base = mFirstConnect;
+    int target = first;
+
+    if (base == target) {
+        return;
+    }
+
+    mFirstConnect = target;
+
+    if (target < base) {
+        for (; base < PLAYER_COUNT; base++, target++) {
+            mpConnect[target] = mpConnect[base];
+            mPad::setPlayerOrder(target, mpConnect[base]->getChannel());
+        }
+        for (; target < PLAYER_COUNT; target++) {
+            mpConnect[target] = &mDummyConnect;
+        }
+    } else {
+        int count = PLAYER_COUNT - target;
+        target = PLAYER_COUNT - 1;
+        base = base + count - 1;
+        for (; count > 0; count--, base--, target--) {
+            mpConnect[target] = mpConnect[base];
+            mPad::setPlayerOrder(target, mpConnect[base]->getChannel());
+        }
+        for (; target >= 0; target--) {
+            mpConnect[target] = &mDummyConnect;
+        }
+    }
+}
+
 [[nsmbw(0x800DC660)]]
 dRemoconMng_c::dConnect_c::dConnect_c(mPad::CH_e channel)
   : mPlayerNo(-1)
@@ -124,7 +158,7 @@ void dRemoconMng_c::dConnect_c::registerOrder()
     }
 
     auto* mng = dRemoconMng_c::m_instance;
-    for (std::size_t player = 0; player < PLAYER_COUNT; player++) {
+    for (std::size_t player = mng->mFirstConnect; player < PLAYER_COUNT; player++) {
         if (mng->mpConnect[player] == &mng->mDummyConnect) {
             mng->mpConnect[player] = this;
             mPad::setPlayerOrder(player, mPad::CH_e(mChannel));
@@ -156,7 +190,7 @@ bool dRemoconMng_c::dConnect_c::splitExtension()
 
     auto* mng = dRemoconMng_c::m_instance;
 
-    std::size_t classicPlayer = 0;
+    std::size_t classicPlayer = mng->mFirstConnect;
     for (; classicPlayer < PLAYER_COUNT; classicPlayer++) {
         if (mng->mpConnect[classicPlayer] == &mng->mDummyConnect) {
             break;

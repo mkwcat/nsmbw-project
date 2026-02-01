@@ -44,13 +44,12 @@ public:
     // Structors
     // ^^^^^^
 
-    /* 0x80066FC0 */
     dActorMultiState_c()
       : mStateMgr(*this)
     {
     }
 
-    /* VT+0x48 0x800671B0 */
+    /* VT+0x48 */
     virtual ~dActorMultiState_c()
     {
     }

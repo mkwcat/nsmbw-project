@@ -6,7 +6,10 @@
 #include "d_bases/d_s_restart_crsin.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_info.h"
+#include "d_system/d_mj2d_game.h"
+#include "d_system/d_remocon_mng.h"
 #include "framework/f_feature.h"
+#include <algorithm>
 #include <egg/core/eggHeap.h>
 
 [[nsmbw_data(0x804296E8)]]
@@ -24,8 +27,17 @@ void dScBoot_c::executeState_WiiStrapFadeOut();
 [[nsmbw(0x8015D850)]]
 void dScBoot_c::executeState_ProcEnd()
 {
+    if (fFeat::autoboot_player_index) {
+        dRemoconMng_c::m_instance->setFirstConnect(fFeat::autoboot_player_index);
+    }
 
-    for (int ply = 0; ply < fFeat::autoboot_player_count; ply++) {
+    for (int ply = 0;
+         ply < std::min(fFeat::autoboot_player_index + fFeat::autoboot_player_count, PLAYER_COUNT);
+         ply++) {
+        if (ply < fFeat::autoboot_player_index) {
+            dInfo_c::m_instance->setPlyConnectStage(ply, dInfo_c::PlyConnectStage_e::OFF);
+            continue;
+        }
         daPyMng_c::mPlayerType[ply] = dMj2dGame_c::scDefaultPlayerTypes[ply];
         daPyMng_c::mPlayerEntry[ply] = 1;
         daPyMng_c::mPlayerMode[ply] = static_cast<PLAYER_MODE_e>(fFeat::autoboot_powerup);

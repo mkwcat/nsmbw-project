@@ -37,6 +37,7 @@ public:
     /* 0x04 */ dConnect_c* mpConnect[PLAYER_COUNT];
     dConnect_c* mpConnectAll[CONNECT_COUNT];
     dConnect_c& mDummyConnect;
+    int mFirstConnect = 0;
 
 public:
     // Static Methods
@@ -44,6 +45,16 @@ public:
 
     /* 0x800DC570 */
     static void execute();
+
+public:
+    // Instance Methods
+    // ^^^^^^
+
+    /**
+     * Move player 1's controller to the specified slot, and push all the other controllers up by
+     * that much too.
+     */
+    void setFirstConnect(int first);
 
 public:
     // Static Variables

@@ -52,7 +52,7 @@
                     <patch id="shake_with_button"/>
                 </choice>
             </option>
-			<option name="Hide Motion Control Guides">
+            <option name="Hide Motion Control Guides">
                 <choice name="With 5+ Players">
                     <patch id="fukidashi_hide_players"/>
                 </choice>

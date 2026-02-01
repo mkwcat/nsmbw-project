@@ -24,7 +24,10 @@ void dActorState_c::finalizeState_Gegneric();
 
 /* VT+0xD4 */
 [[nsmbw(0x800675C0)]]
-void dActorMultiState_c::changeState(const sStateIDIf_c& state);
+void dActorMultiState_c::changeState(const sStateIDIf_c& state)
+{
+    return mStateMgr.changeState(state);
+}
 
 /* VT+0xD8 */
 [[nsmbw(0x80067590)]]
