@@ -28,6 +28,7 @@ namespace fFeat
     RANDOM = 1,
     ALL_GREEN = 2,
 } yoshi_color_mode;
+[[nsmbw_data(0x8000678F)]] bool liftable_tiles;
 constexpr bool bubble_swarm_mode = false;
 constexpr bool deadly_1up = false;
 constexpr bool pipe_randomizer = true;

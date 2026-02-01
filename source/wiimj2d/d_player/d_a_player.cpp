@@ -49,7 +49,7 @@ void dAcPy_c::setSpinLiftUpReserve()
               mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
             );
             actor->setSpinLiftUpActor(this);
-        } else if (mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
+        } else if (fFeat::liftable_tiles && mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
             // No actor found to lift
             // Get foot sensor position
             float footY = getFootBgPointData()->mOffsetY / 4096.0;
