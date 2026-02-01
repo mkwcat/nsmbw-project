@@ -137,7 +137,7 @@ L_MemsetPreWordAligned:;
     // r7 = distance to next cache line boundary
 
     rlwinm  r8, r5, 0, ~3;
-    // r8 = n word aligned down
+    // r8 = num word aligned down
 
     cmplw   cr7, r7, r8;
     blt-    cr7, L_MemsetPreWordMinBoundary;
@@ -163,6 +163,7 @@ L_MemsetPreWordMinBoundary:;
     bdz-    L_MemsetPreWordOut;
     stw     r4, 0x18(r6);
 L_MemsetPreWordOut:;
+    add     r6, r6, r7;
     sub     r5, r5, r7;
 
 L_MemsetCacheAligned:;

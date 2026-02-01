@@ -1,7 +1,7 @@
-// d_a_lift_ride_move.cpp
+// d_a_lift_ridemove.cpp
 // NSMBW d_bases.text: 0x80845940 - 0x808468E0
 
-#include "d_a_lift_ride_move.h"
+#include "d_a_lift_ridemove.h"
 #include "d_player/d_a_player.h"
 #include "d_player/d_a_yoshi.h"
 
@@ -18,7 +18,7 @@ bool daLiftRideMove_c::isAllPlayerOnLift()
         if (dAcPy_c* player = rc->mpOwner->DynamicCast<dAcPy_c>()) {
             numPlayer++;
 
-            if (player->getCarryPlayer() != nullptr) {
+            if (player->getCarryPlayer()) {
                 numPlayer++;
             }
         }
@@ -31,7 +31,7 @@ bool daLiftRideMove_c::isAllPlayerOnLift()
     }
 
     if (numPlayer < daPyMng_c::mNum) {
-        return numPlayer != 0 || mParam >> 0x1C & 1;
+        return numPlayer != 0 && (mParam & (1u << 28));
     }
 
     return daPyMng_c::mNum != 0;

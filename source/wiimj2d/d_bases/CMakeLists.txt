@@ -152,7 +152,7 @@ target_sources(project PRIVATE
     d_a_lift_remocon_seesaw.cpp
 
 # NSMBW   d_bases.text:  0x80845940 - 0x808468E0
-    d_a_lift_ride_move.cpp
+    d_a_lift_ridemove.cpp
 
 # NSMBW   d_bases.text:  0x80857490 - 0x808581A0
     d_a_line_kinoko_block.cpp
