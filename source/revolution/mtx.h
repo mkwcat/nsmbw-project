@@ -1,6 +1,5 @@
 #pragma once
 
-#include "System.h"
 EXTERN_C_START
 
 /**
