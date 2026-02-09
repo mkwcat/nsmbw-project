@@ -137,8 +137,6 @@ public:
 
     ~Randomizer_c()
     {
-        delete[] m_entList;
-        delete[] m_excEntList;
     }
 
 public:
@@ -159,13 +157,8 @@ private:
     const Index m_inputCount;
     Entry_s* const m_pInput;
 
-    LookupEntry_s* const m_entList;
-    Index m_entCount;
-    LookupEntry_s* m_pEntList;
-
-    LookupEntry_s* const m_excEntList;
-    Index m_excEntCount;
-    Index m_excEntIndex;
+    std::vector<LookupEntry_s> m_entList;
+    std::vector<LookupEntry_s> m_excEntList;
 
     Index m_curGroupEnd;
     Index m_lastEntrance;

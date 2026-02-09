@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cstddef>
 #include <limits>
 #include <memory>
@@ -29,14 +30,22 @@ public:
     using pointer = typename std::allocator_traits<Allocator>::pointer;
     using const_pointer = typename std::allocator_traits<Allocator>::const_pointer;
 
+    // Use pointers as iterators for now
+    using iterator = pointer;
+    using const_iterator = const_pointer;
+
 private:
     // Instance Variables
     // ^^^^^^
 
-    pointer m_data = nullptr;
-    std::size_t m_size = 0;
-    std::size_t m_capacity = 0;
+    pointer m_memory = nullptr, m_data = nullptr;
+    std::size_t m_size = 0, m_capacity = 0;
     allocator_type m_allocator;
+
+    difference_type get_start() const noexcept
+    {
+        return m_data - m_memory;
+    }
 
 public:
     // Structors
@@ -64,47 +73,47 @@ public:
 
     constexpr reference at(size_type pos)
     {
-        if (pos >= m_size) {
-            __builtin_trap();
-        }
+        assert(pos < m_size);
         return m_data[pos];
     }
 
     constexpr const_reference at(size_type pos) const
     {
-        if (pos >= m_size) {
-            __builtin_trap();
-        }
+        assert(pos < m_size);
         return m_data[pos];
     }
 
     constexpr reference operator[](size_type pos)
     {
-        return m_data[pos];
+        return at(pos);
     }
 
     constexpr const_reference operator[](size_type pos) const
     {
-        return m_data[pos];
+        return at(pos);
     }
 
     constexpr reference front()
     {
+        assert(m_size > 0);
         return m_data[0];
     }
 
     constexpr const_reference front() const
     {
+        assert(m_size > 0);
         return m_data[0];
     }
 
     constexpr reference back()
     {
+        assert(m_size > 0);
         return m_data[m_size - 1];
     }
 
     constexpr const_reference back() const
     {
+        assert(m_size > 0);
         return m_data[m_size - 1];
     }
 
@@ -150,32 +159,45 @@ public:
 
     constexpr void reserve(size_type new_cap)
     {
-        if (new_cap <= m_capacity) {
+        if (new_cap <= capacity()) {
             return;
         }
-        pointer new_data = std::allocator_traits<allocator_type>::allocate(m_allocator, new_cap);
+
+        if (new_cap <= m_capacity) {
+            // We have enough capacity but need to move data to the front
+            for (size_type i = 0; i < m_size; i++) {
+                std::allocator_traits<allocator_type>::construct(
+                  m_allocator, m_memory + i, std::move_if_noexcept(m_data[i])
+                );
+                std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
+            }
+            m_data = m_memory;
+            return;
+        }
+
+        pointer new_memory = std::allocator_traits<allocator_type>::allocate(m_allocator, new_cap);
         for (size_type i = 0; i < m_size; i++) {
             std::allocator_traits<allocator_type>::construct(
-              m_allocator, new_data + i, std::move_if_noexcept(m_data[i])
+              m_allocator, new_memory + i, std::move_if_noexcept(m_data[i])
             );
             std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
         }
-        if (m_data) {
-            std::allocator_traits<allocator_type>::deallocate(m_allocator, m_data, m_capacity);
+        if (m_memory) {
+            std::allocator_traits<allocator_type>::deallocate(m_allocator, m_memory, m_capacity);
         }
-        m_data = new_data;
+        m_data = m_memory = new_memory;
         m_capacity = new_cap;
     }
 
     constexpr size_type capacity() const noexcept
     {
-        return m_capacity;
+        return m_capacity - get_start();
     }
 
     constexpr void push_back(const value_type& value)
     {
-        if (m_size == m_capacity) {
-            reserve(m_capacity > 0 ? m_capacity * 2 : 1);
+        if (m_size == capacity()) {
+            reserve(capacity() > 0 ? capacity() * 2 : 1);
         }
         std::allocator_traits<allocator_type>::construct(m_allocator, m_data + m_size, value);
         m_size++;
@@ -184,8 +206,8 @@ public:
     template <class... Args>
     constexpr reference emplace_back(Args&&... args)
     {
-        if (m_size == m_capacity) {
-            reserve(m_capacity > 0 ? m_capacity * 2 : 1);
+        if (m_size == capacity()) {
+            reserve(capacity() > 0 ? capacity() * 2 : 1);
         }
         std::allocator_traits<allocator_type>::construct(
           m_allocator, m_data + m_size, std::forward<Args>(args)...
@@ -203,9 +225,37 @@ public:
         std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + m_size);
     }
 
+    iterator erase(const_iterator pos)
+    {
+        assert(pos >= begin() && pos < end());
+
+        if (pos == m_data) {
+            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data);
+            m_size--;
+            m_data++;
+            return begin();
+        }
+
+        if (pos == m_data + m_size - 1) {
+            pop_back();
+            return end();
+        }
+
+        size_type index = pos - begin();
+        std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + index);
+        for (size_type i = index; i < m_size - 1; i++) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + i, std::move_if_noexcept(m_data[i + 1])
+            );
+            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i + 1);
+        }
+        m_size--;
+        return m_data + index;
+    }
+
     constexpr void resize(size_type count, const value_type& value)
     {
-        if (count > m_capacity) {
+        if (count > capacity()) {
             reserve(count);
         }
         for (size_type i = m_size; i < count; i++) {
@@ -222,6 +272,7 @@ public:
         for (size_type i = 0; i < m_size; i++) {
             std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
         }
+        m_data = m_memory;
         m_size = 0;
     }
 };

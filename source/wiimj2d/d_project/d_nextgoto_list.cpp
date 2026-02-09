@@ -6,6 +6,7 @@
 #include "component/c_json.h"
 #include "d_system/d_dvd.h"
 #include "machine/m_heap.h"
+#include <cassert>
 #include <cstdlib>
 #include <cstring>
 
@@ -219,12 +220,6 @@ dNextGotoList_c::Randomizer_c::Randomizer_c(
 )
   : m_inputCount(inputCount)
   , m_pInput(input)
-  , m_entList(new LookupEntry_s[inputCount])
-  , m_entCount(0)
-  , m_pEntList(m_entList)
-  , m_excEntList(new LookupEntry_s[inputCount])
-  , m_excEntCount(0)
-  , m_excEntIndex(0)
   , m_curGroupEnd(0)
   , m_lastEntrance(0)
   , m_pEntryLookup(lookupTable)
@@ -238,17 +233,21 @@ dNextGotoList_c::Randomizer_c::Randomizer_c(
             continue;
         }
 
-        // Write index and group flags
-        m_entList[m_entCount++] = entry;
-
         if (entry.group_start && entry.group_end) {
-            // If the entrance is by itself in a group then move it to
-            // exclusive
-            setExclusive(m_entCount - 1);
-        } else if (entry.group_end) {
-            inGroup = false;
-        } else if (entry.group_start) {
-            inGroup = true;
+            assert(!inGroup);
+            // If the entrance is by itself in a group then it must be exclusive
+            m_excEntList.push_back(entry);
+        } else {
+            // Write index and group flags
+            m_entList.push_back(entry);
+
+            if (entry.group_end) {
+                assert(inGroup);
+                inGroup = false;
+            } else if (entry.group_start) {
+                assert(!inGroup);
+                inGroup = true;
+            }
         }
 
         m_pEntryLookup[i] = 0;
@@ -256,33 +255,34 @@ dNextGotoList_c::Randomizer_c::Randomizer_c(
 
     // Add non-grouped entries to the list
     inGroup = false;
-    u32 lastGroupedEnt = m_entCount;
+    u32 lastGroupedEnt = m_entList.size();
     for (u16 i = 0; i < m_inputCount; i++) {
-        // Write index and copy group flags
-        LookupEntry_s entry = {i, m_pInput[i].group_start, m_pInput[i].group_end};
-        if (entry.group_end) {
+        // Check and skip entries in groups
+        if (m_pInput[i].group_end) {
+            assert(inGroup || m_pInput[i].group_start);
             inGroup = false;
             continue;
-        } else if (entry.group_start) {
+        } else if (m_pInput[i].group_start) {
+            assert(!inGroup);
             inGroup = true;
             continue;
         } else if (inGroup) {
             continue;
         }
 
-        // Write index
-        m_entList[m_entCount++] = entry;
+        // Write index only
+        m_entList.push_back({i, false, false});
     }
 
     // Reserve a random non-exclusive entrance for the last link
-    u32 index = lastGroupedEnt + m_rnd.next(m_entCount - lastGroupedEnt);
+    u32 index = lastGroupedEnt + m_rnd.next(m_entList.size() - lastGroupedEnt);
     m_lastEntrance = m_entList[index].index;
     remove(index);
 }
 
 void dNextGotoList_c::Randomizer_c::createLookupTable()
 {
-    while (m_entCount > 0) {
+    while (m_entList.size() > 0 || m_excEntList.size() > 0) {
         LookupEntry_s ent1 = select1();
         LookupEntry_s ent2 = select2();
 
@@ -294,25 +294,24 @@ void dNextGotoList_c::Randomizer_c::createLookupTable()
 dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select1()
 {
     // Exclusive entrances always go first
-    if (m_excEntCount != 0) {
-        m_excEntCount--;
-        return m_excEntList[m_excEntIndex++];
+    if (!m_excEntList.empty()) {
+        LookupEntry_s entry = m_excEntList.front();
+        m_excEntList.erase(m_excEntList.begin());
+        return entry;
     }
-
-    // Reset exclusive index
-    m_excEntIndex = 0;
 
     if (m_curGroupEnd == 0) {
         // Not in a group
-        LookupEntry_s entry = m_pEntList[0];
+        assert(!m_entList.empty());
+        LookupEntry_s entry = m_entList[0];
         if (!entry.group_start) {
             removeUpdate(0);
             return entry;
         }
 
         // Start of a group, let's find the end
-        for (u32 i = 1; i < m_entCount; i++) {
-            if (m_pEntList[i].group_end) {
+        for (u32 i = 1; i < m_entList.size(); i++) {
+            if (m_entList[i].group_end) {
                 m_curGroupEnd = i + 1;
                 break;
             }
@@ -324,7 +323,7 @@ dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select1()
     // Randomly select an entrance within the group. This will make sure
     // that which entry ends up exclusive will be evenly distributed.
     u32 i = m_rnd.next(m_curGroupEnd);
-    LookupEntry_s entry = m_pEntList[i];
+    LookupEntry_s entry = m_entList[i];
     removeUpdate(i);
 
     return entry;
@@ -332,9 +331,17 @@ dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select1()
 
 dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select2()
 {
+    if (m_entList.empty()) {
+        // No more entrances to select, use the reserved one
+        assert(m_lastEntrance != Index(-1));
+        Index last = m_lastEntrance;
+        m_lastEntrance = Index(-1);
+        return {last, false, false};
+    }
+
     // Entrance 2 cannot be an exclusive entrance
-    u32 i = m_rnd.next(m_entCount);
-    LookupEntry_s entry = m_pEntList[i];
+    u32 i = m_rnd.next(m_entList.size());
+    LookupEntry_s entry = m_entList[i];
     removeUpdate(i);
 
     return entry;
@@ -342,49 +349,43 @@ dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select2()
 
 void dNextGotoList_c::Randomizer_c::setExclusive(Index index)
 {
-    LookupEntry_s val = m_pEntList[index];
+    assert(index < m_entList.size());
+    LookupEntry_s val = m_entList[index];
     remove(index);
-    m_excEntList[m_excEntIndex + m_excEntCount] = val;
-    m_excEntCount++;
+    m_excEntList.push_back(val);
 }
 
 void dNextGotoList_c::Randomizer_c::remove(Index index)
 {
+    assert(index < m_entList.size());
+
     if (index < m_curGroupEnd) {
         m_curGroupEnd--;
     }
 
-    if (index == 0) {
-        m_pEntList += 1;
-        m_entCount -= 1;
-        return;
-    }
-
-    if (index == (m_entCount - 1)) {
-        m_entCount -= 1;
-        return;
-    }
-
-    std::memmove(
-      m_pEntList + index, m_pEntList + index + 1, (m_entCount - index - 1) * sizeof(LookupEntry_s)
-    );
-    m_entCount -= 1;
+    m_entList.erase(m_entList.begin() + index);
 }
 
 void dNextGotoList_c::Randomizer_c::removeUpdate(Index index)
 {
-    LookupEntry_s entry = m_pEntList[index];
+    assert(index < m_entList.size());
+
+    LookupEntry_s entry = m_entList[index];
 
     if (entry.group_start) {
-        m_pEntList[index + 1].group_start = true;
-        if (m_pEntList[index + 1].group_start && m_pEntList[index + 1].group_end) {
+        assert(index + 1 < m_entList.size());
+        LookupEntry_s& nextEntry = m_entList[index + 1];
+        nextEntry.group_start = true;
+        if (nextEntry.group_end) {
             setExclusive(index + 1);
         }
     }
 
     if (entry.group_end) {
-        m_pEntList[index - 1].group_end = true;
-        if (m_pEntList[index - 1].group_start && m_pEntList[index - 1].group_end) {
+        assert(index > 0);
+        LookupEntry_s& prevEntry = m_entList[index - 1];
+        prevEntry.group_end = true;
+        if (prevEntry.group_start) {
             setExclusive(index - 1);
             index--;
         }
