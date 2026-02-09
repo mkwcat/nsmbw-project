@@ -92,11 +92,15 @@ public:
     FILL(0x2DC, 0x2E1);
 
     /* 0x2E1 */ bool m0x2E1;
-    /* 0x2E2 */ u8 m0x2E2;
+    /* 0x2E2 */ bool m0x2E2;
     /* 0x2E3 */ bool mSuperGuideDispDone;
     /* 0x2E4 */ int mPhase;
 
     FILL(0x2E2, 0x2F0);
 
     /* 0x2F0 */ int mNumPlayers;
+
+    FILL(0x2F4, 0x300);
+
+    /* 0x300 */ int m_dispEndTimer;
 };

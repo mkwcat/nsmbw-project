@@ -16,6 +16,7 @@ public:
     FILL(0x000, 0xB8D);
 
     /* 0xB8D */ bool m0xB8D;
+    /* 0xB8E */ bool m0xB8E;
 
 public:
     // Static Methods

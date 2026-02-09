@@ -391,7 +391,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800E3370 - 0x800E3730
   # d_square_rail.cpp
 # NSMBW          .text:  0x800E3730 - 0x800E38E0
-  # d_stage.cpp
+    d_stage.cpp
 # NSMBW          .text:  0x800E38E0 - 0x800E3BA0
     d_stage_timer.cpp
 # NSMBW          .text:  0x800E3BA0 - 0x800E3BD0

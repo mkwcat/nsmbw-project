@@ -5,14 +5,20 @@
 
 #include "component/c_random.h"
 #include "d_bases/d_s_stage.h"
+#include "d_player/d_WarningManager.h"
 #include "d_project/d_nextgoto_list.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_fader.h"
 #include "d_system/d_game_common.h"
+#include "d_system/d_game_key.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_remocon_mng.h"
 #include "d_system/d_resource_mng.h"
 #include "d_system/d_save_manager.h"
+#include "d_system/d_scene.h"
+#include "d_system/d_stage.h"
+#include "machine/m_fader.h"
 
 [[nsmbw(0x8091EC50)]]
 int dScCrsin_c::loadDefaultObjectResPhase()
@@ -160,4 +166,23 @@ void dScCrsin_c::executeState_resWaitProc2()
     }
 
     mStateMgr.changeState(StateID_createReplayHeapProc);
+}
+
+[[nsmbw(0x80920550)]]
+void dScCrsin_c::executeState_DispEndCheck()
+{
+    if (m_isDispOff) {
+        mFader_c::mFader->setStatus(mFader_c::EStatus::OPAQUE);
+        return dStage_c::setNextStage(0, mParam);
+    }
+
+    if (mPreGameLyt.m0x2E1) {
+        return;
+    }
+    if (dWarningManager_c::isWarning() || dWarningManager_c::m_instance->m0xB8E) {
+        return;
+    }
+    if (mPreGameLyt.m_dispEndTimer == 0 || dGameKey_c::getCurrentCore()->isTrig(0xF0F)) {
+        return dStage_c::setNextStage(0, mParam);
+    }
 }
