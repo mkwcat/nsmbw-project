@@ -3,15 +3,18 @@
 
 #include "d_next.h"
 
+#include "d_bases/d_s_crsin.h"
 #include "d_bases/d_s_stage.h"
 #include "d_project/d_nextgoto_list.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_actor.h"
+#include "d_system/d_fader.h"
 #include "d_system/d_game_common.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_save_manager.h"
-#include "revolution/os/OSError.h"
 #include <bit>
+#include <cassert>
 
 [[nsmbw_data(0x8042A2A0)]]
 dNext_c* dNext_c::m_instance;
@@ -33,7 +36,19 @@ void dNext_c::pipeRandomizerChangeScene(int index)
     } else {
         nextIndex = dNextGotoList_c::ms_lookup[index];
     }
-    ASSERT(nextIndex != -1);
+    assert(nextIndex != -1);
+
+    dActor_c::mExecStopReq |= 0xF;
+
+    if (dScStage_c::m_gameMode == dScStage_c::GAME_MODE_e(4)) {
+        dFader_c::setFader(dFader_c::fader_type_e::FADE);
+    } else {
+        dFader_c::setFader(m_faderType);
+    }
+
+    dScCrsin_c::m_isDispOff = true;
+
+    dScStage_c::m_exitMode = dScStage_c::ExitMode_e(3);
 
     const dNextGotoList_c::Entry_s& entry = dNextGotoList_c::ms_instance[nextIndex];
     return dInfo_c::m_instance->startGame({

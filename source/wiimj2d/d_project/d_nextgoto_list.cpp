@@ -126,8 +126,8 @@ bool dNextGotoList_c::key(const char* str, std::size_t length, bool copy)
         if (stage < 0) {
             return false;
         }
-        m_entry.world = static_cast<u32>(world);
-        m_entry.stage = static_cast<u32>(stage);
+        m_entry.world = static_cast<u32>(world) - 1;
+        m_entry.stage = static_cast<u32>(stage) - 1;
         m_nextState = State_e::STAGE;
         return true;
     }
