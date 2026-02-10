@@ -92,11 +92,11 @@ private:
     std::size_t mUnknownNest = 0;
 
     std::variant<
-      s8*, u8*, u16*, u32*, bool*, dMj2dGame_c::Revision_s*, dMj2dGame_c::GAME_COMPLETION_e*,
+      s8*, u8*, u16*, u32*, s32*, bool*, dMj2dGame_c::Revision_s*, dMj2dGame_c::GAME_COMPLETION_e*,
       dMj2dGame_c::START_KINOKO_KIND_e*, dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*,
       dMj2dGame_c::PLAYER_MODE_u8_e*, dMj2dGame_c::PLAYER_TYPE_u8_e*, STAGE_e*,
       dMj2dGame_c::WORLD_COMPLETION_e*, PATH_DIRECTION_e*, dMj2dGame_c::COURSE_COMPLETION_e*,
-      cBitmask_c<HINT_MOVIE_COUNT>*>
+      cBitmask_c<HINT_MOVIE_COUNT>*, dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>
       mpValue;
     std::size_t mValueCount = 0;
 

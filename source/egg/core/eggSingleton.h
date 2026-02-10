@@ -43,7 +43,8 @@ protected:                                                                      
             sInstance = new T();                                                                   \
         } else {                                                                                   \
             OSPanic(                                                                               \
-              __FILE_NAME__, __LINE__, "Create Singleton Twice (%s) : addr %x\n", #T, sInstance    \
+              __FILE_NAME__, __LINE__, "Create Singleton Twice (%s) : addr %x\n", #T,              \
+              reinterpret_cast<unsigned int>(sInstance)                                            \
             );                                                                                     \
         }                                                                                          \
                                                                                                    \

@@ -55,7 +55,7 @@ void sStateMethod_c::changeStateMethod(const sStateIDIf_c& newStateID)
         return;
     }
 
-    OS_REPORT("%p: State change -> %s\n", this, newStateID.name());
+    OS_REPORT("%p: State change -> %s\n", static_cast<void*>(this), newStateID.name());
 
     mpNewStateID = &newStateID;
     changeStateLocalMethod(newStateID);

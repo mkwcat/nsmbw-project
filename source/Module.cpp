@@ -90,7 +90,7 @@ void _prolog(s32 param1, void* param2)
             );
             if (ptr == nullptr) {
                 OS_REPORT(
-                  "WARNING: Skipping relocation patch at P1 %08X\n", repl->references[i].addrP1
+                  "WARNING: Skipping relocation patch at P1 %08lX\n", repl->references[i].addrP1
                 );
                 continue;
             }
@@ -102,7 +102,10 @@ void _prolog(s32 param1, void* param2)
             } else if (repl->references[i].type == R_PPC_ADDR16_HA) {
                 offset = (offset + 0x8000) >> 16;
             } else {
-                OSPanic(__FILE_NAME__, __LINE__, "Unsupported relocation type %d");
+                OSPanic(
+                  __FILE_NAME__, __LINE__, "Unsupported relocation type %d",
+                  repl->references[i].type
+                );
             }
 
             *ptr = static_cast<u16>(offset);
@@ -129,8 +132,8 @@ void _prolog(s32 param1, void* param2)
          repl != _MRel_replace_array_end; ++repl) {
         if (repl->addr == nullptr) {
             OS_REPORT(
-              "WARNING: Skipping replace patch #%d with null address (prev: 0x%08X)\n",
-              u32(repl - _MRel_replace_array), u32((repl - 1)->addr)
+              "WARNING: Skipping replace patch #%ld with null address (prev %p)\n",
+              static_cast<s32>(repl - _MRel_replace_array), static_cast<void*>((repl - 1)->addr)
             );
             continue;
         }

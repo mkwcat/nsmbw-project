@@ -4,8 +4,8 @@
 
 #include "Four.h"
 
-#include "d_player/d_s_boot.h"
-#include "d_system/d_a_player_manager.h"
+#include "d_system/d_mj2d_game.h"
+#include "d_system/d_system.h"
 #include "mkwcat/AddressMapper.hpp"
 #include <cstring>
 #include <revolution/os.h>
@@ -750,7 +750,7 @@ void Four::Apply()
     for (const FourPatch& patch : FOUR_PATCH_LIST) {
         u32 address = (&patch.addressP1)[static_cast<u32>(codeRegion)];
         if (address == 0) {
-            OS_REPORT("WARNING: Skipping Four patch at P1 0x%08X\n", patch.addressP1);
+            OS_REPORT("WARNING: Skipping Four patch at P1 0x%08lX\n", patch.addressP1);
             continue;
         }
 
@@ -778,8 +778,9 @@ void Four::Apply()
               size
             );
             OS_REPORT(
-              "WARNING: Four patch at 0x%08X inconsistent with original value, expected %u, found "
-              "%u.\n",
+              "WARNING: Four patch at 0x%08lX inconsistent with original value, expected %lu, "
+              "found "
+              "%lu.\n",
               address, oldValue, realOldValue
             );
         }

@@ -304,7 +304,7 @@ void* mMultiArchiveBuilder_c::loadArchive(
         }
 
         if (arcHeader.magic != ARC_MAGIC) {
-            OS_REPORT("Invalid ARC magic: %08X\n", arcHeader.magic);
+            OS_REPORT("Invalid ARC magic: %08lX\n", arcHeader.magic);
             return nullptr;
         }
 

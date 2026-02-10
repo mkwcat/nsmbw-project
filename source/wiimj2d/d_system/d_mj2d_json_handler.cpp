@@ -5,11 +5,13 @@
 
 #include "component/c_json.h"
 #include "d_system/d_mj2d_data.h"
+#include "d_system/d_mj2d_game.h"
 #include "d_system/d_nand_thread.h"
 #include <cstdlib>
 #include <cstring>
 #include <mkwcat/ToString.hpp>
 #include <revolution/os/OSError.h>
+#include <variant>
 
 static inline constexpr u32 strHash(const char* str, std::size_t length)
 {
@@ -206,7 +208,8 @@ bool dMj2dJsonHandler_c::value(s64 number)
     }
 
     CASE(s8)
-    else CASE(u8) else CASE(u16) else CASE(u32) else CASE(bool) else CASE(STAGE_e) //
+    else CASE(u8) else CASE(u16) else CASE(u32) else CASE(s32) else CASE(bool) else CASE(STAGE_e) //
+#undef CASE
       else if (std::holds_alternative<dMj2dGame_c::PLAYER_TYPE_u8_e*>(mpValue))
     {
         if (value >= PLAYER_COUNT || mPlayer == PLAYER_TYPE_e::COUNT) {
@@ -217,7 +220,6 @@ bool dMj2dJsonHandler_c::value(s64 number)
           static_cast<dMj2dGame_c::PLAYER_TYPE_u8_e>(mPlayer);
     }
     else return false;
-#undef CASE
 
     return true;
 }
@@ -422,6 +424,25 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
         out = static_cast<dMj2dGame_c::COURSE_COMPLETION_e>(value);
     } else if (std::holds_alternative<STAGE_e*>(mpValue)) {
         *std::get<STAGE_e*>(mpValue)++ = decodeStageName(str, length, hash);
+    } else if (std::holds_alternative<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>(mpValue)) {
+        auto& out = *std::get<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>(mpValue);
+        dMj2dGame_c::PIPE_RANDOMIZER_MODE_e value =
+          static_cast<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e>(out);
+        switch (hash) {
+        case strHash("disabled"):
+            value = dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED;
+            break;
+        case strHash("per_game"):
+            value = dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::PER_GAME;
+            break;
+        case strHash("per_course"):
+            value = dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::PER_COURSE;
+            break;
+        case strHash("per_exit"):
+            value = dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::PER_EXIT;
+            break;
+        }
+        out = static_cast<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e>(value);
     } else {
         return false;
     }
@@ -533,7 +554,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
 
         if (dashIndex == -1) {
             // Invalid course, ignore
-            OS_REPORT("Unknown play count course: %.*s", length, str);
+            OS_REPORT("Unknown play count course: %.*s", static_cast<int>(length), str);
             mFlags |= Flag_e::UNKNOWN_OBJECT;
             return true;
         }
@@ -553,7 +574,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
         );
         if (mCourse == STAGE_e::COUNT) {
             // Invalid course, ignore
-            OS_REPORT("Unknown play count course: %.*s", length, str);
+            OS_REPORT("Unknown play count course: %.*s", static_cast<int>(length), str);
             mFlags |= Flag_e::UNKNOWN_OBJECT;
             return true;
         }
@@ -621,6 +642,16 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             mFlags |= EXPECT_OBJECT_START;
             mObject = Object_e::WORLD_KEY;
             mWorld = WORLD_e::COUNT;
+            break;
+
+        case strHash("pipe_randomizer_mode"):
+            mValueCount = 1;
+            mpValue = &game.mPipeRandomizerMode;
+            break;
+
+        case strHash("pipe_randomizer_seed"):
+            mValueCount = 1;
+            mpValue = &game.mPipeRandomizerSeed;
             break;
 
         default:
@@ -1161,11 +1192,21 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
         }
         std::fprintf(f, "],");
 
-        W("score", "%u", game.mScore);
+        W("score", "%lu", game.mScore);
         W("staff_roll_high_score", "%u", game.mStaffRollHighScore);
         W("current_world", "%u", game.mCurrentWorld + 1);
         W("current_sub_world", "%u", game.mCurrentSubWorld);
         W("path_node", "%u", game.mCurrentPathNode);
+
+        if (game.mPipeRandomizerMode != dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED) {
+            W("pipe_randomizer_mode", "\"%s\"",
+              StringArray{
+                "disabled", "per_game", "per_course", "per_exit"
+              }[static_cast<int>(game.mPipeRandomizerMode)]);
+        }
+        if (game.mPipeRandomizerSeed != 0) {
+            W("pipe_randomizer_seed", "%ld", game.mPipeRandomizerSeed);
+        }
 
         std::fprintf(f, "\"stock_item\":{");
         for (int i = 0; i < STOCK_ITEM_COUNT; i++) {
@@ -1215,7 +1256,7 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 : "");
             u32 v = u32(game.mPlayerPowerup[index]);
             if (v >= PLAYER_MODE_COUNT) {
-                OS_REPORT("SAVE WARNING!! Invalid player powerup for %d: %d\n", index, v);
+                OS_REPORT("SAVE WARNING!! Invalid player powerup for %d: %ld\n", index, v);
                 v = 0;
             }
             W("powerup", "\"%s\"",
@@ -1243,7 +1284,7 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
             u32 kinokoType = static_cast<u32>(game.mStartKinokoType[i]);
             if (kinokoType >= static_cast<u32>(dMj2dGame_c::START_KINOKO_KIND_e::COUNT)) {
                 OS_REPORT(
-                  "SAVE WARNING!! Invalid start toad house type for w%d: %d\n", i, kinokoType
+                  "SAVE WARNING!! Invalid start toad house type for w%d: %ld\n", i, kinokoType
                 );
                 kinokoType = 0;
             }
@@ -1261,7 +1302,7 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 u32 walkDir = static_cast<u32>(game.mEnemyWalkDir[i][e]);
                 if (walkDir >= 3) {
                     OS_REPORT(
-                      "SAVE WARNING!! Invalid enemy walk direction for w%de%d: %d\n", i, e, walkDir
+                      "SAVE WARNING!! Invalid enemy walk direction for w%de%d: %ld\n", i, e, walkDir
                     );
                     walkDir = 2;
                 }

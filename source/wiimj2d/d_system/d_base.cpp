@@ -12,7 +12,7 @@ dBase_c::dBase_c()
     mpKindString = getKindString();
     mpNameString = dProf::getName(mProfName);
 
-    OS_REPORT("Create: %s, %08x ->%p\n", mpNameString, mParam, this);
+    OS_REPORT("Create: %s, %08lx ->%p\n", mpNameString, mParam, static_cast<void*>(this));
 }
 
 /**

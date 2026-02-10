@@ -115,21 +115,27 @@ typedef struct _files {
 /* 0x802DECC8 */
 int fflush(FILE* file);
 
+[[gnu::format(printf, 2, 3)]]
 int fprintf(FILE* __restrict file, const char* __restrict format, ...);
 
 /* 0x802E1850 */
+[[gnu::format(printf, 1, 2)]]
 int vprintf(const char* __restrict format, va_list ap);
 
 /* 0x802E18CC */
+[[gnu::format(printf, 3, 4)]]
 int vsnprintf(char* __restrict s, size_t n, const char* __restrict format, va_list ap);
 
 /* 0x802E1954 */
+[[gnu::format(printf, 2, 3)]]
 int vsprintf(char* __restrict s, const char* __restrict format, va_list ap);
 
 /* 0x802E19D8 */
+[[gnu::format(printf, 3, 4)]]
 int snprintf(char* __restrict s, size_t n, const char* __restrict format, ...);
 
 /* 0x802E1ACC */
+[[gnu::format(printf, 2, 3)]]
 int sprintf(char* __restrict s, const char* __restrict format, ...);
 
 //
