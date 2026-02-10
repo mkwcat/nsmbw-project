@@ -10,6 +10,7 @@
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_data.h"
 #include "d_system/d_mj2d_game.h"
+#include "machine/m_dvd.h"
 #include "machine/m_heap.h"
 #include <cstring>
 #include <revolution/os/OSError.h>
@@ -186,4 +187,8 @@ void dSaveMng_c::initLoadGame(s8 file)
     }
     daPyMng_c::checkBonusNoCap();
     dScWMap_c::initLoadGame();
+
+    mDvd::setOverlayRes(
+      game->getPipeRandomizerMode() != dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED
+    );
 }

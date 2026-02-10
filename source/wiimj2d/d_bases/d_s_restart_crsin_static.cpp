@@ -8,7 +8,10 @@
 #include "d_project/d_demo_info.h"
 #include "d_s_restart_crsin.h"
 #include "d_system/d_fader.h"
+#include "d_system/d_info.h"
+#include "d_system/d_mj2d_game.h"
 #include "framework/f_feature.h"
+#include "machine/m_dvd.h"
 
 [[nsmbw(0x80374060)]]
 dInfo_c::StartGameInfo_s dScRestartCrsin_c::m_startGameInfo;
@@ -42,6 +45,7 @@ void dScRestartCrsin_c::startTitle(u8 isDemo, bool param2)
 
     dFader_c::setFader(dFader_c::fader_type_e::FADE);
     dScCrsin_c::m_isDispOff = true;
+    mDvd::setOverlayRes(false);
     dScene_c::setNextScene(dProf::RESTART_CRSIN, param2, param2);
 }
 
@@ -74,8 +78,10 @@ void dScRestartCrsin_c::reStartPeachCastle()
     m_startGameInfo.stage2 = m_startGameInfo.stage1;
     m_startGameInfo.courseNo = 0;
     m_startGameInfo.nextGotoNo = -1;
+
     dFader_c::setFader(dFader_c::fader_type_e::CIRCLE);
     dScCrsin_c::m_isDispOff = true;
     dScStage_c::m_exitMode = dScStage_c::ExitMode_e(2);
+    mDvd::setOverlayRes(dInfo_c::isPipeRandomizer());
     dScene_c::setNextScene(dProf::RESTART_CRSIN, false, false);
 }

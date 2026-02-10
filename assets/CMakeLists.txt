@@ -9,7 +9,7 @@ set(DVD_FILES
     rels/project_W1.rel.LZ
     rels/project_C1.rel.LZ
     rels/project.SMAP
-    Info/PipeRandomizer.jsonc.LZ
+    
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/blyt/characterChangeSelectContents_05.brlyt
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/timg/Im_plofileMario_00.tpl
     Layout/continue/continue.arc/arc/anim/continue_05_colorRecover.brlan
@@ -86,6 +86,7 @@ set(DVD_FILES
     Layout/staffCredit/staffCredit.arc/arc/timg/im_kinopioIcon_Orange_01.tpl
     Layout/staffCredit/staffCredit.arc/arc/timg/im_kinopioIcon_Orange_gray.tpl
     Layout/stockItem/stockItem.arc/arc/blyt/stockItem_27.brlyt
+
     Object/boat_light_wood.arc/g3d/boat_light_wood.brres
     Object/C_rcha.arc/g3d/model.brres
     Object/I_yoshi_egg.arc/g3d/I_yoshi_egg.brres
@@ -103,8 +104,265 @@ set(DVD_FILES
     Object/Y_TexOrange.arc/g3d/model.brres
     Object/Y_TexPurple.arc/g3d/model.brres
     Object/Y_TexCrimson.arc/g3d/model.brres
+
     Sound/BANK_SE_VOC_COURSE_KC.brbnk
     Sound/GROUP_SE_VOC_COURSE_KC.brwar
-    Stage/01-09.arc.LZ
+
+# Pipe Randomizer resources
+# ^^^^^^
+
+    RndizerRes/Info/PipeRandomizer.jsonc.LZ
+
+    RndizerRes/Stage/01-01.arc.LZ
+    RndizerRes/Stage/01-02.arc.LZ
+    RndizerRes/Stage/01-03.arc.LZ
+    RndizerRes/Stage/01-04.arc.LZ
+    RndizerRes/Stage/01-06.arc.LZ
+    RndizerRes/Stage/01-20.arc.LZ
+    RndizerRes/Stage/01-24.arc.LZ
+    RndizerRes/Stage/01-41.arc.LZ
+    RndizerRes/Stage/02-01.arc.LZ
+    RndizerRes/Stage/02-02.arc.LZ
+    RndizerRes/Stage/02-03.arc.LZ
+    RndizerRes/Stage/02-04.arc.LZ
+    RndizerRes/Stage/02-05.arc.LZ
+    RndizerRes/Stage/02-06.arc.LZ
+    RndizerRes/Stage/02-20.arc.LZ
+    RndizerRes/Stage/02-24.arc.LZ
+    RndizerRes/Stage/03-01.arc.LZ
+    RndizerRes/Stage/03-02.arc.LZ
+    RndizerRes/Stage/03-03.arc.LZ
+    RndizerRes/Stage/03-04.arc.LZ
+    RndizerRes/Stage/03-05.arc.LZ
+    RndizerRes/Stage/03-21.arc.LZ
+    RndizerRes/Stage/03-24.arc.LZ
+    RndizerRes/Stage/04-01.arc.LZ
+    RndizerRes/Stage/04-03.arc.LZ
+    RndizerRes/Stage/04-04.arc.LZ
+    RndizerRes/Stage/04-05.arc.LZ
+    RndizerRes/Stage/04-21.arc.LZ
+    RndizerRes/Stage/04-22.arc.LZ
+    RndizerRes/Stage/04-24.arc.LZ
+    RndizerRes/Stage/04-38.arc.LZ
+    RndizerRes/Stage/05-01.arc.LZ
+    RndizerRes/Stage/05-02.arc.LZ
+    RndizerRes/Stage/05-03.arc.LZ
+    RndizerRes/Stage/05-04.arc.LZ
+    RndizerRes/Stage/05-05.arc.LZ
+    RndizerRes/Stage/05-20.arc.LZ
+    RndizerRes/Stage/05-21.arc.LZ
+    RndizerRes/Stage/06-01.arc.LZ
+    RndizerRes/Stage/06-02.arc.LZ
+    RndizerRes/Stage/06-03.arc.LZ
+    RndizerRes/Stage/06-04.arc.LZ
+    RndizerRes/Stage/06-05.arc.LZ
+    RndizerRes/Stage/06-06.arc.LZ
+    RndizerRes/Stage/06-22.arc.LZ
+    RndizerRes/Stage/06-24.arc.LZ
+    RndizerRes/Stage/06-38.arc.LZ
+    RndizerRes/Stage/07-01.arc.LZ
+    RndizerRes/Stage/07-02.arc.LZ
+    RndizerRes/Stage/07-04.arc.LZ
+    RndizerRes/Stage/07-05.arc.LZ
+    RndizerRes/Stage/07-06.arc.LZ
+    RndizerRes/Stage/07-21.arc.LZ
+    RndizerRes/Stage/07-22.arc.LZ
+    RndizerRes/Stage/07-24.arc.LZ
+    RndizerRes/Stage/08-01.arc.LZ
+    RndizerRes/Stage/08-02.arc.LZ
+    RndizerRes/Stage/08-03.arc.LZ
+    RndizerRes/Stage/08-04.arc.LZ
+    RndizerRes/Stage/08-05.arc.LZ
+    RndizerRes/Stage/08-06.arc.LZ
+    RndizerRes/Stage/08-07.arc.LZ
+    RndizerRes/Stage/08-24.arc.LZ
+    RndizerRes/Stage/08-38.arc.LZ
+    RndizerRes/Stage/09-01.arc.LZ
+    RndizerRes/Stage/09-02.arc.LZ
+    RndizerRes/Stage/09-03.arc.LZ
+    RndizerRes/Stage/09-04.arc.LZ
+    RndizerRes/Stage/09-05.arc.LZ
+    RndizerRes/Stage/09-06.arc.LZ
+    RndizerRes/Stage/09-07.arc.LZ
+    RndizerRes/Stage/21-01.arc.LZ
+    RndizerRes/Stage/21-02.arc.LZ
+    RndizerRes/Stage/21-03.arc.LZ
+    RndizerRes/Stage/21-04.arc.LZ
+    RndizerRes/Stage/21-05.arc.LZ
+    RndizerRes/Stage/21-06.arc.LZ
+    RndizerRes/Stage/21-20.arc.LZ
+    RndizerRes/Stage/21-22.arc.LZ
+    RndizerRes/Stage/21-24.arc.LZ
+    RndizerRes/Stage/21-27.arc.LZ
+    RndizerRes/Stage/21-28.arc.LZ
+    RndizerRes/Stage/21-33.arc.LZ
+    RndizerRes/Stage/21-34.arc.LZ
+    RndizerRes/Stage/21-35.arc.LZ
+    RndizerRes/Stage/21-36.arc.LZ
+    RndizerRes/Stage/21-40.arc.LZ
+    RndizerRes/Stage/21-41.arc.LZ
+    RndizerRes/Stage/21-42.arc.LZ
+    RndizerRes/Stage/22-01.arc.LZ
+    RndizerRes/Stage/22-02.arc.LZ
+    RndizerRes/Stage/22-03.arc.LZ
+    RndizerRes/Stage/22-04.arc.LZ
+    RndizerRes/Stage/22-05.arc.LZ
+    RndizerRes/Stage/22-06.arc.LZ
+    RndizerRes/Stage/22-20.arc.LZ
+    RndizerRes/Stage/22-22.arc.LZ
+    RndizerRes/Stage/22-24.arc.LZ
+    RndizerRes/Stage/22-28.arc.LZ
+    RndizerRes/Stage/22-33.arc.LZ
+    RndizerRes/Stage/22-34.arc.LZ
+    RndizerRes/Stage/22-35.arc.LZ
+    RndizerRes/Stage/22-36.arc.LZ
+    RndizerRes/Stage/23-01.arc.LZ
+    RndizerRes/Stage/23-02.arc.LZ
+    RndizerRes/Stage/23-03.arc.LZ
+    RndizerRes/Stage/23-04.arc.LZ
+    RndizerRes/Stage/23-05.arc.LZ
+    RndizerRes/Stage/23-20.arc.LZ
+    RndizerRes/Stage/23-21.arc.LZ
+    RndizerRes/Stage/23-22.arc.LZ
+    RndizerRes/Stage/23-24.arc.LZ
+    RndizerRes/Stage/23-28.arc.LZ
+    RndizerRes/Stage/23-29.arc.LZ
+    RndizerRes/Stage/23-33.arc.LZ
+    RndizerRes/Stage/23-34.arc.LZ
+    RndizerRes/Stage/23-35.arc.LZ
+    RndizerRes/Stage/23-36.arc.LZ
+    RndizerRes/Stage/23-38.arc.LZ
+    RndizerRes/Stage/24-01.arc.LZ
+    RndizerRes/Stage/24-02.arc.LZ
+    RndizerRes/Stage/24-03.arc.LZ
+    RndizerRes/Stage/24-04.arc.LZ
+    RndizerRes/Stage/24-05.arc.LZ
+    RndizerRes/Stage/24-20.arc.LZ
+    RndizerRes/Stage/24-21.arc.LZ
+    RndizerRes/Stage/24-22.arc.LZ
+    RndizerRes/Stage/24-24.arc.LZ
+    RndizerRes/Stage/24-28.arc.LZ
+    RndizerRes/Stage/24-29.arc.LZ
+    RndizerRes/Stage/24-33.arc.LZ
+    RndizerRes/Stage/24-34.arc.LZ
+    RndizerRes/Stage/24-35.arc.LZ
+    RndizerRes/Stage/24-36.arc.LZ
+    RndizerRes/Stage/24-38.arc.LZ
+    RndizerRes/Stage/25-01.arc.LZ
+    RndizerRes/Stage/25-02.arc.LZ
+    RndizerRes/Stage/25-03.arc.LZ
+    RndizerRes/Stage/25-04.arc.LZ
+    RndizerRes/Stage/25-05.arc.LZ
+    RndizerRes/Stage/25-20.arc.LZ
+    RndizerRes/Stage/25-21.arc.LZ
+    RndizerRes/Stage/25-22.arc.LZ
+    RndizerRes/Stage/25-24.arc.LZ
+    RndizerRes/Stage/25-28.arc.LZ
+    RndizerRes/Stage/25-33.arc.LZ
+    RndizerRes/Stage/25-34.arc.LZ
+    RndizerRes/Stage/25-35.arc.LZ
+    RndizerRes/Stage/25-36.arc.LZ
+    RndizerRes/Stage/26-01.arc.LZ
+    RndizerRes/Stage/26-02.arc.LZ
+    RndizerRes/Stage/26-03.arc.LZ
+    RndizerRes/Stage/26-04.arc.LZ
+    RndizerRes/Stage/26-05.arc.LZ
+    RndizerRes/Stage/26-06.arc.LZ
+    RndizerRes/Stage/26-09.arc.LZ
+    RndizerRes/Stage/26-22.arc.LZ
+    RndizerRes/Stage/26-24.arc.LZ
+    RndizerRes/Stage/26-28.arc.LZ
+    RndizerRes/Stage/26-33.arc.LZ
+    RndizerRes/Stage/26-34.arc.LZ
+    RndizerRes/Stage/26-35.arc.LZ
+    RndizerRes/Stage/26-36.arc.LZ
+    RndizerRes/Stage/26-38.arc.LZ
+    RndizerRes/Stage/26-87.arc.LZ
+    RndizerRes/Stage/27-01.arc.LZ
+    RndizerRes/Stage/27-02.arc.LZ
+    RndizerRes/Stage/27-03.arc.LZ
+    RndizerRes/Stage/27-04.arc.LZ
+    RndizerRes/Stage/27-05.arc.LZ
+    RndizerRes/Stage/27-06.arc.LZ
+    RndizerRes/Stage/27-21.arc.LZ
+    RndizerRes/Stage/27-22.arc.LZ
+    RndizerRes/Stage/27-24.arc.LZ
+    RndizerRes/Stage/27-28.arc.LZ
+    RndizerRes/Stage/27-29.arc.LZ
+    RndizerRes/Stage/27-33.arc.LZ
+    RndizerRes/Stage/27-34.arc.LZ
+    RndizerRes/Stage/27-35.arc.LZ
+    RndizerRes/Stage/28-01.arc.LZ
+    RndizerRes/Stage/28-02.arc.LZ
+    RndizerRes/Stage/28-03.arc.LZ
+    RndizerRes/Stage/28-04.arc.LZ
+    RndizerRes/Stage/28-05.arc.LZ
+    RndizerRes/Stage/28-06.arc.LZ
+    RndizerRes/Stage/28-07.arc.LZ
+    RndizerRes/Stage/28-08.arc.LZ
+    RndizerRes/Stage/28-09.arc.LZ
+    RndizerRes/Stage/28-22.arc.LZ
+    RndizerRes/Stage/28-24.arc.LZ
+    RndizerRes/Stage/28-28.arc.LZ
+    RndizerRes/Stage/28-33.arc.LZ
+    RndizerRes/Stage/28-34.arc.LZ
+    RndizerRes/Stage/28-35.arc.LZ
+    RndizerRes/Stage/28-38.arc.LZ
+    RndizerRes/Stage/29-01.arc.LZ
+    RndizerRes/Stage/29-02.arc.LZ
+    RndizerRes/Stage/29-03.arc.LZ
+    RndizerRes/Stage/29-04.arc.LZ
+    RndizerRes/Stage/29-05.arc.LZ
+    RndizerRes/Stage/29-06.arc.LZ
+    RndizerRes/Stage/29-07.arc.LZ
+    RndizerRes/Stage/29-08.arc.LZ
+    RndizerRes/Stage/29-09.arc.LZ
+    RndizerRes/Stage/29-10.arc.LZ
+    RndizerRes/Stage/29-28.arc.LZ
+
+    RndizerRes/Stage/Texture/AW_Pa0_jyotyu_text.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_daishizenkuri.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_dbtoride.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_desert.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_e3setsugen.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_gake_yougan.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_gake.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_kaiganslopes.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_oldbarrierchika.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_sabaku_chika.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_shiro_sora.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_tilingshirosora.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa1_toride_sabaka.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_bowsercastle.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_bowsers_castle_1.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_chika_0606.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_daishizenkuri.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_deserttower.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_e3kori.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_forestobake.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_mountainpa2_dark.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_mountainpa2.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_shiro.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_undercastle.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa2_web.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_anchor.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_bowsers_castle_part2.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_cautiontape.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_collision_hacks.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_douk4sw.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_finalcastlestuff.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_gakebg.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_hanatari_saka.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_passthroughredstair.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_princesspeach.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_shirolayer_spikes.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_shroomrocks.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_superplayer.arc.LZ
+    RndizerRes/Stage/Texture/AW_Pa3_webs.arc.LZ
+    RndizerRes/Stage/Texture/AW_PaX_Pa0.arc.LZ
+    RndizerRes/Stage/Texture/AW_PaX_Pa1.arc.LZ
+    RndizerRes/Stage/Texture/AW_PaX_Pa2.arc.LZ
+    RndizerRes/Stage/Texture/AW_PaX_Pa3.arc.LZ
+
     PARENT_SCOPE
 )

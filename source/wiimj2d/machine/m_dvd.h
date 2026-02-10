@@ -2,6 +2,7 @@
 
 #include <egg/core/eggDvdRipper.h>
 #include <egg/core/eggHeap.h>
+#include <optional>
 
 namespace mDvd
 {
@@ -18,6 +19,12 @@ void* loadToMainRAM(
 );
 
 bool getFileSize(const char* path, u32* outFileSize);
+
+/* 0x8016BD60 */
+bool isAutoStreamDecomp();
+
+void setOverlayRes(std::optional<bool> isRndizerRes);
+void getOverlayRes(bool* isRndizerRes);
 
 } // namespace mDvd
 
