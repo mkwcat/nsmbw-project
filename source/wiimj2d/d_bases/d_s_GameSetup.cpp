@@ -26,6 +26,7 @@
 #include "d_system/d_save_manager.h"
 #include "d_system/d_scene.h"
 #include "framework/f_feature.h"
+#include "machine/m_dvd.h"
 #include "sound/SndSceneMgr.h"
 
 [[nsmbw(0x80917A70)]]
@@ -127,6 +128,7 @@ void dScGameSetup_c::executeState_FileSelect()
             dInfo_c::mGameFlag |=
               dInfo_c::GameFlag_e::MULTI_MODE | dInfo_c::GameFlag_e::COIN_BATTLE;
         }
+        mDvd::setOverlayRes(false);
     }
 
     return mStateMgr.changeState(StateID_FadeOut);
