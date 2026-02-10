@@ -157,7 +157,7 @@ void dScStage_c::
 /* 801023B4 4182001C */  beq-     UNDEF_801023d0;
 /* 801023B8 281D0008 */  cmplwi   r29, 8;
 /* 801023BC 41820014 */  beq-     UNDEF_801023d0;
-/* 801023C0 38600000 */  li       r3, 1;
+/* 801023C0 38600000 */  li       r3, 0;
 /* 801023C4 38800000 */  li       r4, 0;
 /* 801023C8 4BFFF519 */  bl       startTitle__17dScRestartCrsin_cFUcb;
 /* 801023CC 480001CC */  b        UNDEF_80102598;
