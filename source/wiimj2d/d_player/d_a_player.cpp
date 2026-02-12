@@ -83,6 +83,9 @@ void dAcPy_c::cancelCarry(dActor_c* carriedActor);
 [[nsmbw(0x8012E6E0)]]
 bool dAcPy_c::releaseCarryActor();
 
+[[nsmbw(0x80138890)]]
+bool dAcPy_c::isNotBalloonCourse();
+
 [[nsmbw(0x80138E80)]]
 void dAcPy_c::setBalloonHelpVoice();
 
@@ -598,159 +601,62 @@ bool dAcPy_c::executeChangeInit()
 void dAcPy_c::setChange(int param);
 
 [[nsmbw(0x80144C60)]]
-void dAcPy_c::setSceneChangeInfo() ASM_METHOD(
-  // clang-format off
-/* 80144C60 9421FFE0 */  stwu     r1, -32(r1);
-/* 80144C64 7C0802A6 */  mflr     r0;
-/* 80144C68 90010024 */  stw      r0, 36(r1);
-/* 80144C6C 93E1001C */  stw      r31, 28(r1);
-/* 80144C70 93C10018 */  stw      r30, 24(r1);
-/* 80144C74 93A10014 */  stw      r29, 20(r1);
-/* 80144C78 7C7D1B78 */  mr       r29, r3;
-/* 80144C7C 93810010 */  stw      r28, 16(r1);
-/* 80144C80 81830060 */  lwz      r12, 96(r3);
-/* 80144C84 818C00E0 */  lwz      r12, 224(r12);
-/* 80144C88 7D8903A6 */  mtctr    r12;
-/* 80144C8C 4E800421 */  bctrl;
-/* 80144C90 2C030000 */  cmpwi    r3, 0;
-/* 80144C94 41820070 */  beq-     UNDEF_80144d04;
-/* 80144C98 480001F9 */  bl       UNDEF_80144e90;
-/* 80144C9C 2C030003 */  cmpwi    r3, 3;
-/* 80144CA0 408201C8 */  bne-     UNDEF_80144e68;
-/* 80144CA4 887D038D */  lbz      r3, 909(r29);
-/* 80144CA8 7C630774 */  extsb    r3, r3;
-/* 80144CAC 4BF1AEE5 */  bl       getCtrlPlayer__9daPyMng_cFi;
-/* 80144CB0 2C030000 */  cmpwi    r3, 0;
-/* 80144CB4 418201B4 */  beq-     UNDEF_80144e68;
-/* 80144CB8 38800065 */  li       r4, 101;
-/* 80144CBC 4BF12035 */  bl       isStatus__10daPlBase_cFi;
-/* 80144CC0 2C030000 */  cmpwi    r3, 0;
-/* 80144CC4 408201A4 */  bne-     UNDEF_80144e68;
-/* 80144CC8 7FA3EB78 */  mr       r3, r29;
-/* 80144CCC 38800004 */  li       r4, 4;
-/* 80144CD0 4BF12021 */  bl       isStatus__10daPlBase_cFi;
-/* 80144CD4 2C030000 */  cmpwi    r3, 0;
-/* 80144CD8 40820190 */  bne-     UNDEF_80144e68;
-/* 80144CDC 7FA3EB78 */  mr       r3, r29;
-/* 80144CE0 388000B6 */  li       r4, 182;
-/* 80144CE4 4BF1200D */  bl       isStatus__10daPlBase_cFi;
-/* 80144CE8 2C030000 */  cmpwi    r3, 0;
-/* 80144CEC 4082017C */  bne-     UNDEF_80144e68;
-/* 80144CF0 889D038D */  lbz      r4, 909(r29);
-/* 80144CF4 807D1090 */  lwz      r3, 4240(r29);
-/* 80144CF8 7C840774 */  extsb    r4, r4;
-/* 80144CFC 4BF1A875 */  bl       UNDEF_8005f570;
-/* 80144D00 48000168 */  b        UNDEF_80144e68;
-UNDEF_80144d04:;
-/* 80144D04 83FD1090 */  lwz      r31, 4240(r29);
-/* 80144D08 3BC00000 */  li       r30, 0;
-/* 80144D0C 48000185 */  bl       UNDEF_80144e90;
-/* 80144D10 2C030003 */  cmpwi    r3, 3;
-/* 80144D14 41820018 */  beq-     UNDEF_80144d2c;
-/* 80144D18 2C030002 */  cmpwi    r3, 2;
-/* 80144D1C 418200AC */  beq-     UNDEF_80144dc8;
-/* 80144D20 2C030001 */  cmpwi    r3, 1;
-/* 80144D24 418200DC */  beq-     UNDEF_80144e00;
-/* 80144D28 480000DC */  b        UNDEF_80144e04;
-UNDEF_80144d2c:;
-/* 80144D2C 7FA3EB78 */  mr       r3, r29;
-/* 80144D30 38800055 */  li       r4, 85;
-/* 80144D34 4BF11FBD */  bl       isStatus__10daPlBase_cFi;
-/* 80144D38 2C030000 */  cmpwi    r3, 0;
-/* 80144D3C 41820014 */  beq-     UNDEF_80144d50;
-/* 80144D40 7FA3EB78 */  mr       r3, r29;
-/* 80144D44 4BFF3B4D */  bl       UNDEF_80138890;
-/* 80144D48 2C030000 */  cmpwi    r3, 0;
-/* 80144D4C 4182003C */  beq-     UNDEF_80144d88;
-UNDEF_80144d50:;
-/* 80144D50 7FA3EB78 */  mr       r3, r29;
-/* 80144D54 38800053 */  li       r4, 83;
-/* 80144D58 4BF11F99 */  bl       isStatus__10daPlBase_cFi;
-/* 80144D5C 2C030000 */  cmpwi    r3, 0;
-/* 80144D60 4182000C */  beq-     UNDEF_80144d6c;
-/* 80144D64 3BC00004 */  li       r30, 4;
-/* 80144D68 48000020 */  b        UNDEF_80144d88;
-UNDEF_80144d6c:;
-/* 80144D6C 7FA3EB78 */  mr       r3, r29;
-/* 80144D70 38800004 */  li       r4, 4;
-/* 80144D74 4BF11F7D */  bl       isStatus__10daPlBase_cFi;
-/* 80144D78 2C030000 */  cmpwi    r3, 0;
-/* 80144D7C 4182000C */  beq-     UNDEF_80144d88;
-/* 80144D80 3BE00000 */  li       r31, 0;
-/* 80144D84 3BC00004 */  li       r30, 4;
-UNDEF_80144d88:;
-/* 80144D88 7FA3EB78 */  mr       r3, r29;
-/* 80144D8C 4BFF4D05 */  bl       UNDEF_80139a90; // getRideYoshi__7dAcPy_cFv
-/* 80144D90 2C030000 */  cmpwi    r3, 0;
-/* 80144D94 41820070 */  beq-     UNDEF_80144e04;
-/* 80144D98 83831564 */  lwz      r28, 5476(r3);
-/* 80144D9C 3BC00002 */  li       r30, 2;
-/* 80144DA0 4BF12091 */  bl       UNDEF_80056e30;
-/* 80144DA4 8003024C */  lwz      r0, 588(r3);
-/* 80144DA8 7F85E378 */  mr       r5, r28;
-/* 80144DAC 887D038D */  lbz      r3, 909(r29);
-/* 80144DB0 5404063E */  clrlwi   r4, r0, 24;
-/* 80144DB4 4BF1AE6D */  bl       UNDEF_8005fc20;
-/* 80144DB8 7FA3EB78 */  mr       r3, r29;
-/* 80144DBC 388000C5 */  li       r4, 197;
-/* 80144DC0 4BF11EB1 */  bl       onStatus__10daPlBase_cFi;
-/* 80144DC4 48000040 */  b        UNDEF_80144e04;
-UNDEF_80144dc8:;
-/* 80144DC8 881D038D */  lbz      r0, 909(r29);
-/* 80144DCC 3CA08035 */  lis      r5, mPlayerType__9daPyMng_c@ha;
-/* 80144DD0 3C808035 */  lis      r4, mPlayerMode__9daPyMng_c@ha;
-/* 80144DD4 3C608035 */  lis      r3, mCreateItem__9daPyMng_c@ha;
-/* 80144DD8 7C000774 */  extsb    r0, r0;
-/* 80144DDC 38A55160 */  addi     r5, r5, mPlayerType__9daPyMng_c@l;
-/* 80144DE0 5400103A */  slwi     r0, r0, 2;
-/* 80144DE4 38845170 */  addi     r4, r4, mPlayerMode__9daPyMng_c@l;
-/* 80144DE8 7C05002E */  lwzx     r0, r5, r0;
-/* 80144DEC 38635180 */  addi     r3, r3, mCreateItem__9daPyMng_c@l;
-/* 80144DF0 5400103A */  slwi     r0, r0, 2;
-/* 80144DF4 7FE4002E */  lwzx     r31, r4, r0;
-/* 80144DF8 7FC3002E */  lwzx     r30, r3, r0;
-/* 80144DFC 48000008 */  b        UNDEF_80144e04;
-UNDEF_80144e00:;
-/* 80144E00 3BE00000 */  li       r31, 0;
-UNDEF_80144e04:;
-/* 80144E04 881D038D */  lbz      r0, 909(r29);
-/* 80144E08 3C608035 */  lis      r3, mPlayerType__9daPyMng_c@ha;
-/* 80144E0C 3C808035 */  lis      r4, mPlayerEntry__9daPyMng_c@ha;
-/* 80144E10 3CE08035 */  lis      r7, mPlayerMode__9daPyMng_c@ha;
-/* 80144E14 7C080774 */  extsb    r8, r0;
-/* 80144E18 3CC08035 */  lis      r6, mCreateItem__9daPyMng_c@ha;
-/* 80144E1C 5505103A */  slwi     r5, r8, 2;
-/* 80144E20 38635160 */  addi     r3, r3, mPlayerType__9daPyMng_c@l;
-/* 80144E24 7C03282E */  lwzx     r0, r3, r5;
-/* 80144E28 38845150 */  addi     r4, r4, mPlayerEntry__9daPyMng_c@l;
-/* 80144E2C 38600001 */  li       r3, 1;
-/* 80144E30 7C64292E */  stwx     r3, r4, r5;
-/* 80144E34 38E75170 */  addi     r7, r7, mPlayerMode__9daPyMng_c@l;
-/* 80144E38 5400103A */  slwi     r0, r0, 2;
-/* 80144E3C 38C65180 */  addi     r6, r6, mCreateItem__9daPyMng_c@l;
-/* 80144E40 7FE7012E */  stwx     r31, r7, r0;
-/* 80144E44 5505083C */  slwi     r5, r8, 1;
-/* 80144E48          */  lis      r4, m_star_time__9daPyMng_c@ha;
-                         la       r4, m_star_time__9daPyMng_c@l(r4);
-/* 80144E4C 7FC6012E */  stwx     r30, r6, r0;
-/* 80144E50          */  lis      r3, m_star_count__9daPyMng_c@ha;
-                         la       r3, m_star_count__9daPyMng_c@l(r3);
-/* 80144E54 801D1070 */  lwz      r0, 4208(r29);
-/* 80144E58 7C042B2E */  sthx     r0, r4, r5;
-/* 80144E5C 881D1081 */  lbz      r0, 4225(r29);
-/* 80144E60 7C000774 */  extsb    r0, r0;
-/* 80144E64 7C032B2E */  sthx     r0, r3, r5;
-UNDEF_80144e68:;
-/* 80144E68 80010024 */  lwz      r0, 36(r1);
-/* 80144E6C 83E1001C */  lwz      r31, 28(r1);
-/* 80144E70 83C10018 */  lwz      r30, 24(r1);
-/* 80144E74 83A10014 */  lwz      r29, 20(r1);
-/* 80144E78 83810010 */  lwz      r28, 16(r1);
-/* 80144E7C 7C0803A6 */  mtlr     r0;
-/* 80144E80 38210020 */  addi     r1, r1, 32;
-/* 80144E84 4E800020 */  blr;
-  // clang-format on
-);
+void dAcPy_c::setSceneChangeInfo()
+{
+    if (isItemKinopio()) {
+        if (dScStage_c::getExitMode() == dScStage_c::ExitMode_e::CARRY_OVER ||
+            dScStage_c::getExitMode() == dScStage_c::ExitMode_e::CARRY_OVER_RNDIZER) {
+            dAcPy_c* ctrlPlayer = static_cast<dAcPy_c*>(daPyMng_c::getCtrlPlayer(mPlrNo));
+            if (ctrlPlayer != nullptr && !ctrlPlayer->isStatus(101) && !isStatus(4) &&
+                !isStatus(6)) {
+                daPyMng_c::initKinopioPlayer(mPlayerMode, mPlrNo);
+            }
+        }
+        return;
+    }
+
+    PLAYER_CREATE_ITEM_e createItem = PLAYER_CREATE_ITEM_e::NONE;
+    PLAYER_MODE_e powerup = mPlayerMode;
+
+    switch (dScStage_c::getExitMode()) {
+    case dScStage_c::ExitMode_e::CARRY_OVER:
+    case dScStage_c::ExitMode_e::CARRY_OVER_RNDIZER: {
+        if (!isStatus(85) || isNotBalloonCourse()) {
+            if (isStatus(83)) {
+                createItem = PLAYER_CREATE_ITEM_e::BUBBLE;
+            } else if (isStatus(4)) {
+                powerup = PLAYER_MODE_e::NONE;
+                createItem = PLAYER_CREATE_ITEM_e::BUBBLE;
+            }
+        }
+
+        if (daYoshi_c* yoshi = getRideYoshi(); yoshi != nullptr) {
+            createItem = PLAYER_CREATE_ITEM_e::YOSHI;
+            daPyMng_c::setCarryOverYoshiInfo(
+              mPlrNo, static_cast<dYoshiMdl_c*>(yoshi->getModel())->mColor, yoshi->m_eatCount
+            );
+            onStatus(197);
+        }
+        break;
+    }
+    case dScStage_c::ExitMode_e::RESTORE_INFO:
+        powerup = daPyMng_c::mPlayerMode[daPyMng_c::mPlayerType[mPlrNo]];
+        createItem = daPyMng_c::mCreateItem[daPyMng_c::mPlayerType[mPlrNo]];
+        break;
+    case dScStage_c::ExitMode_e::DOWN:
+        powerup = PLAYER_MODE_e::NONE;
+        break;
+    default:
+        break;
+    }
+
+    daPyMng_c::mPlayerEntry[mPlrNo] = 1;
+    PLAYER_TYPE_e type = daPyMng_c::mPlayerType[mPlrNo];
+    daPyMng_c::mPlayerMode[type] = powerup;
+    daPyMng_c::mCreateItem[type] = createItem;
+    daPyMng_c::m_star_time[mPlrNo] = m_starTime;
+    daPyMng_c::m_star_count[mPlrNo] = m_starCount;
+}
 
 /**
  * VT+0x08

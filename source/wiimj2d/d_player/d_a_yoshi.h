@@ -30,5 +30,9 @@ public:
 
     /* 0x1524 */ int mEatStage;
 
-    OFFSET_ASSERT(0x1528);
+    FILL(0x1528, 0x1564);
+
+    /* 0x1564 */ int m_eatCount;
+
+    OFFSET_ASSERT(0x1568);
 };

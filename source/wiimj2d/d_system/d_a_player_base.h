@@ -811,7 +811,21 @@ public:
 
     /* 0x0EA4 */ dAcPyKey_c mKey;
 
-    FILL(0x1008, 0x1090);
+    FILL(0x1008, 0x1070);
+
+    /* 0x1070 */ int m_starTime;
+    /* 0x1074 */ int m_timer0x1070;
+    /* 0x1078 */ int m_timer0x1074;
+    /* 0x107C */ int m_timer0x1078;
+
+    /* 0x1080 */ s8 m_treadCount;
+    /* 0x1081 */ s8 m_starCount;
+    /* 0x1082 */ s8 m_plComboCount;
+
+    /* 0x1084 */ u32 m0x1084;
+    /* 0x1088 */ u32 mFollowMameKuribo;
+
+    /* 0x108C */ fBaseID_e mIceActorID;
 
     /* 0x1090 */ PLAYER_MODE_e mPlayerMode;
 

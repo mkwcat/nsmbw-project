@@ -18,7 +18,7 @@ private:
     /* 0x800D01F0 */
     void changeScene();
 
-    void pipeRandomizerChangeScene(int index);
+    void changeSceneRndizer(int index);
 
 public:
     // Static Variables

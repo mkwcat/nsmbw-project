@@ -69,7 +69,7 @@ public:
     static void createCourseInit();
 
     /* 0x8005F570 @unofficial */
-    static void initKinopioPlayer(int kinopioMode, int player);
+    static void initKinopioPlayer(PLAYER_MODE_e playerMode, int player);
 
     /* 0x8005F5C0 */
     static void update();
@@ -109,8 +109,8 @@ public:
 
     static int getPlayerColorType(PLAYER_TYPE_e playerType);
 
-    /* 0x8005FC20 */
-    static void storeYoshiInfo(int index, dYoshiMdl_c::COLOR_e color, int fruit);
+    /* 0x8005FC20 @renamed */
+    static void setCarryOverYoshiInfo(u8 index, dYoshiMdl_c::COLOR_e color, int fruit);
 
     /* 0x8005FC40 */
     static dYoshiMdl_c::COLOR_e getYoshiColor(int index);
@@ -270,9 +270,8 @@ public:
     /* 0x80429FA0 */
     static int mScore;
 
-    // This is some enum idk what it is
     /* 0x80429FA4 */
-    static int mKinopioMode;
+    static PLAYER_MODE_e mKinopioMode;
 
     /* 0x80429FA8 */
     static s32 mTimeUpPlayerNum;

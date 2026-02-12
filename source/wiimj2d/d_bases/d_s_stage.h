@@ -48,6 +48,11 @@ public:
 
     /* @unofficial? */
     enum class ExitMode_e {
+        CLEAR = 0,
+        DOWN = 1,
+        RESTORE_INFO = 2,
+        CARRY_OVER = 3,
+        CARRY_OVER_RNDIZER = 4,
     };
 
 public:
@@ -62,11 +67,17 @@ public:
     /* 0x80924950 */
     bool CreatedLayouts() const;
 
+    /* 0x809251C0 */
+    void procExitMode();
+
     /* 0x809251F0 */
-    void courseClear();
+    void exitClear();
 
     /* 0x809253E0 */
-    void restoreStartInfo();
+    void exitRestore();
+
+    /* 0x809255B0 */
+    void exitDown();
 
 public:
     // Static Methods
@@ -96,6 +107,12 @@ public:
 
     /* 0x801026B0 */
     static void calcTitleCount();
+
+    /* 0x80144E90 */
+    static ExitMode_e getExitMode()
+    {
+        return m_exitMode;
+    }
 
 public:
     // Static Inline Methods

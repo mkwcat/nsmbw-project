@@ -26,8 +26,26 @@ bool dScStage_c::CreatedLayouts() const
            (!mpStaffCreditScore || mpStaffCreditScore->mReady);
 }
 
+[[nsmbw(0x809251C0)]]
+void dScStage_c::procExitMode()
+{
+    switch (m_exitMode) {
+    case ExitMode_e::CLEAR:
+        exitClear();
+        break;
+    case ExitMode_e::DOWN:
+        exitDown();
+        break;
+    case ExitMode_e::CARRY_OVER_RNDIZER:
+        break;
+    default:
+        exitRestore();
+        break;
+    }
+}
+
 [[nsmbw(0x809251F0)]]
-void dScStage_c::courseClear()
+void dScStage_c::exitClear()
 {
     WORLD_e world = m_instance->mWorld;
     STAGE_e stage = m_instance->mStage;
@@ -96,12 +114,12 @@ void dScStage_c::courseClear()
     );
 
     if (startGameInfo.demoType != dInfo_c::DemoType_e::NONE) {
-        restoreStartInfo();
+        exitRestore();
     }
 }
 
 [[nsmbw(0x809253E0)]]
-void dScStage_c::restoreStartInfo()
+void dScStage_c::exitRestore()
 {
     dInfo_c* info = dInfo_c::m_instance;
     dCyuukan_c* cyuukan = &info->mCyuukan;
@@ -143,3 +161,6 @@ void dScStage_c::restoreStartInfo()
 
     info->m0x06C = 0;
 }
+
+[[nsmbw(0x809255B0)]]
+void dScStage_c::exitDown();

@@ -93,6 +93,9 @@ public:
     /* 0x80139AE0 */
     void setRideOnYoshi(daYoshi_c* yoshi);
 
+    /* 0x80138890 */
+    bool isNotBalloonCourse();
+
     mMtx_c getCarryMtx()
     {
         mMtx_c mtx;

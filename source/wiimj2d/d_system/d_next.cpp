@@ -22,7 +22,7 @@ dNext_c* dNext_c::m_instance;
 [[nsmbw(0x800D01F0)]]
 void dNext_c::changeScene();
 
-void dNext_c::pipeRandomizerChangeScene(int index)
+void dNext_c::changeSceneRndizer(int index)
 {
     dMj2dGame_c::PIPE_RANDOMIZER_MODE_e mode =
       dSaveMng_c::m_instance->getSaveGame()->getPipeRandomizerMode();
@@ -48,7 +48,7 @@ void dNext_c::pipeRandomizerChangeScene(int index)
 
     dScCrsin_c::m_isDispOff = true;
 
-    dScStage_c::m_exitMode = dScStage_c::ExitMode_e(3);
+    dScStage_c::m_exitMode = dScStage_c::ExitMode_e::CARRY_OVER_RNDIZER;
 
     const dNextGotoList_c::Entry_s& entry = dNextGotoList_c::ms_instance[nextIndex];
     return dInfo_c::m_instance->startGame({
@@ -86,7 +86,7 @@ void dNext_c::execute()
             dNextGotoList_c::Entry_s fixed = entry;
             fixed.group_start = fixed.group_end = 0;
             if (std::bit_cast<u32>(fixed) == check) {
-                return pipeRandomizerChangeScene(&entry - dNextGotoList_c::ms_instance.begin());
+                return changeSceneRndizer(&entry - dNextGotoList_c::ms_instance.begin());
             }
         }
     }

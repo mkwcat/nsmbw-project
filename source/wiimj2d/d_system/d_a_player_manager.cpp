@@ -104,7 +104,7 @@ cArray_c<u16, PLAYER_COUNT, int> daPyMng_c::m_star_count;
 int daPyMng_c::mScore;
 
 [[nsmbw_data(0x80429FA4)]]
-int daPyMng_c::mKinopioMode;
+PLAYER_MODE_e daPyMng_c::mKinopioMode;
 
 [[nsmbw_data(0x80429FA8)]]
 s32 daPyMng_c::mTimeUpPlayerNum;
@@ -188,7 +188,7 @@ void daPyMng_c::initStage()
         dInfo_c::m_instance->mCyuukan.mIsKinopioInChukan) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             if (mPlayerEntry[i] == 0) {
-                initKinopioPlayer(0, i);
+                initKinopioPlayer(PLAYER_MODE_e::NONE, i);
                 break;
             }
         }
@@ -378,13 +378,13 @@ void daPyMng_c::createCourseInit()
 }
 
 [[nsmbw(0x8005F570)]]
-void daPyMng_c::initKinopioPlayer(int kinopioMode, int index)
+void daPyMng_c::initKinopioPlayer(PLAYER_MODE_e playerMode, int index)
 {
     mActPlayerInfo |= 1 << index;
     mOldActPlayerInfo |= 1 << index;
     mPlayerEntry[index] = 1;
     mCreateItem[mPlayerType[index]] = PLAYER_CREATE_ITEM_e::RESCUE_TOAD;
-    mKinopioMode = kinopioMode;
+    mKinopioMode = playerMode;
 }
 
 static cArray_c<int, PLAYER_COUNT, PLAYER_TYPE_e> mDeathCount = {};
@@ -583,7 +583,7 @@ int daPyMng_c::getPlayerColorType(PLAYER_TYPE_e playerType)
 }
 
 [[nsmbw(0x8005FC20)]]
-void daPyMng_c::storeYoshiInfo(int index, dYoshiMdl_c::COLOR_e color, int fruit)
+void daPyMng_c::setCarryOverYoshiInfo(u8 index, dYoshiMdl_c::COLOR_e color, int fruit)
 {
     m_yoshiColor[index] = static_cast<u8>(color);
     m_yoshiFruit[index] = fruit;
@@ -970,7 +970,7 @@ void daPyMng_c::checkCorrectCreateInfo()
         }
 
         if (mRest[type] > MAX_LIVES || mRest[type] < 0) {
-            mRest[type] = 5;
+            mRest[type] = START_REST;
         }
     }
 
