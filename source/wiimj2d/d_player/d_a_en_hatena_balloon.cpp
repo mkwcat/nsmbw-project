@@ -88,8 +88,7 @@ void daEnHatenaBalloon_c::model_set()
         mItemModel.setAnm(mItemAnmChr);
         mItemAnmChr.setRate(0.5f);
 
-        ITEM_e itemType = static_cast<ITEM_e>(fParam_c<daEnHatenaBalloon_c>(mParam).item_type);
-        if (itemType == ITEM_e::ONE_UP) {
+        if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
             nw4r::g3d::ResAnmTexPat itemResAnmTexPat =
               itemResFile.GetResAnmTexPat("I_kinoko_switch");
             mItemAnmTexPat.create(itemResMdl, itemResAnmTexPat, &mAllocator, nullptr, 1);
@@ -110,7 +109,7 @@ void daEnHatenaBalloon_c::anm_set(int);
 void daEnHatenaBalloon_c::createItem()
 {
     u32 type = 8; // Mushroom
-    if (fParam_c<daEnHatenaBalloon_c>(mParam).item_type == static_cast<u32>(ITEM_e::ONE_UP)) {
+    if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
         type = 7; // 1-Up
     }
 
@@ -126,7 +125,8 @@ void daEnHatenaBalloon_c::createItem()
       SndID::SE_OBJ_CMN_BALLOON_BREAK, dAudio::cvtSndObjctPos(mPos), 0
     );
 
-    if (fFeat::bubble_swarm_mode && dBalloonMng_c::mNoCloneTimer == 0) {
+    if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon && fFeat::bubble_swarm_mode &&
+        dBalloonMng_c::mNoCloneTimer == 0) {
         dBalloonMng_c::m_instance->mSwarmTimer = 1;
         dBalloonMng_c::m_instance->createSwarmBalloon();
         dBalloonMng_c::m_instance->createSwarmBalloon();
@@ -142,7 +142,7 @@ void daEnHatenaBalloon_c::remocon_times_check();
 [[nsmbw(0x801134F0)]]
 void daEnHatenaBalloon_c::remocon_shake_check()
 {
-    if (mHasItem && !fFeat::bubble_swarm_mode) {
+    if (mHasItem && !fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
         return;
     }
 
@@ -151,7 +151,7 @@ void daEnHatenaBalloon_c::remocon_shake_check()
         return;
     }
 
-    if (mHasItem && fFeat::bubble_swarm_mode) {
+    if (mHasItem && fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
         m_shake_check_timer = 30;
         m_countdown_anm = 31;
         anm_set(1);

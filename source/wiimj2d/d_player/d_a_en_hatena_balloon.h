@@ -20,7 +20,7 @@ public:
 
     struct Param_s {
         u32 : 15;
-        u32 item_type : 5 = 0; // +++
+        u32 green_demon : 1 = 0; // +++
         u32 has_item : 4 = 0;
         u32 unk : 4 = 0;
         u32 player : 4 = 0;

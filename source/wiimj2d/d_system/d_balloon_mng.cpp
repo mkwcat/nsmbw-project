@@ -163,9 +163,7 @@ void dBalloonMng_c::createSwarmBalloon()
 {
     if (dActor_c* balloon = dActor_c::construct(
           dProf::EN_HATENA_BALLOON,
-          fParam_c<daEnHatenaBalloon_c>(
-            {.item_type = static_cast<u32>(ITEM_e::ONE_UP), .has_item = 1}
-          ),
+          fParam_c<daEnHatenaBalloon_c>({.green_demon = true, .has_item = true}),
           (const mVec3_c[1]) {{0.0f, 0.0f, 7300.0f}}, nullptr, 0
         )) {
         mLastBalloonId = balloon->mUniqueID;
