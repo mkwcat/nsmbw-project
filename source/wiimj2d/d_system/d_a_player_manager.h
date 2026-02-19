@@ -42,6 +42,12 @@ public:
         return mActPlayerInfo & (1ull << player);
     }
 
+    [[nodiscard]]
+    static bool isEntry(int player)
+    {
+        return mPlayerEntry[player] != 0;
+    }
+
     /* 0x8005E9A0 */
     static void createYoshi(mVec3_c&, int, dAcPy_c*);
 

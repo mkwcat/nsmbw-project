@@ -116,6 +116,7 @@ constexpr T* cast(
 const char* getName(dProfName profile);
 
 const char* getFormattedName(dBase_c* base);
+const char* getFormattedName(dProfName profile);
 
 dProfName getProfByName(const char* string);
 

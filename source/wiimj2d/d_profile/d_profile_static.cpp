@@ -199,11 +199,15 @@ const char* getFormattedName(dBase_c* actor)
         }
     }
 
-    dProfName name = actor->mProfName;
+    return getFormattedName(actor->mProfName);
+}
+
+const char* getFormattedName(dProfName profile)
+{
     for (u32 i = 0; i < s_formatted_name_data.size();) {
         u32 info = *reinterpret_cast<const u32*>(s_formatted_name_data.data() + i);
         u32 len = (info >> 8) & 0x1FFF;
-        bool match = name == dProfName(info >> 22);
+        bool match = profile == dProfName(info >> 22);
         if (info & 0x200000) {
             if (match) {
                 return &s_formatted_name_data[len];
@@ -216,8 +220,7 @@ const char* getFormattedName(dBase_c* actor)
         }
         i += 3 + len;
     }
-
-    return actor && actor->mpNameString ? actor->mpNameString : "an unknown force";
+    return getName(profile);
 }
 
 dProfName getProfByName(const char* string)

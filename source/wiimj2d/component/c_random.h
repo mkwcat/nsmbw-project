@@ -10,6 +10,12 @@ public:
     /* 0x801615A0 */
     u32 next(u32 limit = -1);
 
+    // +++
+    float nextFloat()
+    {
+        return static_cast<float>(next() & 0xFFFFFF) / static_cast<float>(0xFFFFFF);
+    }
+
 public:
     // Instance Variables
     // ^^^^^^
