@@ -836,7 +836,7 @@ int daPyDemoMng_c::getControlDemoPlayerNum()
             continue;
         }
 
-        if (player->isDemoType(daPlBase_c::DemoType_e::DEMO_4)) {
+        if (player->isDemoType(daPlBase_c::DemoType_e::DEMO_PLAYER)) {
             count++;
         }
     }
@@ -857,7 +857,7 @@ void daPyDemoMng_c::onLandStopReq()
             continue;
         }
 
-        if (!player->isDemoType(daPlBase_c::DemoType_e::DEMO_4)) {
+        if (!player->isDemoType(daPlBase_c::DemoType_e::DEMO_PLAYER)) {
             player->onStatus(95);
         }
     }
@@ -886,7 +886,7 @@ bool daPyDemoMng_c::startControlDemoLandPlayer()
             continue;
         }
 
-        if (!player->isDemoType(daPlBase_c::DemoType_e::DEMO_4)) {
+        if (!player->isDemoType(daPlBase_c::DemoType_e::DEMO_PLAYER)) {
             player->startControlDemo();
             ret = 0;
         }

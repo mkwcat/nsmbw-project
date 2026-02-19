@@ -19,8 +19,54 @@
 #include "framework/f_base.h"
 #include "framework/f_manager.h"
 
+[[nsmbw(0x801267F0)]]
+bool dAcPy_c::setHipAttackAction();
+
 [[nsmbw(0x801275B0)]]
 float dAcPy_c::getJumpSpeed();
+
+[[nsmbw(0x80128600)]]
+int dAcPy_c::checkWallSlideEnable(int);
+
+[[nsmbw(0x80128970)]]
+void dAcPy_c::setWallSlideEffect();
+
+[[nsmbw(0x80128AC0)]]
+void dAcPy_c::executeState_WallSlide() {
+    if (isNowBgCross(BGC_FOOT)) {
+        changeState(StateID_Walk, reinterpret_cast<void*>(AnmBlend_e::NONE));
+        return;
+    }
+    if (mKey.triggerJump()) {
+        changeState(StateID_WallJump, 0);
+        return;
+    }
+    if (setHipAttackAction()) {
+        return;
+    }
+    int dir;
+    if (mKey.buttonWalk(&dir) && dir != mDirection) {
+        m_SubstateValue += 1;
+        if (m_SubstateValue >= 15) {
+            changeState(StateID_Fall, reinterpret_cast<void*>(false));
+        }
+    } else {
+        m_SubstateValue = 0;
+    }
+    if (checkWallSlideEnable(mDirection)) {
+        changeState(StateID_Fall, reinterpret_cast<void*>(false));
+        return;
+    }
+
+    if (isMameAction()) {
+        mMaxFallSpeed = -0.75f;
+    } else {
+        mMaxFallSpeed = -2.0f;
+    }
+
+    setWallSlideEffect();
+    mSpeedF = sc_DirSpeed[mDirection];
+}
 
 [[nsmbw(0x8012DD20)]]
 dAcPy_c* dAcPy_c::getCarryPlayer();
@@ -33,8 +79,8 @@ void dAcPy_c::clearSpinLiftUpReserve();
 
 [[nsmbw(0x8012E330)]]
 void dAcPy_c::setSpinLiftUpReserve() {
-    if (!isStatus(0x7A) && !isDemo() && !isCarry() && !isStatus(0x04) && !isStatus(0x06) &&
-        !isStatus(0x08)) {
+    if (!isStatus(122) && !isDemo() && !isCarry() && !isStatus(Status_e::OUT_OF_PLAY) &&
+        !isStatus(Status_e::STUNNED) && !isStatus(Status_e::QUAKE)) {
         dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
         if (actor != nullptr && actor->isSpinLiftUpEnable()) {
             mCarryActorID = actor->mUniqueID;
@@ -78,10 +124,10 @@ void dAcPy_c::setSpinLiftUpReserve() {
 }
 
 [[nsmbw(0x8012E650)]]
-void dAcPy_c::cancelCarry(dActor_c* carriedActor);
+bool dAcPy_c::cancelCarry(dActor_c* carriedActor);
 
 [[nsmbw(0x8012E6E0)]]
-bool dAcPy_c::releaseCarryActor();
+void dAcPy_c::releaseCarryActor();
 
 [[nsmbw(0x80138890)]]
 bool dAcPy_c::isNotBalloonCourse();
@@ -109,7 +155,7 @@ bool dAcPy_c::setBalloonInDispOut(
 
 [[nsmbw(0x80139350)]]
 bool dAcPy_c::setBalloonInDispOutBase(
-    int type, bool yoshi, bool noDeathMsg
+    int type, int yoshi, bool noDeathMsg
 ) {
     if (!isDispOutCheckOn()) {
         return false;
@@ -164,10 +210,10 @@ bool dAcPy_c::setBalloonInDispOutBase(
 }
 
 [[nsmbw(0x80139800)]]
-void dAcPy_c::setRideOffPlayerJump(f32, f32);
+bool dAcPy_c::setRideOffPlayerJump(f32, f32);
 
 [[nsmbw(0x80139910)]]
-void dAcPy_c::setRideOffYoshiJump(daPlBase_c*);
+bool dAcPy_c::setRideOffYoshiJump(daPlBase_c*);
 
 [[nsmbw(0x80139A90)]]
 daYoshi_c* dAcPy_c::getRideYoshi();
@@ -280,11 +326,11 @@ void dAcPy_c::setFallDownDemoNoMsg() {
         return;
     }
 
-    mAccelY  = 0.0f;
-    mSpeedF  = 0.0f;
-    m0x10C4  = {};
-    m0x10D0  = 0.0f;
-    mSpeed.y = 0.0f;
+    mAccelY          = 0.0f;
+    mSpeedF          = 0.0f;
+    mBgPushForce     = {};
+    mExtraPushForceX = 0.0f;
+    mSpeed.y         = 0.0f;
     changeDemoState(StateID_DemoFallDown, 0);
 }
 
@@ -573,7 +619,7 @@ bool dAcPy_c::executeChangeInit() {
         return false;
     }
 
-    setPowerup(mNextMode);
+    setPowerup(mNextMode, mPlayerMode);
 
     if (dScStage_c::isGameStopAllowed()) {
         stopOther();
@@ -862,7 +908,7 @@ bool dAcPy_c::setDamage(
     dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
     if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
-        addDeathMessage(source, type, isStatus(Status_e::DEAD));
+        addDeathMessage(source, type, isStatus(Status_e::OUT_OF_PLAY));
     }
 
     return true;
@@ -884,7 +930,7 @@ bool dAcPy_c::setForcedDamage(
     dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
     if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
-        addDeathMessage(source, type, isStatus(Status_e::DEAD));
+        addDeathMessage(source, type, isStatus(Status_e::OUT_OF_PLAY));
     }
 
     return true;
@@ -894,4 +940,4 @@ bool dAcPy_c::setForcedDamage(
 void dAcPy_c::set1UpKinokoEffect();
 
 [[nsmbw(0x80146F60)]]
-void dAcPy_c::setCannonJump(float, float, int);
+bool dAcPy_c::setCannonJump(float, float, int);

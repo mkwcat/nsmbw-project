@@ -6,10 +6,12 @@
 #include "d_system/d_cc.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_player_model_manager.h"
+#include "d_system/d_quake.h"
 #include "machine/m_mtx.h"
 #include "sound/SndID.h"
 #include "sound/SndObjectPlayer.h"
 #include "state/s_State.h"
+#include "state/s_StateMgrDefault.h"
 
 class daPlBase_c : public dActor_c, public dProf::Info<daPlBase_c, dProf::PLAYER, dProf::YOSHI>
 {
@@ -18,7 +20,7 @@ class daPlBase_c : public dActor_c, public dProf::Info<daPlBase_c, dProf::PLAYER
     /* 0x0060 VTABLE 0x803087C8 */
 
 public:
-    // Static Constants
+    // Constants
     // ^^^^^^
 
     enum class DamageType_e {
@@ -48,30 +50,845 @@ public:
         SCROLL_OUT,
     };
 
-    enum class DemoType_e {
-        DEMO_0 = 0,
-        DEMO_1 = 1,
-        DEMO_2 = 2,
-        DEMO_3 = 3,
-        DEMO_4 = 4,
-        DEMO_5 = 5,
-        DEMO_6 = 6,
-    };
-
     enum class DokanDir_e {
+        U = 0,
+        D = 1,
+        L = 2,
+        R = 3,
+        ROLL = 4,
     };
 
     enum class StarSet_e {
+        STAR_SET_0,
+        STAR_SET_1,
+        STAR_SET_2
+    };
+
+    /**
+     * Blending modes for animations.
+     */
+    enum class AnmBlend_e {
+        /**
+         * Do not blend between animations.
+         */
+        NONE = 0,
+
+        /**
+         * Use the default blend duration specified in the animation HIO.
+         */
+        DEFAULT = 1,
+    };
+
+    enum ClearType_e {
+        GOAL = 0,
+        BOSS = 1,
+        FINAL_BOSS = 2,
     };
 
     /* @unofficial */
-    enum class Status_e {
-        // Dead or in a bubble
-        DEAD = 4,
-
-        // Riding Yoshi
-        RIDING_YOSHI = 75,
+    enum class GroundType_e {
+        DEFAULT = 0,
+        SNOW = 1,
+        SAND = 2,
+        ICE = 3,
+        DIRT = 4,
+        WATER = 5,
+        CLOUD = 6,
+        FUNSUI = 7,
+        MANTA = 8,
+        BEACH = 9,
+        CARPET = 10,
+        LEAF = 11,
+        WOOD = 12,
     };
+
+    /* @unofficial */
+    enum SlipSubstate_e {
+        SLIP_ACTION_NONE,
+        SLIP_ACTION_STOOP,
+        SLIP_ACTION_END
+    };
+
+    /* @unofficial */
+    enum HipSubstate_e {
+        HIP_ACTION_READY,
+        HIP_ACTION_ATTACK_START,
+        HIP_ACTION_ATTACK_FALL,
+        HIP_ACTION_GROUND,
+        HIP_ACTION_STAND_NORMAL,
+        HIP_ACTION_STAND_NORMAL_END,
+        HIP_ACTION_TO_STOOP
+    };
+
+    /* @unofficial */
+    enum JumpDaiSubstate_e {
+        /**
+         * Moving down on the player or spring.
+         */
+        JUMP_DAI_MOVE_DOWN,
+        /**
+         * The jump button was pressed to do a higher jump.
+         */
+        JUMP_DAI_HIGH_JUMP,
+    };
+
+    /* @unofficial */
+    enum FunsuiSubstate_e {
+        FUNSUI_ACTION_NONE,
+        FUNSUI_ACTION_START
+    };
+
+    /* @unofficial */
+    enum AnimePlaySubstate_e {
+        ANIME_PLAY_ACTION_0,
+        ANIME_PLAY_ACTION_1,
+        ANIME_PLAY_ACTION_2
+    };
+
+    /* @unofficial */
+    enum DemoType_e {
+        DEMO_0,
+        DEMO_1,
+        DEMO_2,
+        DEMO_3,
+        DEMO_PLAYER,
+        DEMO_KINOPIO,
+        DEMO_ENDING_DANCE
+    };
+
+    /* @unofficial */
+    enum DemoDokanMode_e {
+        DEMO_DOKAN_NONE,
+        DEMO_DOKAN_NORMAL,
+        DEMO_DOKAN_RAIL,
+        DEMO_DOKAN_WATER_TANK
+    };
+
+    /**
+     * Arguments for transitioning to the StateID_Crouch "crouch" state.
+     * @unofficial
+     */
+    enum CrouchArg_e {
+        /**
+         * Crouching while already on the ground.
+         */
+        CROUCH_ARG_FROM_WALK,
+        /**
+         * Crouching after a slide or a ground pound.
+         */
+        CROUCH_ARG_FROM_OTHER,
+        /**
+         * Landing from a crouch jump.
+         */
+        CROUCH_ARG_FROM_SIT_JUMP
+    };
+
+    /**
+     * Arguments for transitioning to the StateID_HipAttack "ground pound" state.
+     * @unofficial
+     */
+    enum class HipAttackArg_e {
+        /**
+         * A regular player is doing a ground pound.
+         */
+        HIP_ATTACK_ARG_PLAYER,
+        /**
+         * The rescue Toad is doing a ground pound out of the item block.
+         * @unused
+         */
+        HIP_ATTACK_ARG_ITEM_KINOPIO,
+    };
+
+    /**
+     * Arguments for transitioning to the StateID_Swim "swim" state.
+     * @unofficial
+     */
+    enum class SwimArg_e {
+        /**
+         * Already in water at the start of the swim action.
+         */
+        INITIAL,
+        /**
+         * Just entered the water.
+         */
+        ENTERING,
+        /**
+         * Player was about to shoot a fireball, shoot it while in water.
+         */
+        FIREBALL,
+        /**
+         * Falling from a cliff into water.
+         */
+        CLIFF_HANG
+    };
+
+    /**
+     * Arguments for transitioning to the StateID_Kani "cliff" state.
+     * @unofficial
+     */
+    enum class KaniArg_e {
+        /**
+         * Standing on the cliff and walking.
+         */
+        WALK,
+        /**
+         * Landing high enough on the cliff to stand on it, but hang down from it instead.
+         */
+        HANG,
+        /**
+         * Falling onto the cliff, immediately hang from it.
+         */
+        JUMP_HANG,
+        /**
+         * Standing on the cliff, disallow immediately hanging from it by holding down.
+         */
+        WALK_FORCE,
+        /**
+         * Climbing onto the cliff from a vine.
+         */
+        HANG_UP_VINE,
+        /**
+         * Catching the cliff from below, hang from it.
+         */
+        HANG_HAND
+    };
+
+    /**
+     * Arguments for transitioning to the StateID_AnimePlay "animation" state.
+     */
+    enum class AnimePlayArg_e {
+        NORMAL,
+        BOSS_SET_UP,
+        BOSS_GLAD,
+        BOSS_ATTENTION,
+        BOSS_KEY_GET,
+        BOSS_GLAD_2
+    };
+
+    /**
+     * Arguments for transitioning to the StateID_DemoWait "demo wait" state.
+     * @unofficial
+     */
+    enum class DemoWaitArg_e {
+        NONE,
+        CONTROL
+    };
+
+    /* @unofficial */
+    enum class DemoWaitSubstate_e {
+        DELAY,
+        TRANSITION
+    };
+
+    /* @unofficial */
+    enum class DokanType_e {
+        NORMAL,
+        CONNECTED,
+        MINI
+    };
+
+    /* @unofficial */
+    enum class DemoDownArg_e {
+        HIT,
+        TIME_UP,
+        POISON,
+        POISON_FOG
+    };
+
+    /* @unofficial */
+    enum class DemoGoalSubstate_e {
+        POLE,
+        WAIT,
+        KIME_POSE,
+        RUN
+    };
+
+    /* @unofficial */
+    enum class DemoGoalState_Pole_e {
+        /**
+         * Swinging around the pole to the other side.
+         */
+        SWING,
+        /**
+         * Waiting for the player below to slide far enough down the pole to not be in the way of
+         * this player.
+         */
+        WAIT_BELOW_PLAYER,
+        /**
+         * Sliding down the pole.
+         */
+        SLIDE,
+        /**
+         * Waiting at the bottom of the pole to jump off.
+         */
+        WAIT_JUMP,
+        /**
+         * Jumping off the pole.
+         */
+        JUMP,
+        /**
+         * Playing the landing animation after landing.
+         */
+        LAND,
+        /**
+         * Waiting #sc_DemoPoleWaitTurn frames to turn toward the screen.
+         */
+        WAIT_TURN,
+        /**
+         * Turning toward the screen.
+         */
+        TURN,
+        /**
+         * Waiting #sc_DemoPoleWaitEnd frames before transitioning to the course clear dance.
+         */
+        WAIT_END
+    };
+
+    /* @unofficial */
+    enum class KimePoseMode_e {
+        NONE,
+        WITH_HAT,
+        PENGUIN,
+        NO_HAT,
+        PROPELLER
+    };
+
+    /* @unofficial */
+    enum class ControlDemoSubstate_e {
+        WAIT,
+        WALK,
+        REGULAR_ANIM,
+        CUTSCENE_ANIM,
+        CONTROL_DEMO_4,
+        KINOPIO_WALK,
+        KINOPIO_SWIM,
+        KINOPIO_SINK_SAND,
+        ENDING_DANCE,
+    };
+
+    /* @unofficial */
+    enum class PowerChangeType_e {
+        NORMAL,
+        ICE,
+        ICE_LOW_SLIP
+    };
+
+    /* @unofficial */
+    enum class SquishState_e {
+        OFF,
+        INIT,
+        SET_REDUCTION,
+        ANIMATION
+    };
+
+    /* @unofficial */
+    enum BgPress_e {
+        BG_PRESS_FOOT = 9,
+        BG_PRESS_HEAD,
+        BG_PRESS_R,
+        BG_PRESS_L,
+        BG_PRESS_COUNT
+    };
+
+    /* @unofficial */
+    enum BgCross1_e {
+        /**
+         * Colliding with the foot sensor.
+         */
+        BGC_FOOT = 0_bit,
+        /**
+         * Colliding with the head sensor.
+         */
+        BGC_HEAD = 1_bit,
+        /**
+         * Colliding with the wall sensor.
+         */
+        BGC_WALL = 2_bit,
+        BGC_WALL_TOUCH_L = 3_bit,
+        BGC_WALL_TOUCH_R = 4_bit,
+        BGC_WALL_TOUCH_L_2 = 5_bit,
+        BGC_WALL_TOUCH_R_2 = 6_bit,
+        /**
+         * Touching a background object on the left.
+         */
+        BGC_OBJBG_TOUCH_L = 7_bit,
+        /**
+         * Touching a background object on the right.
+         */
+        BGC_OBJBG_TOUCH_R = 8_bit,
+        /**
+         * The touching background object on the left is being carried by a player.
+         */
+        BGC_OBJBG_TOUCH_CARRIED_L = 9_bit,
+        /**
+         * The touching background object on the right is being carried by a player.
+         */
+        BGC_OBJBG_TOUCH_CARRIED_R = 10_bit,
+        BGC_11 = 11_bit,
+        BGC_12 = 12_bit,
+        BGC_13 = 13_bit,
+        /**
+         * At least slightly inside of water (hip height or higher).
+         */
+        BGC_WATER_SHALLOW = 14_bit,
+        /**
+         * At least touching water.
+         */
+        BGC_WATER_TOUCH = 15_bit,
+        /**
+         * Fully submerged in water.
+         */
+        BGC_WATER_SUBMERGED = 16_bit,
+        /**
+         * On water by being mini or sliding with the penguin suit.
+         */
+        BGC_ON_WATER_MOVE = 17_bit,
+        /**
+         * Inside a floating water bubble.
+         */
+        BGC_WATER_BUBBLE = 18_bit,
+        BGC_SIDE_LIMIT_L = 19_bit,
+        BGC_SIDE_LIMIT_R = 20_bit,
+        BGC_ON_SNOW = 22_bit,
+        BGC_ON_ICE = 23_bit,
+        BGC_ON_ICE_LOW_SLIP = 24_bit,
+        BGC_SLOPE_AND_HEAD = 25_bit,
+        BGC_ON_SAND = 26_bit,
+        BGC_ON_SINK_SAND = 27_bit,
+        BGC_IN_SINK_SAND = 28_bit,
+        BGC_INSIDE_SINK_SAND = 29_bit,
+        BGC_ON_BELT_L = 30_bit,
+        BGC_ON_BELT_R = 31_bit
+    };
+
+    /* @unofficial */
+    enum BgCross2_e {
+        BGC_SEMISOLID = 0_bit,
+        /**
+         * [Figure out a better name for this].
+         */
+        BGC_LIFT = 1_bit,
+        BGC_HANG_ROPE = 2_bit,
+        BGC_AUTOSLIP = 3_bit,
+        BGC_36 = 4_bit,
+        BGC_GROUNDED_MOVE_UP = 5_bit,
+        /**
+         * Cannot wall kick or ground pound while this is set.
+         */
+        BGC_37 = 6_bit,
+        BGC_SLOPE = 7_bit,
+        BGC_CLIFF = 8_bit,
+        BGC_CLIFF_ABOVE_1 = 9_bit,
+        BGC_CLIFF_ABOVE_2 = 10_bit,
+        BGC_CAN_CLIMB = 11_bit,
+        BGC_44 = 12_bit,
+        /**
+         * Fully touching a vine / mesh net / rock wall.
+         */
+        BGC_VINE_TOUCH_FULL = 13_bit,
+        /**
+         * Touching a vine / mesh net / rock wall on the top.
+         */
+        BGC_VINE_TOUCH_U = 14_bit,
+        /**
+         * Touching a vine / mesh net / rock wall on the bottom.
+         */
+        BGC_VINE_TOUCH_D = 15_bit,
+        BGC_VINE_TOUCH_2 = 16_bit,
+        /**
+         * Touching a vine / mesh net / rock wall on any side.
+         */
+        BGC_VINE_TOUCH = 17_bit,
+        /**
+         * Touching a vine / mesh net / rock wall on the left.
+         */
+        BGC_VINE_TOUCH_L = 19_bit,
+        /**
+         * Touching a vine / mesh net / rock wall on the right.
+         */
+        BGC_VINE_TOUCH_R = 20_bit,
+        BGC_NON_BREAK_BLOCK_HIT = 21_bit,
+        BGC_54 = 22_bit,
+        BGC_PRESS_HEAD_HIT = 23_bit,
+        BGC_BLOCK_HIT = 24_bit,
+        BGC_57 = 25_bit,
+        BGC_58 = 26_bit,
+        BGC_LINE_BLOCK_HIT = 27_bit,
+        BGC_60 = 28_bit,
+        BGC_61 = 29_bit,
+        BGC_62 = 30_bit,
+        BGC_63 = 31_bit
+    };
+
+    /**
+     * The status IDs to be used with onStatus(), offStatus(), isStatus() and setStatus().
+     * @unofficial
+     */
+    enum class Status_e {
+        /**
+         * The player was created.
+         */
+        CREATED = 0,
+        /**
+         * The player can execute this frame or not.
+         */
+        CAN_EXECUTE = 1,
+        /**
+         * Don't play any animations.
+         */
+        NO_ANIM = 2,
+        /**
+         * Disallow state changes.
+         */
+        DISABLE_STATE_CHANGE = 3,
+        /**
+         * The player is in a bubble or has died.
+         */
+        OUT_OF_PLAY = 4,
+        /**
+         * All players have died and the screen is transitioning.
+         */
+        ALL_DOWN_FADE = 5,
+        /**
+         * Stunned by electric shock or ice.
+         */
+        STUNNED = 6,
+        /**
+         * [Ice related]
+         */
+        UNKNOWN_7 = 7,
+        /**
+         * The player was stunned by an earthquake.
+         */
+        QUAKE = 8,
+        /**
+         * The player is jumping.
+         */
+        JUMP = 10,
+        /**
+         * If the player can start sliding as a penguin.
+         */
+        CAN_PENGUIN_SLIDE = 11,
+        /**
+         * The player is jumping while in star mode.
+         */
+        STAR_JUMP = 12,
+        /**
+         * The player is doing a crab jump on a cliff.
+         */
+        KANI_JUMP = 13,
+        /**
+         * The player is jumping while in sinking sand.
+         */
+        SINK_SAND_JUMP = 14,
+        /**
+         * The player is doing a sitting jump.
+         */
+        SIT_JUMP = 15,
+        /**
+         * The player is doing a jump to dismount Yoshi.
+         */
+        YOSHI_DISMOUNT_JUMP = 16,
+        /**
+         * The player is flying out of a pipe cannon.
+         */
+        CANNON_JUMP = 17,
+        /**
+         * The player is doing a small hop after being affected by a small quake.
+         */
+        WAIT_JUMP = 18,
+        /**
+         * The player is sliding down a wall.
+         */
+        WALL_SLIDE = 19,
+        /**
+         * The player is doing a jump on a spring or another player.
+         */
+        BIG_JUMP = 20,
+        /**
+         * The player is doing a jump on a springboard.
+         */
+        SPRING_JUMP = 21,
+        /**
+         * The player is doing a jump on another player.
+         */
+        PLAYER_JUMP = 22,
+        /**
+         * [Dokan related]
+         */
+        UNKNOWN_23 = 23,
+        /**
+         * The player is throwing something.
+         */
+        THROW = 24,
+        /**
+         * The player is doing a crab walk on a cliff.
+         */
+        KANI_WALK = 25,
+        /**
+         * The player is falling while ground pounding.
+         */
+        HIP_ATTACK_FALL = 28,
+        /**
+         * The player has landed after ground pounding. Only active on one frame.
+         */
+        HIP_ATTACK_LAND = 29,
+        /**
+         * The player is standing up after ground pounding. Only active on one frame.
+         */
+        HIP_ATTACK_STAND_UP = 30,
+        /**
+         * The player is falling while doing a down spin.
+         */
+        SPIN_HIP_ATTACK_FALL = 31,
+        SPIN_HIP_ATTACK_LANDED = 32,
+        SPIN_HIP_ATTACK_LANDING = 33,
+        /**
+         * The player is is attached to a enemy while ground pounding or doing a down spin. [Used
+         * for the big goombas].
+         */
+        PRESS_ATTACH = 34,
+        /**
+         * The player was ground pounded by another player.
+         */
+        HIP_ATTACK_DAMAGE_PLAYER = 35,
+        /**
+         * The player is flying with the propeller suit.
+         */
+        PROPEL = 38,
+        /**
+         * The player is flying upwards with the propeller suit.
+         */
+        PROPEL_UP = 39,
+        /**
+         * The player will fall slowly while spinning down with the propeller suit.
+         */
+        PROPEL_SLOW_FALL = 41,
+        /**
+         * Don't rotate the player because of the propeller suit.
+         */
+        PROPEL_NO_ROLL = 42,
+        /**
+         * The player is spinning, either from a spin jump, a propeller spin (upwards or downwards)
+         * or screw spinning.
+         */
+        SPIN = 43,
+        /**
+         * If the player spins, stay in place. [Used for the twisting screws].
+         */
+        IS_SPIN_HOLD_REQ = 44,
+        /**
+         * The player is twirling in midair.
+         */
+        TWIRL = 45,
+        /**
+         * The player was twirling in midair the previous frame.
+         */
+        WAS_TWIRL = 46,
+        /**
+         * The player is clinging to a vine / mesh net / rock wall.
+         */
+        VINE = 51,
+        /**
+         * The player is hanging from a ceiling rope.
+         */
+        HANG = 52,
+        /**
+         * The player is climbing a pole.
+         */
+        POLE = 53,
+        /**
+         * The player is hanging from a cliff.
+         */
+        KANI_HANG = 55,
+        /**
+         * The player is animating into the hanging pose on a cliff.
+         */
+        KANI_HANG_ANIMATION = 56,
+        /**
+         * [Swim related]
+         */
+        UNKNOWN_57 = 57,
+        /**
+         * The player is swimming.
+         */
+        SWIM = 58,
+        /**
+         * The player is swimming with the penguin suit.
+         */
+        PENGUIN_SWIM = 59,
+        /**
+         * The player is sliding with the penguin suit.
+         */
+        PENGUIN_SLIDE = 60,
+        /**
+         * The player is doing a penguin slide jump.
+         */
+        PENGUIN_SLIDE_JUMP = 61,
+        /**
+         * The player is in an initial slide action. [Used in 6-6 to slide all the way down
+         * automatically].
+         */
+        INITIAL_SLIDE = 62,
+        /**
+         * The player is bouncing back after hitting an enemy that cannot be killed by a penguin
+         * slide.
+         */
+        PENGUIN_RECOIL = 63,
+        /**
+         * [Water jump?]
+         */
+        UNKNOWN_64 = 64,
+        /**
+         * The player is swimming against a horizontal water jet stream.
+         */
+        SWIM_AGAINST_JET_H = 65,
+        /**
+         * The player is swimming against a vertical water jet stream.
+         */
+        SWIM_AGAINST_JET_V = 66,
+        /**
+         * The player is riding Yoshi.
+         */
+        RIDE_YOSHI = 75,
+        /**
+         * The player recently failed to perform a big jump because of a ceiling.
+         */
+        JUMP_DAI_COOLDOWN = 77,
+        RIDE_NUT_2 = 88,
+        RIDE_NUT = 89,
+        /**
+         * The player has cleared an enemy ambush.
+         */
+        ENEMY_STAGE_CLEAR = 96,
+        /**
+         * The player has touched the goal pole.
+         */
+        GOAL_POLE_TOUCHED = 101,
+        /**
+         * The player is waiting for the player below to slide down the goal pole.
+         */
+        GOAL_POLE_WAIT_BELOW_PLAYER = 102,
+        /**
+         * The player has reached the bottom of the goal pole after sliding down.
+         */
+        GOAL_POLE_FINISHED_SLIDE_DOWN = 104,
+        /**
+         * The player is ready to jump off the goal pole.
+         */
+        GOAL_POLE_READY_FOR_JUMP_OFF = 105,
+        /**
+         * The player is turning toward the screen after jumping off the goal pole.
+         */
+        GOAL_POLE_TURN = 106,
+        /**
+         * The player did not reach the goal pole in time and mustn't move anymore.
+         */
+        GOAL_POLE_NOT_GOAL_NO_MOVE = 111,
+        ENDING_DANCE_AUTO = 117,
+        /**
+         * The player is transitioning after touching a next goto area.
+         */
+        DEMO_NEXT_GOTO_BLOCK = 118,
+        /**
+         * Stop executing this player indefinitely.
+         */
+        STOP_EXECUTE = 125,
+        /**
+         * A big quake that stuns the player was triggered.
+         */
+        QUAKE_BIG = 139,
+        /**
+         * A small quake that makes the player do a hop was triggered.
+         */
+        QUAKE_SMALL = 140,
+        /**
+         * [Cannon shot related]
+         */
+        UNKNOWN_141 = 141,
+        /**
+         * [Cannon shot related]
+         */
+        UNKNOWN_142 = 142,
+        /**
+         * The player can land on Yoshi or another player.
+         */
+        CAN_LAND = 143,
+        /**
+         * [Jump moving up?]
+         */
+        UNKNOWN_165 = 165,
+        /**
+         * The player is about to shoot a fireball.
+         */
+        FIREBALL_PREPARE_SHOOT = 166,
+        /**
+         * Mini Goombas are attached to the player.
+         */
+        FOLLOW_MAME_KURIBO = 172,
+        /**
+         * The player is in the penguin suit.
+         */
+        IS_PENGUIN = 173,
+        /**
+         * The player is in the ground pound action and is not yet about to stand back up.
+         */
+        HIP_ATTACK = 174,
+        UNKNOWN_179 = 179, // [Yoshi only?]
+        ABOUT_TO_BE_DELETED = 181,
+        ITEM_KINOPIO_DISPLAY_OUT = 182,
+        /**
+         * The player is outside of the screen bounds and should die as a result.
+         */
+        DISPLAY_OUT_DEAD = 185,
+        /**
+         * The player is outside of the screen bounds and should not be able to be attacked.
+         */
+        DISPLAY_OUT_NO_DAMAGE = 186,
+        /**
+         * The player is invisible.
+         */
+        INVISIBLE = 187,
+        /**
+         * Skip drawing the player this frame to create a blinking effect.
+         */
+        INVULNERABLILITY_BLINK = 188,
+        /**
+         * The player can walk on water because of the mini mushroom.
+         */
+        CAN_WATER_WALK = 193,
+        /**
+         * The player is on water by being mini or sliding with the penguin suit.
+         */
+        ON_WATER_MOVE = 194,
+        /**
+         * The player can slide on water because of the penguin suit.
+         */
+        CAN_WATER_SLIDE = 195,
+    };
+
+    static const float sc_DirSpeed[];
+    static const float sc_JumpSpeed;
+    static const float sc_JumpSpeedNuma1;
+    static const float sc_JumpSpeedNuma2;
+    static const float sc_WaterWalkSpeed;
+    static const float sc_WaterSwimSpeed;
+    static const float sc_WaterJumpSpeed;
+    static const float sc_WaterMaxFallSpeed;
+    static const float sc_MaxFallSpeed;
+    static const float sc_MaxFallSpeed_Foot;
+    static const float sc_MaxFallDownSpeed;
+    static const float scTurnPowerUpRate;
+    static const float scDokanInSpeedX;
+    static const float scDokanInWidthX;
+    static const float scDokanInMoveSpeed;
+    static const float scDokanWaitAnmFixFrame;
+
+public:
+    // Nested Types
+    // ^^^^^^
+
+    class jmpInf_c;
 
 public:
     // Virtual Functions
@@ -93,22 +910,22 @@ public:
     }
 
     /* VT+0x0E4 0x80056BC0 @unofficial */
-    virtual void setPowerup(PLAYER_MODE_e powerup);
+    virtual void setPowerup(PLAYER_MODE_e powerup, PLAYER_MODE_e);
 
     /* VT+0x0E8 0x80056D40 */
-    virtual s32 getTailType(s8 param);
+    virtual u8 getTallType(s8 param);
 
     /* VT+0x0EC 0x80048080 */
-    virtual sBcPointData* getHeadBgPointData();
+    virtual const sBcPointData* getHeadBgPointData();
 
     /* VT+0x0F0 0x80054EE0 */
-    virtual sBcPointData* getWallBgPointData();
+    virtual const sBcPointData* getWallBgPointData();
 
     /* VT+0x0F4 0x80056BB0 */
-    virtual sBcPointData* getFootBgPointData();
+    virtual const sBcPointData* getFootBgPointData();
 
     /* VT+0x0F8 0x80048090 */
-    virtual f32 VT_0x0F8();
+    virtual float getStandHeadBgPointY();
 
     /* VT+0x0FC 0x800544E0 */
     virtual void checkBgCrossSub();
@@ -150,10 +967,10 @@ public:
     virtual bool setHideNotGoalPlayer();
 
     /* VT+0x130 0x80050E60 */
-    virtual void VT_0x130();
+    virtual int setDemoGoal(mVec3_c& landPos, float goalCastleX, u8 goalType);
 
     /* VT+0x134 0x80050E70 */
-    virtual s32 setDemoCannonWarp(int param1, short param2, short param3);
+    virtual bool setDemoCannonWarp(int param1, short param2, short param3);
 
 public:
     // Virtual State IDs
@@ -374,8 +1191,8 @@ public:
     /* VT+0x280 0x8004F670 */
     virtual void initDemoOutDokan();
 
-    /* VT+0x284 0x80051CF0 */
-    virtual void VT_0x284();
+    /* VT+0x284 0x80051CF0 @unofficial */
+    virtual bool updateDemoKimePose(s32 clearType);
 
     /* VT+0x288 0x80051240 */
     virtual void initDemoGoalBase();
@@ -527,31 +1344,31 @@ public:
     virtual bool isWaitFrameCountMax();
 
     /* VT+0x374 0x8004AB80 */
-    virtual void checkWalkNextAction();
+    virtual bool checkWalkNextAction();
 
     /* VT+0x378 0x800475E0 */
-    virtual void VT_0x378();
+    virtual void setWaitActionAnm(AnmBlend_e);
 
     /* VT+0x37C 0x800475F0 */
-    virtual void VT_0x37C();
+    virtual void setWalkActionAnm(AnmBlend_e);
 
     /* VT+0x380 0x80047600 */
-    virtual void VT_0x380();
+    virtual void walkActionInit_Wait(AnmBlend_e);
 
     /* VT+0x384 0x80047610 */
     virtual void walkAction_Wait();
 
     /* VT+0x388 0x80047620 */
-    virtual void VT_0x388();
+    virtual void walkActionInit_Move(AnmBlend_e);
 
     /* VT+0x38C 0x80047630 */
     virtual void walkAction_Move();
 
     /* VT+0x390 0x80047DB0 */
-    virtual void checkCrouch();
+    virtual bool checkCrouch();
 
     /* VT+0x394 0x80047DC0 */
-    virtual void setCancelCrouch();
+    virtual bool setCancelCrouch();
 
     /* VT+0x398 0x8004B220 */
     virtual void setSlipAction();
@@ -572,10 +1389,10 @@ public:
     virtual f32 getCloudOffsetY();
 
     /* VT+0x3B0 0x800588B0 */
-    virtual void setRideJrCrown(const dActor_c*);
+    virtual bool setRideJrCrown(const dActor_c*);
 
     /* VT+0x3B4 0x800588A0 */
-    virtual bool isRideJrCrownOwn();
+    virtual bool isRideJrCrownOwn(const dActor_c*);
 
     /* VT+0x3B8 0x80058890 */
     virtual void setRideJrCrownMtx(const mMtx_c* mtx);
@@ -584,10 +1401,10 @@ public:
     virtual void setRideJrCrownAnm(int anm);
 
     /* VT+0x3C0 0x80049D60 */
-    virtual int getHeadTopPosP();
+    virtual const mVec3_c* getHeadTopPosP();
 
     /* VT+0x3C4 0x80049040 */
-    virtual void* getGravityData();
+    virtual const float* getGravityData();
 
     /* VT+0x3C8 0x80048B90 */
     virtual bool isCarry() const;
@@ -596,7 +1413,7 @@ public:
     virtual bool isLiftUp();
 
     /* VT+0x3D0 0x80056C20 */
-    virtual void VT_0x3D0();
+    virtual bool isLiftUpExceptMame();
 
     /* VT+0x3D4 0x80022170 */
     virtual bool isStar() const;
@@ -629,16 +1446,17 @@ public:
     virtual bool setForcedDamage(dActor_c* source, DamageType_e type);
 
     /* VT+0x3FC 0x80057B70 */
-    virtual void VT_0x3FC();
+    virtual bool setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode);
 
     /* VT+0x400 0x80057B80 */
-    virtual void VT_0x400();
+    virtual bool
+    _setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode);
 
     /* VT+0x404 0x80057B90 */
     virtual void setWaitJump(f32);
 
     /* VT+0x408 0x80048C30 */
-    virtual void setHipAttackOnEnemy(mVec3_c*);
+    virtual bool setHipAttackOnEnemy(mVec3_c* hitPos);
 
     /* VT+0x40C 0x80051350 */
     virtual void clearJumpActionInfo(int);
@@ -677,7 +1495,7 @@ public:
     virtual void VT_0x438();
 
     /* VT+0x43C 0x80058280 */
-    virtual void VT_0x43C();
+    virtual void startQuakeShock(dQuake_c::TYPE_SHOCK_e);
 
     /* VT+0x440 0x800582A0 */
     virtual void startPatternRumble(const char*);
@@ -697,6 +1515,8 @@ public:
 public:
     // Instance Methods
     // ^^^^^^
+
+    void executeState();
 
     /* 0x8004DB40 */
     bool isDemoType(DemoType_e type);
@@ -793,7 +1613,84 @@ public:
     /* 0x800583A0 */
     void calcHeadAttentionAngle();
 
+    /* 0x80056BD0 */
+    bool isMameAction();
+
     void addDeathMessage(dActor_c* source, DamageType_e type, bool death);
+
+public:
+    // Inline Instance Methods
+    // ^^^^^^
+
+    u32 isNowBgCross(BgCross1_e m)
+    {
+        return mNowBgCross1 & m;
+    }
+
+    u32 isNowBgCross(BgCross2_e m)
+    {
+        return mNowBgCross2 & m;
+    }
+
+    void onNowBgCross(BgCross1_e m)
+    {
+        mNowBgCross1 |= m;
+    }
+
+    void onNowBgCross(BgCross2_e m)
+    {
+        mNowBgCross2 |= m;
+    }
+
+    void offNowBgCross(BgCross1_e m)
+    {
+        mNowBgCross1 &= ~m;
+    }
+
+    void offNowBgCross(BgCross2_e m)
+    {
+        mNowBgCross2 &= ~m;
+    }
+
+    void clearNowBgCross()
+    {
+        mNowBgCross1 = mNowBgCross2 = 0;
+    }
+
+    u32 isOldBgCross(BgCross1_e m)
+    {
+        return mOldBgCross1 & m;
+    }
+
+    u32 isOldBgCross(BgCross2_e m)
+    {
+        return mOldBgCross2 & m;
+    }
+
+    void onOldBgCross(BgCross1_e m)
+    {
+        mOldBgCross1 |= m;
+    }
+
+    void onOldBgCross(BgCross2_e m)
+    {
+        mOldBgCross2 |= m;
+    }
+
+    void offOldBgCross(BgCross1_e m)
+    {
+        mOldBgCross1 &= ~m;
+    }
+
+    void offOldBgCross(BgCross2_e m)
+    {
+        mOldBgCross2 &= ~m;
+    }
+
+    void clearOldBgCross()
+    {
+        mOldBgCross1 = mOldBgCross2 = 0;
+    }
 
 public:
     // Instance Variables
@@ -829,18 +1726,70 @@ public:
 
     /* 0x1090 */ PLAYER_MODE_e mPlayerMode;
 
-    FILL(0x1094, 0x10C4);
+    /* 0x1094 */ sBcPointData mHeadBcData;
+    /* 0x10A4 */ sBcPointData mFootBcData;
+    /* 0x10B4 */ sBcPointData mWallBcData;
+    /* 0x10C4 */ mVec3_c mBgPushForce;
+    /* 0x10D0 */ float mExtraPushForceX;
 
-    /* 0x10C4 */ mVec3_c m0x10C4;
-    /* 0x10D0 */ f32 m0x10D0;
-    /* 0x10D4 */ u32 m0x10D4;
+    /* 0x10D4 */ u32 mNowBgCross1;
+    /* 0x10D8 */ u32 mNowBgCross2;
+    /* 0x10DC */ u32 mOldBgCross1;
+    /* 0x10E0 */ u32 mOldBgCross2;
+    /* 0x10E4 */ u32 mBgFootHistory[10];
 
-    FILL(0x10D8, 0x1164);
+    FILL(0x110C, 0x1164);
 
     /* 0x1164 */ dCc_c mCc1;
     /* 0x1208 */ dCc_c mAttCc1;
     /* 0x12AC */ dCc_c mAttCc2;
     /* 0x1350 */ dCc_c mAttCc3;
 
-    FILL(0x13F4, 0x14D4);
+    FILL(0x13F4, 0x1418);
+
+    /**
+     * The state manager for demo (cutscene) states.
+     */
+    /* 0x1418 */ sStateMgrDefault_c<daPlBase_c> m_DemoStateMgr;
+    /**
+     * To be used as an argument to the new demo state.
+     */
+    /* 0x1454 */ int m_DemoStateArg;
+    /**
+     * Demo states can use this as a sub-state variable (cast to some enum).
+     */
+    /* 0x1458 */ int m_DemoSubstate;
+    /**
+     * Demo states can use this generic timer for various purposes.
+     * It is automatically decrememented in executeState() every frame.
+     */
+    /* 0x145C */ int m_DemoSubstateTimer;
+    /**
+     * Whether the player is currently in a demo (cutscene) state.
+     */
+    /* 0x1460 */ bool m_isDemoMode;
+
+    /**
+     * The state manager to use for regular layer states.
+     */
+    /* 0x1464 */ sStateMgrDefault_c<daPlBase_c> m_StateMgr;
+    /**
+     * To be used as an argument to the new state.
+     */
+    /* 0x14A0 */ void* m_StateArg;
+    /**
+     * States can use this as a sub-state variable (cast to some enum).
+     */
+    /* 0x14A4 */ int m_Substate;
+    /**
+     * States can use this generic timer for various purposes.
+     * It is automatically decrememented in executeState() every frame.
+     */
+    /* 0x14A8 */ int m_SubstateTimer;
+    /**
+     * States can use this field for various purposes - as a timer, boolean flag, etc.
+     */
+    /* 0x14AC */ int m_SubstateValue;
+
+    FILL(0x14B0, 0x14D4);
 };

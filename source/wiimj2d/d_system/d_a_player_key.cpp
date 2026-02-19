@@ -180,8 +180,14 @@ UNDEF_8005e294:;
   // clang-format on
 );
 
+[[nsmbw(0x8005E6F0)]]
+bool dAcPyKey_c::triggerJump() const;
+
 [[nsmbw(0x8005E780)]]
 bool dAcPyKey_c::triggerShakeJump() const;
+
+[[nsmbw(0x8005E7A0)]]
+bool dAcPyKey_c::buttonWalk(int* dir) const;
 
 [[nsmbw(0x8005E590)]]
 u16 dAcPyKey_c::triggerOne() const

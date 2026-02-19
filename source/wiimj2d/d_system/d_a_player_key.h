@@ -17,8 +17,14 @@ public:
     /* 0x8005E5D0 */
     u16 buttonOne() const;
 
+    /* 0x8005E6F0 */
+    bool triggerJump() const;
+
     /* 0x8005E780 */
     bool triggerShakeJump() const;
+
+    /* 0x8005E7A0 */
+    bool buttonWalk(int* dir) const;
 
     /* 0x8005E8B0 */
     bool triggerJumpBuf(int param2);

@@ -4,6 +4,7 @@
 #include "d_a_castle_kokoopa_demo_1st.h"
 
 #include "d_player/d_a_player.h"
+#include "d_system/d_a_player_base.h"
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_block_mng.h"
@@ -129,7 +130,7 @@ bool daCastleKokoopaDemo1st_c::calcBattleStDemoControl()
             f32& walkToPos = mWalkToPos[player->getPlrNo()];
             walkToPos = playerDist * (i + 1) + (mRightBoundary - playerStandArea / 2);
 
-            if (!(player->m0x10D4 & 0x1)) {
+            if (!player->isNowBgCross(daPlBase_c::BGC_FOOT)) {
                 continue;
             }
 

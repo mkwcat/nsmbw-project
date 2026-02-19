@@ -11,4 +11,4 @@ target_sources(project PRIVATE
 
 set_property(SOURCE d_base_dump.cpp
     TARGET_DIRECTORY project
-    PROPERTY COMPILE_OPTIONS "-fconstexpr-steps=4000000")
+    PROPERTY COMPILE_OPTIONS "-fconstexpr-steps=8000000")

@@ -14,6 +14,9 @@
 #include <cstdio>
 #include <iterator>
 
+[[nsmbw_data(0x8042BB20)]]
+const float daPlBase_c::sc_DirSpeed[] = {1.0f, -1.0f};
+
 [[nsmbw(0x8004DB40)]]
 bool daPlBase_c::isDemoType(DemoType_e type);
 
@@ -115,6 +118,9 @@ void daPlBase_c::UNDEF_80056370(dActor_c*, int);
 
 [[nsmbw(0x80056980)]]
 void daPlBase_c::setStatus5D(float f);
+
+[[nsmbw(0x80056BD0)]]
+bool daPlBase_c::isMameAction();
 
 [[nsmbw(0x80056C70)]]
 void daPlBase_c::onStatus(int flag);

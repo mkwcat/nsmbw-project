@@ -12,13 +12,21 @@ struct sBcSensorBase {
     u32 mFlags;
 };
 
-class sBcPointData
-{
-public:
+struct sBcPointData {
+    SIZE_ASSERT(0x10);
     u32 mFlags;
     int mOffsetX;
     int mOffsetY;
     int mDist;
+};
+
+/// @unofficial
+struct sBcPlayerPointData {
+    SIZE_ASSERT(0x40);
+    sBcPointData mFoot;
+    sBcPointData mHead;
+    sBcPointData mWall;
+    sBcPointData mVine;
 };
 
 /// @unofficial

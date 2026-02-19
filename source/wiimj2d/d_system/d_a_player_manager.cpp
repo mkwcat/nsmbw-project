@@ -924,7 +924,7 @@ void daPyMng_c::setHipAttackSpecialEffect() {
         }
         daPlBase_c* base = player;
 
-        if (player->isStatus(daPlBase_c::Status_e::RIDING_YOSHI)) {
+        if (player->isStatus(daPlBase_c::Status_e::RIDE_YOSHI)) {
             base = player->getRideYoshi();
             if (base == nullptr) {
                 continue;
