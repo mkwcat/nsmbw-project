@@ -160,6 +160,9 @@ void MiniGameMessageDisp(int param);
 /* 0x800B4E00 */
 void MiniGameMessageClose();
 
+/* 0x800B51D0 */
+void StaffCreditAddCoin(int player);
+
 /* 0x800B5450 */
 void setWorldClearFlag();
 

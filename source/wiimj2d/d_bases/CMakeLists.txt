@@ -113,7 +113,7 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x807AD5F0 - 0x807ADAD0
   # d_SequenceBG.cpp
 # NSMBW   d_bases.text:  0x807ADAD0 - 0x807AF370
-  # d_StaffCreditScore.cpp
+    d_StaffCreditScore.cpp
 # NSMBW   d_bases.text:  0x807AF370 - 0x807B2030
     d_StockItem.cpp
 # NSMBW   d_bases.text:  0x807B2030 - 0x807B2540
