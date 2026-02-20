@@ -12,6 +12,9 @@ public:
     /* 0x8019C010 @unofficial */
     void setMiniGameTrack(int track);
 
+    /* 0x8019C610 */
+    void startStaffCreditHiscore();
+
     /* 0x8019C620 */
     void onPowerImpact();
 

@@ -17,6 +17,18 @@
                 {
                     "name": "A03_4P",
                 },
+				{
+                    "name": "A04_5P",
+                },
+				{
+                    "name": "A05_6P",
+                },
+				{
+                    "name": "A06_7P",
+                },
+				{
+                    "name": "A07_8P",
+                },
             ],
             "name": "winPlayer",
             "start frame": 150,

@@ -12,6 +12,9 @@ void SndSceneMgr::setGameSetupTrack(int track);
 [[nsmbw(0x8019C010)]]
 void SndSceneMgr::setMiniGameTrack(int track);
 
+[[nsmbw(0x8019C610)]]
+void SndSceneMgr::startStaffCreditHiscore();
+
 [[nsmbw(0x8019C620)]]
 void SndSceneMgr::onPowerImpact();
 

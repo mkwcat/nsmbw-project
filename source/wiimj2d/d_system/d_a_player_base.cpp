@@ -106,6 +106,9 @@ void daPlBase_c::setControlDemoWalk(const f32& pos, const f32& speed);
 [[nsmbw(0x80052170)]]
 void daPlBase_c::setControlDemoAnm(int anim);
 
+[[nsmbw(0x80052290)]]
+void daPlBase_c::UNDEF_80052290(s32 param);
+
 [[nsmbw(0x80052470)]]
 bool daPlBase_c::isBossDemoLand();
 

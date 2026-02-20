@@ -200,7 +200,9 @@ public:
     /* 0x152 */ u8 mPowerupID;
     /* 0x153 */ u8 mCurColorType;
 
-    FILL(0x154, 0x160);
+    /* 0x154 */ u32 mCurrentAnm;
+
+    FILL(0x158, 0x160);
 
     /* 0x160 */ u32 mFlags;
     /* 0x164 */ u32 mFlags2;

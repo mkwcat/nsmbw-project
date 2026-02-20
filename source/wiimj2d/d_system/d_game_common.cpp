@@ -4,6 +4,7 @@
 #include "d_game_common.h"
 
 #include "d_bases/d_MiniGameCannon.h"
+#include "d_bases/d_StaffCreditScore.h"
 #include "d_bases/d_s_stage.h"
 #include "d_player/d_SmallScoreManager.h"
 #include "d_system/d_a_player_manager.h"
@@ -436,6 +437,18 @@ bool chkContinue()
 bool chkCancelButton(int player)
 {
     return dGameKey_c::m_instance->mpCores[player]->checkMenuCancel();
+}
+
+[[nsmbw(0x800B51D0)]]
+void StaffCreditAddCoin(int player)
+{
+    if (dStaffCreditScore_c *staffCredit = dScStage_c::m_instance->mpStaffCreditScore) {
+        int num = staffCredit->mCoinNum[player] + 1;
+        if (num > 999) {
+            num = 999;
+        }
+        staffCredit->mCoinNum[player] = num;
+    }
 }
 
 [[nsmbw(0x800B5450)]]
