@@ -5,6 +5,7 @@
 
 u32 daNiceBoat_c_sizeof = sizeof(daNiceBoat_c);
 
+[[nsmbw(0x8086EEA0)]]
 daNiceBoat_c* daNiceBoat_c_classInit() ASM_METHOD(
   // clang-format off
 /* 8086EEA0 9421FFE0 */  stwu     r1, -32(r1);
