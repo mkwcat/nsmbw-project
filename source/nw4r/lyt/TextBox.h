@@ -2,7 +2,9 @@
 
 #include "Pane.h"
 #include "Resources.h"
+#include "nw4r/ut/Font.h"
 #include "nw4r/ut/Rect.h"
+#include "nw4r/ut/TagProcesorBase.h"
 
 namespace nw4r::lyt
 {
@@ -41,7 +43,7 @@ struct TextBox {
 
 class TextBox : public Pane
 {
-    SIZE_ASSERT(0x104);
+    SIZE_ASSERT(0x102);
 
 public:
     [[nsmbw(0x802ADFE0)]]
@@ -66,10 +68,26 @@ public:
         mTextColors[idx] = color;
     }
 
+    void SetTextAlignment(u8 alignment)
+    {
+        mBits.textAlignment = alignment;
+    }
+
+protected:
     /* 0x0D8 */ wchar_t* mTextBuf;
     /* 0x0DC */ ut::Color mTextColors[TEXTCOLOR_MAX];
-
-    FILL(0x0E4, 0x104);
+    /* 0x0E4 */ const ut::Font* mpFont;
+    /* 0x0E8 */ Size mFontSize;
+    /* 0x0F0 */ f32 mLineSpace;
+    /* 0x0F4 */ f32 mCharSpace;
+    /* 0x0F8 */ ut::TagProcessorBase<wchar_t>* mpTagProcessor;
+    /* 0x0FC */ u16 mTextBufBytes;
+    /* 0x0FE */ u16 mTextLen;
+    /* 0x100 */ u8 mTextPosition;
+    /* 0x101 */ struct {
+        u8 bAllocFont : 1;
+        u8 textAlignment : 2;
+    } mBits;
 };
 
 }; // namespace nw4r::lyt
