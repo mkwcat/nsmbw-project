@@ -10,4 +10,16 @@ using ::fabsf;
 using ::sqrt;
 using ::sqrtf;
 
+constexpr float lerp(float a, float b, float t) noexcept
+{
+    if (t < 0.0f) {
+        return a;
+    }
+    if (t > 1.0f) {
+        return b;
+    }
+
+    return a + t * (b - a);
+}
+
 } // namespace std

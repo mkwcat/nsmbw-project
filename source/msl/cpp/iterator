@@ -17,10 +17,23 @@ constexpr std::size_t size(const T (&array)[N]) noexcept
     return N;
 }
 
-template<class T>
+template <class T>
 constexpr auto distance(T first, T last) -> decltype(last - first)
 {
     return last - first;
+}
+
+template <class InputIt, class Distance>
+constexpr void advance(InputIt& it, Distance n)
+{
+    it += n;
+}
+
+template <class InputIt>
+constexpr InputIt next(InputIt it, std::ptrdiff_t n = 1)
+{
+    std::advance(it, n);
+    return it;
 }
 
 } // namespace std

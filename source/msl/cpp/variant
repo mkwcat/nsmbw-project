@@ -1,204 +1,336 @@
 #pragma once
 
+#include <cassert>
+#include <concepts>
 #include <cstddef>
+#include <memory>
+#include <type_traits>
 #include <utility>
 
 namespace std
 {
 
+namespace __
+{
+struct differentiate_mangled {
+};
+} // namespace __
+
+template <class... Types>
+class variant;
+
 inline constexpr size_t variant_npos = -1;
 
-template <class... Extra>
+template <size_t I, class T>
+struct variant_alternative;
+
+template <size_t I, class T>
+using variant_alternative_t = typename variant_alternative<I, T>::type;
+
+template <class... Types>
 class variant
 {
-    template <size_t I, class... Types>
-    friend constexpr __type_pack_element<I, Types...>& get(variant<Types...>& v);
-    template <size_t I, class... Types>
-    friend constexpr const __type_pack_element<I, Types...>& get(const variant<Types...>& v);
-    template <class U, class... Types>
-    friend constexpr U& get(variant<Types...>& v);
-    template <class U, class... Types>
-    friend constexpr U&& get(variant<Types...>&& v);
-    template <class U, class... Types>
-    friend constexpr const U& get(const variant<Types...>& v);
-    template <class U, class... Types>
-    friend constexpr const U&& get(const variant<Types...>&& v);
-    template <class U, class... Types>
-    friend constexpr bool holds_alternative(const variant<Types...>& v) noexcept;
+    template <size_t I, class T>
+    friend struct variant_alternative;
 
-    static constexpr size_t __this_index = variant_npos;
+    template <size_t I, class... _Types>
+    friend constexpr variant_alternative_t<I, variant<_Types...>>& get(variant<_Types...>& v);
 
-    template <class U>
-    consteval size_t __get_index_from_type() const
+    template <size_t I, class... _Types>
+    friend constexpr variant_alternative_t<I, variant<_Types...>>&& get(variant<_Types...>&& v);
+
+    template <size_t I, class... _Types>
+    friend constexpr const variant_alternative_t<I, variant<_Types...>>&
+    get(const variant<_Types...>& v);
+
+    template <size_t I, class... _Types>
+    friend constexpr const variant_alternative_t<I, variant<_Types...>>&&
+    get(const variant<_Types...>&& v, __::differentiate_mangled);
+
+    template <class T, class... _Types>
+    friend constexpr T& get(variant<_Types...>& v);
+
+    template <class T, class... _Types>
+    friend constexpr T&& get(variant<_Types...>&& v, __::differentiate_mangled);
+
+    template <class T, class... _Types>
+    friend constexpr const T& get(const variant<_Types...>& v);
+
+    template <class T, class... _Types>
+    friend constexpr const T&& get(const variant<_Types...>&& v, __::differentiate_mangled);
+
+    template <class T, class... _Types>
+    friend constexpr bool holds_alternative(const variant<_Types...>& v) noexcept;
+
+    template <class... _Types>
+    friend constexpr bool
+    operator==(const std::variant<_Types...>& lhs, const std::variant<_Types...>& rhs);
+
+private:
+    // Instance Variables
+    // ^^^^^^
+
+    template <size_t... Sizes>
+    static consteval size_t max_size() noexcept
     {
-        return __this_index;
+        size_t sizes[] = {Sizes...};
+        size_t max_size = 0;
+        for (size_t size : sizes) {
+            if (size > max_size) {
+                max_size = size;
+            }
+        }
+        return max_size;
     }
 
-    constexpr variant(auto u)
+    size_t m_index;
+    alignas(Types...) u8 m_storage[max_size<sizeof(Types)...>()];
+
+private:
+    // Private Utility Methods
+    // ^^^^^^
+
+    template <size_t I>
+    constexpr auto* get_storage() noexcept
     {
-        static_assert(false, "No types in variant can hold the supplied type");
+        static_assert(I < sizeof...(Types), "Variant index out of range");
+        return static_cast<Types...[I]*>(static_cast<void*>(&m_storage));
     }
-};
 
-template <class T, class... Extra>
-class variant<T, Extra...>
-{
-    template <size_t I, class... Types>
-    friend constexpr __type_pack_element<I, Types...>& get(variant<Types...>& v);
-    template <size_t I, class... Types>
-    friend constexpr const __type_pack_element<I, Types...>& get(const variant<Types...>& v);
-    template <class U, class... Types>
-    friend constexpr U& get(variant<Types...>& v);
-    template <class U, class... Types>
-    friend constexpr U&& get(variant<Types...>&& v);
-    template <class U, class... Types>
-    friend constexpr const U& get(const variant<Types...>& v);
-    template <class U, class... Types>
-    friend constexpr const U&& get(const variant<Types...>&& v);
-    template <class U, class... Types>
-    friend constexpr bool holds_alternative(const variant<Types...>& v) noexcept;
+    template <size_t I>
+    constexpr const auto* get_const_storage() const noexcept
+    {
+        static_assert(I < sizeof...(Types), "Variant index out of range");
+        return static_cast<const Types...[I]*>(static_cast<const void*>(&m_storage));
+    }
 
-    static constexpr size_t __top_index = sizeof...(Extra) - 1;
+    template <class T, size_t... Indices>
+    static consteval size_t get_index_of(index_sequence<Indices...>)
+    {
+        size_t index = variant_npos;
+        ((is_same_v<T, Types...[Indices]> && index == variant_npos && (index = Indices)), ...);
+        return index;
+    }
 
-    union {
-        struct {
-            size_t __held_index;
-            T __this;
+    template <class T, class F>
+    static constexpr bool is_constructible_from = requires(F f) { T{f}; };
+
+    template <class T, size_t... Indices>
+    static consteval size_t get_constructible_index(index_sequence<Indices...>)
+    {
+        size_t index = variant_npos;
+        ((is_constructible_from<Types...[Indices], T> && index == variant_npos &&
+          (index = Indices)),
+         ...);
+        return index;
+    }
+
+    template <size_t... Indices>
+    constexpr void construct(const variant& other, index_sequence<Indices...>)
+    {
+        m_index = other.m_index;
+        ((other.m_index == Indices &&
+          construct_at(get_storage<Indices>(), *other.get_const_storage<Indices>())),
+         ...);
+    }
+
+    template <size_t... Indices>
+    constexpr void construct(variant&& other, index_sequence<Indices...>)
+    {
+        m_index = other.m_index;
+        ((other.m_index == Indices &&
+          construct_at(get_storage<Indices>(), move(*other.get_storage<Indices>()))),
+         ...);
+    }
+
+    template <class T, size_t... Indices>
+    constexpr void construct(T&& t)
+    {
+        constexpr size_t index =
+          get_constructible_index<T&&>(make_index_sequence<sizeof...(Types)>());
+        static_assert(
+          index != variant_npos, "Type is not constructible into any of the variant's alternatives"
+        );
+        m_index = index;
+        construct_at(get_storage<index>(), forward<T>(t));
+    }
+
+    template <size_t I>
+    constexpr bool equals_by_index(const variant& other) const
+    {
+        if constexpr (is_same_v<monostate, Types...[I]>) {
+            return true;
+        }
+
+        constexpr bool equallable = requires(const Types...[I] & a, const Types...[I] & b) {
+            { a == b } -> convertible_to<bool>;
         };
+        if constexpr (equallable) {
+            return *get_const_storage<I>() == *other.get_const_storage<I>();
+        } else {
+            return false;
+        }
+    }
 
-        variant<Extra...> __rest;
-    };
+    template <size_t... Indices>
+    constexpr bool equals(const variant& other, index_sequence<Indices...>) const
+    {
+        if (index() != other.index()) {
+            return false;
+        }
+        if (index() == variant_npos) {
+            return true;
+        }
+
+        bool result = true;
+        ((m_index == Indices && (result = equals_by_index<Indices>(other))), ...);
+        return result;
+    }
 
 public:
+    // Structors
+    // ^^^^^^
+
     constexpr variant() noexcept
-      : __held_index(__top_index)
-      , __this()
+      : m_index(0)
     {
+        construct_at(get_storage<0>());
     }
 
-    constexpr variant(const T& t) noexcept
-      : __held_index(__top_index)
-      , __this(t)
+    constexpr variant(const variant& other) noexcept
     {
+        construct(other, make_index_sequence<sizeof...(Types)>());
     }
 
+    constexpr variant(variant&& other) noexcept
+    {
+        construct(move(other), make_index_sequence<sizeof...(Types)>());
+    }
+
+    template <class T>
+        requires(not same_as<remove_cvref_t<T>, variant<Types...>>)
     constexpr variant(T&& t) noexcept
-      : __held_index(__top_index)
-      , __this(move(t))
     {
+        construct<T>(forward<T>(t));
     }
 
-    template <class U>
-    constexpr variant(U& u) noexcept
-      : __rest(u)
+    constexpr variant& operator=(const variant& rhs)
     {
+        construct(rhs, make_index_sequence<sizeof...(Types)>());
+        return *this;
     }
 
-    template <class U>
-    constexpr variant(U&& u) noexcept
-      : __rest(forward<U>(u))
+    constexpr variant& operator=(variant&& rhs)
     {
+        construct(move(rhs), make_index_sequence<sizeof...(Types)>());
+        return *this;
     }
 
     constexpr size_t index() const noexcept
     {
-        return sizeof...(Extra) - 1 - __held_index;
+        return m_index;
     }
 };
 
-template <size_t I, class... Types>
-constexpr const __type_pack_element<I, Types...>& get(const variant<Types...>& v)
-{
-    static_assert(I < sizeof...(Types), "Index is out of bounds");
-    if constexpr (I == 0) {
-        if (v.__held_index != v.__top_index) {
-            __builtin_trap();
-        }
-        return v.__this;
-    } else {
-        return get<I - 1>(v.__rest);
-    }
-}
+template <size_t I, class T>
+struct variant_alternative<I, const T> : add_const<variant_alternative_t<I, T>> {
+};
 
 template <size_t I, class... Types>
-constexpr __type_pack_element<I, Types...>& get(variant<Types...>& v)
+struct variant_alternative<I, variant<Types...>> {
+    using type = Types...[I];
+};
+
+template <size_t I, class... Types>
+constexpr variant_alternative_t<I, variant<Types...>>& get(variant<Types...>& v)
 {
-    static_assert(I < sizeof...(Types), "Index is out of bounds");
-    if constexpr (I == 0) {
-        if (v.__held_index != v.__top_index) {
-            __builtin_trap();
-        }
-        return v.__this;
-    } else {
-        return get<I - 1>(v.__rest);
-    }
+    static_assert(I < sizeof...(Types), "Variant index out of range");
+    assert(v.index() == I);
+    return *v.template get_storage<I>();
 }
 
-template <class U, class... Types>
-constexpr U& get(variant<Types...>& v)
+template <size_t I, class... Types>
+constexpr variant_alternative_t<I, variant<Types...>>&&
+get(variant<Types...>&& v, __::differentiate_mangled = {})
 {
-    if constexpr (__is_same_as(U, decltype(v.__this))) {
-        if (v.__held_index != v.__top_index) {
-            __builtin_trap();
-        }
-        return v.__this;
-    } else {
-        static_assert(sizeof...(Types) > 1, "Supplied type not in variant");
-        return get<U>(v.__rest);
-    }
+    static_assert(I < sizeof...(Types), "Variant index out of range");
+    assert(v.index() == I);
+    return std::move(*v.template get_storage<I>());
 }
 
-template <class U, class... Types>
-constexpr U&& get(variant<Types...>&& v)
+template <size_t I, class... Types>
+constexpr const variant_alternative_t<I, variant<Types...>>& get(const variant<Types...>& v)
 {
-    if constexpr (__is_same_as(U, decltype(v.__this))) {
-        if (v.__held_index != v.__top_index) {
-            __builtin_trap();
-        }
-        return move(v.__this);
-    } else {
-        static_assert(sizeof...(Types) > 1, "Supplied type not in variant");
-        return get<U>(move(v.__rest));
-    }
+    static_assert(I < sizeof...(Types), "Variant index out of range");
+    assert(v.index() == I);
+    return *v.template get_const_storage<I>();
 }
 
-template <class U, class... Types>
-constexpr const U& get(const variant<Types...>& v)
+template <size_t I, class... Types>
+constexpr const variant_alternative_t<I, variant<Types...>>&&
+get(const variant<Types...>&& v, __::differentiate_mangled = {})
 {
-    if constexpr (__is_same_as(U, decltype(v.__this))) {
-        if (v.__held_index != v.__top_index) {
-            __builtin_trap();
-        }
-        return v.__this;
-    } else {
-        static_assert(sizeof...(Types) > 1, "Supplied type not in variant");
-        return get<U>(v.__rest);
-    }
+    static_assert(I < sizeof...(Types), "Variant index out of range");
+    assert(v.index() == I);
+    return std::move(*v.template get_const_storage<I>());
 }
 
-template <class U, class... Types>
-constexpr const U&& get(const variant<Types...>&& v)
+template <class T, class... Types>
+constexpr T& get(variant<Types...>& v)
 {
-    if constexpr (__is_same_as(U, decltype(v.__this))) {
-        if (v.__held_index != v.__top_index) {
-            __builtin_trap();
-        }
-        return move(v.__this);
-    } else {
-        static_assert(sizeof...(Types) > 1, "Supplied type not in variant");
-        return get<U>(move(v.__rest));
-    }
+    constexpr size_t index =
+      variant<Types...>::template get_index_of<T>(make_index_sequence<sizeof...(Types)>());
+    static_assert(index != variant_npos, "Type is not in variant");
+    return get<index>(v);
+}
+
+template <class T, class... Types>
+constexpr T&& get(variant<Types...>&& v, __::differentiate_mangled = {})
+{
+    constexpr size_t index =
+      variant<Types...>::template get_index_of<T>(make_index_sequence<sizeof...(Types)>());
+    static_assert(index != variant_npos, "Type is not in variant");
+    assert(v.index() == index);
+    return std::move(*v.template get_storage<index>());
+}
+
+template <class T, class... Types>
+constexpr const T& get(const variant<Types...>& v)
+{
+    constexpr size_t index =
+      variant<Types...>::template get_index_of<T>(make_index_sequence<sizeof...(Types)>());
+    static_assert(index != variant_npos, "Type is not in variant");
+    assert(v.index() == index);
+    return *v.template get_const_storage<index>();
+}
+
+template <class T, class... Types>
+constexpr const T&& get(const variant<Types...>&& v, __::differentiate_mangled = {})
+{
+    constexpr size_t index =
+      variant<Types...>::template get_index_of<T>(make_index_sequence<sizeof...(Types)>());
+    static_assert(index != variant_npos, "Type is not in variant");
+    assert(v.index() == index);
+    return std::move(*v.template get_const_storage<index>());
 }
 
 template <class T, class... Types>
 constexpr bool holds_alternative(const std::variant<Types...>& v) noexcept
 {
-    if constexpr (__is_same_as(T, decltype(v.__this))) {
-        return v.__held_index == v.__top_index;
-    } else {
-        static_assert(sizeof...(Types) > 1, "Supplied type not in variant");
-        return holds_alternative<T>(v.__rest);
-    }
+    constexpr size_t index =
+      variant<Types...>::template get_index_of<T>(make_index_sequence<sizeof...(Types)>());
+    static_assert(index != variant_npos, "Type is not in variant");
+    return v.index() == index;
 }
+
+template <class... Types>
+constexpr bool operator==(const std::variant<Types...>& lhs, const std::variant<Types...>& rhs)
+{
+    return lhs.equals(rhs, make_index_sequence<sizeof...(Types)>());
+}
+
+static_assert(
+  sizeof(variant<double>) == sizeof(variant<monostate, char, short, int, long, long long, double>)
+);
 
 } // namespace std

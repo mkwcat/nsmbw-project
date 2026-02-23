@@ -1,10 +1,21 @@
 #pragma once
 
 #include <new>
+#include <optional>
 #include <utility>
 
 namespace std
 {
+
+class nullopt_t
+{
+public:
+    explicit constexpr nullopt_t(int) noexcept
+    {
+    }
+};
+
+constexpr nullopt_t nullopt{0};
 
 template <class T>
 class optional
@@ -24,8 +35,13 @@ public:
     {
     }
 
+    constexpr optional(nullopt_t) noexcept
+      : m_pointer(nullptr)
+    {
+    }
+
     constexpr optional(const value_type& value) noexcept
-      : m_pointer(new(m_storage) value_type(value))
+      : m_pointer(new (m_storage) value_type(value))
     {
     }
 

@@ -61,6 +61,12 @@ struct allocator {
     }
 };
 
+template <class T1, class T2>
+constexpr bool operator==(const allocator<T1>& lhs, const allocator<T2>& rhs) noexcept
+{
+    return true;
+}
+
 template <class Alloc>
 struct allocator_traits {
 private:
@@ -109,5 +115,11 @@ public:
         p->~T();
     }
 };
+
+template <class T1, class T2>
+constexpr bool operator==(const allocator_traits<T1>& lhs, const allocator_traits<T2>& rhs) noexcept
+{
+    return true;
+}
 
 } // namespace std

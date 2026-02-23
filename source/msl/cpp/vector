@@ -1,7 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <type_traits>
@@ -67,9 +69,24 @@ public:
         resize(count, value);
     }
 
+    template <class InputIt>
+    constexpr vector(InputIt first, InputIt last, const Allocator& alloc = Allocator())
+      : m_allocator(alloc)
+    {
+        reserve(std::distance(first, last));
+        for (; first != last; ++first) {
+            push_back(*first);
+        }
+    }
+
 public:
     // Instance Methods
     // ^^^^^^
+
+    constexpr allocator_type get_allocator() const noexcept
+    {
+        return m_allocator;
+    }
 
     constexpr reference at(size_type pos)
     {
@@ -137,7 +154,12 @@ public:
         return m_data + m_size;
     }
 
-    pointer data() noexcept
+    constexpr pointer data() noexcept
+    {
+        return m_data;
+    }
+
+    constexpr const_pointer data() const noexcept
     {
         return m_data;
     }
@@ -275,6 +297,125 @@ public:
         m_data = m_memory;
         m_size = 0;
     }
+
+    iterator insert(const_iterator pos, const T& value)
+    {
+        assert(pos >= begin() && pos <= end());
+
+        if (pos == end()) {
+            push_back(value);
+            return end() - 1;
+        }
+
+        size_type index = pos - begin();
+        if (m_size == capacity()) {
+            reserve(capacity() > 0 ? capacity() * 2 : 1);
+        }
+        for (size_type i = m_size; i > index; i--) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - 1])
+            );
+            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - 1);
+        }
+        std::allocator_traits<allocator_type>::construct(m_allocator, m_data + index, value);
+        m_size++;
+        return m_data + index;
+    }
+
+    constexpr iterator insert(const_iterator pos, T&& value)
+    {
+        assert(pos >= begin() && pos <= end());
+
+        if (pos == end()) {
+            push_back(std::move(value));
+            return end() - 1;
+        }
+
+        size_type index = pos - begin();
+        if (m_size == capacity()) {
+            reserve(capacity() > 0 ? capacity() * 2 : 1);
+        }
+        for (size_type i = m_size; i > index; i--) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - 1])
+            );
+            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - 1);
+        }
+        std::allocator_traits<allocator_type>::construct(
+          m_allocator, m_data + index, std::move(value)
+        );
+        m_size++;
+        return m_data + index;
+    }
+
+    constexpr iterator insert(const_iterator pos, size_type count, const T& value)
+    {
+        assert(pos >= begin() && pos <= end());
+
+        if (count == 0) {
+            return const_cast<iterator>(pos);
+        }
+
+        size_type index = pos - begin();
+        if (m_size + count > capacity()) {
+            reserve(std::max(capacity() > 0 ? capacity() * 2 : 1, m_size + count));
+        }
+        for (size_type i = m_size + count - 1; i >= index + count; i--) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - count])
+            );
+            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - count);
+        }
+        for (size_type i = 0; i < count; i++) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + index + i, value
+            );
+        }
+        m_size += count;
+        return m_data + index;
+    }
+
+    template <class InputIt>
+    iterator insert(const_iterator pos, InputIt first, InputIt last)
+    {
+        assert(pos >= begin() && pos <= end());
+
+        size_type count = std::distance(first, last);
+        if (count == 0) {
+            return const_cast<iterator>(pos);
+        }
+
+        size_type index = pos - begin();
+        if (m_size + count > capacity()) {
+            reserve(std::max(capacity() > 0 ? capacity() * 2 : 1, m_size + count));
+        }
+        for (size_type i = m_size + count - 1; i >= index + count; i--) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - count])
+            );
+            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - count);
+        }
+        for (size_type i = 0; i < count; i++) {
+            std::allocator_traits<allocator_type>::construct(
+              m_allocator, m_data + index + i, *std::next(first, i)
+            );
+        }
+        m_size += count;
+        return m_data + index;
+    }
+};
+
+template <class T, class Alloc>
+constexpr bool operator==(const std::vector<T, Alloc>& lhs, const std::vector<T, Alloc>& rhs)
+{
+    return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+
+template <>
+class vector<bool>
+{
+    vector(...) = delete ("Please do not use std::vector<bool> because it sucks (read the standard "
+                          "for more information)");
 };
 
 } // namespace std

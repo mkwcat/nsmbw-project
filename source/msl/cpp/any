@@ -1,0 +1,268 @@
+#pragma once
+
+#include <cassert>
+#include <new>
+#include <utility>
+
+namespace std
+{
+
+class any final
+{
+    template <class ValueType>
+    friend ValueType any_cast(const any& operand);
+
+    template <class ValueType>
+    friend ValueType any_cast(any&& operand);
+
+    template <class ValueType>
+    friend const ValueType* any_cast(const any* operand) noexcept;
+
+    template <class ValueType>
+    friend ValueType* any_cast(any* operand) noexcept;
+
+    template <class ValueType>
+    friend ValueType any_cast(any& operand);
+
+private:
+    // Nested Types
+    // ^^^^^^
+
+    class fake_type_info
+    {
+        friend class any;
+
+    public:
+        void* (*copy)(const void* from);
+        void* (*destroy)(void*);
+        bool (*equals)(const void* a, const void* b);
+
+    private:
+        consteval fake_type_info() = default;
+
+        fake_type_info& operator=(const fake_type_info&) = delete;
+        fake_type_info(const fake_type_info&) = delete;
+        fake_type_info& operator=(fake_type_info&&) = delete;
+        fake_type_info(fake_type_info&&) = delete;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wzero-length-array"
+        [[no_unique_address]] u8 dummy[0];
+#pragma clang diagnostic pop
+    };
+
+private:
+    // Instance Variables
+    // ^^^^^^
+
+    void* m_data;
+    fake_type_info* m_type_info;
+
+public:
+    // Structors
+    // ^^^^^^
+
+    constexpr any() noexcept
+      : m_data(nullptr)
+      , m_type_info(nullptr)
+    {
+    }
+
+    any(const any& other)
+    {
+        if (other.m_data) {
+            m_type_info = other.m_type_info;
+            m_data = m_type_info->copy(other.m_data);
+
+        } else {
+            m_data = nullptr;
+            m_type_info = nullptr;
+        }
+    }
+
+    any(any&& other) noexcept
+      : m_data(other.m_data)
+      , m_type_info(other.m_type_info)
+    {
+        other.m_data = nullptr;
+        other.m_type_info = nullptr;
+    }
+
+    template <class ValueType>
+    any(ValueType&& value)
+      : m_data(new std::decay_t<ValueType>(std::forward<ValueType>(value)))
+      , m_type_info(get_fake_type_info<std::decay_t<ValueType>>())
+    {
+    }
+
+    template <class ValueType, class... Args>
+    explicit any(std::in_place_type_t<ValueType>, Args&&... args)
+      : m_data(new ValueType(std::forward<Args>(args)...))
+      , m_type_info(get_fake_type_info<ValueType>())
+    {
+    }
+
+    ~any()
+    {
+        if (m_data) {
+            m_type_info->destroy(m_data);
+        }
+    }
+
+private:
+    // Private Static Methods
+    // ^^^^^^
+
+    template <class ValueType>
+    static void copy_fn(const void* from, void* to)
+    {
+        new (to) ValueType(*static_cast<const ValueType*>(from));
+    }
+
+    template <class ValueType>
+    static void destroy_fn(void* data)
+    {
+        static_cast<ValueType*>(data)->~ValueType();
+    }
+
+    template <class ValueType>
+    static bool equals_fn(const void* a, const void* b)
+    {
+        return *static_cast<const ValueType*>(a) == *static_cast<const ValueType*>(b);
+    }
+
+    template <class ValueType>
+    static const fake_type_info* get_fake_type_info()
+    {
+        static constexpr fake_type_info type_info{
+          .copy = copy_fn<ValueType>,
+          .destroy = destroy_fn<ValueType>,
+          .equals = equals_fn<ValueType>,
+        };
+        return &type_info;
+    }
+
+public:
+    // Operators
+    // ^^^^^^
+
+    any& operator=(const any& other)
+    {
+        if (this != &other) {
+            if (other.m_data) {
+                if (m_data) {
+                    m_type_info->destroy(m_data);
+                }
+                m_type_info = other.m_type_info;
+                m_data = m_type_info->copy(other.m_data);
+            } else {
+                m_data = nullptr;
+            }
+        }
+        return *this;
+    }
+
+    any& operator=(any&& other) noexcept
+    {
+        if (this != &other) {
+            m_data = other.m_data;
+            m_type_info = other.m_type_info;
+            other.m_data = nullptr;
+        }
+        return *this;
+    }
+
+    template <typename ValueType>
+    any& operator=(ValueType&& rhs)
+    {
+        if (m_data) {
+            m_type_info->destroy(m_data);
+        }
+        m_data = new ValueType(std::forward<ValueType>(rhs));
+        m_type_info = get_fake_type_info<std::decay_t<ValueType>>();
+        return *this;
+    }
+
+public:
+    // Instance Methods
+    // ^^^^^^
+
+    template <class ValueType, class... Args>
+    std::decay_t<ValueType>& emplace(Args&&... args)
+    {
+        if (m_data) {
+            m_type_info->destroy(m_data);
+        }
+        m_data = new ValueType(std::forward<Args>(args)...);
+        m_type_info = get_fake_type_info<std::decay_t<ValueType>>();
+        return *static_cast<std::decay_t<ValueType>*>(m_data);
+    }
+
+    void reset() noexcept
+    {
+        if (m_data) {
+            m_type_info->destroy(m_data);
+            m_data = nullptr;
+        }
+    }
+
+    bool has_value() const noexcept
+    {
+        return m_data != nullptr;
+    }
+
+    const fake_type_info* type() const noexcept
+    {
+        return m_type_info;
+    }
+};
+
+template <class T>
+T any_cast(const any& operand)
+{
+    assert(operand.m_data);
+    assert(any::get_fake_type_info<T>() == operand.m_type_info);
+    return *static_cast<T*>(operand.m_data);
+}
+
+template <class T>
+T any_cast(any& operand)
+{
+    assert(operand.m_data);
+    assert(any::get_fake_type_info<T>() == operand.m_type_info);
+    return *static_cast<T*>(operand.m_data);
+}
+
+template <class T>
+T any_cast(any&& operand)
+{
+    assert(operand.m_data);
+    assert(any::get_fake_type_info<T>() == operand.m_type_info);
+    return *static_cast<T*>(operand.m_data);
+}
+
+template <class T>
+const T* any_cast(const any* operand) noexcept
+{
+    if (operand && any::get_fake_type_info<T>() == operand->m_type_info) {
+        return static_cast<const T*>(operand->m_data);
+    }
+    return nullptr;
+}
+
+template <class T>
+T* any_cast(any* operand) noexcept
+{
+    if (operand && any::get_fake_type_info<T>() == operand->m_type_info) {
+        return static_cast<T*>(operand->m_data);
+    }
+    return nullptr;
+}
+
+template <class T, class... Args>
+std::any make_any(Args&&... args)
+{
+    return std::any(std::in_place_type<T>, std::forward<Args>(args)...);
+}
+
+} // namespace std

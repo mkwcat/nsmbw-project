@@ -99,4 +99,7 @@ constexpr in_place_index_t<I> in_place_index{};
     __builtin_unreachable();
 }
 
+struct monostate {
+};
+
 } // namespace std

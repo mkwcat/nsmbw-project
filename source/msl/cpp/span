@@ -72,13 +72,6 @@ public:
     }
 
     template <std::size_t N>
-    constexpr span(element_type (&arr)[N]) noexcept
-      : m_data(arr)
-      , m_size(N)
-    {
-    }
-
-    template <std::size_t N>
     constexpr span(std::type_identity<element_type>::type (&arr)[N]) noexcept
       : m_data(arr)
       , m_size(N)

@@ -1,0 +1,27 @@
+#pragma once
+
+namespace std
+{
+
+class strong_ordering
+{
+    s8 m_value;
+
+    explicit consteval strong_ordering(s8 value) noexcept
+      : m_value(value)
+    {
+    }
+
+public:
+    static const strong_ordering less;
+    static const strong_ordering equivalent;
+    static const strong_ordering equal;
+    static const strong_ordering greater;
+};
+
+inline constexpr strong_ordering strong_ordering::less{-1};
+inline constexpr strong_ordering strong_ordering::equivalent{0};
+inline constexpr strong_ordering strong_ordering::equal{0};
+inline constexpr strong_ordering strong_ordering::greater{1};
+
+} // namespace std

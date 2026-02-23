@@ -1,6 +1,8 @@
 #pragma once
 
 #include <algorithm>
+#include <cassert>
+#include <cstdio>
 #include <memory>
 #include <string_view>
 #include <vector>
@@ -26,12 +28,16 @@ public:
     using pointer = typename std::allocator_traits<Allocator>::pointer;
     using const_pointer = typename std::allocator_traits<Allocator>::const_pointer;
 
+    // Use pointers as iterators
+    using iterator = pointer;
+    using const_iterator = const_pointer;
+
 public:
     // Structors
     // ^^^^^^
 
-    constexpr basic_string(const allocator_type& alloc = allocator_type()) noexcept
-      : m_vector(alloc)
+    constexpr basic_string(const allocator_type& alloc) noexcept
+      : m_vector(1, value_type(), alloc)
     {
     }
 
@@ -79,35 +85,43 @@ public:
         for (size_type i = 0; i < len; i++) {
             m_vector.push_back(s[i]);
         }
-        if (m_vector.size() == 0 || m_vector.back() != value_type()) {
-            m_vector.push_back(value_type());
-        }
+        ensure_null_terminated();
     }
 
     basic_string(std::nullptr_t) = delete;
 
     template <class StringViewLike>
+        requires(
+          std::is_convertible_v<
+            const StringViewLike&, std::basic_string_view<CharT, traits_type>> &&
+          !std::is_convertible_v<const StringViewLike&, const CharT*>
+        )
     explicit constexpr basic_string(
       const StringViewLike& t, const allocator_type& alloc = allocator_type()
     )
     {
-        const size_type len = t.size();
+        const basic_string_view<CharT, traits_type> v = t;
+        const size_type len = v.size();
         m_vector.reserve(len);
         for (size_type i = 0; i < len; i++) {
-            m_vector.push_back(t[i]);
+            m_vector.push_back(v[i]);
         }
-        if (m_vector.size() == 0 || m_vector.back() != value_type()) {
-            m_vector.push_back(value_type());
-        }
+        ensure_null_terminated();
     }
 
     template <class StringViewLike>
+        requires(
+          std::is_convertible_v<
+            const StringViewLike&, std::basic_string_view<CharT, traits_type>> &&
+          !std::is_convertible_v<const StringViewLike&, const CharT*>
+        )
     basic_string(
       const StringViewLike& t, size_type pos, size_type count,
       const allocator_type& alloc = allocator_type()
     )
     {
-        const size_type len = t.size();
+        const basic_string_view<CharT, traits_type> v = t;
+        const size_type len = v.size();
         if (pos > len) {
             // throw std::out_of_range("basic_string::basic_string");
             __builtin_trap();
@@ -115,14 +129,16 @@ public:
         const size_type rcount = std::min(count, len - pos);
         m_vector.reserve(rcount);
         for (size_type i = 0; i < rcount; i++) {
-            m_vector.push_back(t[pos + i]);
+            m_vector.push_back(v[pos + i]);
         }
-        if (m_vector.size() == 0 || m_vector.back() != value_type()) {
-            m_vector.push_back(value_type());
-        }
+        ensure_null_terminated();
     }
 
-    constexpr basic_string(const basic_string& other) = default;
+    constexpr basic_string(const basic_string& other)
+      : m_vector(other.m_vector)
+    {
+    }
+
     constexpr basic_string(basic_string&& other) = default;
 
     constexpr basic_string(const basic_string& other, const allocator_type& alloc)
@@ -150,9 +166,7 @@ public:
         for (size_type i = 0; i < rcount; i++) {
             m_vector.push_back(other[pos + i]);
         }
-        if (m_vector.size() == 0 || m_vector.back() != value_type()) {
-            m_vector.push_back(value_type());
-        }
+        ensure_null_terminated();
     }
 
     constexpr basic_string(
@@ -170,9 +184,7 @@ public:
         for (size_type i = 0; i < rcount; i++) {
             m_vector.push_back(other[pos + i]);
         }
-        if (m_vector.size() == 0 || m_vector.back() != value_type()) {
-            m_vector.push_back(value_type());
-        }
+        ensure_null_terminated();
     }
 
     constexpr basic_string(
@@ -190,9 +202,7 @@ public:
         for (size_type i = 0; i < rcount; i++) {
             m_vector.push_back(other[pos + i]);
         }
-        if (m_vector.size() == 0 || m_vector.back() != value_type()) {
-            m_vector.push_back(value_type());
-        }
+        ensure_null_terminated();
     }
 
     constexpr basic_string(
@@ -211,6 +221,21 @@ public:
         for (size_type i = 0; i < rcount; i++) {
             m_vector.push_back(other[pos + i]);
         }
+        ensure_null_terminated();
+    }
+
+public:
+    // Static Variables
+    // ^^^^^^
+
+    static constexpr size_type npos = static_cast<size_type>(-1);
+
+private:
+    // Private Instance Methods
+    // ^^^^^^
+
+    constexpr void ensure_null_terminated() noexcept
+    {
         if (m_vector.size() == 0 || m_vector.back() != value_type()) {
             m_vector.push_back(value_type());
         }
@@ -220,14 +245,27 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    constexpr size_type size() const noexcept
+    constexpr allocator_type get_allocator() const noexcept
     {
-        return m_vector.size() - 1;
+        return m_vector.get_allocator();
     }
 
-    constexpr const_pointer c_str() const noexcept
+    // Element access
+
+    constexpr const_reference at(size_type pos) const
     {
-        return m_vector.data();
+        assert(pos < m_vector.size() - 1);
+        return m_vector[pos];
+    }
+
+    constexpr const_reference front() const
+    {
+        return at(0);
+    }
+
+    constexpr const_reference back() const
+    {
+        return at(m_vector.size() - 2);
     }
 
     constexpr const_pointer data() const noexcept
@@ -235,15 +273,66 @@ public:
         return m_vector.data();
     }
 
-    constexpr pointer data() noexcept
+    constexpr const_pointer c_str() const noexcept
     {
         return m_vector.data();
     }
+
+    // Capacity
 
     constexpr bool empty() const noexcept
     {
         return size() == 1;
     }
+
+    constexpr size_type size() const noexcept
+    {
+        return m_vector.size() - 1;
+    }
+
+    constexpr size_type length() const noexcept
+    {
+        return size();
+    }
+
+    constexpr size_type max_size() const noexcept
+    {
+        return m_vector.max_size() - 1;
+    }
+
+    constexpr void reserve(size_type count) noexcept
+    {
+        m_vector.reserve(count + 1);
+    }
+
+    constexpr size_type capacity() const noexcept
+    {
+        return m_vector.capacity() - 1;
+    }
+
+    // Iterators
+
+    constexpr pointer begin() noexcept
+    {
+        return m_vector.begin();
+    }
+
+    constexpr pointer end() noexcept
+    {
+        return m_vector.end() - 1;
+    }
+
+    constexpr const_pointer begin() const noexcept
+    {
+        return m_vector.begin();
+    }
+
+    constexpr const_pointer end() const noexcept
+    {
+        return m_vector.end() - 1;
+    }
+
+    // Modifiers
 
     constexpr void clear() noexcept
     {
@@ -251,9 +340,233 @@ public:
         m_vector.push_back(value_type());
     }
 
-    constexpr allocator_type get_allocator() const noexcept
+    constexpr basic_string& insert(size_type index, size_type count, CharT ch)
     {
-        return m_vector.get_allocator();
+        assert(index <= size());
+        m_vector.insert(m_vector.begin() + index, count, ch);
+        return *this;
+    }
+
+    constexpr basic_string& insert(size_type index, const CharT* s)
+    {
+        assert(index <= size());
+        const size_type len = traits_type::length(s);
+        m_vector.insert(m_vector.begin() + index, s, s + len);
+        return *this;
+    }
+
+    constexpr basic_string& insert(size_type index, const CharT* s, size_type count)
+    {
+        assert(index <= size());
+        m_vector.insert(m_vector.begin() + index, s, s + count);
+        return *this;
+    }
+
+    constexpr basic_string& insert(size_type index, const basic_string& str)
+    {
+        assert(index <= size());
+        return insert(index, str.data(), str.size());
+    }
+
+    constexpr basic_string&
+    insert(size_type index, const basic_string& str, size_type s_index, size_type count = npos)
+    {
+        assert(index <= size());
+        assert(s_index <= str.size());
+        const size_type rcount = std::min(count, str.size() - s_index);
+        return insert(index, str.data() + s_index, rcount);
+    }
+
+    template <class StringViewLike>
+        requires(
+          std::is_convertible_v<
+            const StringViewLike&, std::basic_string_view<CharT, traits_type>> &&
+          !std::is_convertible_v<const StringViewLike&, const CharT*>
+        )
+    constexpr basic_string& insert(size_type index, const StringViewLike& t)
+    {
+        assert(index <= size());
+        const basic_string_view<CharT, traits_type> v = t;
+        const size_type len = v.size();
+        m_vector.insert(m_vector.begin() + index, v.data(), v.data() + len);
+        return *this;
+    }
+
+    template <class StringViewLike>
+        requires(
+          std::is_convertible_v<
+            const StringViewLike&, std::basic_string_view<CharT, traits_type>> &&
+          !std::is_convertible_v<const StringViewLike&, const CharT*>
+        )
+    constexpr basic_string&
+    insert(size_type index, const StringViewLike& t, size_type t_index, size_type count = npos)
+    {
+        assert(index <= size());
+        const basic_string_view<CharT, traits_type> v = t;
+        assert(t_index <= v.size());
+        const size_type rcount = std::min(count, v.size() - t_index);
+        m_vector.insert(m_vector.begin() + index, v.data() + t_index, v.data() + t_index + rcount);
+        return *this;
+    }
+
+    constexpr pointer data() noexcept
+    {
+        return m_vector.data();
+    }
+
+    constexpr void push_back(CharT ch)
+    {
+        m_vector[size()] = ch;
+        ensure_null_terminated();
+    }
+
+    constexpr void pop_back()
+    {
+        if (empty()) {
+            return;
+        }
+        m_vector.erase(m_vector.end() - 2);
+        ensure_null_terminated();
+    }
+
+    constexpr basic_string& append(size_type count, CharT ch)
+    {
+        m_vector.insert(m_vector.end() - 1, count, ch);
+        ensure_null_terminated();
+        return *this;
+    }
+
+    constexpr basic_string& append(const CharT* s, size_type count)
+    {
+        m_vector.insert(m_vector.end() - 1, s, s + count);
+        ensure_null_terminated();
+        return *this;
+    }
+
+    constexpr basic_string& append(const CharT* s)
+    {
+        return append(s, traits_type::length(s));
+    }
+
+    constexpr basic_string& append(const basic_string& str)
+    {
+        return append(str.data(), str.size());
+    }
+
+    constexpr basic_string& append(const basic_string& str, size_type subpos, size_type subcount)
+    {
+        assert(subpos <= str.size());
+        const size_type rcount = std::min(subcount, str.size() - subpos);
+        return append(str.data() + subpos, rcount);
+    }
+
+    constexpr basic_string& append(const basic_string_view<CharT>& sv)
+    {
+        return append(sv.data(), sv.size());
+    }
+
+    constexpr basic_string&
+    append(const basic_string_view<CharT>& sv, size_type subpos, size_type subcount)
+    {
+        assert(subpos <= sv.size());
+        const size_type rcount = std::min(subcount, sv.size() - subpos);
+        return append(sv.data() + subpos, rcount);
+    }
+
+    // Operations
+    // ^^^^^^
+
+    constexpr int compare(const basic_string& str) const noexcept
+    {
+        return compare(0, size(), str);
+    }
+
+    constexpr int compare(size_type pos1, size_type count1, const basic_string& str) const
+    {
+        return basic_string_view<CharT, traits_type>(data() + pos1, count1).compare(str);
+    }
+
+    constexpr int compare(
+      size_type pos1, size_type count1, const basic_string& str, size_type pos2,
+      size_type count2 = npos
+    ) const
+    {
+        return basic_string_view<CharT, traits_type>(data() + pos1, count1)
+          .compare(basic_string_view<CharT, traits_type>(str.data() + pos2, count2));
+    }
+
+    constexpr int compare(const CharT* s) const
+    {
+        return compare(basic_string_view<CharT, traits_type>(s));
+    }
+
+    constexpr int compare(size_type pos1, size_type count1, const CharT* s) const
+    {
+        return compare(pos1, count1, basic_string_view<CharT, traits_type>(s));
+    }
+
+    constexpr int compare(size_type pos1, size_type count1, const CharT* s, size_type count2) const
+    {
+        return compare(pos1, count1, basic_string_view<CharT, traits_type>(s, count2));
+    }
+
+    constexpr bool starts_with(std::basic_string_view<CharT, Traits> sv) const noexcept
+    {
+        return basic_string_view<CharT, traits_type>(data(), size()).starts_with(sv);
+    }
+
+    constexpr bool starts_with(CharT ch) const noexcept
+    {
+        return !empty() && traits_type::eq(front(), ch);
+    }
+
+    constexpr bool starts_with(const CharT* s) const
+    {
+        return starts_with(basic_string_view<CharT, traits_type>(s));
+    }
+
+    constexpr bool ends_with(std::basic_string_view<CharT, Traits> sv) const noexcept
+    {
+        return basic_string_view<CharT, traits_type>(data(), size()).ends_with(sv);
+    }
+
+    constexpr bool ends_with(CharT ch) const noexcept
+    {
+        return !empty() && traits_type::eq(back(), ch);
+    }
+
+    constexpr bool ends_with(const CharT* s) const
+    {
+        return ends_with(basic_string_view<CharT, traits_type>(s));
+    }
+
+    constexpr bool contains(std::basic_string_view<CharT, Traits> sv) const noexcept
+    {
+        return basic_string_view<CharT, traits_type>(data(), size()).contains(sv);
+    }
+
+    constexpr bool contains(CharT ch) const noexcept
+    {
+        return !empty() && traits_type::find(data(), size(), ch) != nullptr;
+    }
+
+    constexpr bool contains(const CharT* s) const
+    {
+        return contains(basic_string_view<CharT, traits_type>(s));
+    }
+
+    constexpr basic_string substr(size_type pos = 0, size_type count = npos) const&
+    {
+        assert(pos <= size());
+        const size_type rcount = std::min(count, size() - pos);
+        return basic_string(data() + pos, rcount, get_allocator());
+    }
+
+    constexpr basic_string substr(size_type pos = 0, size_type count = npos) &&
+    {
+        assert(pos <= size());
+        const size_type rcount = std::min(count, size() - pos);
+        return basic_string(std::move(*this), pos, rcount, get_allocator());
     }
 
 public:
@@ -275,6 +588,69 @@ public:
         return basic_string_view<value_type, traits_type>(data(), size());
     }
 
+    constexpr basic_string& operator=(const basic_string& str)
+    {
+        m_vector = str.m_vector;
+        return *this;
+    }
+
+    constexpr basic_string& operator=(basic_string&& str) noexcept
+    {
+        m_vector = std::move(str.m_vector);
+        return *this;
+    }
+
+    constexpr basic_string& operator=(const CharT* s)
+    {
+        const size_type len = traits_type::length(s);
+        m_vector.clear();
+        m_vector.reserve(len + 1);
+        for (size_type i = 0; i < len; i++) {
+            m_vector.push_back(s[i]);
+        }
+        ensure_null_terminated();
+        return *this;
+    }
+
+    constexpr basic_string& operator=(CharT ch)
+    {
+        m_vector.clear();
+        m_vector.reserve(2);
+        m_vector.push_back(ch);
+        ensure_null_terminated();
+        return *this;
+    }
+
+    basic_string& operator=(std::nullptr_t) = delete;
+
+    constexpr basic_string& operator+=(const basic_string& str)
+    {
+        return append(str);
+    }
+
+    constexpr basic_string& operator+=(CharT ch)
+    {
+        push_back(ch);
+        return *this;
+    }
+
+    constexpr basic_string& operator+=(const CharT* s)
+    {
+        return append(s);
+    }
+
+    template <class StringViewLike>
+    constexpr basic_string& operator+=(const StringViewLike& sv)
+        requires(
+          std::is_convertible_v<
+            const StringViewLike&, std::basic_string_view<CharT, traits_type>> &&
+          !std::is_convertible_v<const StringViewLike&, const CharT*>
+        )
+    {
+        basic_string_view<CharT, traits_type> view = sv;
+        return append(view);
+    }
+
 private:
     // Instance Variables
     // ^^^^^^
@@ -283,5 +659,318 @@ private:
 };
 
 using string = basic_string<char>;
+using wstring = basic_string<wchar_t>;
+
+// operator++
+// ^^^^^^
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  const std::basic_string<CharT, Traits, Alloc>& lhs,
+  const std::basic_string<CharT, Traits, Alloc>& rhs
+)
+{
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(const std::basic_string<CharT, Traits, Alloc>& lhs, const CharT* rhs)
+{
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + std::char_traits<CharT>::length(rhs));
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(const std::basic_string<CharT, Traits, Alloc>& lhs, CharT rhs)
+{
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + 1);
+    result.append(lhs);
+    result.push_back(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  const std::basic_string<CharT, Traits, Alloc>& lhs,
+  std::type_identity_t<std::basic_string_view<CharT, Traits>> rhs
+)
+{
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(const CharT* lhs, const std::basic_string<CharT, Traits, Alloc>& rhs)
+{
+    basic_string<CharT, Traits, Alloc> result(rhs.get_allocator());
+    result.reserve(std::char_traits<CharT>::length(lhs) + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(CharT lhs, const std::basic_string<CharT, Traits, Alloc>& rhs)
+{
+    basic_string<CharT, Traits, Alloc> result(rhs.get_allocator());
+    result.reserve(1 + rhs.size());
+    result.push_back(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  std::type_identity_t<std::basic_string_view<CharT, Traits>> lhs,
+  const std::basic_string<CharT, Traits, Alloc>& rhs
+)
+{
+    basic_string<CharT, Traits, Alloc> result(rhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  std::basic_string<CharT, Traits, Alloc>&& lhs, std::basic_string<CharT, Traits, Alloc>&& rhs
+)
+{
+    if (lhs.get_allocator() == rhs.get_allocator()) {
+        lhs.append(rhs);
+        return std::move(lhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  std::basic_string<CharT, Traits, Alloc>&& lhs, const std::basic_string<CharT, Traits, Alloc>& rhs
+)
+{
+    if (lhs.get_allocator() == rhs.get_allocator()) {
+        lhs.append(rhs);
+        return std::move(lhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(std::basic_string<CharT, Traits, Alloc>&& lhs, const CharT* rhs)
+{
+    if (lhs.get_allocator() == typename std::allocator_traits<Alloc>::allocator_type()) {
+        lhs.append(rhs);
+        return std::move(lhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + std::char_traits<CharT>::length(rhs));
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(std::basic_string<CharT, Traits, Alloc>&& lhs, CharT rhs)
+{
+    if (lhs.get_allocator() == typename std::allocator_traits<Alloc>::allocator_type()) {
+        lhs.push_back(rhs);
+        return std::move(lhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + 1);
+    result.append(lhs);
+    result.push_back(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  std::basic_string<CharT, Traits, Alloc>&& lhs,
+  std::type_identity_t<std::basic_string_view<CharT, Traits>> rhs
+)
+{
+    if (lhs.get_allocator() == typename std::allocator_traits<Alloc>::allocator_type()) {
+        lhs.append(rhs);
+        return std::move(lhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  const std::basic_string<CharT, Traits, Alloc>& lhs, std::basic_string<CharT, Traits, Alloc>&& rhs
+)
+{
+    if (lhs.get_allocator() == rhs.get_allocator()) {
+        rhs.insert(0, lhs.data(), lhs.size());
+        return std::move(rhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(lhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(const CharT* lhs, std::basic_string<CharT, Traits, Alloc>&& rhs)
+{
+    if (rhs.get_allocator() == typename std::allocator_traits<Alloc>::allocator_type()) {
+        rhs.insert(0, lhs, std::char_traits<CharT>::length(lhs));
+        return std::move(rhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(rhs.get_allocator());
+    result.reserve(std::char_traits<CharT>::length(lhs) + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc>
+operator+(CharT lhs, std::basic_string<CharT, Traits, Alloc>&& rhs)
+{
+    if (rhs.get_allocator() == typename std::allocator_traits<Alloc>::allocator_type()) {
+        rhs.insert(0, lhs);
+        return std::move(rhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(rhs.get_allocator());
+    result.reserve(1 + rhs.size());
+    result.push_back(lhs);
+    result.append(rhs);
+    return result;
+}
+
+template <class CharT, class Traits, class Alloc>
+constexpr std::basic_string<CharT, Traits, Alloc> operator+(
+  std::type_identity_t<std::basic_string_view<CharT, Traits>> lhs,
+  std::basic_string<CharT, Traits, Alloc>&& rhs
+)
+{
+    if (rhs.get_allocator() == typename std::allocator_traits<Alloc>::allocator_type()) {
+        rhs.insert(0, lhs.data(), lhs.size());
+        return std::move(rhs);
+    }
+    basic_string<CharT, Traits, Alloc> result(rhs.get_allocator());
+    result.reserve(lhs.size() + rhs.size());
+    result.append(lhs);
+    result.append(rhs);
+    return result;
+}
+
+// operator==
+// ^^^^^^
+
+template <class CharT, class Traits, class Alloc>
+constexpr bool operator==(
+  const std::basic_string<CharT, Traits, Alloc>& lhs,
+  const std::basic_string<CharT, Traits, Alloc>& rhs
+) noexcept
+{
+    return lhs.size() == rhs.size() && Traits::compare(lhs.data(), rhs.data(), lhs.size()) == 0;
+}
+
+template <class CharT, class Traits, class Alloc>
+bool operator==(const std::basic_string<CharT, Traits, Alloc>& lhs, const CharT* rhs) noexcept
+{
+    return lhs == std::basic_string_view<CharT, Traits>(rhs);
+}
+
+// Other Methods
+// ^^^^^^
+
+inline std::string to_string(int value)
+{
+    char buffer[16]; // -2147483647
+    std::snprintf(buffer, sizeof(buffer), "%d", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(long value)
+{
+    char buffer[16]; // -2147483647
+    std::snprintf(buffer, sizeof(buffer), "%ld", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(long long value)
+{
+    char buffer[32]; // -9223372036854775807
+    std::snprintf(buffer, sizeof(buffer), "%lld", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(unsigned value)
+{
+    char buffer[16]; // 4294967295
+    std::snprintf(buffer, sizeof(buffer), "%u", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(unsigned long value)
+{
+    char buffer[16]; // 4294967295
+    std::snprintf(buffer, sizeof(buffer), "%lu", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(unsigned long long value)
+{
+    char buffer[32]; // 18446744073709551615
+    std::snprintf(buffer, sizeof(buffer), "%llu", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(float value)
+{
+    char buffer[32]; // 3.4028235e+38
+    std::snprintf(buffer, sizeof(buffer), "%f", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(double value)
+{
+    char buffer[32]; // 1.7976931348623157e+308
+    std::snprintf(buffer, sizeof(buffer), "%f", value);
+    return std::string(buffer);
+}
+
+inline std::string to_string(long double value)
+{
+    char buffer[32]; // 1.7976931348623157e+308
+    std::snprintf(buffer, sizeof(buffer), "%Lf", value);
+    return std::string(buffer);
+}
 
 } // namespace std

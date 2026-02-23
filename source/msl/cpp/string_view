@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+#include <cassert>
 #include <ios>
 
 namespace std
@@ -145,20 +147,52 @@ public:
     // Instance Methods
     // ^^^^^^
 
+    // Element access
+
+    constexpr const_reference at(size_type pos) const
+    {
+        assert(pos < m_size);
+        return m_str[pos];
+    }
+
+    constexpr const_reference front() const
+    {
+        return at(0);
+    }
+
+    constexpr const_reference back() const
+    {
+        return at(m_size - 1);
+    }
+
     constexpr const_pointer data() const noexcept
     {
         return m_str;
     }
+
+    // Capacity
 
     constexpr size_type size() const noexcept
     {
         return m_size;
     }
 
+    constexpr size_type length() const noexcept
+    {
+        return m_size;
+    }
+
+    constexpr size_type max_size() const noexcept
+    {
+        return npos;
+    }
+
     constexpr bool empty() const noexcept
     {
         return m_size == 0;
     }
+
+    // Modifiers
 
     constexpr void remove_prefix(size_type n) noexcept
     {
@@ -187,20 +221,103 @@ public:
         other.m_size = temp_size;
     }
 
-    constexpr void clear() noexcept
+    // Operations
+
+    // TODO: copy
+
+    constexpr basic_string_view substr(size_type pos = 0, size_type count = npos) const
     {
-        m_str = nullptr;
-        m_size = 0;
+        assert(pos <= m_size);
+        if (count == npos || pos + count > m_size) {
+            count = m_size - pos;
+        }
+        return basic_string_view(m_str + pos, count);
     }
 
-    constexpr reference front() const
+    constexpr int compare(basic_string_view v) const noexcept
     {
-        return m_str[0];
+        const size_type rlen = std::min(m_size, v.m_size);
+        int result = traits_type::compare(m_str, v.m_str, rlen);
+        if (result != 0) {
+            return result;
+        }
+        if (m_size == v.m_size) {
+            return 0;
+        }
+        return m_size < v.m_size ? -1 : 1;
     }
 
-    constexpr reference back() const
+    constexpr int compare(size_type pos1, size_type count1, basic_string_view v) const
     {
-        return m_str[m_size - 1];
+        return substr(pos1, count1).compare(v);
+    }
+
+    constexpr int compare(
+      size_type pos1, size_type count1, basic_string_view v, size_type pos2, size_type count2
+    ) const
+    {
+        return substr(pos1, count1).compare(v.substr(pos2, count2));
+    }
+
+    constexpr int compare(const CharT* s) const
+    {
+        return compare(basic_string_view(s));
+    }
+
+    constexpr int compare(size_type pos1, size_type count1, const CharT* s) const
+    {
+        return substr(pos1, count1).compare(basic_string_view(s));
+    }
+
+    constexpr int compare(size_type pos1, size_type count1, const CharT* s, size_type count2) const
+    {
+        return substr(pos1, count1).compare(basic_string_view(s, count2));
+    }
+
+    constexpr bool starts_with(basic_string_view sv) const noexcept
+    {
+        return m_size >= sv.m_size && traits_type::compare(m_str, sv.m_str, sv.m_size) == 0;
+    }
+
+    constexpr bool starts_with(CharT c) const noexcept
+    {
+        return !empty() && traits_type::eq(m_str[0], c);
+    }
+
+    constexpr bool starts_with(const CharT* s) const
+    {
+        return starts_with(basic_string_view(s));
+    }
+
+    constexpr bool ends_with(basic_string_view sv) const noexcept
+    {
+        return m_size >= sv.m_size &&
+               traits_type::compare(m_str + m_size - sv.m_size, sv.m_str, sv.m_size) == 0;
+    }
+
+    constexpr bool ends_with(CharT ch) const noexcept
+    {
+        return !empty() && traits_type::eq(m_str[m_size - 1], ch);
+    }
+
+    constexpr bool ends_with(const CharT* s) const
+    {
+        return ends_with(basic_string_view(s));
+    }
+
+    constexpr bool contains(basic_string_view sv) const noexcept
+    {
+        return find(sv) != npos;
+    }
+
+    constexpr bool contains(CharT c) const noexcept
+    {
+        return find(c) != npos;
+    }
+
+    constexpr bool contains(const CharT* s) const
+    {
+        return contains(basic_string_view(s));
     }
 
     constexpr size_type find(const basic_string_view& sv, size_type pos = 0) const noexcept
@@ -231,6 +348,56 @@ public:
         return npos;
     }
 
+    constexpr size_type find(const CharT* s, size_type pos, size_type count) const
+    {
+        return find(basic_string_view(s, count), pos);
+    }
+
+    constexpr size_type find(const CharT* s, size_type pos = 0) const
+    {
+        return find(basic_string_view(s), pos);
+    }
+
+    constexpr size_type rfind(basic_string_view v, size_type pos = npos) const noexcept
+    {
+        if (v.m_size == 0) {
+            return pos < m_size ? pos : m_size;
+        }
+        if (v.m_size > m_size) {
+            return npos;
+        }
+        size_type start = std::min(pos, m_size - v.m_size);
+        for (size_type i = start + 1; i-- > 0;) {
+            if (traits_type::compare(m_str + i, v.m_str, v.m_size) == 0) {
+                return i;
+            }
+        }
+        return npos;
+    }
+
+    constexpr size_type rfind(CharT ch, size_type pos = npos) const noexcept
+    {
+        if (m_size == 0) {
+            return npos;
+        }
+        size_type start = std::min(pos, m_size - 1);
+        const_pointer result = traits_type::find(m_str, start + 1, ch);
+        if (result != nullptr) {
+            return static_cast<size_type>(result - m_str);
+        }
+        return npos;
+    }
+
+    constexpr size_type rfind(const CharT* s, size_type pos, size_type count) const
+    {
+        return rfind(basic_string_view(s, count), pos);
+    }
+
+    constexpr size_type rfind(const CharT* s, size_type pos = npos) const
+    {
+        return rfind(basic_string_view(s), pos);
+    }
+
 public:
     // Operators
     // ^^^^^^
@@ -240,19 +407,20 @@ public:
         return m_str[pos];
     }
 
-    constexpr bool operator==(const basic_string_view& other) const noexcept
-    {
-        if (m_size != other.m_size) {
-            return false;
-        }
-        return traits_type::compare(m_str, other.m_str, m_size) == 0;
-    }
-
 private:
     const_pointer m_str;
     size_type m_size;
 };
 
 using string_view = basic_string_view<char>;
+
+template <class CharT, class Traits>
+constexpr bool operator==(
+  std::basic_string_view<CharT, Traits> lhs,
+  std::type_identity_t<std::basic_string_view<CharT, Traits>> rhs
+) noexcept
+{
+    return lhs.compare(rhs) == 0;
+}
 
 } // namespace std

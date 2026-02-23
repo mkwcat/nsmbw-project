@@ -143,4 +143,20 @@ constexpr void swap(array<T, N>& lhs, array<T, N>& rhs) noexcept
     lhs.swap(rhs);
 }
 
+template <class T, size_t N>
+constexpr array<remove_cv_t<T>, N> to_array(T (&a)[N])
+{
+    array<remove_cv_t<T>, N> ret{};
+    for (std::size_t i = 0; i < N; ++i) {
+        ret[i] = a[i];
+    }
+    return ret;
+}
+
+template <class T, std::size_t N>
+constexpr std::array<std::remove_cv_t<T>, N> to_array(T (&&a)[N], std::monostate = {})
+{
+    return to_array(a);
+}
+
 } // namespace std

@@ -14,4 +14,7 @@ concept integral = std::is_integral_v<T>;
 template <class T>
 concept unsigned_integral = std::integral<T> && !std::is_signed_v<T>;
 
+template <class T, class U>
+concept convertible_to = std::is_convertible_v<T, U>;
+
 } // namespace std
