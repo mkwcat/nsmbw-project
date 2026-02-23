@@ -46,8 +46,6 @@ EXTERN_REPL(
 [[nsmbw(0x801CA7C0)]]
 s32 DVDConvertPathToEntrynum(const char* fileName)
 {
-    OS_REPORT("DVDConvertPathToEntrynum(): %s\n", fileName);
-
     if (s_dvdExArcHandle != nullptr) {
         s32 entryNum =
           ARCConvertPathToEntrynum(s_dvdExArcHandle, *fileName == '/' ? fileName + 1 : fileName);
