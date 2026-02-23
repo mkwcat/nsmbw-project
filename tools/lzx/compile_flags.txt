@@ -1,3 +1,0 @@
--I.
--Wno-deprecated-declarations
--Wno-pointer-sign

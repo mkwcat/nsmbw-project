@@ -6,16 +6,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-add_executable(lzx
-    lzx/lzx.c
-)
-
-target_compile_options(lzx PRIVATE
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang,AppleClang>:-O3>
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang,AppleClang>:-Wno-deprecated-declarations>
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang,AppleClang>:-Wno-pointer-sign>
-)
-
 add_executable(elf2rel
     elf2rel/elf2rel.cpp
 )

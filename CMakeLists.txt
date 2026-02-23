@@ -118,7 +118,6 @@ ExternalProject_Add(
 )
 
 set(ELF2REL "${CMAKE_BINARY_DIR}/tools/elf2rel${CMAKE_HOST_EXECUTABLE_SUFFIX}")
-set(LZX "${CMAKE_BINARY_DIR}/tools/lzx${CMAKE_HOST_EXECUTABLE_SUFFIX}")
 set(WUJ5 "${CMAKE_SOURCE_DIR}/tools/wuj5/wuj5.py")
 set(YAZ "${CMAKE_SOURCE_DIR}/tools/wuj5/yaz.py")
 set(GENSMAP "${CMAKE_SOURCE_DIR}/tools/generate_symbol_map.py")
@@ -178,14 +177,6 @@ foreach(out_name ${DVD_FILES})
                 COMMENT "Generating ${out_name}"
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${dst_directory}
                 COMMAND python ${GENSMAP} "${CMAKE_BINARY_DIR}/source/project${CMAKE_EXECUTABLE_SUFFIX}" "${dst}" "${MKWCAT_DOLPHIN_MAP_PATH}"
-            )
-        elseif("${out_name}" MATCHES "\\.LZ$")
-            string(REPLACE ".LZ" "" src_name "${out_name}")
-            add_custom_command(OUTPUT ${dst}
-                DEPENDS tools "${CMAKE_SOURCE_DIR}/assets/${src_name}"
-                COMMENT "Compressing ${out_name}"
-                COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
-                COMMAND ${LZX} -ewb "${CMAKE_SOURCE_DIR}/assets/${src_name}" "${dst}"
             )
         elseif("${out_name}" MATCHES "\\.szs$")
             string(REPLACE ".szs" "" src_name "${out_name}")

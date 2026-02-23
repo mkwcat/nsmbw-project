@@ -40,6 +40,5 @@ Most notably [Ninji](https://github.com/Treeki), [CLF78](https://github.com/CLF7
 The following tools are included in this repository, all with some modifications:
 - **[elf2rel](https://github.com/PistonMiner/ttyd-tools/tree/master/ttyd-tools/elf2rel)**; created by [Linus S. (aka PistonMiner)](https://github.com/PistonMiner), licensed under [GPLv3][gpl-3.0] or later.
 - **[wuj5](https://github.com/stblr/wuj5)**; created by [Pablo Stebler](https://github.com/stblr), under the [MIT license](https://github.com/stblr/wuj5/blob/main/LICENSE).
-- **lzx**; created by CUE, licensed under [GPLv3][gpl-3.0] or later.
 
 [gpl-3.0]: https://www.gnu.org/licenses/gpl-3.0
