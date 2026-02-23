@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+
+
+from argparse import ArgumentParser
+
 from common import *
 
 
@@ -94,3 +99,22 @@ def pack_yaz(in_data):
         pack_pad32(None),
         out_data
     ])
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument('mode', choices = ['decode', 'encode'])
+    parser.add_argument('in_path')
+    parser.add_argument('out_path')
+    args = parser.parse_args()
+    if args.mode == 'decode':
+        with open(args.in_path, 'rb') as in_file:
+            in_data = in_file.read()
+        out_data = unpack_yaz(in_data)
+        with open(args.out_path, 'wb') as out_file:
+            out_file.write(out_data)
+    else:
+        with open(args.in_path, 'rb') as in_file:
+            in_data = in_file.read()
+        out_data = pack_yaz(in_data)
+        with open(args.out_path, 'wb') as out_file:
+            out_file.write(out_data)

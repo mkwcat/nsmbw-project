@@ -120,6 +120,7 @@ ExternalProject_Add(
 set(ELF2REL "${CMAKE_BINARY_DIR}/tools/elf2rel${CMAKE_HOST_EXECUTABLE_SUFFIX}")
 set(LZX "${CMAKE_BINARY_DIR}/tools/lzx${CMAKE_HOST_EXECUTABLE_SUFFIX}")
 set(WUJ5 "${CMAKE_SOURCE_DIR}/tools/wuj5/wuj5.py")
+set(YAZ "${CMAKE_SOURCE_DIR}/tools/wuj5/yaz.py")
 set(GENSMAP "${CMAKE_SOURCE_DIR}/tools/generate_symbol_map.py")
 set(INSERTXML "${CMAKE_SOURCE_DIR}/tools/insert-xml.py")
 
@@ -156,13 +157,13 @@ foreach(out_name ${DVD_FILES})
                 COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
                 COMMAND ${CMAKE_COMMAND} -E copy "${src}" "${dst}"
             )
-        elseif("${dst}" MATCHES "\\.rel\\.LZ$")
-            string(REPLACE ".LZ" "" src_name "${dst_name}")
+        elseif("${dst}" MATCHES "\\.rel\\.szs$")
+            string(REPLACE ".szs" "" src_name "${dst_name}")
             add_custom_command(OUTPUT ${dst}
                 DEPENDS tools "${CMAKE_BINARY_DIR}/source/${src_name}"
                 COMMENT "Compressing ${out_name}"
                 COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
-                COMMAND ${LZX} -ewb "${CMAKE_BINARY_DIR}/source/${src_name}" "${dst}"
+                COMMAND python ${YAZ} encode "${CMAKE_BINARY_DIR}/source/${src_name}" "${dst}"
             )
         elseif("${out_name}" MATCHES "(\\.brlyt|\\.brlan)$" AND EXISTS ${src}.json5)
             add_custom_command(OUTPUT ${dst}
@@ -185,6 +186,17 @@ foreach(out_name ${DVD_FILES})
                 COMMENT "Compressing ${out_name}"
                 COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
                 COMMAND ${LZX} -ewb "${CMAKE_SOURCE_DIR}/assets/${src_name}" "${dst}"
+            )
+        elseif("${out_name}" MATCHES "\\.szs$")
+            string(REPLACE ".szs" "" src_name "${out_name}")
+            if(NOT EXISTS "${CMAKE_SOURCE_DIR}/assets/${src_name}" AND EXISTS "${CMAKE_SOURCE_DIR}/assets/${src_name}.arc")
+                set(src_name "${src_name}.arc")
+            endif()
+            add_custom_command(OUTPUT ${dst}
+                DEPENDS tools "${CMAKE_SOURCE_DIR}/assets/${src_name}"
+                COMMENT "Compressing ${out_name}"
+                COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
+                COMMAND python ${YAZ} encode "${CMAKE_SOURCE_DIR}/assets/${src_name}" "${dst}"
             )
         endif()
         list(APPEND DST_DVD_FILES ${dst})

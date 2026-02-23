@@ -18,8 +18,8 @@
 #include <egg/core/eggDvdRipper.h>
 #include <egg/core/eggHeap.h>
 #include <egg/core/eggStreamDecomp.h>
+#include <machine/m_dvd.h>
 #include <mkwcat/AddressMapper.hpp>
-#include <new>
 #include <revolution/arc.h>
 #include <revolution/dvd.h>
 #include <revolution/os.h>
@@ -131,17 +131,21 @@ s32 DVDConvertPathToEntrynum(const char* fileName);
 [[address_loader(0x802B7C40)]]
 EGG::DvdFile* MakeDvdFile(void* data);
 
-[[address_loader(0x802B8560)]]
-bool EGG::StreamDecompLZ::init(void* dst, u32 maxCompressedSize);
+[[address_loader(0x802B8AB0)]]
+bool EGG::StreamDecompSZS::init(void* dst, u32 maxCompressedSize);
 
-[[address_loader(0x802B8590)]]
-bool EGG::StreamDecompLZ::decomp(const void* src, u32 size);
+[[address_loader(0x802B8AE0)]]
+bool EGG::StreamDecompSZS::decomp(const void* src, u32 size);
 
-[[address_loader(0x802B8B90)]]
-u32 EGG::StreamDecompLZ::getUncompressedSize(const void* src);
+[[address_loader(0x802B8B10)]]
+u32 EGG::StreamDecompSZS::getUncompressedSize(const void* src);
 
-[[address_loader(0x802B8BA0)]]
-u32 EGG::StreamDecompLZ::getHeaderSize();
+[[address_loader(0x802B8B20)]]
+u32 EGG::StreamDecompSZS::getHeaderSize();
+
+// Takes a thisptr but it's not checked
+[[address_loader(0x8016C4F0)]]
+EGG::StreamDecompSZS* mDvd_TUncompressInfo_c_SZS_Construct();
 
 [[address_loader(0x802B8290)]]
 u8* EGG::DvdRipper::loadToMainRAMDecomp(
@@ -171,7 +175,7 @@ constexpr u32 STACK_SIZE = 0x8000;
 constexpr u32 MODULE_BLOCK_SIZE = 0x80000;
 constexpr u32 REGION_INDEX = sizeof("rels/project_") - 1;
 constinit bool l_started = false;
-constinit char l_module_path[] = "rels/project_?1.rel.LZ";
+constinit char l_module_path[] = "rels/project_?1.rel.szs";
 constinit const char l_archive_path[] = "mkwcat.arc";
 constinit void* l_stack = nullptr;
 constinit OSThread l_thread = {};
@@ -295,14 +299,14 @@ void* LoaderThread(void* param)
     const bool arc_open_ok = ARCOpen(arc_handle, l_module_path, &arc_file_info);
     LOADER_ASSERT(arc_open_ok);
 
-    // Hack to construct EGG::StreamDecompLZ without needing a vtable reference
-    alignas(alignof(EGG::StreamDecompLZ)) u8 lz_stream_memory[sizeof(EGG::StreamDecompLZ)];
-    *reinterpret_cast<u32*>(lz_stream_memory) = PORT_ADDR_LIST(0x8034FFA8)[GetPortIndex()];
-    EGG::StreamDecompLZ* const lz_stream = reinterpret_cast<EGG::StreamDecompLZ*>(lz_stream_memory);
+    // Should be fine? This is not threadsafe but nothing else should be reading files at this
+    // point, at least not compressed ones. Note: destructor does nothing so we don't even call it
+    // here.
+    EGG::StreamDecompSZS* const szs_stream = mDvd_TUncompressInfo_c_SZS_Construct();
 
     u32 amount_read, file_size;
     const bool module_load_ok = EGG::DvdRipper::loadToMainRAMDecomp(
-      dvd_file, lz_stream, static_cast<u8*>(l_loader_block), heap, EGG::DvdRipper::ALLOC_DIR_TOP,
+      dvd_file, szs_stream, static_cast<u8*>(l_loader_block), heap, EGG::DvdRipper::ALLOC_DIR_TOP,
       ARCGetStartOffset(&arc_file_info), ARCGetLength(&arc_file_info), 0x10000, &amount_read,
       &file_size
     );
@@ -313,13 +317,18 @@ void* LoaderThread(void* param)
     OSModuleHeader* const header = static_cast<OSModuleHeader*>(l_loader_block);
 
     const u32 fix_size = (header->fixSize + 31) & ~31;
-    const bool bss_size_ok = header->bssSize <= MODULE_BLOCK_SIZE - fix_size;
-    LOADER_ASSERT(bss_size_ok);
+    const u32 total_size = fix_size + header->bssSize;
+    const bool module_size_ok = total_size <= MODULE_BLOCK_SIZE;
+    LOADER_ASSERT(module_size_ok);
 
     void* const bss_block = static_cast<u8*>(l_loader_block) + fix_size;
 
     const bool link_module_ok = OSLinkFixed(&header->info, bss_block);
     LOADER_ASSERT(link_module_ok);
+
+    const u32 resized_size = heap->resizeForMBlock(l_loader_block, total_size);
+    const bool module_resize_ok = resized_size >= total_size;
+    LOADER_ASSERT(module_resize_ok);
 
     return nullptr;
 }

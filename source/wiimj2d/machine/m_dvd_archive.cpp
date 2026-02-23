@@ -1,7 +1,7 @@
 // m_archive.cpp
 // nsmbw-project
 
-#include "m_archive.h"
+#include "m_dvd.h"
 
 #include <algorithm>
 #include <cassert>
@@ -9,7 +9,10 @@
 #include <revolution/os/OSCache.h>
 #include <revolution/os/OSError.h>
 
-mMultiArchiveBuilder_c::mMultiArchiveBuilder_c(
+namespace mDvd
+{
+
+MultiArchiveBuilder_c::MultiArchiveBuilder_c(
   EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir, u32 dstMaxCount, u32 dstStrTabMaxSize
 )
   : mHeap(heap)
@@ -19,7 +22,7 @@ mMultiArchiveBuilder_c::mMultiArchiveBuilder_c(
 {
 }
 
-mMultiArchiveBuilder_c::~mMultiArchiveBuilder_c()
+MultiArchiveBuilder_c::~MultiArchiveBuilder_c()
 {
     if (mDst != nullptr) {
         delete[] mDst;
@@ -30,7 +33,7 @@ mMultiArchiveBuilder_c::~mMultiArchiveBuilder_c()
     }
 }
 
-s32 mMultiArchiveBuilder_c::addString(const char* str)
+s32 MultiArchiveBuilder_c::addString(const char* str)
 {
     // Find if the string already exists
     for (u32 i = 0; i < mDstStrTabSize; i++) {
@@ -49,7 +52,7 @@ s32 mMultiArchiveBuilder_c::addString(const char* str)
     return mDstStrTabSize - strLen;
 }
 
-s32 mMultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstIndex, s32 parent)
+s32 MultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstIndex, s32 parent)
 {
     if (dstIndex < 0) {
         dstIndex = mDstCount + dstIndex + 1;
@@ -88,7 +91,7 @@ s32 mMultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstIn
     // Now add the entry
     FstEntry* dstEntry = mDst + dstIndex;
     *dstEntry = {
-      .isDir = entry.isDir,
+      .isDir = !!entry.isDir,
       .stringOffset = static_cast<u32>(addString(name)),
       .dir = {
         .parent = entry.dir.parent,
@@ -101,14 +104,14 @@ s32 mMultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstIn
     return dstIndex;
 }
 
-s32 mMultiArchiveBuilder_c::addEntryStrTab(
+s32 MultiArchiveBuilder_c::addEntryStrTab(
   FstEntry entry, const char* strTab, s32 dstIndex, s32 parent
 )
 {
     return addEntry(entry, strTab + entry.stringOffset, dstIndex, parent);
 }
 
-s32 mMultiArchiveBuilder_c::copyArchive2(
+s32 MultiArchiveBuilder_c::copyArchive2(
   const char* srcFst, u32 startIndex, s32 dstIndex, u32 offsetDisplacement
 )
 {
@@ -158,8 +161,6 @@ s32 mMultiArchiveBuilder_c::copyArchive2(
         }
 
         if (cond == 0) {
-            OS_REPORT("Replacing %s\n", srcEntryName);
-
             // Replace an existing entry
             if (entryToAdd.isDir) {
                 assert(dstEntry->isDir);
@@ -192,7 +193,7 @@ s32 mMultiArchiveBuilder_c::copyArchive2(
     return dstIndex;
 }
 
-bool mMultiArchiveBuilder_c::copyArchive(
+bool MultiArchiveBuilder_c::copyArchive(
   const char* srcFst, u32 fstSize, u32 startIndex, u32 offsetDisplacement
 )
 {
@@ -229,7 +230,7 @@ bool mMultiArchiveBuilder_c::copyArchive(
     return copyArchive2(srcFst, startIndex, 1, offsetDisplacement) >= 0;
 }
 
-u32 mMultiArchiveBuilder_c::getTotalFileSize() const
+u32 MultiArchiveBuilder_c::getTotalFileSize() const
 {
     u32 totalSize = 0;
     for (u32 i = 0; i < mDstCount; i++) {
@@ -241,7 +242,7 @@ u32 mMultiArchiveBuilder_c::getTotalFileSize() const
     return totalSize;
 }
 
-void mMultiArchiveBuilder_c::addRootEntry(const char* name)
+void MultiArchiveBuilder_c::addRootEntry(const char* name)
 {
     if (mDstCount != 0) {
         return;
@@ -273,7 +274,7 @@ void mMultiArchiveBuilder_c::addRootEntry(const char* name)
     copyArchive(data, dataSize);
 }
 
-void* mMultiArchiveBuilder_c::loadArchive(
+void* MultiArchiveBuilder_c::loadArchive(
   EGG::DvdFile* dvdFile, char* path, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
   u32* outAmountRead, u32* outFileSize
 )
@@ -294,7 +295,7 @@ void* mMultiArchiveBuilder_c::loadArchive(
     const u32 finalAllocAlign = allocDir == EGG::DvdRipper::ALLOC_DIR_BOTTOM ? -0x20 : 0x20;
     const u32 tmpAllocAlign = tmpAllocDir == EGG::DvdRipper::ALLOC_DIR_BOTTOM ? -0x20 : 0x20;
 
-    mMultiArchiveBuilder_c builder(heap, tmpAllocDir);
+    MultiArchiveBuilder_c builder(heap, tmpAllocDir);
 
     if (dvdFile->mIsOpen) {
         ARCHeader arcHeader alignas(32);
@@ -413,3 +414,5 @@ void* mMultiArchiveBuilder_c::loadArchive(
 
     return newArcData;
 }
+
+} // namespace mDvd

@@ -9,7 +9,7 @@
 #include "d_system/d_nand_thread.h"
 #include "d_system/d_remocon_mng.h"
 #include "d_system/d_save_manager.h"
-#include "d_system/d_yoshi_model.h"
+#include "machine/m_dvd.h"
 #include "machine/m_heap.h"
 #include "machine/m_pad.h"
 #include "sound/SndAudioMgr.h"
@@ -138,6 +138,11 @@ void dSys_c::preCModuleInit(s32 arcEntryNum, ARCHandle* arcHandle)
     __DVDEXInit(arcEntryNum, arcHandle);
 }
 
+static constexpr auto l_asd_info = std::to_array<mDvd::UncompressInfo_c*>({
+  &mDvd::s_UncompressInfoSZS,
+  &mDvd::s_UncompressInfoLZ,
+});
+
 void dSys_c::initCModule()
 {
     mHeap::ScopeHeap_c scope{0};
@@ -146,6 +151,8 @@ void dSys_c::initCModule()
     EGG::CoreControllerMgr::instance()->initClassic();
 
     mPad::create();
+
+    mDvd::initAutoStreamDecompInfo(l_asd_info.begin(), l_asd_info.end());
 
     dRemoconMng_c::m_instance = new dRemoconMng_c(dRemoconMng_c::m_instance);
 

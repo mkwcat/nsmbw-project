@@ -36,11 +36,10 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8016A430 - 0x8016A5A0
     m_3d_smdl.cpp
 
-# nsmbw-project
-    m_archive.cpp
-
 # NSMBW          .text:  0x8016B090 - 0x8016C540
     m_dvd.cpp
+# nsmbw-project
+    m_dvd_archive.cpp
 
 # NSMBW          .text:  0x8016DBE0 - 0x8016DD40
 # NSMBW          .sbss:  0x8042A720 - 0x8042A728

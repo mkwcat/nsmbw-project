@@ -3,7 +3,7 @@
 
 #include "m_dvd.h"
 
-#include "machine/m_archive.h"
+#include "egg/core/eggStreamDecomp.h"
 #include <cstring>
 #include <egg/core/eggDvdFile.h>
 #include <egg/core/eggDvdRipper.h>
@@ -16,6 +16,24 @@
 
 namespace mDvd
 {
+
+[[nsmbw_data(0x80429758)]]
+void* UncompressInfo_c::m_UnionObjectBuffer;
+
+[[nsmbw_data(0x80377DE4)]]
+TUncompressInfo_c<EGG::StreamDecompSZS> s_UncompressInfoSZS(3, ".szs");
+
+[[nsmbw_data(0x80377DF0)]]
+TUncompressInfo_c<EGG::StreamDecompLZ> s_UncompressInfoLZ(5, ".LZ");
+
+[[nsmbw_data(0x80377DFC)]]
+TUncompressInfo_c<EGG::StreamDecompLH> s_UncompressInfoLH(7, ".LH");
+
+[[nsmbw_data(0x80377E08)]]
+TUncompressInfo_c<EGG::StreamDecompLRC> s_UncompressInfoLRC(8, ".LRC");
+
+[[nsmbw_data(0x80377E14)]]
+TUncompressInfo_c<EGG::StreamDecompRL> s_UncompressInfoRL(4, ".RL");
 
 int maxChunkSize = 0x10000;
 
@@ -39,6 +57,11 @@ static int ConvertPathToEntrynumBase(const char* path, u8* outType);
 /* static */ void deleteUncompressObj(u8 type);
 
 } // namespace mDvd
+
+[[nsmbw(0x8016B1D0)]]
+void mDvd::initAutoStreamDecompInfo(
+  const UncompressInfo_c* const* begin, const UncompressInfo_c* const* end
+);
 
 [[nsmbw(0x8016B230)]]
 /* static */ EGG::StreamDecomp* mDvd::newUncompressObj(u8 type);
@@ -78,8 +101,9 @@ void* mDvd::loadToMainRAM(
             // Check if the path ends with .arc
             if (std::strlen(path) > 4 && std::strcmp(path + std::strlen(path) - 4, ".arc") == 0) {
                 // Try arc subfile replacement
+                // TODO: Allow multiple layers (e.g. RndizerRes over ProjectRes over original)
                 dvdFile.open(__DVDPathToEntrynum(path));
-                result = mMultiArchiveBuilder_c::loadArchive(
+                result = MultiArchiveBuilder_c::loadArchive(
                   &dvdFile, path, heap, allocDir, &amountRead, &fileSize
                 );
                 dvdFile.close();
@@ -143,13 +167,16 @@ void mDvd::getOverlayRes(bool* isRndizerRes)
 
 static int mDvd::ConvertPathToEntrynumBase(const char* path, u8* outType)
 {
-    int num = DVDConvertPathToEntrynum(path);
-    if (num != -1) {
-        if (outType != nullptr) {
+    // Change: Consider compressed files before uncompressed ones
+    int num = -1;
+    if (mDvd::isAutoStreamDecomp()) {
+        num = ConvertPathToEntrynumASD_(path, outType);
+    }
+    if (num == -1) {
+        num = DVDConvertPathToEntrynum(path);
+        if (num != -1 && outType != nullptr) {
             *outType = 0;
         }
-    } else if (mDvd::isAutoStreamDecomp()) {
-        num = mDvd::ConvertPathToEntrynumASD_(path, outType);
     }
     return num;
 }
@@ -200,3 +227,45 @@ bool mDvd::getFileSize(const char* path, u32* outFileSize)
     file.close();
     return true;
 }
+
+// Implicitly emitted here in m_dvd.cpp
+
+template <>
+[[nsmbw(0x8016C3B0)]]
+EGG::StreamDecompRL* mDvd::TUncompressInfo_c<EGG::StreamDecompRL>::Construct() const;
+
+template <>
+[[nsmbw(0x8016C3F0)]]
+void mDvd::TUncompressInfo_c<EGG::StreamDecompRL>::Destruct() const;
+
+template <>
+[[nsmbw(0x8016C400)]]
+EGG::StreamDecompLRC* mDvd::TUncompressInfo_c<EGG::StreamDecompLRC>::Construct() const;
+
+template <>
+[[nsmbw(0x8016C440)]]
+void mDvd::TUncompressInfo_c<EGG::StreamDecompLRC>::Destruct() const;
+
+template <>
+[[nsmbw(0x8016C450)]]
+EGG::StreamDecompLH* mDvd::TUncompressInfo_c<EGG::StreamDecompLH>::Construct() const;
+
+template <>
+[[nsmbw(0x8016C490)]]
+void mDvd::TUncompressInfo_c<EGG::StreamDecompLH>::Destruct() const;
+
+template <>
+[[nsmbw(0x8016C4A0)]]
+EGG::StreamDecompLZ* mDvd::TUncompressInfo_c<EGG::StreamDecompLZ>::Construct() const;
+
+template <>
+[[nsmbw(0x8016C4E0)]]
+void mDvd::TUncompressInfo_c<EGG::StreamDecompLZ>::Destruct() const;
+
+template <>
+[[nsmbw(0x8016C4F0)]]
+EGG::StreamDecompSZS* mDvd::TUncompressInfo_c<EGG::StreamDecompSZS>::Construct() const;
+
+template <>
+[[nsmbw(0x8016C530)]]
+void mDvd::TUncompressInfo_c<EGG::StreamDecompSZS>::Destruct() const;
