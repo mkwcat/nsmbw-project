@@ -46,12 +46,27 @@ public:
     };
 
 public:
+    // Instance Methods
+    // ^^^^^^
+
+    /* 0x8008E3D0 */
+    NextGoto_s* getNextGotoP(u8);
+
+public:
     // Instance Variables
     // ^^^^^^
 
     /* 0x004 */ u8 mCourseID;
     /* 0x008 */ void* mpPaletteList;
     /* 0x00C */ CourseInfo_s* mpCourseInfo;
+    /* 0x010 */ void* mpOptions;
+    /* 0x014 */ void* mpScrollData;
+    /* 0x018 */ void* mpBlock4;
+    /* 0x01C */ void* mpBg2Data; 
+    /* 0x020 */ void* mpBg3Data; 
+    /* 0x024 */ NextGoto_s* mpNextGotos;
+    /* 0x028 */ void* mpBlock8;
+    /* 0x02C */ void* mpAreas;
 };
 
 class dCd_c
@@ -62,4 +77,15 @@ public:
 
     /* 0x8005EE70 */
     static dCdFile_c* getFileP(int course);
+
+public:
+    // Instance Variables
+    // ^^^^^^
+    dCdFile_c mFiles[4];
+
+public:
+    // Static Variables
+    // ^^^^^^
+
+    /* 0x8042A178 */ static dCd_c* m_instance;
 };

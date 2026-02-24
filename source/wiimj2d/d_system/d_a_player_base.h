@@ -1542,6 +1542,9 @@ public:
     /* 0x80050D80 */
     bool isDispOutCheckOn();
 
+    /* 0x80050A00 */
+    void setExitRailDokan();
+
     /* 0x800510F0 */
     void stopGoalOther();
 
@@ -1696,7 +1699,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0392, 0x043C);
+    FILL(0x0392, 0x03F8);
+    
+    /* 0x03F8 */ int mGotoDest;
+    
+    FILL(0x03FC, 0x043C);
 
     /* 0x043C */ int m0x43C;
 

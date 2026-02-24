@@ -3,6 +3,8 @@
 
 #include "d_a_player_base.h"
 
+#include "d_bases/d_s_stage.h"
+#include "d_system/d_course_data.h"
 #include "d_player/d_a_player.h"
 #include "d_player/d_a_yoshi.h"
 #include "d_player/d_gamedisplay.h"
@@ -11,6 +13,7 @@
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_game_common.h"
 #include "framework/f_manager.h"
+#include <cassert>
 #include <cstdio>
 #include <iterator>
 
@@ -38,8 +41,137 @@ void daPlBase_c::playOther();
 [[nsmbw(0x8004E290)]]
 void daPlBase_c::changeDemoState(const sStateIDIf_c& state, int param);
 
+[[nsmbw(0x80050870)]]
+void daPlBase_c::initializeState_StateID_DemoRailDokan() ASM_METHOD(
+  // clang-format off
+/* 80050870 9421FFD0 */  stwu     r1, -48(r1);
+/* 80050874 7C0802A6 */  mflr     r0;
+/* 80050878 388000BB */  li       r4, 187;
+/* 8005087C 90010034 */  stw      r0, 52(r1);
+/* 80050880 93E1002C */  stw      r31, 44(r1);
+/* 80050884 7C7F1B78 */  mr       r31, r3;
+/* 80050888 93C10028 */  stw      r30, 40(r1);
+/* 8005088C 480063E5 */  bl       UNDEF_80056c70;
+/* 80050890 806DAB28 */  lwz      r3, -21720(r13);
+/* 80050894 808DA7F8 */  lwz      r4, -22536(r13);
+/* 80050898 8803120E */  lbz      r0, 4622(r3);
+/* 8005089C 1C0003B0 */  mulli    r0, r0, 944;
+/* 800508A0 7C640214 */  add      r3, r4, r0;
+/* 800508A4 8003002C */  lwz      r0, 44(r3);
+/* 800508A8 2C000000 */  cmpwi    r0, 0;
+/* 800508AC 41820008 */  beq-     UNDEF_800508b4;
+/* 800508B0 48000008 */  b        UNDEF_800508b8;
+UNDEF_800508b4:;
+/* 800508B4 38600000 */  li       r3, 0;
+UNDEF_800508b8:;
+/* 800508B8 801F03F8 */  lwz      r0, 1016(r31);
+/* 800508BC 5404063E */  clrlwi   r4, r0, 24                ;
+/* 800508C0 4803DB11 */  bl       UNDEF_8008e3d0;
+/* 800508C4 7C7E1B78 */  mr       r30, r3;
+/* 800508C8 8863000F */  lbz      r3, 15(r3);
+/* 800508CC 480888E5 */  bl       UNDEF_800d91b0;
+/* 800508D0 808DAB28 */  lwz      r4, -21720(r13);
+/* 800508D4 80ADA7F8 */  lwz      r5, -22536(r13);
+/* 800508D8 8804120E */  lbz      r0, 4622(r4);
+/* 800508DC 1C0003B0 */  mulli    r0, r0, 944;
+/* 800508E0 7CC50214 */  add      r6, r5, r0;
+/* 800508E4 8006002C */  lwz      r0, 44(r6);
+/* 800508E8 2C000000 */  cmpwi    r0, 0;
+/* 800508EC 41820008 */  beq-     UNDEF_800508f4;
+/* 800508F0 48000008 */  b        UNDEF_800508f8;
+UNDEF_800508f4:;
+/* 800508F4 38C00000 */  li       r6, 0;
+UNDEF_800508f8:;
+/* 800508F8 A01E0010 */  lhz      r0, 16(r30);
+                         clrlwi.  r0, r0, 31;
+                         beq      NOT_DIRECT_PIPE_END;
+                         lhz      r7, 4(r3);
+                         subi     r0, r7, 2;
+                         sth      r0, 1068(r31);
+                         b        AFTER_DIRECT_PIPE_END_CHECK;
+NOT_DIRECT_PIPE_END:;
+                         li       r0, 1;
+                         sth      r0, 1068(r31);
+AFTER_DIRECT_PIPE_END_CHECK:;
+                         lhz      r5, 2(r3);
+                         lha      r4, 1068(r31);
+                         lwz      r6, 60(r6);
+                         add      r0, r5, r4;
+                         slwi     r0, r0, 4;
+                         add      r5, r6, r0;
+/* 80050934 A8850002 */  lha      r4, 2(r5);
+/* 80050938 3C604330 */  lis      r3, 17200;
+/* 8005093C A8050000 */  lha      r0, 0(r5);
+/* 80050940 7C8400D0 */  neg      r4, r4;
+/* 80050944 90610010 */  stw      r3, 16(r1);
+/* 80050948 6C848000 */  xoris    r4, r4, 32768;
+/* 8005094C 6C008000 */  xoris    r0, r0, 32768;
+/* 80050950 90810014 */  stw      r4, 20(r1);
+/* 80050954 C8628838 */  lfd      f3, -30664(r2);
+/* 80050958 C8010010 */  lfd      f0, 16(r1);
+/* 8005095C 9001001C */  stw      r0, 28(r1);
+/* 80050960 EC401828 */  fsubs    f2, f0, f3;
+/* 80050964 C01F00B0 */  lfs      f0, 176(r31);
+/* 80050968 90610018 */  stw      r3, 24(r1);
+/* 8005096C C03F00AC */  lfs      f1, 172(r31);
+/* 80050970 EC820028 */  fsubs    f4, f2, f0;
+/* 80050974 C8010018 */  lfd      f0, 24(r1);
+/* 80050978 EC401828 */  fsubs    f2, f0, f3;
+/* 8005097C D081000C */  stfs     f4, 12(r1);
+/* 80050980 EC040132 */  fmuls    f0, f4, f4;
+/* 80050984 EC220828 */  fsubs    f1, f2, f1;
+/* 80050988 D0210008 */  stfs     f1, 8(r1);
+/* 8005098C EC210072 */  fmuls    f1, f1, f1;
+/* 80050990 EC21002A */  fadds    f1, f1, f0;
+/* 80050994 4826DDCD */  bl       UNDEF_802be760;
+/* 80050998 C041000C */  lfs      f2, 12(r1);
+/* 8005099C C0010008 */  lfs      f0, 8(r1);
+/* 800509A0 EC620824 */  fdivs    f3, f2, f1;
+/* 800509A4 C04288E8 */  lfs      f2, -30488(r2);
+/* 800509A8 C0828844 */  lfs      f4, -30652(r2);
+/* 800509AC EC000824 */  fdivs    f0, f0, f1;
+/* 800509B0 EC6200F2 */  fmuls    f3, f2, f3;
+/* 800509B4 EC420032 */  fmuls    f2, f2, f0;
+/* 800509B8 EC210132 */  fmuls    f1, f1, f4;
+/* 800509BC D07F040C */  stfs     f3, 1036(r31);
+/* 800509C0 D05F0408 */  stfs     f2, 1032(r31);
+/* 800509C4 FC00081E */  fctiwz   f0, f1;
+/* 800509C8 D8010020 */  stfd     f0, 32(r1);
+/* 800509CC 80010024 */  lwz      r0, 36(r1);
+/* 800509D0 B01F042E */  sth      r0, 1070(r31);
+/* 800509D4 83E1002C */  lwz      r31, 44(r1);
+/* 800509D8 83C10028 */  lwz      r30, 40(r1);
+/* 800509DC 80010034 */  lwz      r0, 52(r1);
+/* 800509E0 7C0803A6 */  mtlr     r0;
+/* 800509E4 38210030 */  addi     r1, r1, 48;
+/* 800509E8 4E800020 */  blr      ;
+  // clang-format on
+);
+
 [[nsmbw(0x80050D80)]]
 bool daPlBase_c::isDispOutCheckOn();
+
+[[nsmbw(0x80050A00)]]
+void daPlBase_c::setExitRailDokan()
+{
+    dCdFile_c *file = dCd_c::m_instance->mFiles + dScStage_c::m_instance->mCourse;
+    if (file->mpAreas == nullptr) {
+        file = nullptr;
+    }
+    dCdFile_c::NextGoto_s *currGoto = file->getNextGotoP(mGotoDest);
+    dCdFile_c::NextGoto_s *destGoto = file->getNextGotoP(currGoto->nextNextGotoNum);
+    mLayer = destGoto->layer;
+    assert(destGoto->type > 2 && destGoto->type < 7);
+    if (destGoto->type == 3) {
+        changeDemoState(StateID_StateID_DemoInDokanD, 1);
+    } else if (destGoto->type == 4) {
+        changeDemoState(StateID_StateID_DemoInDokanU, 1);
+    } else if (destGoto->type == 5) {
+        changeDemoState(StateID_StateID_DemoInDokanR, 1);
+    } else if (destGoto->type == 6) {
+        changeDemoState(StateID_StateID_DemoInDokanL, 1);
+    }
+}
 
 [[nsmbw(0x800510F0)]]
 void daPlBase_c::stopGoalOther() {
