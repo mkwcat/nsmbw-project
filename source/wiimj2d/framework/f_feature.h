@@ -55,4 +55,7 @@ inline u8 autoboot_hint_movie_demo = 0;
 
 inline bool one_player_special_hip_attack_quake = false;
 
+inline bool print_base_creation = false;
+inline bool print_state_changes = false;
+
 } // namespace fFeat

@@ -2,6 +2,7 @@
 // NSMBW .text: 0x8015FAE0 - 0x8015FDD0
 
 #include "s_StateMethod.h"
+#include "framework/f_feature.h"
 #include "revolution/os/OSError.h"
 
 /**
@@ -55,7 +56,9 @@ void sStateMethod_c::changeStateMethod(const sStateIDIf_c& newStateID)
         return;
     }
 
-    OS_REPORT("%p: State change -> %s\n", static_cast<void*>(this), newStateID.name());
+    if (fFeat::print_state_changes) {
+        OS_REPORT("%p: State change -> %s\n", static_cast<void*>(this), newStateID.name());
+    }
 
     mpNewStateID = &newStateID;
     changeStateLocalMethod(newStateID);

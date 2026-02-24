@@ -4,6 +4,7 @@
 #include "d_base.h"
 
 #include "d_profile/d_profile.h"
+#include "framework/f_feature.h"
 #include <revolution/os.h>
 
 [[nsmbw(0x8006C420)]]
@@ -12,7 +13,9 @@ dBase_c::dBase_c()
     mpKindString = getKindString();
     mpNameString = dProf::getName(mProfName);
 
-    OS_REPORT("Create: %s, %08lx ->%p\n", mpNameString, mParam, static_cast<void*>(this));
+    if (fFeat::print_base_creation) {
+        OS_REPORT("Create: %s, %08lx ->%p\n", mpNameString, mParam, static_cast<void*>(this));
+    }
 }
 
 /**
@@ -22,6 +25,10 @@ dBase_c::dBase_c()
 [[nsmbw(0x8006C490)]]
 dBase_c::~dBase_c()
 {
+    if (fFeat::print_base_creation) {
+        OS_REPORT("Delete: %s, %08lx ->%p\n", mpNameString, mParam, static_cast<void*>(this));
+    }
+
     mOwnedTree.~cUnaryTreeMg_c();
 }
 
