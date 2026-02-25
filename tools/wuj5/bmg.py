@@ -4,70 +4,116 @@ from common import *
 
 
 font_variants = [
-    Variant('caps', 0x0), # tt_kart_font_rodan_ntlg_pro_b.brfnt
-    Variant('regular', 0x1), # kart_kanji_font.brfnt / kart_font_korea.brfnt
-    Variant('extension', 0x2), # tt_kart_extension_font.brfnt
-    Variant('indicator', 0x3), # indicator_font.brfnt
-    Variant('red', 0x4), # mario_font_number_red.brfnt
-    Variant('blue', 0x5), # mario_font_number_blue.brfnt
+    Variant('mario', 0x0),
+    Variant('picture', 0x1),
+    Variant('message', 0x2),
+    Variant('number', 0x3),
+    Variant('red', 0x4),
+    Variant('blue', 0x5),
 ]
 
 tag_variants = [
-    # The font scale as an integer percentage.
-    Variant('font scale', 0x08000000),
-    # The color of the text.
-    Variant('color', 0x08000001),
-    # 1 unicode character.
-    Variant('1 char', 0x08010000),
-    # The current player's Mii name, or "Player" if no license is selected.
-    Variant('current player', 0x06020000),
-    # From `intVals` and with a number of digits.
-    Variant('arg integer', 0x0a020010),
-    # From `messageId`.
-    Variant('arg message', 0x08020011),
-    # From `miis`.
-    Variant('arg player', 0x08020012),
-    # From `licenseIds`.
-    Variant('arg license player', 0x08020013),
-    # From `playerIds`.
-    Variant('arg border', 0x08020014),
-    # From `playerIds`, looks unused.
-    Variant('arg question mark', 0x08020015),
-    # From `intVals` and with a number of digits.
-    Variant('arg signed integer', 0x0a020016),
-    # From `playerIds`.
-    Variant('arg back button', 0x8020017),
-    # From `strings`.
-    Variant('arg string', 0x8020020),
-    # 2 unicode characters.
-    Variant('2 chars', 0x0e030000),
-    # From `playerIds`.
-    Variant('arg front button', 0x08030010),
-    # From `intVals`, second message if 1, otherwise first.
-    Variant('arg cond messages', 0x0c040000),
+    # Adjust font size
+    Variant('font size', 0x08ff0001),
+
+    # The current world number
+    Variant('world num', 0x08010000),
+    # The current course number, simply displayed as a number
+    Variant('course num', 0x06010001),
+    # Prints the 2 or 1 button icon
+    Variant('ok cancel disp', 0x08010002),
+    # Total collected star coin count
+    Variant('total collection coin', 0x06010003),
+    # Displays a d-pad icon
+    Variant('cross key disp', 0x06010004),
+    # Displays the specified stage icon
+    Variant('course select icon', 0x08010005),
+    # Displays the current save file slot
+    Variant('save file number', 0x06010006),
+    # Displays a button for the world map HUD
+    Variant('course select button', 0x08010007),
+    # Displays a button for the menu
+    Variant('menu button', 0x08010008),
+    # Handles text scissor for layout panes
+    Variant('scissor', 0x08010009),
+    # Prints the 1 or 2 button for the pairing menu
+    Variant('easy pairing' , 0x0801000a),
+    # Displays an unknown variable
+    Variant('unknown 0xb', 0x0601000b),
+    # Does nothing
+    Variant('unused tag', 0x0601000c),
+    # Used to label unused BMG entries; it prints the entry ID
+    Variant('debug disp', 0x0601000d),
+    # Used for custom arguments passed to the tag processor. Displays the course number when no arguments are passed
+    Variant('custom arg', 0x0801000e),
+    Variant('custom arg 2', 0x0601000f),
+    Variant('custom arg 3', 0x06010010),
+    # The current player count. Does not function in singleplayer.
+    Variant('play number', 0x06010011),
+    # Displays ? block icon
+    Variant('ok cancel disp question block', 0x06010012),
+    # Displays a red block or dotted block
+    Variant('red block', 0x08010013),
 ]
 
-color_variants = [
-    Variant('unspecified', 0x0),
-    Variant('transparent', 0x8),
-    Variant('yor 0', 0x10),
-    Variant('yor 1', 0x11),
-    Variant('yor 2', 0x12),
-    Variant('yor 3', 0x13),
-    Variant('yor 4', 0x14),
-    Variant('yor 5', 0x15),
-    Variant('yor 6', 0x16),
-    Variant('yor 7', 0x17),
-    Variant('team red', 0x20),
-    Variant('team blue', 0x21),
-    Variant('player 1', 0x30),
-    Variant('player 2', 0x31),
-    Variant('player 3', 0x32),
-    Variant('player 4', 0x33),
-    Variant('red', 0x40),
-    Variant('sp green', 0x50),
-    Variant('sp blue', 0x51),
-    Variant('sp pink', 0x52),
+world_num_variants = [
+    Variant('zero', 0x0),
+    Variant('sub 1', 0x1),
+    Variant('add 1', 0x2),
+]
+
+ok_cancel_disp_variants = [
+    Variant('ok button', 0x0000),
+    Variant('cancel button', 0x0100),
+]
+
+course_select_icon_variants = [
+    Variant('castle', 0x0000),
+    Variant('fortress', 0x0100),
+    Variant('ghost house', 0x0200),
+    Variant('cannon', 0x0300),
+    Variant('airship', 0x0400),
+    Variant('red toad house', 0x0500),
+    Variant('start point right', 0x0600),
+    Variant('start point up', 0x0700),
+    Variant('stop point', 0x0800),
+    Variant('peach castle', 0x0900),
+    Variant('green toad house', 0x0a00),
+    Variant('star toad house', 0x0b00),
+    Variant('final castle', 0x0c00),
+    Variant('toad rescue', 0x0d00),
+    Variant('anchor', 0x0e00),
+]
+
+course_select_button_variants = [
+    Variant('view map', 0x0000),
+    Variant('select world', 0x0100),
+    Variant('menu', 0x0200),
+    Variant('items', 0x0300),
+]
+
+menu_button_variants = [
+    Variant('home', 0x0000),
+    Variant('plus', 0x0100),
+    Variant('minus', 0x0200),
+    Variant('a', 0x0300),
+    Variant('b', 0x0400),
+    Variant('z', 0x0500),
+]
+
+scissor_variants = [
+    Variant('begin', 0x0000),
+    Variant('end', 0x0100),
+]
+
+easy_pairing_variants = [
+    Variant('1 button', 0x0000),
+    Variant('2 button', 0x0100),
+]
+
+red_block_variants = [
+    Variant('dotted', 0x0000),
+    Variant('activated', 0x0100),
 ]
 
 def unpack_inf1(in_data, offset):
@@ -78,11 +124,12 @@ def unpack_inf1(in_data, offset):
             'string offset': unpack_u32(in_data, offset + 0x10 + i * 0x8),
             'font': unpack_enum8(
                 in_data,
-                offset + 0x10 + i * 0x8 + 0x4,
+                offset + 0x10 + i * 0x8 + 0x6,
                 size = size,
                 unpack = unpack,
                 variants = font_variants,
             ),
+            'x scale': unpack_u8(in_data, offset + 0x10 + i * 0x8 + 0x5),
         }]
     return entries
 
@@ -117,6 +164,7 @@ def unpack_bmg(in_data):
     for index, message_id in enumerate(sections['MID1']):
         inf1 = sections['INF1']
         font = inf1[index]['font']
+        x_scale = inf1[index]['x scale']
         string_start = inf1[index]['string offset']
         dat1 = sections['DAT1']
         offset = string_start
@@ -133,40 +181,39 @@ def unpack_bmg(in_data):
                         unpack = unpack,
                         variants = tag_variants,
                     )
-                    if tag == 'color':
-                        val = unpack_enum16(
-                            dat1,
-                            offset + 0x6,
-                            size = size,
-                            unpack = unpack,
-                            variants = color_variants,
-                        )
-                    elif tag == '1 char':
-                        val = dat1[offset + 0x6:offset + 0x6 + 0x2].decode('utf-16-be')
-                    elif tag == 'current player':
-                        val = ''
-                    elif tag == 'arg integer' or tag == 'arg signed integer':
-                        index = unpack_u16(dat1, offset + 0x6)
-                        digits = unpack_u16(dat1, offset + 0x8)
-                        val = f'{index} {digits}'
-                    elif tag == '2 chars':
-                        c0 = dat1[offset + 0x6:offset + 0x6 + 0x4].decode('utf-16-be')
-                        c1 = dat1[offset + 0xa:offset + 0xa + 0x4].decode('utf-16-be')
-                        val = f'{c0} {c1}'
-                    elif tag == 'arg cond messages':
-                        index = unpack_u16(dat1, offset + 0x6)
-                        m0 = unpack_u16(dat1, offset + 0x8)
-                        m1 = unpack_u16(dat1, offset + 0xa)
-                        val = f'{index} {m0} {m1}'
+                    if tag == 'world num':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = world_num_variants)
+                    elif tag == 'ok cancel disp':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = ok_cancel_disp_variants)
+                    elif tag == 'course select icon':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = course_select_icon_variants)
+                    elif tag == 'course select button':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = course_select_button_variants)
+                    elif tag == 'menu button':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = menu_button_variants)
+                    elif tag == 'scissor':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = scissor_variants)
+                    elif tag == 'easy pairing':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = easy_pairing_variants)
+                    elif tag == 'red block':
+                        val = unpack_enum16(dat1, offset + 0x6, size = size, unpack = unpack, variants = red_block_variants)
+                    elif unpack_u8(dat1, offset + 0x2) == 0x8:
+                        data = unpack_u16(dat1, offset + 0x6)
+                        val = f'0x{data:04x}'
                     else:
-                        val = unpack_u16(dat1, offset + 0x6)
-                    string += f'{{{tag}|{val}}}'
+                        val = None
+
+                    if val is not None:
+                        string += f'{{{tag}|{val}}}'
+                    else:
+                        string += f'{{{tag}}}'
                     offset += unpack_u8(dat1, offset + 0x2)
                 else:
                     string += dat1[offset:offset + 0x2].decode('utf-16-be')
                     offset += 0x2
         messages[message_id] = {
             'font': font,
+            'x scale': x_scale,
             'string': string,
         }
     return messages
@@ -176,12 +223,14 @@ def pack_inf1(entries):
     for entry in entries:
         entries_data += b''.join([
             pack_u32(entry['string offset']),
+            pack_pad8(None),
+            pack_u8(entry['x scale']),
             pack_enum8(
                 entry['font'],
                 pack = pack,
                 variants = font_variants,
             ),
-            pack_pad24(None),
+            pack_pad8(None),
         ])
 
     return b''.join([
@@ -209,8 +258,7 @@ def pack_mid1(entries):
         pack_magic('MID1'),
         pack_pad32(None),
         pack_u16(len(entries)),
-        pack_u8(0x10),
-        pack_pad8(None),
+        pack_u16(0x1001),
         pack_pad32(None),
         entries_data,
     ])
@@ -231,35 +279,69 @@ def pack_bmg(messages):
                 out_string += parts[0].encode('utf-16-be')
                 pattern, in_string = parts[1].split('}', maxsplit = 1)
                 out_string += pack_u16(0x1a)
-                tag, val = pattern.split('|')
-                out_string += pack_enum32(
-                    tag,
-                    pack = pack,
-                    variants = tag_variants,
-                )
-                if tag == 'color':
-                    out_string += pack_enum16(
-                        val,
+                if '|' in pattern:
+                    tag, val = pattern.split('|')
+                    out_string += pack_enum32(
+                        tag,
                         pack = pack,
-                        variants = color_variants,
+                        variants = tag_variants,
                     )
-                elif tag == '1 char':
-                    out_string += val.encode('utf-16-be')
-                elif tag == 'arg integer' or tag == 'arg signed integer':
-                    index, digits = val.split(' ')
-                    out_string += pack_u16(int(index))
-                    out_string += pack_u16(int(digits))
-                elif tag == '2 chars':
-                    c0, c1 = val.split(' ')
-                    out_string += c0.encode('utf-16-be')
-                    out_string += c1.encode('utf-16-be')
-                elif tag == 'arg cond messages':
-                    index, m0, m1 = val.split(' ')
-                    out_string += pack_u16(int(index))
-                    out_string += pack_u16(int(m0))
-                    out_string += pack_u16(int(m1))
-                elif tag != 'current player':
-                    out_string += pack_u16(int(val))
+                    if tag == 'world num':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = world_num_variants,
+                        )
+                    elif tag == 'ok cancel disp':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = ok_cancel_disp_variants,
+                        )
+                    elif tag == 'course select icon':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = course_select_icon_variants,
+                        )
+                    elif tag == 'course select button':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = course_select_button_variants,
+                        )
+                    elif tag == 'menu button':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = menu_button_variants,
+                        )
+                    elif tag == 'scissor':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = scissor_variants,
+                        )
+                    elif tag == 'easy pairing':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = easy_pairing_variants,
+                        )
+                    elif tag == 'red block':
+                        out_string += pack_enum16(
+                            val,
+                            pack = pack,
+                            variants = red_block_variants,
+                        )
+                    else:
+                        out_string += pack_u16(int(val, 0))
+                else:
+                    out_string += pack_enum32(
+                        pattern,
+                        pack = pack,
+                        variants = tag_variants,
+                    )
                 parts = in_string.split('{', maxsplit = 1)
             out_string += in_string.encode('utf-16-be')
             out_string += b'\0\0'
@@ -267,6 +349,7 @@ def pack_bmg(messages):
         inf1 += [{
             'string offset': string_offset,
             'font': messages[message_id]['font'],
+            'x scale': messages[message_id]['x scale'],
         }]
         mid1 += [int(message_id, 0)]
 
