@@ -1,17 +1,16 @@
 #pragma once
 
-#include "d_system/d_actor_state.h"
+#include "d_player/d_death_message_mgr.h"
 #include "d_system/d_base.h"
 #include "d_system/d_lytbase.h"
 #include "d_system/d_lyttextbox.h"
-#include "d_player/d_death_message_mgr.h"
 #include "machine/m_ef.h"
+#include "state/s_State.h"
+#include "state/s_StateMgrDefault.h"
 #include <nw4r/lyt/Pane.h>
 #include <nw4r/lyt/Picture.h>
 #include <nw4r/lyt/TexMap.h>
 #include <revolution/gx/GXStruct.h>
-#include "state/s_State.h"
-#include "state/s_StateMgr.h"
 
 class dGameDisplay_c final : public dBase_c
 {
@@ -75,6 +74,9 @@ public:
     /* 0x80159620 */
     void ReturnGrayColorSet(int player);
 
+    /* 0x80159770 */
+    void EffectCollectionCoinClear();
+
     /* 0x801599C0 */
     void setPlayNum(int* playNum);
 
@@ -109,34 +111,43 @@ public:
     /* 0x350 */ s16 REMOVED(mPlayerRGBA1)[4][4];
     /* 0x370 */ s16 REMOVED(mPlayerRGBA2)[4][4];
 
-    /* 0x390 */
-    sStateMgr_c<dGameDisplay_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c> mStateMgr;
+    /* 0x390 */ sStateMgrDefault_c<dGameDisplay_c> mStateMgr;
 
     // Moved
     /* 0x3CC */ int REMOVED(mPlayNum)[4];
     /* 0x3DC */ int mCoinNum;
     /* 0x3E0 */ int mTime;
-    /* 0x3E4 */ s32 m0x3E4;
+    /* 0x3E4 */ int m0x3E4;
     /* 0x3E8 */ int mScore;
 
-    FILL(0x3EC, 0x414);
+    FILL(0x3EC, 0x400);
 
-    /* 0x414 */ s32 m0x414;
+    /* 0x400 */ int m0x400;
+    /* 0x404 */ int m0x404;
+    /* 0x408 */ int m0x408;
+    /* 0x40C */ int m0x40C;
+    /* 0x410 */ int m0x410;
+    /* 0x414 */ int m0x414;
 
     FILL(0x418, 0x424);
 
     // Changed from int to s8
     /* 0x424 */ s8 mEffectTimer[16];
 
-    FILL(0x434, 0x44B);
+    FILL(0x434, 0x444);
+
+    /* 0x444 */ int m0x444;
+
+    FILL(0x448, 0x44B);
 
     /* 0x44B */ bool mLayoutLoaded;
 
     FILL(0x44C, 0x452);
 
     /* 0x452 */ u8 m0x452;
+    /* 0x453 */ bool m0x453;
 
-    FILL(0x453, 0x490);
+    FILL(0x454, 0x490);
 
     /* 0x490 */ nw4r::lyt::Pane* mpRootPane;
 

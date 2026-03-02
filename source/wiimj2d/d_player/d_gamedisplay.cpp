@@ -7,6 +7,9 @@
 #include "d_system/d_game_common.h"
 #include "d_system/d_lytbase.h"
 #include "d_system/d_mj2d_game.h"
+#include "d_system/d_multi_manager.h"
+#include "d_system/d_pause_manager.h"
+#include "d_system/d_stage_timer.h"
 #include "framework/f_feature.h"
 #include "machine/m_ef.h"
 #include <iterator>
@@ -391,6 +394,21 @@ void dGameDisplay_c::RestDispSetup()
     }
 }
 
+[[nsmbw(0x80159050)]]
+void dGameDisplay_c::initializeState_ProcGoalSettleUp()
+{
+    m0x400 = 1;
+    m0x40C = 10;
+    m0x410 = 50;
+    m0x444 = 1;
+    m0x453 = true;
+
+    dMultiMng_c::mspInstance->mGoalTime = dStageTimer_c::m_instance->getDispTimeRoundUp();
+    if (PauseManager_c::m_OtasukeAfter) {
+        EffectCollectionCoinClear();
+    }
+}
+
 // Changed the parameter from playerNo to paneIndex and added bool return
 [[nsmbw(0x801591F0)]]
 bool dGameDisplay_c::Effect1Up(int paneIndex) ASM_METHOD(
@@ -763,6 +781,9 @@ UNDEF_8015974c:;
 /* 80159768 4E800020 */  blr;
   // clang-format on
 );
+
+[[nsmbw(0x80159770)]]
+void dGameDisplay_c::EffectCollectionCoinClear();
 
 [[nsmbw(0x801599C0)]]
 void dGameDisplay_c::setPlayNum(int* playNum);
