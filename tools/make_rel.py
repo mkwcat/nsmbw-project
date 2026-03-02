@@ -69,14 +69,28 @@ def write_rel(rel_file, mod, import_count = None):
             for reloc in imp.relocations:
                 rel_file.write(struct.pack('>HBBI', reloc.offset, reloc.type.value, reloc.section, reloc.addend & 0xFFFFFFFF))
 
-def create_import_table(module_id, imports, out_sections, mapper_from = None, mapper_to = None):
+def create_import_table(self_module_id, module_id, imports, out_sections, mapper_from = None, mapper_to = None):
     # Port all addresses in the relocations to the new region
     input_table = imports[module_id]
-    if mapper_from is not None and mapper_to is not None and module_id == 0:
+    if mapper_from is not None and mapper_to is not None and module_id != self_module_id:
+        if module_id != 0:
+            # Obtain address of import
+            rel_name = nsmbw_constants.REL_NAMES[module_id - 1]
+            target_sections_from = []
+            target_sections_to = []
+            for section in nsmbw_constants.REL_SECTION_NAMES:
+                target_sections_from.append(nsmbw_constants.SECTION_ADDRESSES[mapper_from.name][rel_name][section][0])
+                target_sections_to.append(nsmbw_constants.SECTION_ADDRESSES[mapper_to.name][rel_name][section][0])
+
         input_table = copy.deepcopy(input_table)
         for section in input_table:
             for reloc in input_table[section]:
+                if module_id != 0:
+                    assert (reloc.addend & 0x80000000) == 0
+                reloc.addend += target_sections_from[reloc.section - 1] if module_id != 0 else 0
                 reloc.addend = address_maps.map_addr_from_to(mapper_from, mapper_to, reloc.addend, error_handling=address_maps.UnmappedAddressHandling(errors=common.ErrorVolume.SILENT))
+                reloc.addend -= target_sections_to[reloc.section - 1] if module_id != 0 else 0
+
     # Sort relocations by offset and then convert to REL format
     for section in input_table:
         input_table[section].sort(key=lambda r: r.offset)
@@ -94,8 +108,8 @@ def create_import_table(module_id, imports, out_sections, mapper_from = None, ma
         for reloc in input_table[section]:
             # Convert offset to adaptive
             adaptive_reloc = rel.RELRelocation()
-            assert(reloc.offset[0] < out_sections[section].size)
-            offset = reloc.offset[0] - current_offset
+            assert(reloc.offset < out_sections[section].size)
+            offset = reloc.offset - current_offset
             while offset > 0xFFFF:
                 # Add nop relocation to skip 0xFFFF bytes 
                 nop_reloc = rel.RELRelocation()
@@ -106,7 +120,7 @@ def create_import_table(module_id, imports, out_sections, mapper_from = None, ma
                 rel_import.relocations.append(nop_reloc)
                 offset -= 0xFFFF
             adaptive_reloc.offset = offset
-            adaptive_reloc.section = reloc.section[0]
+            adaptive_reloc.section = reloc.section
             if reloc.type == rel.RELRelocationType.R_DOLPHIN_NOP:
                 # Final fix for SDA21 relocations
                 adaptive_reloc.type = rel.RELRelocationType.R_PPC_ADDR16_LO
@@ -115,10 +129,10 @@ def create_import_table(module_id, imports, out_sections, mapper_from = None, ma
                 adaptive_reloc.type = rel.RELRelocationType.R_PPC_ADDR16_LO
                 adaptive_reloc.addend = reloc.addend - nsmbw_constants.R2_R13_VALUES[mapper_to.name if mapper_to is not None else 'P1'][0]
             else:
-                adaptive_reloc.type = rel.RELRelocationType(reloc.type[0])
+                adaptive_reloc.type = rel.RELRelocationType(reloc.type)
                 adaptive_reloc.addend = reloc.addend
             rel_import.relocations.append(adaptive_reloc)
-            current_offset = reloc.offset[0]
+            current_offset = reloc.offset
     # Add end relocation
     end_reloc = rel.RELRelocation()
     end_reloc.offset = 0
@@ -231,9 +245,9 @@ def main():
                     continue
 
                 relocation = rel.RELRelocation()
-                relocation.offset = rela['r_offset'],
-                relocation.type = rela['r_info_type'],
-                relocation.section = input_sections.index(section),
+                relocation.offset = rela['r_offset']
+                relocation.type = rela['r_info_type']
+                relocation.section = input_sections.index(section)
                 relocation.addend = rela['r_addend'] + symbol['st_value']
             else:
                 addr = None
@@ -263,13 +277,35 @@ def main():
                 if addr is None:
                     continue
 
-                module_id = 0
                 relocation = rel.RELRelocation()
-                relocation.offset = rela['r_offset'],
-                relocation.section = 0,
+                relocation.offset = rela['r_offset']
+                addr += rela['r_addend']
+
+                module_id = 0
+                relocation.section = 0
+                relocation.addend = addr
+
+                # Check if the target address is inside a REL
+                for rel_name in nsmbw_constants.SECTION_ADDRESSES['P1']:
+                    if rel_name == 'main':
+                        continue
+                    rel_sections_info = nsmbw_constants.SECTION_ADDRESSES['P1'][rel_name]
+                    for rel_section_name in nsmbw_constants.REL_SECTION_NAMES:
+                        if rel_section_name not in rel_sections_info:
+                            continue
+                        rel_section_addr = rel_sections_info[rel_section_name][0]
+                        rel_section_size = rel_sections_info[rel_section_name][1]
+                        if addr >= rel_section_addr and addr < rel_section_addr + rel_section_size:
+                            module_id = nsmbw_constants.REL_NAMES.index(rel_name) + 1
+                            relocation.section = nsmbw_constants.REL_SECTION_NAMES.index(rel_section_name) + 1
+                            relocation.addend = addr - rel_section_addr
+                            break
+                    if module_id != 0:
+                        break
+                
                 if rela['r_info_type'] == 47: # R_PPC_TOC
                     # Use this relocation type to mimick SDA21, patched more later
-                    instruction = struct.unpack_from('>I', rel_section.data, relocation.offset[0]-2)[0]
+                    instruction = struct.unpack_from('>I', rel_section.data, relocation.offset-2)[0]
                     # Find if closer to r13 or r2
                     r2 = nsmbw_constants.R2_R13_VALUES['P1'][0]
                     r13 = nsmbw_constants.R2_R13_VALUES['P1'][1]
@@ -284,10 +320,9 @@ def main():
                         continue
                     
                     instruction |= (reg << 16)
-                    rel_section.data = rel_section.data[:relocation.offset[0]-2] + struct.pack('>I', instruction) + rel_section.data[relocation.offset[0]+2:]
+                    rel_section.data = rel_section.data[:relocation.offset-2] + struct.pack('>I', instruction) + rel_section.data[relocation.offset+2:]
                 else:
-                    relocation.type = rela['r_info_type'],
-                relocation.addend = addr + rela['r_addend']
+                    relocation.type = rela['r_info_type']
 
             if module_id is not None and relocation is not None:
                 if module_id not in imports:
@@ -296,7 +331,7 @@ def main():
                     imports[module_id][input_section_index] = []
                 imports[module_id][input_section_index].append(relocation)
 
-    # Sort relocations, then port to other regions
+    # Port relocations
     address_map = address_maps.load_address_map(open(args.address_map, 'r'))
     default_imports = []
     regional_imports = {}
@@ -307,9 +342,9 @@ def main():
                 mapper_to = address_map[region]
                 if region not in regional_imports:
                     regional_imports[region] = []
-                regional_imports[region].append(create_import_table(module_id, imports, out_sections, mapper_from, mapper_to))
+                regional_imports[region].append(create_import_table(args.module_id, module_id, imports, out_sections, mapper_from, mapper_to))
         else:
-            default_imports.append(create_import_table(module_id, imports, out_sections))
+            default_imports.append(create_import_table(args.module_id, module_id, imports, out_sections))
 
     mod = rel.REL()
     mod.id = args.module_id
