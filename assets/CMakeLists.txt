@@ -1,14 +1,15 @@
 set(DVD_FILES
-    rels/project_P1.rel.szs
-    rels/project_P2.rel.szs
-    rels/project_E1.rel.szs
-    rels/project_E2.rel.szs
-    rels/project_J1.rel.szs
-    rels/project_J2.rel.szs
-    rels/project_K1.rel.szs
-    rels/project_W1.rel.szs
-    rels/project_C1.rel.szs
-    rels/project.SMAP
+    rels/d_project.rel.szs
+    rels/d_project_P1.imp.szs
+    rels/d_project_P2.imp.szs
+    rels/d_project_E1.imp.szs
+    rels/d_project_E2.imp.szs
+    rels/d_project_J1.imp.szs
+    rels/d_project_J2.imp.szs
+    rels/d_project_K1.imp.szs
+    rels/d_project_W1.imp.szs
+    rels/d_project_C1.imp.szs
+    rels/d_project.SMAP
     
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/blyt/characterChangeSelectContents_05.brlyt
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/timg/Im_plofileMario_00.tpl

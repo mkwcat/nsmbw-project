@@ -43,8 +43,8 @@
     }
 
 #define _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE)                                         \
-__gnu__::__naked__]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER);           \
-    [[__gnu__::__naked__]] void _LoaderFunction##_COUNTER()                                        \
+gnu::naked]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER);                   \
+    [[gnu::naked]] void _LoaderFunction##_COUNTER()                                                \
     {                                                                                              \
         __asm__("li 12, ((. + 8) - " #_PORT_CALL_BASE ")@l;"                                       \
                 "b PortCall;"                                                                      \
@@ -67,7 +67,7 @@ __gnu__::__naked__]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_C
                   "i"(mkwcat::AddressMapperW.MapAddress(_ADDR)),                                   \
                   "i"(mkwcat::AddressMapperC.MapAddress(_ADDR)));                                  \
     }                                                                                              \
-[[__gnu__::__alias__("_LoaderFunction" #_COUNTER)
+[[gnu::alias("_LoaderFunction" #_COUNTER)
 
 #define _ADDRESS_LOADER2(_ADDR, _COUNTER, _PORT_CALL_BASE)                                         \
     _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE)
@@ -173,9 +173,10 @@ namespace
 
 constexpr u32 STACK_SIZE = 0x8000;
 constexpr u32 MODULE_BLOCK_SIZE = 0x80000;
-constexpr u32 REGION_INDEX = sizeof("rels/project_") - 1;
+constexpr u32 REGION_INDEX = sizeof("rels/d_project_") - 1;
 constinit bool l_started = false;
-constinit char l_module_path[] = "rels/project_?1.rel.szs";
+constinit char l_module_path[] = "rels/d_project.rel.szs";
+constinit char l_import_path[] = "rels/d_project_?1.imp.szs";
 constinit const char l_archive_path[] = "mkwcat.arc";
 constinit void* l_stack = nullptr;
 constinit OSThread l_thread = {};
@@ -209,36 +210,36 @@ bool GetPortByCode()
 
     case 0xFF:
         // PAL (P)
-        l_module_path[REGION_INDEX] = 'P';
+        l_import_path[REGION_INDEX] = 'P';
         g_port_offset = PORT_CALL_BASE + 0x0;
         c = *reinterpret_cast<u8*>(0x800CF287);
         break;
     case 0xFC:
         // USA (E)
-        l_module_path[REGION_INDEX] = 'E';
+        l_import_path[REGION_INDEX] = 'E';
         g_port_offset = PORT_CALL_BASE + 0x8;
         c = *reinterpret_cast<u8*>(0x800CF197);
         break;
     case 0xF9:
         // JPN (J)
-        l_module_path[REGION_INDEX] = 'J';
+        l_import_path[REGION_INDEX] = 'J';
         g_port_offset = PORT_CALL_BASE + 0x10;
         c = *reinterpret_cast<u8*>(0x800CF117);
         break;
 
     case 0xC8:
         // KOR (K)
-        l_module_path[REGION_INDEX] = 'K';
+        l_import_path[REGION_INDEX] = 'K';
         g_port_offset = PORT_CALL_BASE + 0x18;
         return true;
     case 0xAC:
         // TWN (W)
-        l_module_path[REGION_INDEX] = 'W';
+        l_import_path[REGION_INDEX] = 'W';
         g_port_offset = PORT_CALL_BASE + 0x1C;
         return true;
     case 0x55:
         // CHN (C)
-        l_module_path[REGION_INDEX] = 'C';
+        l_import_path[REGION_INDEX] = 'C';
         g_port_offset = PORT_CALL_BASE + 0x20;
         return true;
     }
@@ -246,7 +247,7 @@ bool GetPortByCode()
     const bool rev2 = c == 0x38;
     if (rev2) {
         g_port_offset += 0x4;
-        l_module_path[REGION_INDEX + 1] = '2';
+        l_import_path[REGION_INDEX + 1] = '2';
     }
     return rev2 || c == 0x30;
 }
@@ -312,9 +313,30 @@ void* LoaderThread(void* param)
     );
     LOADER_ASSERT(module_load_ok);
 
-    dvd_file->~DvdFile();
+    // Load the per-region import relocations
+    const bool arc_open_import_ok = ARCOpen(arc_handle, l_import_path, &arc_file_info);
+    LOADER_ASSERT(arc_open_import_ok);
 
+    // Find where the import table must be loaded
     OSModuleHeader* const header = static_cast<OSModuleHeader*>(l_loader_block);
+    OSModuleImportInfo* import_info =
+      reinterpret_cast<OSModuleImportInfo*>(static_cast<u8*>(l_loader_block) + header->impOffset);
+    u32 offset = 0;
+    for (u32 i = 0; i < header->impSize / sizeof(OSModuleImportInfo); i++) {
+        offset = import_info[i].offset;
+        if (import_info[i].moduleId < 0x100) {
+            break;
+        }
+    }
+
+    const bool import_load_ok = EGG::DvdRipper::loadToMainRAMDecomp(
+      dvd_file, szs_stream, static_cast<u8*>(l_loader_block) + offset, heap,
+      EGG::DvdRipper::ALLOC_DIR_TOP, ARCGetStartOffset(&arc_file_info),
+      ARCGetLength(&arc_file_info), 0x10000, &amount_read, &file_size
+    );
+    LOADER_ASSERT(import_load_ok);
+
+    dvd_file->~DvdFile();
 
     const u32 fix_size = (header->fixSize + 31) & ~31;
     const u32 total_size = fix_size + header->bssSize;

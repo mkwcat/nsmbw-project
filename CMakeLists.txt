@@ -109,15 +109,7 @@ add_subdirectory(loader)
 
 include(ExternalProject)
 
-ExternalProject_Add(
-    tools
-    PREFIX tools
-    SOURCE_DIR "${CMAKE_SOURCE_DIR}/tools"
-    BINARY_DIR "${CMAKE_BINARY_DIR}/tools"
-    INSTALL_COMMAND ""
-)
-
-set(ELF2REL "${CMAKE_BINARY_DIR}/tools/elf2rel${CMAKE_HOST_EXECUTABLE_SUFFIX}")
+set(MAKEREL "${CMAKE_SOURCE_DIR}/tools/make_rel.py")
 set(WUJ5 "${CMAKE_SOURCE_DIR}/tools/wuj5/wuj5.py")
 set(YAZ "${CMAKE_SOURCE_DIR}/tools/wuj5/yaz.py")
 set(GENSMAP "${CMAKE_SOURCE_DIR}/tools/generate_symbol_map.py")
@@ -125,20 +117,18 @@ set(INSERTXML "${CMAKE_SOURCE_DIR}/tools/insert-xml.py")
 
 set(BUILD_ARCHIVE "${CMAKE_BINARY_DIR}/mkwcat-nsmbw.arc.d")
 
-foreach(region P1 P2 E1 E2 J1 J2 "K1;K" "W1;W" "C1;C")
-    list(GET region 0 suffix)
-    list(LENGTH region count)
-    if(count EQUAL 2)
-        list(GET region 1 region)
-    endif()
-
-    set(rel_file "${CMAKE_BINARY_DIR}/source/project_${suffix}.rel")
-    add_custom_command(OUTPUT ${rel_file}
-        DEPENDS tools project
-        COMMENT "Linking Wii relocatable module project_${suffix}.rel"
-        COMMAND ${ELF2REL} "${CMAKE_BINARY_DIR}/source/project${CMAKE_EXECUTABLE_SUFFIX}" "${rel_file}" ${region}
-    )
+set(imp_outputs)
+set(imp_args)
+foreach(region P1 P2 E1 E2 J1 J2 K W C)
+    set(imp_args "${imp_args}" "--imp" "${region}")
+    set(imp_outputs "${imp_outputs}" "${CMAKE_BINARY_DIR}/source/d_project.rel.${region}.imp")
 endforeach()
+set(rel_file "${CMAKE_BINARY_DIR}/source/d_project.rel")
+add_custom_command(OUTPUT ${rel_file} ${imp_outputs}
+    DEPENDS tools project ${MAKEREL}
+    COMMENT "Linking Wii relocatable module d_project.rel"
+    COMMAND python ${MAKEREL} "${CMAKE_BINARY_DIR}/source/project${CMAKE_EXECUTABLE_SUFFIX}" "${rel_file}" "1835364215" "--address-map" "${CMAKE_SOURCE_DIR}/address-map.txt" ${imp_args}
+)
 
 add_subdirectory(assets)
 
@@ -156,14 +146,6 @@ foreach(out_name ${DVD_FILES})
                 COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
                 COMMAND ${CMAKE_COMMAND} -E copy "${src}" "${dst}"
             )
-        elseif("${dst}" MATCHES "\\.rel\\.szs$")
-            string(REPLACE ".szs" "" src_name "${dst_name}")
-            add_custom_command(OUTPUT ${dst}
-                DEPENDS tools "${CMAKE_BINARY_DIR}/source/${src_name}"
-                COMMENT "Compressing ${out_name}"
-                COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
-                COMMAND python ${YAZ} encode "${CMAKE_BINARY_DIR}/source/${src_name}" "${dst}"
-            )
         elseif("${out_name}" MATCHES "(\\.brlyt|\\.brlan)$" AND EXISTS ${src}.json5)
             add_custom_command(OUTPUT ${dst}
                 DEPENDS "${src}.json5"
@@ -171,7 +153,7 @@ foreach(out_name ${DVD_FILES})
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${dst_directory}
                 COMMAND python ${WUJ5} encode "${src}.json5" "--outputs=${dst}"
             )
-        elseif("${out_name}" STREQUAL "rels/project.SMAP")
+        elseif("${out_name}" STREQUAL "rels/d_project.SMAP")
             add_custom_command(OUTPUT ${dst}
                 DEPENDS project ${GENSMAP}
                 COMMENT "Generating ${out_name}"
@@ -180,14 +162,21 @@ foreach(out_name ${DVD_FILES})
             )
         elseif("${out_name}" MATCHES "\\.szs$")
             string(REPLACE ".szs" "" src_name "${out_name}")
-            if(NOT EXISTS "${CMAKE_SOURCE_DIR}/assets/${src_name}" AND EXISTS "${CMAKE_SOURCE_DIR}/assets/${src_name}.arc")
-                set(src_name "${src_name}.arc")
+            if("${out_name}" STREQUAL "rels/d_project.rel.szs")
+                set(src_name "${rel_file}")
+            elseif("${out_name}" MATCHES "^rels/d_project_(P1|P2|E1|E2|J1|J2|K1|W1|C1)\\.imp\\.szs$")
+                string(REGEX REPLACE "^rels/d_project_(P1|P2|E1|E2|J1|J2|K|W|C)1?\\.imp\\.szs$" "\\1" region "${out_name}")
+                set(src_name "${CMAKE_BINARY_DIR}/source/d_project.rel.${region}.imp")
+            elseif(NOT EXISTS "${CMAKE_SOURCE_DIR}/assets/${src_name}" AND EXISTS "${CMAKE_SOURCE_DIR}/assets/${src_name}.arc")
+                set(src_name "${CMAKE_SOURCE_DIR}/assets/${src_name}.arc")
+            else()
+                set(src_name "${CMAKE_SOURCE_DIR}/assets/${src_name}")
             endif()
             add_custom_command(OUTPUT ${dst}
-                DEPENDS tools "${CMAKE_SOURCE_DIR}/assets/${src_name}"
+                DEPENDS tools "${src_name}"
                 COMMENT "Compressing ${out_name}"
                 COMMAND ${CMAKE_COMMAND} -E make_directory "${dst_directory}"
-                COMMAND python ${YAZ} encode "${CMAKE_SOURCE_DIR}/assets/${src_name}" "${dst}"
+                COMMAND python ${YAZ} encode "${src_name}" "${dst}"
             )
         endif()
         list(APPEND DST_DVD_FILES ${dst})

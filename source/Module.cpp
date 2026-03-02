@@ -71,7 +71,7 @@ static void __flush_entire_cache(bool interrupts = OSDisableInterrupts()) ASM_ME
   // clang-format on
 );
 
-[[gnu::no_stack_protector]]
+[[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
 void _prolog(s32 param1, void* param2)
 {
     __stack_chk_init(OSGetTick());
@@ -161,12 +161,12 @@ void _prolog(s32 param1, void* param2)
     OSRestoreInterrupts(interrupt);
 }
 
-[[gnu::no_stack_protector]]
+[[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
 void _epilog()
 {
 }
 
-[[gnu::no_stack_protector]]
+[[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
 void _unresolved()
 {
     // Infinite loop

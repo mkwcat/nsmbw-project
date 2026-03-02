@@ -32,6 +32,6 @@ void OSSetErrorHandler(void (*handler)(const char* file, int line, const char* m
     OSReport("%s:%d: " fmt, __FILE_NAME__, __LINE__ __VA_OPT__(, ) __VA_ARGS__)
 #define OS_PANIC(msg) OSPanic(__FILE_NAME__, __LINE__, msg)
 #define ASSERTMSG(exp, msg) (void) ((exp) || (OSPanic(__FILE_NAME__, __LINE__, (msg)), 0))
-#define ASSERT(cond) ((cond) || (OSPanic(__FILE_NAME__, __LINE__, "Failed assertion " #cond), 0))
+#define ASSERT(cond) ((cond) || (OSPanic(__FILE_NAME__, __LINE__, "Failed assertion %s", #cond), 0))
 
 EXTERN_C_END

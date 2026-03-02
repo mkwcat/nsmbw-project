@@ -33,7 +33,7 @@ with open(args.elf_file_path, 'rb') as elf_file_stream:
             st_value = int(section_name[10:], 0)
         else:
             # where the module block happens to be allocated
-            st_value += 0x80B8E3AC
+            st_value += 0x80B8E3B0
             length = symbol.entry['st_size']
 
         symbol_name = symbol.name
@@ -50,6 +50,9 @@ with open(args.elf_file_path, 'rb') as elf_file_stream:
             pass
 
         symbols += f"0x{st_value:08X} {symbol_name}\n"
+        # Workaround for Dolphin HLE thing
+        if symbol_name == 'OSPanic':
+            symbol_name = 'OSPanic_'
         symbols_dolphin += f"{st_value:08x} {length:08x} {st_value:08x} 0 {symbol_name}\n"
 
 with open(args.smap_file_path, 'w', newline='\n') as smap_file_stream:

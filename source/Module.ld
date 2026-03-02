@@ -2,6 +2,7 @@ ENTRY(_prolog)
 
 SECTIONS {
 	.text : {
+		KEEP(*(rel_prolog))
 		*(.text*)
 		KEEP(*(replaced))
 		KEEP(*(extern))
