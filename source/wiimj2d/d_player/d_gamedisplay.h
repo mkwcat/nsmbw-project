@@ -4,6 +4,7 @@
 #include "d_system/d_base.h"
 #include "d_system/d_lytbase.h"
 #include "d_system/d_lyttextbox.h"
+#include "d_system/d_mj2d_game.h"
 #include "machine/m_ef.h"
 #include "nw4r/math/mtx.h"
 #include "state/s_State.h"
@@ -30,6 +31,19 @@ public:
     // ^^^^^^
 
     static constexpr int cMaxDispScore = 99999950;
+    static constexpr int cAreaCheckCount = 3;
+
+public:
+    // Nested Types
+    // ^^^^^^
+
+    struct Area_s {
+        SIZE_ASSERT(0x10);
+        /* 0x00 */ float top;
+        /* 0x04 */ float bottom;
+        /* 0x08 */ float left;
+        /* 0x0C */ float right;
+    };
 
 public:
     // Virtual Functions
@@ -65,6 +79,9 @@ public:
     // ^^^^^^
 
     /* 0x80158830 */ bool createLayout();
+    /* 0x80158240 */ void OtehonPosChange();
+    /* 0x801583F0 */ void AreaSetup(int area, int);
+    /* 0x801585C0 @unofficial */ void AreaSetupAll();
     /* +++ */ void DecEffectTimers();
     /* 0x801586C0 */ void RestDispSetup();
     /* 0x801589D0 */ void RestCoinAnimeCheck();
@@ -77,7 +94,6 @@ public:
     /* 0x80159620 */ void ReturnGrayColorSet(int player);
     /* 0x80159770 */ void EffectCollectionCoinClear();
     /* 0x801598E0 */ void EffectCollectionCoinGet(int coin);
-    /* 0x801599C0 */ void setPlayNum(int* playNum);
     /* +++ */ void updatePlayNum(int* playNum);
     /* 0x80159AA0 */ void setCoinNum(int coinNum);
     /* 0x80159C00 */ void setTime(int time);
@@ -89,6 +105,9 @@ public:
     {
         mDeathMsgMgr.newMessage(message, player);
     }
+
+private:
+    /* 0x801599C0 */ void setPlayNum(int* playNum);
 
 public:
     // Instance Variables
@@ -119,9 +138,7 @@ public:
     /* 0x40C */ int mSettleTimePerFrame;
     /* 0x410 */ int mSettleScorePerSecond;
     /* 0x414 */ int m0x414;
-    /* 0x418 */ int mAreaZankiAlpha;
-    /* 0x41C */ int mAreaCoinAlpha;
-    /* 0x420 */ int mAreaScoreAlpha;
+    /* 0x418 */ int mAreaAlpha[cAreaCheckCount];
 
     // Changed from int to s8
     /* 0x424 */ s8 mEffectTimer[16];
@@ -137,9 +154,7 @@ public:
     /* 0x44A */ bool m0x44A;
     /* 0x44B */ bool mLayoutLoaded;
     /* 0x44C */ bool m0x44C;
-    /* 0x44D */ bool mAreaZankiCrossed;
-    /* 0x44E */ bool mAreaCoinCrossed;
-    /* 0x44F */ bool mAreaScoreCrossed;
+    /* 0x44D */ bool mAreaCrossed[cAreaCheckCount];
     /* 0x450 */ bool mIsAlphaEnterOrExit;
     /* 0x451 */ bool m0x451;
     /* 0x452 */ bool m0x452;
@@ -147,18 +162,7 @@ public:
 
     FILL(0x454, 0x458);
 
-    /* 0x458 */ float mAreaZankiRectTop;
-    /* 0x45C */ float mAreaZankiRectBottom;
-    /* 0x460 */ float mAreaZankiRectLeft;
-    /* 0x464 */ float mAreaZankiRectRight;
-    /* 0x468 */ float mAreaCoinRectTop;
-    /* 0x46C */ float mAreaCoinRectBottom;
-    /* 0x470 */ float mAreaCoinRectLeft;
-    /* 0x474 */ float mAreaCoinRectRight;
-    /* 0x478 */ float mAreaScoreRectTop;
-    /* 0x47C */ float mAreaScoreRectBottom;
-    /* 0x480 */ float mAreaScoreRectLeft;
-    /* 0x484 */ float mAreaScoreRectRight;
+    /* 0x458 */ Area_s mArea[cAreaCheckCount];
 
     FILL(0x488, 0x490);
 
@@ -303,8 +307,9 @@ public:
     static const long cPlayerPictureIndex[];
     static const long cPlayerTextboxIndex[];
     static const long cPlayerBothTextboxIndex[][2];
-    static const long cPictureCollectionIndex[];
-    static const long cPictureCollectOffIndex[];
+    static const long cPictureCollectionIndex[STAR_COIN_COUNT];
+    static const long cPictureCollectOffIndex[STAR_COIN_COUNT];
+    static const long cAreaPaneIndex[cAreaCheckCount];
 
 public:
     // State IDs

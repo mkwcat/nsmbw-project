@@ -97,4 +97,12 @@ constexpr InputIt find(InputIt first, InputIt last, const T& value)
     return last;
 }
 
+template <class ForwardIt, class T>
+void fill(ForwardIt first, ForwardIt last, const T& value)
+{
+    for (; first != last; first++) {
+        *first = value;
+    }
+}
+
 } // namespace std
