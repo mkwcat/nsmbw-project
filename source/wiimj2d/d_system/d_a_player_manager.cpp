@@ -33,7 +33,6 @@
 #include "sound/SndSceneMgr.h"
 #include <algorithm>
 #include <bit>
-#include <memory>
 #include <mkwcat/Relocate.hpp>
 #include <numeric>
 #include <revolution/os.h>

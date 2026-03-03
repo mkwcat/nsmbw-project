@@ -94,8 +94,6 @@ dGameDisplay_c::dGameDisplay_c()
   , mLayoutLoaded(false)
   , m0x452(1)
 {
-    OSReport("CONSTRUCT dGameDisplay_c\n");
-
     for (std::size_t i = 0; i < std::size(mPlayNum); i++) {
         mPlayNum[i] = -1;
     }
@@ -107,16 +105,12 @@ dGameDisplay_c::dGameDisplay_c()
 [[nsmbw(0x80157AA0)]]
 dGameDisplay_c::~dGameDisplay_c()
 {
-    OSReport("DESTRUCT dGameDisplay_c\n");
-
-    // TODO: Fix kuribo clang so that it actually calls the destructor of member variables. Also it
-    // destroys the base class (dBase_c::~dBase_c()) before emitting the following code, instead of
-    // after. Also it doesn't check if 'this' is nullptr, but maybe that's just a standard-breaking
-    // optimization :3
     dGameDisplay_c::m_instance = nullptr;
+#ifndef __has_macintosh_dt_fix
     mEffect.~levelEffect_c();
     mDeathMsgMgr.~dDeathMsgMgr_c();
     mLayout.~LytBase_c();
+#endif
 }
 
 /**

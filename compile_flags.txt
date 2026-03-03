@@ -55,7 +55,6 @@ source/System.h
 -Wno-sign-conversion
 -Wno-sign-compare
 -Wno-unknown-attributes
-
-
+-Wno-unnecessary-virtual-specifier
 
 -DCLANGD

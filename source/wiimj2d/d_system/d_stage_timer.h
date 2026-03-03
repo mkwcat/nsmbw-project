@@ -2,6 +2,18 @@
 
 class dStageTimer_c
 {
+    VTABLE(0x00, dStageTimer_c, 0x8031B358);
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x800E38E0 */
+    dStageTimer_c();
+
+    /* VT+0x8 0x800E3910 */
+    virtual ~dStageTimer_c();
+
 public:
     // Instance Methods
     // ^^^^^^
