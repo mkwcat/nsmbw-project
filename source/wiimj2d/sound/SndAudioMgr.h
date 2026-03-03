@@ -13,6 +13,9 @@ public:
     /* 0x801954C0 */
     void startSystemSe(SndID::Type sound, u32 param2);
 
+    /* 0x801954E0 */
+    void holdSystemSe(SndID::Type sound, u32 param2);
+
     /* 0x80196740 */
     bool isSndPlaying(SndID::Type sound);
 

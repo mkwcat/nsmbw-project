@@ -39,6 +39,9 @@ void initGame();
 /* 0x800B32E0 @unofficial */
 mVec3_c ScalePosForAspectRatio(const mVec3_c&);
 
+/* 0x800B33D0 */
+mVec3_c getGlbPosToLyt(const mVec3_c&);
+
 /* 0x800B34D0 */
 void CreateBlueNumber(const mVec3_c&, int, int);
 

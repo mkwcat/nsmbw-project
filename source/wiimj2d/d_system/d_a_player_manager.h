@@ -164,7 +164,7 @@ public:
     static void incRestAll(bool playEffect);
 
     /* 0x80060690 */
-    static void addScore(int score, int player);
+    static void addScore(int score, int player = -1);
 
     /* 0x80060750 */
     static void stopStarBGM();

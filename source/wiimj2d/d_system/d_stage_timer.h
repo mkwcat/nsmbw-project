@@ -6,44 +6,45 @@ public:
     // Instance Methods
     // ^^^^^^
 
+    /* 0x800E3A00 */
+    void setTimer(short timer);
+
+    inline short getTimer() const
+    {
+        return (m_timer + 0xFFF) / 0x1000;
+    }
+
     /* 0x800E3A20 */
     void execute();
-
-    inline int getDispTimeRoundUp() const
-    {
-        return (mTime + 0xFFF) / 0x1000;
-    }
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x0C);
+    /**
+     * The current countdown timer value in in-game seconds * 0x1000, decremented by 92 every frame.
+     */
+    /* 0x04 */ int m_timer;
 
     /**
-     * The current countdown timer in in-game milliseconds, decremented by 92 every frame.
+     * The value the timer is counting down from, in in-game seconds.
      */
-    /* 0x04 */ int mTime;
-
-    /**
-     * The current countdown timer in in-game seconds, rounded up.
-     */
-    /* 0x08 */ short mDispTime;
+    /* 0x08 */ short m_timerSet;
 
     /**
      * Is an Ambush stage?
      */
-    /* 0x0A */ bool mIsAmbush;
+    /* 0x0A */ bool m_isAmbush;
 
     /**
      * Have we passed 100 seconds remaining?
      */
-    /* 0x0B */ bool mHurryUp;
+    /* 0x0B */ bool m_isHurryUp;
 
     /**
      * Is the timer currently paused?
      */
-    /* 0x0C */ bool mPause;
+    /* 0x0C */ bool m_paused;
 
 public:
     // Static Variables

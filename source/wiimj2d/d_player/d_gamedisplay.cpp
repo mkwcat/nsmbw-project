@@ -3,8 +3,11 @@
 
 #include "d_gamedisplay.h"
 
+#include "d_player/d_a_player.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_actorcreate_mng.h"
 #include "d_system/d_game_common.h"
+#include "d_system/d_info.h"
 #include "d_system/d_lytbase.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_multi_manager.h"
@@ -12,6 +15,10 @@
 #include "d_system/d_stage_timer.h"
 #include "framework/f_feature.h"
 #include "machine/m_ef.h"
+#include "machine/m_vec.h"
+#include "sound/SndAudioMgr.h"
+#include "sound/SndID.h"
+#include <algorithm>
 #include <iterator>
 #include <nw4r/lyt/Material.h>
 #include <revolution/os.h>
@@ -202,150 +209,6 @@ fBase_c::PACK_RESULT_e dGameDisplay_c::draw()
     return PACK_RESULT_e::SUCCEEDED;
 }
 
-[[nsmbw(0x80158830)]]
-bool dGameDisplay_c::createLayout()
-{
-    if (!mLayout.ReadResource("gameScene/gameScene.arc", false)) {
-        return false;
-    }
-
-    mLayout.build("gameScene_37.brlyt", nullptr);
-    mDeathMsgMgr.build(mLayout.getResAccessor(), mLayout.getDrawInfo());
-
-    using StringArray = const char*[];
-    using IntArray = const int[];
-
-    mLayout.AnimeResRegister(
-      StringArray{
-        "gameScene_37_inMarioCoin.brlan",
-      },
-      1
-    );
-
-    mLayout.GroupRegister(
-      StringArray{
-        "C00_inMarioCoin",
-      },
-      IntArray{
-        0,
-      },
-      1
-    );
-
-    mpRootPane = mLayout.getRootPane();
-
-    mLayout.NPaneRegister(
-      StringArray{
-        "N_otasukeInfo_00", "N_otasukeChu_00", "N_left_00",      "N_coin_00",
-        "N_collection_00",  "N_score_00",      "N_areaZanki_00", "N_areaCoin_00",
-        "N_areaScore_00",   "N_marioIcon_00",  "N_luigiIcon_00", "N_kinoB_00",
-        "N_kinoY_00",       "N_coin_01",       "N_time_00",      "N_proportionL_00",
-        "N_proportionR_00", "N_coin1st_00",    "N_coin2nd_00",   "N_coin3rd_00",
-      },
-      &mpPane_OtasukeInfo, 20
-    );
-
-    mLayout.NPaneRegister(
-      StringArray{
-        "N_kinopico_00",
-        "N_player_05",
-        "N_player_06",
-        "N_player_07",
-      },
-      mpaExPanes, EXTRA_PLAYER_COUNT
-    );
-
-    mLayout.PPaneRegister(
-      StringArray{
-        "P_collectOff_00",
-        "P_collection_00",
-        "P_collectOff_01",
-        "P_collection_01",
-        "P_collectOff_02",
-        "P_collection_02",
-        "P_marioIcon_00",
-        "P_luijiIcon_00",
-        "P_kinoB_00",
-        "P_kinoY_00",
-      },
-      &mpPicture_CollectOff00, 10
-    );
-
-    mLayout.PPaneRegister(
-      StringArray{
-        "P_kinopico_00",
-        "P_player_05",
-        "P_player_06",
-        "P_player_07",
-      },
-      mpaExPictures, EXTRA_PLAYER_COUNT
-    );
-
-    mpPicture_Collection00->SetVisible(false);
-    mpPicture_Collection01->SetVisible(false);
-    mpPicture_Collection02->SetVisible(false);
-    mpPicture_CollectOff00->SetVisible(true);
-    mpPicture_CollectOff01->SetVisible(true);
-    mpPicture_CollectOff02->SetVisible(true);
-
-    mpPicture_MarioIcon->SetVisible(false);
-
-    mLayout.TPaneRegister(
-      StringArray{
-        "T_left_00",
-        "T_x_01",
-        "T_left_01",
-        "T_x_02",
-        "T_left_02",
-        "T_x_03",
-        "T_left_03",
-        "T_x_04",
-        "T_coin_00",
-        "T_time_00",
-        "T_score_00",
-      },
-      &mpTextBox_Left00, 11
-    );
-
-    mLayout.TPaneRegister(
-      StringArray{
-        "T_left_04",
-        "T_x_05",
-        "T_left_05",
-        "T_x_06",
-        "T_left_06",
-        "T_x_07",
-        "T_left_07",
-        "T_x_08",
-      },
-      mpaExTextBoxes, EXTRA_PLAYER_COUNT * 2
-    );
-
-    mLayout.TPaneNameRegister(
-      StringArray{
-        "T_otaChuS_00",
-        "T_otaChu_01",
-        "T_InfoS_00",
-        "T_Info_00",
-      },
-      IntArray{
-        20,
-        20,
-        19,
-        19,
-      },
-      1, 4
-    );
-
-    for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
-        mpaTexMap[i] = *mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetMaterial()->GetTexturePtr(0);
-        maIconSize[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetSize();
-        maIconScale[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetScale();
-    }
-
-    return true;
-}
-
 void dGameDisplay_c::DecEffectTimers()
 {
     for (std::size_t i = 0; i < std::size(mEffectTimer); i++) {
@@ -394,6 +257,310 @@ void dGameDisplay_c::RestDispSetup()
     }
 }
 
+[[nsmbw(0x80158830)]]
+bool dGameDisplay_c::createLayout()
+{
+    if (!mLayout.ReadResource("gameScene/gameScene.arc", false)) {
+        return false;
+    }
+
+    mLayout.build("gameScene_37.brlyt", nullptr);
+    mDeathMsgMgr.build(mLayout.getResAccessor(), mLayout.getDrawInfo());
+
+    using StringArray = const char*[];
+    using IntArray = const int[];
+
+    mLayout.AnimeResRegister({
+      "gameScene_37_inMarioCoin.brlan",
+    });
+
+    mLayout.GroupRegister({{"C00_inMarioCoin", 0}});
+
+    mpRootPane = mLayout.getRootPane();
+
+    mLayout.NPaneRegister(
+      &mpPane_OtasukeInfo, //
+      {
+        "N_otasukeInfo_00", "N_otasukeChu_00", "N_left_00",      "N_coin_00",
+        "N_collection_00",  "N_score_00",      "N_areaZanki_00", "N_areaCoin_00",
+        "N_areaScore_00",   "N_marioIcon_00",  "N_luigiIcon_00", "N_kinoB_00",
+        "N_kinoY_00",       "N_coin_01",       "N_time_00",      "N_proportionL_00",
+        "N_proportionR_00", "N_coin1st_00",    "N_coin2nd_00",   "N_coin3rd_00",
+      }
+    );
+
+    mLayout.NPaneRegister(
+      mpaExPanes, //
+      {
+        "N_kinopico_00",
+        "N_player_05",
+        "N_player_06",
+        "N_player_07",
+      }
+    );
+
+    mLayout.PPaneRegister(
+      &mpPicture_CollectOff00, //
+      {
+        "P_collectOff_00",
+        "P_collection_00",
+        "P_collectOff_01",
+        "P_collection_01",
+        "P_collectOff_02",
+        "P_collection_02",
+        "P_marioIcon_00",
+        "P_luijiIcon_00",
+        "P_kinoB_00",
+        "P_kinoY_00",
+      }
+    );
+
+    mLayout.PPaneRegister(
+      mpaExPictures, //
+      {
+        "P_kinopico_00",
+        "P_player_05",
+        "P_player_06",
+        "P_player_07",
+      }
+    );
+
+    mpPicture_Collection00->SetVisible(false);
+    mpPicture_Collection01->SetVisible(false);
+    mpPicture_Collection02->SetVisible(false);
+    mpPicture_CollectOff00->SetVisible(true);
+    mpPicture_CollectOff01->SetVisible(true);
+    mpPicture_CollectOff02->SetVisible(true);
+
+    mpPicture_MarioIcon->SetVisible(false);
+
+    mLayout.TPaneRegister(
+      &mpTextBox_Left00, //
+      {
+        "T_left_00",
+        "T_x_01",
+        "T_left_01",
+        "T_x_02",
+        "T_left_02",
+        "T_x_03",
+        "T_left_03",
+        "T_x_04",
+        "T_coin_00",
+        "T_time_00",
+        "T_score_00",
+      }
+    );
+
+    mLayout.TPaneRegister(
+      mpaExTextBoxes, //
+      {
+        "T_left_04",
+        "T_x_05",
+        "T_left_05",
+        "T_x_06",
+        "T_left_06",
+        "T_x_07",
+        "T_left_07",
+        "T_x_08",
+      }
+    );
+
+    mLayout.TPaneNameRegister(
+      1, //
+      {
+        {"T_otaChuS_00", 20},
+        {"T_otaChu_01", 20},
+        {"T_InfoS_00", 19},
+        {"T_Info_00", 19},
+      }
+    );
+
+    for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
+        mpaTexMap[i] = *mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetMaterial()->GetTexturePtr(0);
+        maIconSize[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetSize();
+        maIconScale[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetScale();
+    }
+
+    return true;
+}
+
+[[nsmbw(0x801589D0)]]
+void dGameDisplay_c::RestCoinAnimeCheck()
+{
+    if (m0x44A || !m0x449) {
+        m0x449 = false;
+        return;
+    }
+
+    m0x449 = false;
+    m0x44A = true;
+    mLayout.AnimeStartSetup(0);
+    if (dActorCreateMng_c::m_instance->m_stopped) {
+        PauseManager_c::m_instance->m_ForbidPause = true;
+    }
+}
+
+[[nsmbw(0x80158A50)]]
+void dGameDisplay_c::AreaCheck()
+{
+    if (!mpRootPane->IsVisible()) {
+        return;
+    }
+
+    for (std::size_t plr = 0; plr < PLAYER_COUNT; plr++) {
+        if (!daPyMng_c::isPlayerActive(plr)) {
+            continue;
+        }
+        dAcPy_c* player = daPyMng_c::getPlayer(plr);
+        if (player == nullptr) {
+            continue;
+        }
+
+        mVec3_c plrPos = player->getCenterPos();
+        mVec3_c pos = dGameCom::getGlbPosToLyt(plrPos);
+
+        if (!mAreaZankiCrossed && pos.x > mAreaZankiRectLeft && pos.x < mAreaZankiRectRight &&
+            pos.y < mAreaZankiRectTop && pos.y > mAreaZankiRectBottom) {
+            mAreaZankiCrossed = mIsAlphaEnterOrExit = true;
+        }
+        if (!mAreaCoinCrossed && pos.x > mAreaCoinRectLeft && pos.x < mAreaCoinRectRight &&
+            pos.y < mAreaCoinRectTop && pos.y > mAreaCoinRectBottom) {
+            mAreaCoinCrossed = mIsAlphaEnterOrExit = true;
+        }
+        if (!mAreaScoreCrossed && pos.x > mAreaScoreRectLeft && pos.x < mAreaScoreRectRight &&
+            pos.y < mAreaScoreRectTop && pos.y > mAreaScoreRectBottom) {
+            mAreaScoreCrossed = mIsAlphaEnterOrExit = true;
+        }
+    }
+}
+
+[[nsmbw(0x80158BD0)]]
+void dGameDisplay_c::AlphaEnterAndExit()
+{
+    if (!mpRootPane->IsVisible()) {
+        return;
+    }
+
+    constexpr int lowAlpha = 71, highAlpha = 255, alphaChange = 12;
+
+    int unchanged = 0;
+    int alpha = mpPane_AreaZanki->GetAlpha();
+    if ((mAreaZankiCrossed && alpha < lowAlpha) || (!mAreaZankiCrossed && alpha >= highAlpha)) {
+        unchanged++;
+    }
+    alpha = mpPane_AreaCoin->GetAlpha();
+    if ((mAreaCoinCrossed && alpha < lowAlpha) || (!mAreaCoinCrossed && alpha >= highAlpha)) {
+        unchanged++;
+    }
+    alpha = mpPane_AreaScore->GetAlpha();
+    if ((mAreaScoreCrossed && alpha < lowAlpha) || (!mAreaScoreCrossed && alpha >= highAlpha)) {
+        unchanged++;
+    }
+    mIsAlphaEnterOrExit = unchanged < 3;
+
+    mAreaZankiAlpha = std::clamp(
+      mAreaZankiAlpha + (!mAreaZankiCrossed ? alphaChange : -alphaChange), lowAlpha, highAlpha
+    );
+    mAreaCoinAlpha = std::clamp(
+      mAreaCoinAlpha + (!mAreaCoinCrossed ? alphaChange : -alphaChange), lowAlpha, highAlpha
+    );
+    mAreaScoreAlpha = std::clamp(
+      mAreaScoreAlpha + (!mAreaScoreCrossed ? alphaChange : -alphaChange), lowAlpha, highAlpha
+    );
+    mpPane_AreaZanki->SetAlpha(mAreaZankiAlpha);
+    mpPane_AreaCoin->SetAlpha(mAreaCoinAlpha);
+    mpPane_AreaScore->SetAlpha(mAreaScoreAlpha);
+
+    mAreaZankiCrossed = mAreaCoinCrossed = mAreaScoreCrossed = false;
+}
+
+[[nsmbw(0x80158D90)]]
+bool dGameDisplay_c::NormalSettle()
+{
+    int timer = dStageTimer_c::m_instance->getTimer();
+    if (timer <= 0) {
+        return true;
+    }
+
+    int score = m0x410 * std::min(timer, m0x40C);
+    timer = std::max(0, timer - m0x40C);
+    dStageTimer_c::m_instance->setTimer(timer);
+
+    if (!dInfo_c::isGameFlag(dInfo_c::GameFlag_e::COIN_BATTLE)) {
+        SndAudioMgr::sInstance->holdSystemSe(SndID::SE_SYS_SCORE_COUNT, 1);
+    }
+    daPyMng_c::addScore(score);
+
+    return false;
+}
+
+[[nsmbw(0x80158E40)]]
+bool dGameDisplay_c::OtasukeSettle()
+{
+    int score = daPyMng_c::mScore;
+    int timer = dStageTimer_c::m_instance->getTimer();
+    if (timer == 0 && score == 0 && mCoinNum == 0) {
+        return true;
+    }
+
+    mCoinNum = std::max(0, mCoinNum - 3);
+    dGameCom::LayoutDispNumber(mCoinNum, 2, mpTextBox_Coins, 0);
+
+    timer = std::max(0, timer - m0x40C);
+    dStageTimer_c::m_instance->setTimer(timer);
+
+    daPyMng_c::mScore = std::max(0, score - m0x410 * m0x40C);
+
+    SndAudioMgr::sInstance->holdSystemSe(SndID::SE_SYS_SCORE_COUNT, 1);
+    return false;
+}
+
+[[nsmbw(0x80158F50)]]
+void dGameDisplay_c::initializeState_ProcMainGame()
+{
+    m0x43C = 0;
+    m0x453 = m0x451 = false;
+}
+
+[[nsmbw(0x80158F70)]]
+void dGameDisplay_c::executeState_ProcMainGame()
+{
+    if (m0x438 == 1) {
+        m0x440 = 0;
+        return mStateMgr.changeState(StateID_ProcMainPause);
+    }
+    if (m0x44C) {
+        return mStateMgr.changeState(StateID_ProcGoalSettleUp);
+    }
+}
+
+[[nsmbw(0x80158FE0)]]
+void dGameDisplay_c::finalizeState_ProcMainGame()
+{
+    m0x451 = true;
+}
+
+[[nsmbw(0x80158FF0)]]
+void dGameDisplay_c::initializeState_ProcMainPause()
+{
+    m0x43C = 1;
+    m0x438 = 0;
+}
+
+[[nsmbw(0x80159010)]]
+void dGameDisplay_c::executeState_ProcMainPause()
+{
+    if (m0x440 == 1) {
+        return mStateMgr.changeState(StateID_ProcMainGame);
+    }
+}
+
+[[nsmbw(0x80159040)]]
+void dGameDisplay_c::finalizeState_ProcMainPause()
+{
+    m0x440 = 0;
+}
+
 [[nsmbw(0x80159050)]]
 void dGameDisplay_c::initializeState_ProcGoalSettleUp()
 {
@@ -403,11 +570,59 @@ void dGameDisplay_c::initializeState_ProcGoalSettleUp()
     m0x444 = 1;
     m0x453 = true;
 
-    dMultiMng_c::mspInstance->mGoalTime = dStageTimer_c::m_instance->getDispTimeRoundUp();
+    dMultiMng_c::mspInstance->mGoalTime = dStageTimer_c::m_instance->getTimer();
     if (PauseManager_c::m_OtasukeAfter) {
         EffectCollectionCoinClear();
     }
 }
+
+[[nsmbw(0x801590B0)]]
+void dGameDisplay_c::executeState_ProcGoalSettleUp()
+{
+    if (m0x400 < m0x404) {
+        m0x400++;
+        return;
+    }
+
+    if (PauseManager_c::m_OtasukeAfter) {
+        if (OtasukeSettle()) {
+            m0x400 = 0;
+            SndAudioMgr::sInstance->startSystemSe(SndID::SE_SYS_SCORE_COUNT_FINISH, 1);
+            return mStateMgr.changeState(StateID_ProcGoalEnd);
+        }
+    } else {
+        if (NormalSettle()) {
+            m0x400 = 0;
+            if (!dInfo_c::isGameFlag(dInfo_c::GameFlag_e::COIN_BATTLE)) {
+                SndAudioMgr::sInstance->startSystemSe(SndID::SE_SYS_SCORE_COUNT_FINISH, 1);
+            }
+            return mStateMgr.changeState(StateID_ProcGoalEnd);
+        }
+    }
+}
+
+// Empty
+[[nsmbw(0x80159190)]]
+void dGameDisplay_c::finalizeState_ProcGoalSettleUp();
+
+// Empty
+[[nsmbw(0x801591A0)]]
+void dGameDisplay_c::initializeState_ProcGoalEnd();
+
+[[nsmbw(0x801591B0)]]
+void dGameDisplay_c::executeState_ProcGoalEnd()
+{
+    if (m0x400 < m0x408) {
+        m0x400++;
+        return;
+    }
+
+    m0x444 = 0;
+}
+
+// Empty
+[[nsmbw(0x801591E0)]]
+void dGameDisplay_c::finalizeState_ProcGoalEnd();
 
 // Changed the parameter from playerNo to paneIndex and added bool return
 [[nsmbw(0x801591F0)]]

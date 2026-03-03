@@ -5,6 +5,7 @@
 #include "d_system/d_lytbase.h"
 #include "d_system/d_lyttextbox.h"
 #include "machine/m_ef.h"
+#include "nw4r/math/mtx.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 #include <nw4r/lyt/Pane.h>
@@ -57,42 +58,24 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x80158830 */
-    bool createLayout();
-
-    void DecEffectTimers();
-
-    /* 0x801586C0 */
-    void RestDispSetup();
-
-    /* 0x801591F0 */
-    bool Effect1Up(int paneIndex);
-
-    /* 0x80159390 */
-    void GrayColorSet(int player);
-
-    /* 0x80159620 */
-    void ReturnGrayColorSet(int player);
-
-    /* 0x80159770 */
-    void EffectCollectionCoinClear();
-
-    /* 0x801599C0 */
-    void setPlayNum(int* playNum);
-
-    void updatePlayNum(int* playNum);
-
-    /* 0x80159AA0 */
-    void setCoinNum(int coinNum);
-
-    /* 0x80159C00 */
-    void setTime(int time);
-
-    /* 0x80159C30 */
-    void setCollect();
-
-    /* 0x80159DF0 */
-    void setScore(int score);
+    /* 0x80158830 */ bool createLayout();
+    /* +++ */ void DecEffectTimers();
+    /* 0x801586C0 */ void RestDispSetup();
+    /* 0x801589D0 */ void RestCoinAnimeCheck();
+    /* 0x80158A50 */ void AreaCheck();
+    /* 0x80158BD0 */ void AlphaEnterAndExit();
+    /* 0x80158D90 */ bool NormalSettle();
+    /* 0x80158E40 */ bool OtasukeSettle();
+    /* 0x801591F0 */ bool Effect1Up(int paneIndex);
+    /* 0x80159390 */ void GrayColorSet(int player);
+    /* 0x80159620 */ void ReturnGrayColorSet(int player);
+    /* 0x80159770 */ void EffectCollectionCoinClear();
+    /* 0x801599C0 */ void setPlayNum(int* playNum);
+    /* +++ */ void updatePlayNum(int* playNum);
+    /* 0x80159AA0 */ void setCoinNum(int coinNum);
+    /* 0x80159C00 */ void setTime(int time);
+    /* 0x80159C30 */ void setCollect();
+    /* 0x80159DF0 */ void setScore(int score);
 
     void newDeathMessage(const wchar_t* message, PLAYER_TYPE_e player)
     {
@@ -128,26 +111,49 @@ public:
     /* 0x40C */ int m0x40C;
     /* 0x410 */ int m0x410;
     /* 0x414 */ int m0x414;
-
-    FILL(0x418, 0x424);
+    /* 0x418 */ int mAreaZankiAlpha;
+    /* 0x41C */ int mAreaCoinAlpha;
+    /* 0x420 */ int mAreaScoreAlpha;
 
     // Changed from int to s8
     /* 0x424 */ s8 mEffectTimer[16];
 
-    FILL(0x434, 0x444);
+    FILL(0x434, 0x438);
 
+    /* 0x438 */ int m0x438;
+    /* 0x43C */ int m0x43C;
+    /* 0x440 */ int m0x440;
     /* 0x444 */ int m0x444;
 
-    FILL(0x448, 0x44B);
-
+    /* 0x448 */ bool m0x448;
+    /* 0x449 */ bool m0x449;
+    /* 0x44A */ bool m0x44A;
     /* 0x44B */ bool mLayoutLoaded;
-
-    FILL(0x44C, 0x452);
-
-    /* 0x452 */ u8 m0x452;
+    /* 0x44C */ bool m0x44C;
+    /* 0x44D */ bool mAreaZankiCrossed;
+    /* 0x44E */ bool mAreaCoinCrossed;
+    /* 0x44F */ bool mAreaScoreCrossed;
+    /* 0x450 */ bool mIsAlphaEnterOrExit;
+    /* 0x451 */ bool m0x451;
+    /* 0x452 */ bool m0x452;
     /* 0x453 */ bool m0x453;
 
-    FILL(0x454, 0x490);
+    FILL(0x454, 0x458);
+
+    /* 0x458 */ float mAreaZankiRectTop;
+    /* 0x45C */ float mAreaZankiRectBottom;
+    /* 0x460 */ float mAreaZankiRectLeft;
+    /* 0x464 */ float mAreaZankiRectRight;
+    /* 0x468 */ float mAreaCoinRectTop;
+    /* 0x46C */ float mAreaCoinRectBottom;
+    /* 0x470 */ float mAreaCoinRectLeft;
+    /* 0x474 */ float mAreaCoinRectRight;
+    /* 0x478 */ float mAreaScoreRectTop;
+    /* 0x47C */ float mAreaScoreRectBottom;
+    /* 0x480 */ float mAreaScoreRectLeft;
+    /* 0x484 */ float mAreaScoreRectRight;
+
+    FILL(0x488, 0x490);
 
     /* 0x490 */ nw4r::lyt::Pane* mpRootPane;
 

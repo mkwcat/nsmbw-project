@@ -245,6 +245,11 @@ public:
         mGameFlag = static_cast<GameFlag_e>(static_cast<u32>(mGameFlag) & ~static_cast<u32>(flag));
     }
 
+    static inline bool isGameFlag(GameFlag_e flag)
+    {
+        return (static_cast<u32>(mGameFlag) & static_cast<u32>(flag)) != 0;
+    }
+
 public:
     // Instance Variables
     // ^^^^^^

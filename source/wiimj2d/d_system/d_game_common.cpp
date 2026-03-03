@@ -46,6 +46,9 @@ void initGame();
 [[nsmbw(0x800B32E0)]]
 mVec3_c ScalePosForAspectRatio(const mVec3_c&);
 
+[[nsmbw(0x800B33D0)]]
+mVec3_c getGlbPosToLyt(const mVec3_c&);
+
 [[nsmbw(0x800B34D0)]]
 void CreateBlueNumber(const mVec3_c& pos, int type, int playerNo)
 {
@@ -442,7 +445,7 @@ bool chkCancelButton(int player)
 [[nsmbw(0x800B51D0)]]
 void StaffCreditAddCoin(int player)
 {
-    if (dStaffCreditScore_c *staffCredit = dScStage_c::m_instance->mpStaffCreditScore) {
+    if (dStaffCreditScore_c* staffCredit = dScStage_c::m_instance->mpStaffCreditScore) {
         int num = staffCredit->mCoinNum[player] + 1;
         if (num > 999) {
             num = 999;

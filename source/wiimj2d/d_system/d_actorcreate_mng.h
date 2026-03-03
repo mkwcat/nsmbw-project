@@ -16,10 +16,11 @@ public:
     FILL(0x000, 0xBC8);
 
     /* 0xBC8 */ s16 m0xBC8;
-    /* 0xBC9 */ u8 m0xBC9;
+    /* 0xBC9 */ bool m0xBC9;
     /* 0xBCA */ bool mIsEndingDemo;
+    /* 0xBCB */ bool m_stopped;
 
-    FILL(0xBCA, 0xBDC);
+    FILL(0xBCC, 0xBDC);
 
 public:
     // Static Variables
