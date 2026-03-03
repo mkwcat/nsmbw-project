@@ -267,9 +267,6 @@ bool dGameDisplay_c::createLayout()
     mLayout.build("gameScene_37.brlyt", nullptr);
     mDeathMsgMgr.build(mLayout.getResAccessor(), mLayout.getDrawInfo());
 
-    using StringArray = const char*[];
-    using IntArray = const int[];
-
     mLayout.AnimeResRegister({
       "gameScene_37_inMarioCoin.brlan",
     });

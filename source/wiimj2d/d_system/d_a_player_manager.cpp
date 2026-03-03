@@ -467,7 +467,7 @@ void daPyMng_c::update()
     PauseManager_c::m_instance->setPauseEnable(mPauseDisable == 0);
 
     if (mStopTimerInfo != mStopTimerInfoOld) {
-        dStageTimer_c::m_instance->mPause = mStopTimerInfo != 0;
+        dStageTimer_c::m_instance->m_isStop = mStopTimerInfo != 0;
         mStopTimerInfoOld = mStopTimerInfo;
     }
 

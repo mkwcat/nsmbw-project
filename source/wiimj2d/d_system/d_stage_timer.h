@@ -44,7 +44,7 @@ public:
     /**
      * Is the timer currently paused?
      */
-    /* 0x0C */ bool m_paused;
+    /* 0x0C */ bool m_isStop;
 
 public:
     // Static Variables

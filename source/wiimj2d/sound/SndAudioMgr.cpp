@@ -14,6 +14,9 @@ SndAudioMgr* SndAudioMgr::sInstance;
 [[nsmbw(0x801954C0)]]
 void SndAudioMgr::startSystemSe(SndID::Type sound, u32 param2);
 
+[[nsmbw(0x801954E0)]]
+void SndAudioMgr::holdSystemSe(SndID::Type sound, u32 param2);
+
 [[nsmbw(0x80196740)]]
 bool SndAudioMgr::isSndPlaying(SndID::Type sound);
 
