@@ -60,6 +60,11 @@ public:
         WORLD_e world;
         STAGE_e stage;
 
+        constexpr bool isInSaveGame() const
+        {
+            return world < WORLD_e::COUNT && stage < STAGE_e::COUNT;
+        }
+
         constexpr bool operator==(const StageNo_s& other) const
         {
             return world == other.world && stage == other.stage;

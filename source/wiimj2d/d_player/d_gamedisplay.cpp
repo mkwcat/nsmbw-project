@@ -3,6 +3,7 @@
 
 #include "d_gamedisplay.h"
 
+#include "d_bases/d_s_stage.h"
 #include "d_player/d_a_player.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actorcreate_mng.h"
@@ -12,6 +13,7 @@
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_multi_manager.h"
 #include "d_system/d_pause_manager.h"
+#include "d_system/d_save_manager.h"
 #include "d_system/d_stage_timer.h"
 #include "framework/f_feature.h"
 #include "machine/m_ef.h"
@@ -34,7 +36,7 @@ dGameDisplay_c* dGameDisplay_c_classInit()
 
 #define X (*reinterpret_cast<dGameDisplay_c*>(0x1))
 
-const long dGameDisplay_c::PLAYER_PANE_INDEX[] = {
+const long dGameDisplay_c::cPlayerPaneIndex[] = {
   std::distance(X.mpaPanes, &X.mpPane_MarioIcon),
   std::distance(X.mpaPanes, &X.mpPane_LuigiIcon),
   std::distance(X.mpaPanes, &X.mpPane_KinoBIcon),
@@ -45,7 +47,7 @@ const long dGameDisplay_c::PLAYER_PANE_INDEX[] = {
   std::distance(X.mpaPanes, &X.mpPane_Player07Icon),
 };
 
-const long dGameDisplay_c::PLAYER_PICTURE_INDEX[] = {
+const long dGameDisplay_c::cPlayerPictureIndex[] = {
   std::distance(X.mpaPictures, &X.mpPicture_MarioIcon),
   std::distance(X.mpaPictures, &X.mpPicture_LuigiIcon),
   std::distance(X.mpaPictures, &X.mpPicture_KinoBIcon),
@@ -56,7 +58,7 @@ const long dGameDisplay_c::PLAYER_PICTURE_INDEX[] = {
   std::distance(X.mpaPictures, &X.mpPicture_Player07Icon),
 };
 
-const long dGameDisplay_c::PLAYER_TEXTBOX_INDEX[] = {
+const long dGameDisplay_c::cPlayerTextboxIndex[] = {
   std::distance(X.mpaTextBoxes, &X.mpTextBox_Left00),
   std::distance(X.mpaTextBoxes, &X.mpTextBox_Left01),
   std::distance(X.mpaTextBoxes, &X.mpTextBox_Left02),
@@ -67,7 +69,7 @@ const long dGameDisplay_c::PLAYER_TEXTBOX_INDEX[] = {
   std::distance(X.mpaTextBoxes, &X.mpTextBox_Left07),
 };
 
-const long dGameDisplay_c::PLAYER_BOTH_TEXTBOX_INDEX[][2] = {
+const long dGameDisplay_c::cPlayerBothTextboxIndex[][2] = {
   {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left00),
    std::distance(X.mpaTextBoxes, &X.mpTextBox_X01)},
   {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left01),
@@ -84,6 +86,18 @@ const long dGameDisplay_c::PLAYER_BOTH_TEXTBOX_INDEX[][2] = {
    std::distance(X.mpaTextBoxes, &X.mpTextBox_X07)},
   {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left07),
    std::distance(X.mpaTextBoxes, &X.mpTextBox_X08)},
+};
+
+const long dGameDisplay_c::cPictureCollectionIndex[STAR_COIN_COUNT] = {
+  std::distance(X.mpaPictures, &X.mpPicture_Collection00),
+  std::distance(X.mpaPictures, &X.mpPicture_Collection01),
+  std::distance(X.mpaPictures, &X.mpPicture_Collection02),
+};
+
+const long dGameDisplay_c::cPictureCollectOffIndex[STAR_COIN_COUNT] = {
+  std::distance(X.mpaPictures, &X.mpPicture_CollectOff00),
+  std::distance(X.mpaPictures, &X.mpPicture_CollectOff01),
+  std::distance(X.mpaPictures, &X.mpPicture_CollectOff02),
 };
 
 #undef X
@@ -218,8 +232,8 @@ void dGameDisplay_c::RestDispSetup()
     nw4r::math::VEC3 position[4 + EXTRA_PLAYER_COUNT];
 
     for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
-        position[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetTranslate();
-        mpaPictures[PLAYER_PICTURE_INDEX[i]]->SetVisible(false);
+        position[i] = mpaPictures[cPlayerPictureIndex[i]]->GetTranslate();
+        mpaPictures[cPlayerPictureIndex[i]]->SetVisible(false);
     }
 
     for (std::size_t i = 0, count = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
@@ -232,14 +246,14 @@ void dGameDisplay_c::RestDispSetup()
             continue;
         }
 
-        mpaPictures[PLAYER_PICTURE_INDEX[player]]->SetVisible(true);
-        mpaPictures[PLAYER_PICTURE_INDEX[player]]->SetTranslate(position[count++]);
+        mpaPictures[cPlayerPictureIndex[player]]->SetVisible(true);
+        mpaPictures[cPlayerPictureIndex[player]]->SetTranslate(position[count++]);
 
-        m0x414 = PLAYER_PICTURE_INDEX[player];
+        m0x414 = cPlayerPictureIndex[player];
 
         int charaIndex = daPyMng_c::getPlayerColorType(static_cast<PLAYER_TYPE_e>(player));
 
-        mpaPictures[PLAYER_PICTURE_INDEX[player]]->GetMaterial()->SetTexture(
+        mpaPictures[cPlayerPictureIndex[player]]->GetMaterial()->SetTexture(
           0, mpaTexMap[charaIndex]
         );
 
@@ -247,7 +261,7 @@ void dGameDisplay_c::RestDispSetup()
         size.width *= (maIconScale[charaIndex].x / maIconScale[player].x);
         size.height *= (maIconScale[charaIndex].y / maIconScale[player].y);
 
-        mpaPictures[PLAYER_PICTURE_INDEX[player]]->SetSize(size);
+        mpaPictures[cPlayerPictureIndex[player]]->SetSize(size);
     }
 }
 
@@ -367,9 +381,9 @@ bool dGameDisplay_c::createLayout()
     );
 
     for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
-        mpaTexMap[i] = *mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetMaterial()->GetTexturePtr(0);
-        maIconSize[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetSize();
-        maIconScale[i] = mpaPictures[PLAYER_PICTURE_INDEX[i]]->GetScale();
+        mpaTexMap[i] = *mpaPictures[cPlayerPictureIndex[i]]->GetMaterial()->GetTexturePtr(0);
+        maIconSize[i] = mpaPictures[cPlayerPictureIndex[i]]->GetSize();
+        maIconScale[i] = mpaPictures[cPlayerPictureIndex[i]]->GetScale();
     }
 
     return true;
@@ -468,14 +482,14 @@ void dGameDisplay_c::AlphaEnterAndExit()
 [[nsmbw(0x80158D90)]]
 bool dGameDisplay_c::NormalSettle()
 {
-    int timer = dStageTimer_c::m_instance->getTimer();
+    short timer = dStageTimer_c::m_instance->getTimer();
     if (timer <= 0) {
         return true;
     }
 
-    int score = m0x410 * std::min(timer, m0x40C);
-    timer = std::max(0, timer - m0x40C);
-    dStageTimer_c::m_instance->setTimer(timer);
+    int subTime = std::min(+timer, mSettleTimePerFrame);
+    int score = mSettleScorePerSecond * subTime;
+    dStageTimer_c::m_instance->setTimer(timer - subTime);
 
     if (!dInfo_c::isGameFlag(dInfo_c::GameFlag_e::COIN_BATTLE)) {
         SndAudioMgr::sInstance->holdSystemSe(SndID::SE_SYS_SCORE_COUNT, 1);
@@ -489,7 +503,7 @@ bool dGameDisplay_c::NormalSettle()
 bool dGameDisplay_c::OtasukeSettle()
 {
     int score = daPyMng_c::mScore;
-    int timer = dStageTimer_c::m_instance->getTimer();
+    short timer = dStageTimer_c::m_instance->getTimer();
     if (timer == 0 && score == 0 && mCoinNum == 0) {
         return true;
     }
@@ -497,10 +511,10 @@ bool dGameDisplay_c::OtasukeSettle()
     mCoinNum = std::max(0, mCoinNum - 3);
     dGameCom::LayoutDispNumber(mCoinNum, 2, mpTextBox_Coins, 0);
 
-    timer = std::max(0, timer - m0x40C);
+    timer = std::max(0, timer - mSettleTimePerFrame);
     dStageTimer_c::m_instance->setTimer(timer);
 
-    daPyMng_c::mScore = std::max(0, score - m0x410 * m0x40C);
+    daPyMng_c::mScore = std::max(0, score - mSettleScorePerSecond * mSettleTimePerFrame);
 
     SndAudioMgr::sInstance->holdSystemSe(SndID::SE_SYS_SCORE_COUNT, 1);
     return false;
@@ -556,8 +570,8 @@ void dGameDisplay_c::finalizeState_ProcMainPause()
 void dGameDisplay_c::initializeState_ProcGoalSettleUp()
 {
     m0x400 = 1;
-    m0x40C = 10;
-    m0x410 = 50;
+    mSettleTimePerFrame = 10;
+    mSettleScorePerSecond = 50;
     m0x444 = 1;
     m0x453 = true;
 
@@ -991,6 +1005,9 @@ UNDEF_8015974c:;
 [[nsmbw(0x80159770)]]
 void dGameDisplay_c::EffectCollectionCoinClear();
 
+[[nsmbw(0x801598E0)]]
+void dGameDisplay_c::EffectCollectionCoinGet(int coin);
+
 [[nsmbw(0x801599C0)]]
 void dGameDisplay_c::setPlayNum(int* playNum);
 
@@ -1007,7 +1024,7 @@ void dGameDisplay_c::updatePlayNum(int* playNum)
         mPlayNum[i] = newPlayNum;
 
         if (newPlayNum > oldPlayNum && mEffectTimer[i] == 0) {
-            mEffectTimer[i] = Effect1Up(PLAYER_PANE_INDEX[i]) ? 15 : 0;
+            mEffectTimer[i] = Effect1Up(cPlayerPaneIndex[i]) ? 15 : 0;
         }
 
         if (!fFeat::infinite_lives && newPlayNum == 0 && !mPlayerGray[i]) {
@@ -1024,7 +1041,7 @@ void dGameDisplay_c::updatePlayNum(int* playNum)
                 maxChars = 4;
             }
         }
-        dGameCom::LayoutDispNumber(newPlayNum, maxChars, mpaTextBoxes[PLAYER_TEXTBOX_INDEX[i]], 0);
+        dGameCom::LayoutDispNumber(newPlayNum, maxChars, mpaTextBoxes[cPlayerTextboxIndex[i]], 0);
     }
 }
 
@@ -1035,7 +1052,62 @@ void dGameDisplay_c::setCoinNum(int coinNum);
 void dGameDisplay_c::setTime(int time);
 
 [[nsmbw(0x80159C30)]]
-void dGameDisplay_c::setCollect();
+void dGameDisplay_c::setCollect()
+{
+    if (m0x453) {
+        return;
+    }
+
+    dScStage_c* const stage = dScStage_c::m_instance;
+    const dInfo_c::StageNo_s stageNo = {stage->mWorld, stage->mStage};
+    if (!stageNo.isInSaveGame()) {
+        return;
+    }
+    const dInfo_c::DemoType_e demoType = dInfo_c::m_startGameInfo.demoType;
+    if (demoType == dInfo_c::DemoType_e::TITLE || demoType == dInfo_c::DemoType_e::TITLE_REPLAY) {
+        return;
+    }
+
+    const dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame();
+    for (std::size_t coin = 0; coin < STAR_COIN_COUNT; coin++) {
+        bool collected = save->isCollectCoin(stageNo.world, stageNo.stage, coin);
+        if (collected && demoType == dInfo_c::DemoType_e::NONE) {
+            mpaPictures[cPictureCollectOffIndex[coin]]->SetVisible(false);
+            mpaPictures[cPictureCollectionIndex[coin]]->SetVisible(true);
+            mCollectCoin[coin] = 2;
+        } else if (stage->mCollectionCoin[coin] != PLAYER_TYPE_e::COUNT) {
+            mpaPictures[cPictureCollectOffIndex[coin]]->SetVisible(false);
+            mpaPictures[cPictureCollectionIndex[coin]]->SetVisible(true);
+            if (mCollectCoin[coin] != 2) {
+                mCollectCoin[coin] = 2;
+                EffectCollectionCoinGet(coin);
+            }
+        } else {
+            mpaPictures[cPictureCollectOffIndex[coin]]->SetVisible(true);
+            mpaPictures[cPictureCollectionIndex[coin]]->SetVisible(false);
+            mCollectCoin[coin] = 0;
+        }
+    }
+}
 
 [[nsmbw(0x80159DF0)]]
-void dGameDisplay_c::setScore(int score);
+void dGameDisplay_c::setScore(int score)
+{
+    if (mScore == score || mScore >= cMaxDispScore) {
+        return;
+    }
+
+    if (++mSetScoreDelay < 2) {
+        return;
+    }
+    mSetScoreDelay = 0;
+    dGameCom::LayoutDispNumber(mScore = std::min(score, cMaxDispScore), 8, mpTextBox_Score, 1);
+}
+
+[[nsmbw(0x80159E60)]]
+void dGameDisplay_c::RestCoinAnimeSetup()
+{
+    if (PauseManager_c::m_OtasukeAfter) {
+        m0x449 = true;
+    }
+}

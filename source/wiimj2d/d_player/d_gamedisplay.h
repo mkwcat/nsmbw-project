@@ -26,6 +26,12 @@ public:
     virtual ~dGameDisplay_c();
 
 public:
+    // Constants
+    // ^^^^^^
+
+    static constexpr int cMaxDispScore = 99999950;
+
+public:
     // Virtual Functions
     // ^^^^^^
 
@@ -70,12 +76,14 @@ public:
     /* 0x80159390 */ void GrayColorSet(int player);
     /* 0x80159620 */ void ReturnGrayColorSet(int player);
     /* 0x80159770 */ void EffectCollectionCoinClear();
+    /* 0x801598E0 */ void EffectCollectionCoinGet(int coin);
     /* 0x801599C0 */ void setPlayNum(int* playNum);
     /* +++ */ void updatePlayNum(int* playNum);
     /* 0x80159AA0 */ void setCoinNum(int coinNum);
     /* 0x80159C00 */ void setTime(int time);
     /* 0x80159C30 */ void setCollect();
     /* 0x80159DF0 */ void setScore(int score);
+    /* 0x80159E60 */ void RestCoinAnimeSetup();
 
     void newDeathMessage(const wchar_t* message, PLAYER_TYPE_e player)
     {
@@ -102,14 +110,14 @@ public:
     /* 0x3E0 */ int mTime;
     /* 0x3E4 */ int m0x3E4;
     /* 0x3E8 */ int mScore;
-
-    FILL(0x3EC, 0x400);
-
+    /* 0x3EC */ int mCollectCoin[STAR_COIN_COUNT];
+    /* 0x3F8 */ int m0x3F8;
+    /* 0x3FC */ int m0x3FC;
     /* 0x400 */ int m0x400;
     /* 0x404 */ int m0x404;
     /* 0x408 */ int m0x408;
-    /* 0x40C */ int m0x40C;
-    /* 0x410 */ int m0x410;
+    /* 0x40C */ int mSettleTimePerFrame;
+    /* 0x410 */ int mSettleScorePerSecond;
     /* 0x414 */ int m0x414;
     /* 0x418 */ int mAreaZankiAlpha;
     /* 0x41C */ int mAreaCoinAlpha;
@@ -118,8 +126,7 @@ public:
     // Changed from int to s8
     /* 0x424 */ s8 mEffectTimer[16];
 
-    FILL(0x434, 0x438);
-
+    /* 0x434 */ int mSetScoreDelay;
     /* 0x438 */ int m0x438;
     /* 0x43C */ int m0x43C;
     /* 0x440 */ int m0x440;
@@ -292,10 +299,12 @@ public:
     /* 0x8042A608 */
     static dGameDisplay_c* m_instance;
 
-    static const long PLAYER_PANE_INDEX[];
-    static const long PLAYER_PICTURE_INDEX[];
-    static const long PLAYER_TEXTBOX_INDEX[];
-    static const long PLAYER_BOTH_TEXTBOX_INDEX[][2];
+    static const long cPlayerPaneIndex[];
+    static const long cPlayerPictureIndex[];
+    static const long cPlayerTextboxIndex[];
+    static const long cPlayerBothTextboxIndex[][2];
+    static const long cPictureCollectionIndex[];
+    static const long cPictureCollectOffIndex[];
 
 public:
     // State IDs
