@@ -5,7 +5,6 @@
         <region type="J"/>
         <region type="K"/>
         <region type="W"/>
-        <region type="C"/>
     </id>
     <options>
         <section name="mkwcat-nsmbw ${INSERT_VERSION}" id="mkwcat">
@@ -133,30 +132,51 @@
     </patch>
     <patch id="loader">
         <!-- Call Custom Module Loader -->
-        <!-- EU --><memory offset="0x80328478" value="800047E0" original="8015BC60"/>
-        <!-- US --><memory offset="0x80328130" value="800047E0" original="8015BB20"/>
-        <!-- JP --><memory offset="0x80327E98" value="800047E0" original="8015B930"/>
-        <!-- KR --><memory offset="0x80334E60" value="800047E0" original="8015C060"/>
-        <!-- TW --><memory offset="0x80333218" value="800047E0" original="8015C060"/>
-        <!-- CN --><memory offset="0x8032D348" value="800047E0" original="8015CF30"/>
+        <!-- EU -->
+        <memory offset="0x80328478" value="800047E0" original="8015BC60"/>
+        <!-- US -->
+        <memory offset="0x80328130" value="800047E0" original="8015BB20"/>
+        <!-- JP -->
+        <memory offset="0x80327E98" value="800047E0" original="8015B930"/>
+        <!-- KR -->
+        <memory offset="0x80334E60" value="800047E0" original="8015C060"/>
+        <!-- TW -->
+        <memory offset="0x80333218" value="800047E0" original="8015C060"/>
+        <!-- CN -->
+        <!-- <memory offset="0x8032D348" value="800047E0" original="8015CF30"/> -->
         <!-- Enforce Wait for Custom Module Loader -->
-        <!-- EU --><memory offset="0x8015BF34" value="60000000" original="981F0102"/>
-        <!-- US --><memory offset="0x8015BDF4" value="60000000" original="981F0102"/>
-        <!-- JP --><memory offset="0x8015BC04" value="60000000" original="981F0102"/>
-        <!-- KR/TW --><memory offset="0x8015C334" value="60000000" original="981F0102"/>
-        <!-- CN --><memory offset="0x8015D304" value="60000000" original="981F0102"/>
+        <!-- EU -->
+        <memory offset="0x8015BF34" value="60000000" original="981F0102"/>
+        <!-- US -->
+        <memory offset="0x8015BDF4" value="60000000" original="981F0102"/>
+        <!-- JP -->
+        <memory offset="0x8015BC04" value="60000000" original="981F0102"/>
+        <!-- KR/TW -->
+        <memory offset="0x8015C334" value="60000000" original="981F0102"/>
+        <!-- CN -->
+        <!-- <memory offset="0x8015D304" value="60000000" original="981F0102"/> -->
         <!-- Expand Layout Heap -->
-        <!-- EU --><memory offset="0x800B64E0" value="3C800012" original="3C800010"/>
-        <!-- US --><memory offset="0x800B6490" value="3C800012" original="3C800010"/>
-        <!-- JP --><memory offset="0x800B6410" value="3C800012" original="3C800010"/>
-        <!-- KR/TW --><memory offset="0x800B65A0" value="3C800012" original="3C800010"/>
-        <!-- CN --><memory offset="0x800B6790" value="3C800012" original="3C800010"/>
+        <!-- EU -->
+        <memory offset="0x800B64E0" value="3C800012" original="3C800010"/>
+        <!-- US -->
+        <memory offset="0x800B6490" value="3C800012" original="3C800010"/>
+        <!-- JP -->
+        <memory offset="0x800B6410" value="3C800012" original="3C800010"/>
+        <!-- KR/TW -->
+        <memory offset="0x800B65A0" value="3C800012" original="3C800010"/>
+        <!-- CN -->
+        <!-- <memory offset="0x800B6790" value="3C800012" original="3C800010"/> -->
         <!-- Disable Exception Handler Key Sequence -->
-        <!-- EU --><memory offset="0x800E4E84" value="38600000" original="3863330C"/>
-        <!-- US --><memory offset="0x800E4D70" value="38600000" original="3863300C"/>
-        <!-- JP --><memory offset="0x800E4CF0" value="38600000" original="38632E2C"/>
-        <!-- KR/TW --><memory offset="0x800E4E80" value="38600000" original="3863364C"/>
-        <!-- CN --><memory offset="0x800E54B0" value="38600000" original="38637AAC"/>
+        <!-- EU -->
+        <memory offset="0x800E4E84" value="38600000" original="3863330C"/>
+        <!-- US -->
+        <memory offset="0x800E4D70" value="38600000" original="3863300C"/>
+        <!-- JP -->
+        <memory offset="0x800E4CF0" value="38600000" original="38632E2C"/>
+        <!-- KR/TW -->
+        <memory offset="0x800E4E80" value="38600000" original="3863364C"/>
+        <!-- CN -->
+        <!-- <memory offset="0x800E54B0" value="38600000" original="38637AAC"/> -->
 
         <!-- Data -->
         <file disc="/mkwcat.arc" external="mkwcat-nsmbw.arc" create="true"/>

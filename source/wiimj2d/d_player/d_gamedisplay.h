@@ -6,7 +6,6 @@
 #include "d_system/d_lyttextbox.h"
 #include "d_system/d_mj2d_game.h"
 #include "machine/m_ef.h"
-#include "nw4r/math/mtx.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 #include <nw4r/lyt/Pane.h>

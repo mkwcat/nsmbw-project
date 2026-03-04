@@ -8,7 +8,6 @@ set(DVD_FILES
     rels/d_project_J2.imp.szs
     rels/d_project_K1.imp.szs
     rels/d_project_W1.imp.szs
-    rels/d_project_C1.imp.szs
     rels/d_project.SMAP
     
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/blyt/characterChangeSelectContents_05.brlyt

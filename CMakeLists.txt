@@ -119,7 +119,7 @@ set(BUILD_ARCHIVE "${CMAKE_BINARY_DIR}/mkwcat-nsmbw.arc.d")
 
 set(imp_outputs)
 set(imp_args)
-foreach(region P1 P2 E1 E2 J1 J2 K W C)
+foreach(region P1 P2 E1 E2 J1 J2 K W)
     set(imp_args "${imp_args}" "--imp" "${region}")
     set(imp_outputs "${imp_outputs}" "${CMAKE_BINARY_DIR}/source/d_project.rel.${region}.imp")
 endforeach()
