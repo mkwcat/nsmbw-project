@@ -1027,8 +1027,8 @@ void dGameDisplay_c::AreaCheck()
             continue;
         }
 
-        mVec3_c plrPos = player->getCenterPos();
-        mVec3_c pos = dGameCom::getGlbPosToLyt(plrPos);
+        mVec3_c pos = player->getCenterPos();
+        dGameCom::getGlbPosToLyt(pos);
 
         for (int area = 0; area < cAreaCheckCount; area++) {
             if (!mAreaCrossed[area] && pos.x > mArea[area].left && pos.x < mArea[area].right &&

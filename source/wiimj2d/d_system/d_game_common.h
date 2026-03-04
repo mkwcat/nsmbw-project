@@ -40,7 +40,7 @@ void initGame();
 mVec3_c ScalePosForAspectRatio(const mVec3_c&);
 
 /* 0x800B33D0 */
-mVec3_c getGlbPosToLyt(const mVec3_c&);
+void getGlbPosToLyt(mVec3_c&);
 
 /* 0x800B34D0 */
 void CreateBlueNumber(const mVec3_c&, int, int);
