@@ -89,7 +89,10 @@ def create_import_table(self_module_id, module_id, imports, out_sections, mapper
                     assert (reloc.addend & 0x80000000) == 0
                 reloc.addend += target_sections_from[reloc.section - 1] if module_id != 0 else 0
                 reloc.addend = address_maps.map_addr_from_to(mapper_from, mapper_to, reloc.addend, error_handling=address_maps.UnmappedAddressHandling(errors=common.ErrorVolume.SILENT))
-                reloc.addend -= target_sections_to[reloc.section - 1] if module_id != 0 else 0
+                if reloc.addend is None:
+                    reloc.addend = 0
+                elif reloc.addend != 0:
+                    reloc.addend -= target_sections_to[reloc.section - 1] if module_id != 0 else 0
 
     # Sort relocations by offset and then convert to REL format
     for section in input_table:
@@ -270,6 +273,8 @@ def main():
                     except:
                         print('Warning: Invalid ext symbol name: ' + symbol.name)
                         addr = None
+                elif symbol.name == 'PortRegion__6mkwcat':
+                    addr = 0
                 else:
                     print(f"Warning: Relocation to symbol {symbol.name} resolves to an unwritten section {section.name if section is not None else 'None'}")
                     continue
@@ -280,6 +285,7 @@ def main():
                 relocation = rel.RELRelocation()
                 relocation.offset = rela['r_offset']
                 addr += rela['r_addend']
+                addr &= 0xFFFFFFFF
 
                 module_id = 0
                 relocation.section = 0

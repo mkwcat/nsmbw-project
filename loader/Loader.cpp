@@ -28,7 +28,7 @@
 // Since the same Loader.bin file will be used for every region, ported addresses need to be
 // realized on the fly.
 
-// Regions in the order P1, P2, E1, E2, J1, J2, K, W, C
+// Regions in the order P1, P2, E1, E2, J1, J2, K, W
 
 #define PORT_CALL_BASE 0x800047E4
 
@@ -38,8 +38,7 @@
         _ADDR, mkwcat::AddressMapperP2.MapAddress(_ADDR),                                          \
           mkwcat::AddressMapperE1.MapAddress(_ADDR), mkwcat::AddressMapperE2.MapAddress(_ADDR),    \
           mkwcat::AddressMapperJ1.MapAddress(_ADDR), mkwcat::AddressMapperJ2.MapAddress(_ADDR),    \
-          mkwcat::AddressMapperK.MapAddress(_ADDR), mkwcat::AddressMapperW.MapAddress(_ADDR),      \
-          mkwcat::AddressMapperC.MapAddress(_ADDR),                                                \
+          mkwcat::AddressMapperK.MapAddress(_ADDR), mkwcat::AddressMapperW.MapAddress(_ADDR)       \
     }
 
 #define _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE)                                         \
@@ -56,7 +55,6 @@ gnu::naked]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER);
                 ".long %5;"                                                                        \
                 ".long %6;"                                                                        \
                 ".long %7;"                                                                        \
-                ".long %8;"                                                                        \
                 :                                                                                  \
                 : "i"(_ADDR), "i"(mkwcat::AddressMapperP2.MapAddress(_ADDR)),                      \
                   "i"(mkwcat::AddressMapperE1.MapAddress(_ADDR)),                                  \
@@ -64,8 +62,7 @@ gnu::naked]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER);
                   "i"(mkwcat::AddressMapperJ1.MapAddress(_ADDR)),                                  \
                   "i"(mkwcat::AddressMapperJ2.MapAddress(_ADDR)),                                  \
                   "i"(mkwcat::AddressMapperK.MapAddress(_ADDR)),                                   \
-                  "i"(mkwcat::AddressMapperW.MapAddress(_ADDR)),                                   \
-                  "i"(mkwcat::AddressMapperC.MapAddress(_ADDR)));                                  \
+                  "i"(mkwcat::AddressMapperW.MapAddress(_ADDR)));                                  \
     }                                                                                              \
 [[gnu::alias("_LoaderFunction" #_COUNTER)
 
@@ -237,11 +234,13 @@ bool GetPortByCode()
         l_import_path[REGION_INDEX] = 'W';
         g_port_offset = PORT_CALL_BASE + 0x1C;
         return true;
+#if 0
     case 0x55:
         // CHN (C)
         l_import_path[REGION_INDEX] = 'C';
         g_port_offset = PORT_CALL_BASE + 0x20;
         return true;
+#endif
     }
 
     const bool rev2 = c == 0x38;

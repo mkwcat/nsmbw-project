@@ -1,6 +1,7 @@
 // Module.cpp
 
 #include "Four.h"
+#include <cstdint>
 #include <mkwcat/Relocate.hpp>
 #include <revolution/arc.h>
 #include <revolution/dvd.h>
@@ -85,13 +86,8 @@ void _prolog(s32 param1, void* param2)
     for (auto repl = _MRel_patch_references_array; repl != _MRel_patch_references_array_end;) {
         for (u32 i = 0; i < repl->count; i++) {
             u32 offset = reinterpret_cast<u32>(repl->dest.addr) + repl->references[i].addend;
-            volatile u16* ptr = reinterpret_cast<volatile u16*>(
-              (&repl->references[i].addrP1)[static_cast<int>(codeRegion)]
-            );
+            volatile u16* ptr = static_cast<volatile u16*>(repl->references[i].address);
             if (ptr == nullptr) {
-                OS_REPORT(
-                  "WARNING: Skipping relocation patch at P1 %08lX\n", repl->references[i].addrP1
-                );
                 continue;
             }
 

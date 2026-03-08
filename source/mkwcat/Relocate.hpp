@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include "AddressMapper.hpp"
 #include "BaseTypes.hpp"
 #include "Macro.hpp"
+#include "Port.hpp"
 #include <revolution/os/OSLink.h>
 
 namespace mkwcat::Relocate
@@ -17,40 +17,20 @@ struct Reference {
     consteval Reference()
       : type(0)
       , addend(0)
-      , addrP1(0)
+      , address(nullptr)
     {
     }
 
     consteval Reference(u32 _addrP1, u8 _type, u16 _addend = 0)
       : type(_type)
       , addend(_addend)
-      , addrP1(_addrP1)
+      , address(&mkwcat::PortRegion[_addrP1])
     {
     }
 
     u8 type;
     u16 addend;
-
-    u32 addrP1;
-#ifndef CLANGD
-    u32 addrP2 = AddressMapperP2.MapAddress(addrP1);
-    u32 addrE1 = AddressMapperE1.MapAddress(addrP1);
-    u32 addrE2 = AddressMapperE2.MapAddress(addrP1);
-    u32 addrJ1 = AddressMapperJ1.MapAddress(addrP1);
-    u32 addrJ2 = AddressMapperJ2.MapAddress(addrP1);
-    u32 addrK = AddressMapperK.MapAddress(addrP1);
-    u32 addrW = AddressMapperW.MapAddress(addrP1);
-    u32 addrC = AddressMapperC.MapAddress(addrP1);
-#else
-    u32 addrP2 = 0;
-    u32 addrE1 = 0;
-    u32 addrE2 = 0;
-    u32 addrJ1 = 0;
-    u32 addrJ2 = 0;
-    u32 addrK = 0;
-    u32 addrW = 0;
-    u32 addrC = 0;
-#endif
+    void* address;
 };
 
 template <u32 N>

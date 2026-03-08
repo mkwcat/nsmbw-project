@@ -5,38 +5,21 @@
 #include "Four.h"
 
 #include "d_system/d_mj2d_game.h"
-#include "d_system/d_system.h"
-#include "mkwcat/AddressMapper.hpp"
+#include "mkwcat/Port.hpp"
 #include <cstring>
 #include <revolution/os.h>
 
 struct FourPatch {
-    consteval FourPatch(u32 address, u8 size, s8 offset = 0)
-      : addressP1(address)
-      , addressP2(mkwcat::AddressMapperP2.MapAddress(address))
-      , addressE1(mkwcat::AddressMapperE1.MapAddress(address))
-      , addressE2(mkwcat::AddressMapperE2.MapAddress(address))
-      , addressJ1(mkwcat::AddressMapperJ1.MapAddress(address))
-      , addressJ2(mkwcat::AddressMapperJ2.MapAddress(address))
-      , addressK(mkwcat::AddressMapperK.MapAddress(address))
-      , addressW(mkwcat::AddressMapperW.MapAddress(address))
-      , addressC(mkwcat::AddressMapperC.MapAddress(address))
+    constexpr FourPatch(u32 address, u8 size, s8 offset = -0)
+      : address(&mkwcat::PortRegion[address])
       , size(size)
       , offset(offset)
     {
     }
 
-    u32 addressP1;
-    u32 addressP2;
-    u32 addressE1;
-    u32 addressE2;
-    u32 addressJ1;
-    u32 addressJ2;
-    u32 addressK;
-    u32 addressW;
-    u32 addressC;
+    void* address;
     u8 size;
-    s8 offset;
+    s8 offset = -0;
 
     static constexpr s8 NEGATIVE = -64;
 };
@@ -745,12 +728,9 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
 
 void Four::Apply()
 {
-    auto codeRegion = dSys_c::m_codeRegion;
-
     for (const FourPatch& patch : FOUR_PATCH_LIST) {
-        u32 address = (&patch.addressP1)[static_cast<u32>(codeRegion)];
-        if (address == 0) {
-            OS_REPORT("WARNING: Skipping Four patch at P1 0x%08lX\n", patch.addressP1);
+        void* address = patch.address;
+        if (address == nullptr) {
             continue;
         }
 
@@ -769,23 +749,16 @@ void Four::Apply()
             newValue = -newValue;
         }
 
-        if (std::memcmp(
-              reinterpret_cast<void*>(address), reinterpret_cast<u8*>(&oldValue) + (4 - size), size
-            ) != 0) {
+        if (std::memcmp(address, reinterpret_cast<u8*>(&oldValue) + (4 - size), size) != 0) {
             u32 realOldValue = 0;
-            std::memcpy(
-              reinterpret_cast<u8*>(&realOldValue) + (4 - size), reinterpret_cast<void*>(address),
-              size
-            );
+            std::memcpy(reinterpret_cast<u8*>(&realOldValue) + (4 - size), address, size);
             OS_REPORT(
-              "WARNING: Four patch at 0x%08lX inconsistent with original value, expected %lu, "
+              "WARNING: Four patch at %p inconsistent with original value, expected %lu, "
               "found "
               "%lu.\n",
               address, oldValue, realOldValue
             );
         }
-        std::memcpy(
-          reinterpret_cast<void*>(address), reinterpret_cast<u8*>(&newValue) + (4 - size), size
-        );
+        std::memcpy(address, reinterpret_cast<u8*>(&newValue) + (4 - size), size);
     }
 }
