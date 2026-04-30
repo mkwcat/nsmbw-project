@@ -69,6 +69,11 @@
                     <patch id="fukidashi_hide_always"/>
                 </choice>
             </option>
+            <option name="Liftable tiles">
+                <choice name="Enabled">
+                    <patch id="liftable_tiles"/>
+                </choice>
+            </option>
             <option name="Yoshi color modifier">
                 <choice name="Random colors">
                     <patch id="yoshi_random_colors"/>
@@ -121,6 +126,9 @@
     <patch id="yoshi_all_green">
         <memory offset="0x8000678E" value="02"/>
     </patch>
+    <patch id="liftable_tiles">
+        <memory offset="0x8000678F" value="01"/>
+    </patch>
     <patch id="bubble_swarm_mode">
         <memory offset="0x80006794" value="01"/>
     </patch>
@@ -130,6 +138,7 @@
     <patch id="all_paths_available">
         <memory offset="0x80006796" value="01"/>
     </patch>
+
     <patch id="loader">
         <!-- Call Custom Module Loader -->
         <!-- EU -->
