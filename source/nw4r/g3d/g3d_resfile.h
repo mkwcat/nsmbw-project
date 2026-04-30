@@ -30,7 +30,7 @@ struct ResFile {
     ResCommon<ResFileData> mFile; // at 0x0
 
     ResFile()
-      : mFile((void*) nullptr)
+      : mFile(static_cast<void*>(nullptr))
     {
     }
 

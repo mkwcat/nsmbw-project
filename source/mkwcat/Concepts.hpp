@@ -21,4 +21,8 @@ concept BoolTrait = requires {
 template <class T, template <class> class Trait>
 concept Test = Trait<T>::value;
 
+
+template <class T>
+concept CompleteType = __is_complete_type(T);
+
 } // namespace mkwcat

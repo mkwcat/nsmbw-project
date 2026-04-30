@@ -6,8 +6,8 @@
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_game_common.h"
 #include "d_system/d_lyttextbox.h"
-#include "d_system/d_mj2d_game.h"
 #include "d_system/d_message.h"
+#include "d_system/d_mj2d_game.h"
 #include "sound/SndSceneMgr.h"
 
 [[nsmbw(0x807ADAD0)]]
@@ -44,39 +44,15 @@ bool dStaffCreditScore_c::createLayout()
 
     mLayout.GroupRegister(
       StringArray{
-        "A00_1P",
-        "A01_2P",
-        "A02_3P",
-        "A03_4P",
-        "A04_5P",
-        "A05_6P",
-        "A06_7P",
-        "A07_8P",
-        "A00_1P",
-        "A01_2P",
-        "A02_3P",
-        "A03_4P",
-        "A04_5P",
-        "A05_6P",
-        "A06_7P",
-        "A07_8P",
-        "B00_score",
-        "A00_1P",
-        "A01_2P",
+        "A00_1P", "A01_2P", "A02_3P",    "A03_4P", "A04_5P",    "A05_6P", "A06_7P",
+        "A07_8P", "A00_1P", "A01_2P",    "A02_3P", "A03_4P",    "A04_5P", "A05_6P",
+        "A06_7P", "A07_8P", "B00_score", "A00_1P", "A01_2P",
         "A03_4P", // Swapped to match character order
         "A02_3P", // ^
-        "A04_5P",
-        "A05_6P",
-        "A06_7P",
-        "A07_8P",
-        "B00_score",
+        "A04_5P", "A05_6P", "A06_7P",    "A07_8P", "B00_score",
       },
       IntArray{
-        0, 0, 0, 0, 0, 0, 0, 0,
-        1, 1, 1, 1, 1, 1, 1, 1,
-        2,
-        3, 3, 3, 3, 3, 3, 3, 3,
-        4,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4,
       },
       26
     );
@@ -84,40 +60,37 @@ bool dStaffCreditScore_c::createLayout()
     mpRootPane = mLayout.getRootPane();
 
     mLayout.TPaneRegister(
-      mpTCoin,
-      {
-        "T_coin_00",
-        "T_coin_01",
-        "T_coin_03", // Swapped to match character order
-        "T_coin_02", // ^
-        "T_coin_05",
-        "T_coin_06",
-        "T_coin_07",
-        "T_coin_08",
-        }
+      mpTCoin, {
+                 "T_coin_00",
+                 "T_coin_01",
+                 "T_coin_03", // Swapped to match character order
+                 "T_coin_02", // ^
+                 "T_coin_05",
+                 "T_coin_06",
+                 "T_coin_07",
+                 "T_coin_08",
+               }
     );
 
     mLayout.TPaneRegister(
-      &mpTCoin04,
-      {
-        "T_coin_04",
-        "T_highScore_00",
-        }
+      &mpTCoin04, {
+                    "T_coin_04",
+                    "T_highScore_00",
+                  }
     );
 
-    MsgRes_c *msgRes = dMessage_c::getMesRes();
+    MsgRes_c* msgRes = dMessage_c::getMesRes();
     mpTHighScore->setMessage(msgRes, 0x131, 1, 0);
 
     mLayout.NPaneRegister(
-      mpNPlayer,
-      {
-        "N_mario_00",
-        "N_luigi_00",
-        "N_kinoY_00",
-        "N_kinoB_00",
-        "N_proportionL_00",
-        "N_proportionR_00",
-      }
+      mpNPlayer, {
+                   "N_mario_00",
+                   "N_luigi_00",
+                   "N_kinoY_00",
+                   "N_kinoB_00",
+                   "N_proportionL_00",
+                   "N_proportionR_00",
+                 }
     );
 
     // Reset winPlayerCount anims
@@ -131,7 +104,7 @@ bool dStaffCreditScore_c::createLayout()
 [[nsmbw(0x807AE140)]]
 void dStaffCreditScore_c::setCoinCount(int player)
 {
-    int playerType = (int)daPyMng_c::mPlayerType[player];
+    int playerType = static_cast<int>(daPyMng_c::mPlayerType[player]);
     dGameCom::LayoutDispNumber(mCoinNum[player], 3, mpTCoin[playerType], true);
 }
 
@@ -167,9 +140,10 @@ void dStaffCreditScore_c::initializeState_OnStageAnimeEndWait()
 {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         // Fixing a retail bug here:
-        // The credits seems to have originally only included active players. Some leftover code causes these animations
-        // to only play if mPlayerActive[i] is not false, however those are never set to any value, they are ALWAYS false.
-        // As such, these appear animations for the coin counters will never play in the retail game. How "fun"
+        // The credits seems to have originally only included active players. Some leftover code
+        // causes these animations to only play if mPlayerActive[i] is not false, however those are
+        // never set to any value, they are ALWAYS false. As such, these appear animations for the
+        // coin counters will never play in the retail game. How "fun"
         mLayout.AnimeStartSetup(i, false);
     }
 
@@ -198,7 +172,7 @@ void dStaffCreditScore_c::initializeState_HighScoreCheck()
             if (mMaxCoinNum == mCoinNum[i]) {
                 mIsWinPlayer[i] = true;
                 if (mMaxCoinNum != 0) {
-                    int type = (int)daPyMng_c::mPlayerType[i];
+                    int type = static_cast<int>(daPyMng_c::mPlayerType[i]);
                     mLayout.AnimeStartSetup(17 + type, false);
                 }
             }
@@ -226,7 +200,7 @@ void dStaffCreditScore_c::initializeState_No1PlayerKiMe()
 {
     if (mWinPlayerID > -1) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
-            dAcPy_c *ply = daPyMng_c::getPlayer(i);
+            dAcPy_c* ply = daPyMng_c::getPlayer(i);
             if (mIsWinPlayer[i] && ply != 0x0) {
                 ply->UNDEF_80052290(2);
             }
@@ -240,7 +214,7 @@ void dStaffCreditScore_c::executeState_No1PlayerKiMe()
     bool delayEndWait = false;
     if (mWinPlayerID > -1) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
-            dAcPy_c *ply = daPyMng_c::getPlayer(i);
+            dAcPy_c* ply = daPyMng_c::getPlayer(i);
             if (mIsWinPlayer[i] && ply != 0x0) {
                 // Check if we're waiting on anims
                 if (ply->mPyMdlMng.mModel->mCurrentAnm != 0) {

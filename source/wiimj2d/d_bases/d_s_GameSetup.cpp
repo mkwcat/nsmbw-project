@@ -188,8 +188,8 @@ void dScGameSetup_c::initializeState_ConnectionCheck()
                 mdl->offStarEffect();
             }
 
-            if ((int) (daPyMng_c::mCreateItem[type] & PLAYER_CREATE_ITEM_e::STAR_POWER) != 0) {
-                daPyMng_c::mCreateItem[type] &= (PLAYER_CREATE_ITEM_e) 0xFFFFFFFE;
+            if (!!(daPyMng_c::mCreateItem[type] & PLAYER_CREATE_ITEM_e::STAR_POWER)) {
+                daPyMng_c::mCreateItem[type] &= static_cast<PLAYER_CREATE_ITEM_e>(~1);
             }
         }
     }

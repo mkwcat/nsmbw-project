@@ -6,14 +6,6 @@
 namespace nw4r::g3d
 {
 
-namespace
-{
-static inline u32 align4(u32 x)
-{
-    return x + 3 & ~3;
-}
-} // namespace
-
 class ScnObj;
 
 struct IScnObjGather {
@@ -85,8 +77,9 @@ public:
 
     virtual bool IsDerivedFrom(TypeObj other) const // at 0x8
     {
-        return (other == GetTypeObjStatic()) ? true
-                                             : ((const G3dObj*) this)->G3dObj::IsDerivedFrom(other);
+        return (other == GetTypeObjStatic())
+                 ? true
+                 : static_cast<const G3dObj*>(this)->G3dObj::IsDerivedFrom(other);
     }
 
     virtual void G3dProc(u32, u32, void*) = 0; // at 0xC

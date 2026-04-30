@@ -36,12 +36,12 @@ public:
 
     static T abs(T t)
     {
-        return t > (T) 0 ? t : -t;
+        return t > static_cast<T>(0) ? t : -t;
     }
 
     static T zero()
     {
-        return (T) 0;
+        return static_cast<T>(0);
     }
 
     // Assumed to be here (emitted globally at 0x807C9890)

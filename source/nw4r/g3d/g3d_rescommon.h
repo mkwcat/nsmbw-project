@@ -7,10 +7,9 @@
 #define FIFO_ACCESS_CP 0x8
 #define FIFO_ACCESS_XF 0x10
 
-namespace nw4r
+namespace nw4r::g3d
 {
-namespace g3d
-{
+
 template <typename T>
 class ResCommon
 {
@@ -45,14 +44,14 @@ public:
     template <typename TPtr>
     inline const TPtr* ofs_to_ptr_raw(s32 ofs) const
     {
-        return (const TPtr*) ((u8*) mPtr + ofs);
+        return reinterpret_cast<const TPtr*>(reinterpret_cast<u8*>(mPtr) + ofs);
     }
 
     template <typename TPtr>
     inline TPtr* ofs_to_ptr(s32 ofs)
     {
         if (ofs) {
-            return (TPtr*) ((u8*) mPtr + ofs);
+            return reinterpret_cast<TPtr*>(reinterpret_cast<u8*>(mPtr) + ofs);
         }
 
         return nullptr;
@@ -62,7 +61,7 @@ public:
     inline const TPtr* ofs_to_ptr(s32 ofs) const
     {
         if (ofs) {
-            return (const TPtr*) ((u8*) mPtr + ofs);
+            return reinterpret_cast<const TPtr*>(reinterpret_cast<u8*>(mPtr) + ofs);
         }
 
         return nullptr;
@@ -72,7 +71,7 @@ public:
     inline TObj ofs_to_obj(s32 ofs) const
     {
         if (ofs) {
-            return (u8*) mPtr + ofs;
+            return reinterpret_cast<u8*>(mPtr) + ofs;
         }
 
         return nullptr;
@@ -158,6 +157,6 @@ void ResWriteBPCmd(u8*, u32, u32);
 void ResWriteCPCmd(u8*, u8, u32);
 void ResWriteXFCmd(u8*, u16, u32);
 void ResWriteSSMask(u8*, u32);
+
 } // namespace detail
-} // namespace g3d
-} // namespace nw4r
+} // namespace nw4r::g3d

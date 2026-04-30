@@ -27,12 +27,12 @@ public:
 
     inline fLiNdBa_c* getPrev() const
     {
-        return (fLiNdBa_c*) cListNd_c::getPrev();
+        return static_cast<fLiNdBa_c*>(cListNd_c::getPrev());
     }
 
     inline fLiNdBa_c* getNext() const
     {
-        return (fLiNdBa_c*) cListNd_c::getNext();
+        return static_cast<fLiNdBa_c*>(cListNd_c::getNext());
     }
 
     /**

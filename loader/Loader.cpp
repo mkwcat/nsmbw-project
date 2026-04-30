@@ -366,7 +366,7 @@ extern "C" [[gnu::section("start")]] bool LoaderMain()
         GetHeap()->free(l_stack);
 
         OSModuleHeader* const header = static_cast<OSModuleHeader*>(l_loader_block);
-        (*(void (*)(...)) header->prolog)(l_arc_entry_num, &l_arc_handle);
+        (*reinterpret_cast<void (*)(...)>(header->prolog))(l_arc_entry_num, &l_arc_handle);
         return true;
     }
 

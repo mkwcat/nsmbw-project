@@ -24,12 +24,17 @@ namespace peli::Macro
 /**
  * Begin C Linkage.
  */
-#define EXTERN_C_START extern "C" {
+#define EXTERN_C_START                                                                             \
+    extern "C" {                                                                                   \
+    PRAGMA(clang diagnostic push)                                                                  \
+    PRAGMA(clang diagnostic ignored "-Wold-style-cast")
 
 /**
  * End C Linkage.
  */
-#define EXTERN_C_END }
+#define EXTERN_C_END                                                                               \
+    PRAGMA(clang diagnostic pop)                                                                   \
+    }
 
 /**
  * Util macro for stringifying macro parameters.

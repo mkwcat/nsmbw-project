@@ -36,7 +36,7 @@ public:
     template <class T, class Base = T>
     static constexpr const VTable* Get()
     {
-        return T::__VTable((const Base*) nullptr);
+        return T::__VTable(static_cast<const Base*>(nullptr));
     }
 
     template <class Base>

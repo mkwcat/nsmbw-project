@@ -79,7 +79,7 @@ void dCourseSelectManager_c::executeState_ContinueEndWait()
 
         mpContinue->mLayout.ReverseAnimeStartSetup(0, false);
         for (int i = 0; i < PLAYER_COUNT; i++) {
-            int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e) i);
+            int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
             int newRest = mpContinue->mRestNum[i];
             daPyMng_c::mRest[daPyMng_c::mPlayerType[player]] = newRest;
         }

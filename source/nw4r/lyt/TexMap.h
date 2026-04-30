@@ -175,12 +175,12 @@ public:
 
     GXTexWrapMode GetWrapModeS() const
     {
-        return (GXTexWrapMode) mBits.wrapS;
+        return static_cast<GXTexWrapMode>(mBits.wrapS);
     }
 
     GXTexWrapMode GetWrapModeT() const
     {
-        return (GXTexWrapMode) mBits.wrapT;
+        return static_cast<GXTexWrapMode>(mBits.wrapT);
     }
 
     void SetWrapMode(GXTexWrapMode wrapS, GXTexWrapMode wrapT)
@@ -191,18 +191,18 @@ public:
 
     GXTexFilter GetMinFilter() const
     {
-        return (GXTexFilter) mBits.minFilter;
+        return static_cast<GXTexFilter>(mBits.minFilter);
     }
 
     GXTexFilter GetMagFilter() const
     {
-        return (GXTexFilter) mBits.magFilter;
+        return static_cast<GXTexFilter>(mBits.magFilter);
     }
 
     void SetFilter(GXTexFilter minFlt, GXTexFilter magFlt)
     {
-        mBits.minFilter = u32(minFlt);
-        mBits.magFilter = u32(magFlt);
+        mBits.minFilter = static_cast<u32>(minFlt);
+        mBits.magFilter = static_cast<u32>(magFlt);
     }
 
     bool IsBiasClampEnable() const
@@ -227,7 +227,7 @@ public:
 
     GXAnisotropy GetAnisotropy() const
     {
-        return (GXAnisotropy) mBits.anisotropy;
+        return static_cast<GXAnisotropy>(mBits.anisotropy);
     }
 
     void SetAnisotropy(GXAnisotropy a)
@@ -237,7 +237,7 @@ public:
 
     GXTlutFmt GetPaletteFormat() const
     {
-        return (GXTlutFmt) mBits.paletteFormat;
+        return static_cast<GXTlutFmt>(mBits.paletteFormat);
     }
 
     void SetPaletteFormat(GXTlutFmt fmt)

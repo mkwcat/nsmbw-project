@@ -170,7 +170,7 @@
 {dProf::EN_BARREL, "Barrel"},
 {dProf::LIFT_ZEN_TOGE, "Spiky Wall from 5-Tower"},
 
-  // Other non-death message actors
+// Other non-death message actors
 {dProf::CASTLE_BOSS_DOOR, "FNAF 1 Style Door"},
 {dProf::CASTLE_BOSS_KEY, "Castle Boss Key"},
 {dProf::EN_DOOR, "Door"},

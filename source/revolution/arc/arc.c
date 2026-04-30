@@ -33,7 +33,7 @@ bool ARCEntrynumIsDir(ARCHandle* handle, s32 entrynum)
         return false;
     }
 
-    FstEntry* entry = ((FstEntry*) handle->FSTStart) + entrynum;
+    FstEntry* entry = static_cast<FstEntry*>(handle->FSTStart) + entrynum;
 
     return entry->isDir;
 }
@@ -61,7 +61,7 @@ bool ARCFastOpenDir(ARCHandle* handle, s32 entrynum, ARCDir* dir)
         return false;
     }
 
-    FstEntry* entry = ((FstEntry*) handle->FSTStart) + entrynum;
+    FstEntry* entry = static_cast<FstEntry*>(handle->FSTStart) + entrynum;
 
     if (!entry->isDir) {
         return false;

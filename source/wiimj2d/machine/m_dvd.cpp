@@ -86,7 +86,8 @@ void* mDvd::loadToMainRAM(
 
         dvdFile.open(entryNum);
         result = EGG::DvdRipper::loadToMainRAMDecomp(
-          &dvdFile, decomp, (u8*) dst, heap, allocDir, offset, 0, maxChunkSize, nullptr, nullptr
+          &dvdFile, decomp, reinterpret_cast<u8*>(dst), heap, allocDir, offset, 0, maxChunkSize,
+          nullptr, nullptr
         );
         fileSize = amountRead = EGG::ExpHeap::getSizeForMBlock(result);
         deleteUncompressObj(decompressorType);
@@ -112,7 +113,7 @@ void* mDvd::loadToMainRAM(
 
         if (result == nullptr) {
             result = EGG::DvdRipper::loadToMainRAM(
-              entryNum, (u8*) dst, heap, allocDir, offset, &amountRead, &fileSize
+              entryNum, reinterpret_cast<u8*>(dst), heap, allocDir, offset, &amountRead, &fileSize
             );
         }
     }

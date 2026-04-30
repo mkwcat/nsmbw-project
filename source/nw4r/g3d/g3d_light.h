@@ -1,7 +1,6 @@
 #ifndef NW4R_G3D_LIGHT_H
 #define NW4R_G3D_LIGHT_H
 
-#include "g3d_rescommon.h"
 #include <nw4r/math/mtx.h>
 #include <nw4r/math/vec.h>
 #include <revolution/gx/GXLight.h>

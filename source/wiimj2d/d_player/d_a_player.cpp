@@ -35,13 +35,12 @@ void dAcPy_c::setSpinLiftUpReserve()
 {
     if (!isStatus(0x7A) && !isDemo() && !isCarry() && !isStatus(0x04) && !isStatus(0x06) &&
         !isStatus(0x08)) {
-        dActor_c* actor = (dActor_c*) fManager_c::searchBaseByID(m0x27D4);
+        dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
         if (actor != nullptr && actor->isSpinLiftUpEnable()) {
             mCarryActorID = actor->mUniqueID;
             m0x27E0 = 0;
             mPyMdlMng.mModel->mVisibilityFlags |= 4;
-            if (actor->mKind == ACTOR_TYPE_e::PLAYER) {
-                dAcPy_c* player = (dAcPy_c*) actor;
+            if (dAcPy_c* player = actor->castToPlayer()) {
                 mPyMdlMng.mModel->mpSpinLiftParentMdl = player->getModel();
             }
             changeState(StateID_LiftUp, 0);
@@ -51,10 +50,10 @@ void dAcPy_c::setSpinLiftUpReserve()
             // No actor found to lift
             // Get foot sensor position
             float footY = getFootBgPointData()->mOffsetY / 4096.0;
-            u16 worldX = ((u16) mPos.x) & 0xFFF0;
-            u16 worldY = ((u16) - (mPos.y - footY)) & 0xFFF0;
-            u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(worldX, worldY, mLayer, nullptr, false);
-            if (*tileBelow > 0) {
+            u16 bgX = static_cast<u16>(mPos.x) & 0xFFF0;
+            u16 bgY = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
+            if (u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(bgX, bgY, mLayer, nullptr, false);
+                *tileBelow > 0) {
                 // We're standing on a tile, clone it
                 dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
                 mCarryActorID = liftBg->mUniqueID;
@@ -67,10 +66,10 @@ void dAcPy_c::setSpinLiftUpReserve()
                 liftBg->setSpinLiftUpActor(this);
 
                 // Duplicate the tile on layer 0
-                // dBg_c::m_bg_p->BgUnitChange(worldX, worldY, 2, *tileBelow | 0x8000);
+                // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
 
                 // Delete the tile we're standing on
-                dBg_c::m_bg_p->BgUnitChange(worldX, worldY, mLayer, 0);
+                dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
             }
         }
         clearSpinLiftUpReserve();

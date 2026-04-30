@@ -198,7 +198,7 @@ bool MultiArchiveBuilder_c::copyArchive(
 )
 {
     // Get max copy size
-    FstEntry* srcFstEntries = (FstEntry*) srcFst;
+    const FstEntry* srcFstEntries = reinterpret_cast<const FstEntry*>(srcFst);
     u32 oldDstMaxCount = mDstMaxCount;
     u32 oldDstStrTabMaxSize = mDstStrTabMaxSize;
     mDstMaxCount += srcFstEntries[startIndex].dir.next - startIndex;
@@ -323,7 +323,7 @@ void* MultiArchiveBuilder_c::loadArchive(
         }
 
         if (!builder.copyArchive(
-              (char*) fstData, arcHeader.fstSize, 0, dvdFile->mFileInfo.startAddr
+              reinterpret_cast<char*>(fstData), arcHeader.fstSize, 0, dvdFile->mFileInfo.startAddr
             )) {
             OS_REPORT("Failed to copy archive\n");
             heap->free(fstData);
@@ -347,7 +347,8 @@ void* MultiArchiveBuilder_c::loadArchive(
         }
 
         if (!builder.copyArchive(
-              (char*) exArcFstData, exArcFstSize, arcDir.entryNum, exArcDvdFile.mFileInfo.startAddr
+              reinterpret_cast<char*>(exArcFstData), exArcFstSize, arcDir.entryNum,
+              exArcDvdFile.mFileInfo.startAddr
             )) {
             OS_REPORT("Failed to copy ex ARC archive\n");
             return nullptr;

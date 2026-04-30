@@ -1,12 +1,13 @@
 #ifndef NW4R_G3D_RESANM_H
 #define NW4R_G3D_RESANM_H
 
-
-namespace nw4r {
-namespace g3d {
+namespace nw4r
+{
+namespace g3d
+{
 struct ResKeyFrameAnmFramesData {
-    float mTime;       // at 0x0
-    float mValue;      // at 0x4
+    float mTime; // at 0x0
+    float mValue; // at 0x4
     float mDerivative; // at 0x8
 };
 
@@ -34,20 +35,28 @@ union ResAnmData {
     s32 mOffset;
 };
 
-namespace detail {
-float GetResKeyFrameAnmResult(const ResKeyFrameAnmData *, float);
+namespace detail
+{
+float GetResKeyFrameAnmResult(const ResKeyFrameAnmData*, float);
 
-u32 GetResColorAnmResult(const ResColorAnmFramesData *, float);
+u32 GetResColorAnmResult(const ResColorAnmFramesData*, float);
 
-inline u32 GetResColorAnmResult(const ResColorAnmData *pData, float time, bool b) {
+inline u32 GetResColorAnmResult(const ResColorAnmData* pData, float time, bool b)
+{
     if (b) {
         return pData->mColor;
     }
 
-    return GetResColorAnmResult((const ResColorAnmFramesData *)((u8 *)pData + pData->mOffset), time);
+    return GetResColorAnmResult(
+      reinterpret_cast<const ResColorAnmFramesData*>(
+        reinterpret_cast<const u8*>(pData) + pData->mOffset
+      ),
+      time
+    );
 }
 
-inline bool GetResBoolAnmFramesResult(const ResBoolAnmFramesData *pData, int i) {
+inline bool GetResBoolAnmFramesResult(const ResBoolAnmFramesData* pData, int i)
+{
     u32 index = i;
 
     u32 mask = 0x80000000 >> (index % 32);
@@ -57,7 +66,8 @@ inline bool GetResBoolAnmFramesResult(const ResBoolAnmFramesData *pData, int i) 
 }
 
 template <typename T>
-inline float ClipFrame(T &info, float time) {
+inline float ClipFrame(T& info, float time)
+{
     if (time <= 0.0f) {
         return 0.0f;
     }
@@ -69,12 +79,18 @@ inline float ClipFrame(T &info, float time) {
     return time;
 }
 
-inline float GetResAnmResult(const ResAnmData *pData, float time, bool b) {
+inline float GetResAnmResult(const ResAnmData* pData, float time, bool b)
+{
     if (b) {
         return pData->mValue;
     }
 
-    return GetResKeyFrameAnmResult((const ResKeyFrameAnmData *)((u8 *)pData + pData->mOffset), time);
+    return GetResKeyFrameAnmResult(
+      reinterpret_cast<const ResKeyFrameAnmData*>(
+        reinterpret_cast<const u8*>(pData) + pData->mOffset
+      ),
+      time
+    );
 }
 } // namespace detail
 } // namespace g3d

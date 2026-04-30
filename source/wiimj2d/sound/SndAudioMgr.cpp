@@ -37,13 +37,13 @@ void SndAudioMgr::loadKinopicoSound()
 
     // Load bank data
     bnkData = mDvd::loadToMainRAM(
-      "/Sound/BANK_SE_VOC_COURSE_KC.brbnk", (char*) bnkData, nullptr,
+      "/Sound/BANK_SE_VOC_COURSE_KC.brbnk", static_cast<char*>(bnkData), nullptr,
       EGG::DvdRipper::EAllocDirection::ALLOC_DIR_TOP, 0, nullptr, nullptr, 0
     );
     ASSERT(bnkData != nullptr);
 
     waveData = mDvd::loadToMainRAM(
-      "/Sound/GROUP_SE_VOC_COURSE_KC.brwar", (char*) waveData, nullptr,
+      "/Sound/GROUP_SE_VOC_COURSE_KC.brwar", static_cast<char*>(waveData), nullptr,
       EGG::DvdRipper::EAllocDirection::ALLOC_DIR_TOP, 0, nullptr, nullptr, 0
     );
     ASSERT(waveData != nullptr);

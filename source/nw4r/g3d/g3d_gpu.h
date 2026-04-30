@@ -3,7 +3,7 @@
 
 #include "g3d_rescommon.h"
 #include <nw4r/math/types.h>
-#include <rvl/GX.h>
+#include <revolution/gx/GXEnum.h>
 
 
 namespace nw4r {

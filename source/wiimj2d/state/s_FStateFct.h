@@ -19,7 +19,7 @@ public:
     virtual sStateIf_c* build(const sStateIDIf_c& id)
     {
         if (!id.isNull()) {
-            mState.setID((const sFStateID_c<T>*) &id);
+            mState.setID(static_cast<const sFStateID_c<T>*>(&id));
             return &mState;
         }
         return nullptr;

@@ -61,13 +61,13 @@ public:
 
         template <u32 N>
         TypeObj(const ResNameDataT<N>& pRes)
-          : mData((const TypeObjData*) &pRes)
+          : mData(reinterpret_cast<const TypeObjData*>(&pRes))
         {
         }
 
         u32 GetTypeID() const
         {
-            return (u32) mData;
+            return reinterpret_cast<u32>(mData);
         }
 
         const char* GetTypeName() const

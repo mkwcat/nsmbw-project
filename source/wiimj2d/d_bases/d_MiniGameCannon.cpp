@@ -446,7 +446,7 @@ void dMiniGameCannon_c::finalizeState_StartWait()
 {
     mNumPlayers = 0;
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
-        int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e)i);
+        int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
 
         if (dGameCom::PlayerEnterCheck(player)) {
             mPlayerEntry[i] = true;

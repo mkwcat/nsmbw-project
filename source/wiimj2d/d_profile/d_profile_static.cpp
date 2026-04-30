@@ -201,7 +201,7 @@ const char* getFormattedName(dBase_c* actor)
 
     dProfName name = actor->mProfName;
     for (u32 i = 0; i < s_formatted_name_data.size();) {
-        u32 info = *(u32*) (s_formatted_name_data.data() + i);
+        u32 info = *reinterpret_cast<const u32*>(s_formatted_name_data.data() + i);
         u32 len = (info >> 8) & 0x1FFF;
         bool match = name == dProfName(info >> 22);
         if (info & 0x200000) {

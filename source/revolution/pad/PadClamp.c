@@ -1,32 +1,34 @@
 
-// Padclamp.c
+// PadClamp.c
 // NSMBW: ---
 
 // Credit:
 // https://github.com/doldecomp/dolsdk2004/blob/main/src/pad/Padclamp.c
 
-#include <revolution/pad.h>
-#include <revolution/os.h>
 #include <math.h>
+#include <revolution/os.h>
+#include <revolution/pad.h>
+
+EXTERN_C_START
 
 static const PADClampRegion ClampRegion = {
-    // Triggers
-    10,
-    255,
+  // Triggers
+  10,
+  255,
 
-    // Left stick
-    2,
-    110,
-    80,
+  // Left stick
+  2,
+  110,
+  80,
 
-    // Right stick
-    2,
-    110,
-    80,
+  // Right stick
+  2,
+  110,
+  80,
 
-    // Stick radii
-    56,
-    44,
+  // Stick radii
+  56,
+  44,
 };
 
 // prototypes
@@ -34,7 +36,8 @@ static void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min);
 static void ClampCircle(s8* px, s8* py, s8 radius, s8 min);
 static void ClampTrigger(u8* trigger, u8 min, u8 max);
 
-static void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min) {
+static void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min)
+{
     int x = *px;
     int y = *py;
     int signX;
@@ -74,22 +77,23 @@ static void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min) {
     if (xy * y <= xy * x) {
         d = xy * x + (max - xy) * y;
         if (xy * max < d) {
-            x = (s8)(xy * max * x / d);
-            y = (s8)(xy * max * y / d);
+            x = (s8) (xy * max * x / d);
+            y = (s8) (xy * max * y / d);
         }
     } else {
         d = xy * y + (max - xy) * x;
         if (xy * max < d) {
-            x = (s8)(xy * max * x / d);
-            y = (s8)(xy * max * y / d);
+            x = (s8) (xy * max * x / d);
+            y = (s8) (xy * max * y / d);
         }
     }
 
-    *px = (s8)(signX * x);
-    *py = (s8)(signY * y);
+    *px = (s8) (signX * x);
+    *py = (s8) (signY * y);
 }
 
-static void ClampCircle(s8* px, s8* py, s8 radius, s8 min) {
+static void ClampCircle(s8* px, s8* py, s8 radius, s8 min)
+{
     int x = *px;
     int y = *py;
     int squared;
@@ -122,7 +126,8 @@ static void ClampCircle(s8* px, s8* py, s8 radius, s8 min) {
     *py = y;
 }
 
-static void ClampTrigger(u8* trigger, u8 min, u8 max) {
+static void ClampTrigger(u8* trigger, u8 min, u8 max)
+{
     if (*trigger <= min) {
         *trigger = 0;
     } else {
@@ -133,27 +138,42 @@ static void ClampTrigger(u8* trigger, u8 min, u8 max) {
     }
 }
 
-void PADClamp(PADStatus * status) {
+void PADClamp(PADStatus* status)
+{
     int i;
 
     for (i = 0; i < 4; i++, status++) {
         if (status->err == 0) {
-            ClampStick(&status->stickX, &status->stickY, ClampRegion.maxStick, ClampRegion.xyStick, ClampRegion.minStick);
-            ClampStick(&status->substickX, &status->substickY, ClampRegion.maxSubstick, ClampRegion.xySubstick, ClampRegion.minSubstick);
+            ClampStick(
+              &status->stickX, &status->stickY, ClampRegion.maxStick, ClampRegion.xyStick,
+              ClampRegion.minStick
+            );
+            ClampStick(
+              &status->substickX, &status->substickY, ClampRegion.maxSubstick,
+              ClampRegion.xySubstick, ClampRegion.minSubstick
+            );
             ClampTrigger(&status->triggerL, ClampRegion.minTrigger, ClampRegion.maxTrigger);
             ClampTrigger(&status->triggerR, ClampRegion.minTrigger, ClampRegion.maxTrigger);
         }
     }
 }
 
-void PADClampCircle(PADStatus* status) {
+void PADClampCircle(PADStatus* status)
+{
     int i;
     for (i = 0; i < 4; ++i, status++) {
         if (status->err == 0) {
-            ClampCircle(&status->stickX, &status->stickY, ClampRegion.radStick, ClampRegion.minStick);
-            ClampCircle(&status->substickX, &status->substickY, ClampRegion.radSubstick, ClampRegion.minSubstick);
+            ClampCircle(
+              &status->stickX, &status->stickY, ClampRegion.radStick, ClampRegion.minStick
+            );
+            ClampCircle(
+              &status->substickX, &status->substickY, ClampRegion.radSubstick,
+              ClampRegion.minSubstick
+            );
             ClampTrigger(&status->triggerL, ClampRegion.minTrigger, ClampRegion.maxTrigger);
             ClampTrigger(&status->triggerR, ClampRegion.minTrigger, ClampRegion.maxTrigger);
         }
     }
 }
+
+EXTERN_C_END

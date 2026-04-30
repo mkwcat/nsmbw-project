@@ -148,26 +148,26 @@ void dMultiCourseSelect_c::setPlayerPos()
     int playerIdx = 0;
 
     // Get how many we have
-    for (int i = 0; i < PLAYER_COUNT; i++) {
-        int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e) i);
+    for (int type = 0; type < CHARACTER_COUNT; type++) {
+        int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(type));
         bool isActive = dGameCom::PlayerEnterCheck(player);
 
         if (isActive) {
             playerCount++;
-            mpNPBase[i]->SetVisible(true);
+            mpNPBase[type]->SetVisible(true);
         } else {
-            mpNPBase[i]->SetVisible(false);
+            mpNPBase[type]->SetVisible(false);
         }
     }
 
-    for (int i = 0; i < PLAYER_COUNT; i++) {
+    for (int type = 0; type < CHARACTER_COUNT; type++) {
         int paneIdx = static_cast<int>(getPosPane(playerCount, playerIdx));
-        int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e) i);
+        int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(type));
         bool isActive = dGameCom::PlayerEnterCheck(player);
 
         if (isActive && (paneIdx != static_cast<int>(PANE_LIST_e::NONE))) {
             playerIdx++;
-            mpNPBase[i]->SetTranslate(mpNPBase[paneIdx]->GetTranslate());
+            mpNPBase[type]->SetTranslate(mpNPBase[paneIdx]->GetTranslate());
         }
     }
 

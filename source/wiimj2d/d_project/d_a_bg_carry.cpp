@@ -13,7 +13,7 @@
 void daBgCarry_c::callBackF(dActor_c* self, dActor_c* other)
 {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
-        daPlBase_c* player = (daPlBase_c*) other;
+        daPlBase_c* player = static_cast<daPlBase_c*>(other);
         player->setStatus5D(self->mPosDelta.x);
         if (self->mPosDelta.y <= 0.0f) {
             player->UNDEF_80056370(self, 9);
@@ -26,7 +26,7 @@ void daBgCarry_c::callBackF(dActor_c* self, dActor_c* other)
 void daBgCarry_c::callBackH(dActor_c* self, dActor_c* other)
 {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
-        daPlBase_c* player = (daPlBase_c*) other;
+        daPlBase_c* player = static_cast<daPlBase_c*>(other);
         if (self->mPosDelta.y < 0.0f) {
             player->UNDEF_80056370(self, 2);
         } else {
@@ -38,7 +38,7 @@ void daBgCarry_c::callBackH(dActor_c* self, dActor_c* other)
 void daBgCarry_c::callBackW(dActor_c* self, dActor_c* other, u8 direction)
 {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
-        daPlBase_c* player = (daPlBase_c*) other;
+        daPlBase_c* player = static_cast<daPlBase_c*>(other);
         if (direction == 1) {
             if (self->mPosDelta.x > 0.0f) {
                 player->UNDEF_80056370(self, 6);
@@ -76,10 +76,10 @@ bool daBgCarry_c::checkRevWall(dActor_c* self, dActor_c* other, u8 direction)
 
 void daBgCarry_c::collisionCallback(dCc_c* self, dCc_c* other)
 {
-    daBgCarry_c* bgCarry = (daBgCarry_c*) self->mpOwner;
+    daBgCarry_c* bgCarry = static_cast<daBgCarry_c*>(self->mpOwner);
     if (bgCarry->isState(StateID_Throw)) {
         if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
-            dAcPy_c* player = (dAcPy_c*) other->mpOwner;
+            dAcPy_c* player = static_cast<dAcPy_c*>(other->mpOwner);
             if (player != daPyMng_c::getPlayer(bgCarry->mCarryNo)) {
                 // Knock players back if they git hit by a thrown block
                 player->setDamage(self->mpOwner, dAcPy_c::DamageType_e::KNOCKBACK_LONG);
@@ -176,7 +176,7 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create()
     mBg.entry();
 
     // Hitbox collider
-    mCc.set(this, (sCcDatNewF*) &l_bgcarry_cc);
+    mCc.set(this, &l_bgcarry_cc);
     mCc.entry();
 
     // Set y acceleration and max speed for gravity
@@ -238,7 +238,7 @@ void daBgCarry_c::setSpinLiftUpActor(dActor_c* actor)
     mCarryNo = actor->getPlrNo();
     mCarryOffset.y = 6.0f;
 
-    dAcPy_c* player = (dAcPy_c*) actor;
+    dAcPy_c* player = static_cast<dAcPy_c*>(actor);
     if (player->mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
         mCarryOffset.y = 3.0f;
     }
@@ -265,8 +265,8 @@ void daBgCarry_c::placeTile()
     deleteActor(1);
 
     // Create empty block tile
-    u16 worldX = ((u16) mPos.x) & 0xFFF0;
-    u16 worldY = ((u16) - (mPos.y)) & 0xFFF0;
+    u16 worldX = static_cast<u16>(mPos.x) & 0xFFF0;
+    u16 worldY = -static_cast<u16>(mPos.y) & 0xFFF0;
 
     dBg_c::m_bg_p->BgUnitChange(worldX, worldY, mLayer, mTileNum | 0x8000);
 }

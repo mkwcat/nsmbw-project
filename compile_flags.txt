@@ -38,6 +38,7 @@ source/System.h
 -Wpedantic
 -Wall
 -Wextra
+-Wold-style-cast
 
 -Wno-out-of-line-declaration
 -Wno-gcc-compat

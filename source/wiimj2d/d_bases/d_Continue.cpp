@@ -271,7 +271,7 @@ void dContinue_c::setPlayerInfo()
     mPlayCount = 0;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        int player = daPyMng_c::findPlayerWithType((PLAYER_TYPE_e) i);
+        int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
         mRestNum[i] = daPyMng_c::mRest[daPyMng_c::mPlayerType[player]];
 
         bool isActive = dGameCom::PlayerEnterCheck(player);

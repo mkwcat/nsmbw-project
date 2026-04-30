@@ -1,13 +1,9 @@
-#ifndef NW4R_G3D_INIT_H
-#define NW4R_G3D_INIT_H
+#pragma once
 
-#include <rvl/OS.h>
+#include <revolution/os.h>
 
-namespace nw4r {
-namespace g3d {
+namespace nw4r::g3d
+{
 void G3dInit(bool);
 void G3dReset();
-} // namespace g3d
-} // namespace nw4r
-
-#endif
+} // namespace nw4r::g3d

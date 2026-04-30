@@ -27,7 +27,7 @@ struct Vector3f : public nw4r::math::VEC3 {
 
     f32& operator()(int i)
     {
-        return ((f32*) this)[i];
+        return (&x)[i];
     }
 
     Vector3f operator*(f32 f) const

@@ -631,7 +631,7 @@ u8 daPyMng_c::getScrollNum()
             scrollNum++;
         }
     }
-    return (u8) scrollNum;
+    return static_cast<u8>(scrollNum);
 }
 
 [[nsmbw(0x8005FDB0)]]

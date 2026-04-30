@@ -74,6 +74,7 @@ add_compile_options(
     -Wpedantic
     -Wall
     -Wextra
+    -Wold-style-cast
 
     -Wno-out-of-line-declaration
     -Wno-gcc-compat

@@ -29,7 +29,7 @@ u32 SIGetStatus(s32 chan)
 {
     int level = OSDisableInterrupts();
 
-    u32 sr = (*(u32*) 0xCD006438) >> (8 * (3 - chan));
+    u32 sr = *reinterpret_cast<u32*>(0xCD006438) >> (8 * (3 - chan));
     if (sr & 0x0008 && !(Type_SI[chan] & 0x0080)) {
         Type_SI[chan] = 0x0008;
     }
@@ -43,12 +43,12 @@ u32 SIGetType(s32 chan);
 
 void SISetCommand(s32 param_1, u32 param_2)
 {
-    *(u32*) (0xCD006400 + param_1 * 0xC) = param_2;
+    *reinterpret_cast<u32*>(0xCD006400 + param_1 * 0xC) = param_2;
 }
 
 void SITransferCommands()
 {
-    *(u32*) 0xCD006438 = 0x80000000;
+    *reinterpret_cast<u32*>(0xCD006438) = 0x80000000;
 }
 
 [[nsmbw(0x801BB390)]]
@@ -66,7 +66,7 @@ u32 SIEnablePolling(u32 param_1) ASM_METHOD(
     // r6 is volatile but it's only OSDisableInterrupts
     bl       OSDisableInterrupts;
     srwi     r12, r12, 24;
-    extrwi   r8, r12, 4, 24;          
+    extrwi   r8, r12, 4, 24;
     lis      r4, 0xCD00;
     lis      r0, 0x8000;
     oris     r7, r8, 0x03FF;
