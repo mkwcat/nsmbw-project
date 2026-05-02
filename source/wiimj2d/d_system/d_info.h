@@ -292,15 +292,17 @@ public:
 
     /* 0x3CC */ int mPlayerCount;
 
-    FILL(0x3D0, 0x3EC);
+    FILL(0x3D0, 0x3E4);
 
+    /* 0x3E4 */ int mMultiCurrPage;
+    /* 0x3E8 */ int mMultiCurrButton;
     /* 0x3EC */ int mCoinBattleWin[4];
 
     FILL(0x3FC, 0x400);
 
-    /* 0x400 */ MultiCourse_s mCoinCourse[100];
+    /* 0x400 */ MultiCourse_s mCoinCourse[10][10];
     /* 0x720 */ MultiCourse_s mCoinFavorite[10];
-    /* 0x770 */ MultiCourse_s mFreeCourse[100];
+    /* 0x770 */ MultiCourse_s mFreeCourse[10][10];
     /* 0xA90 */ MultiCourse_s mFreeFavorite[10];
 
     FILL(0xAE0, 0xAF4);

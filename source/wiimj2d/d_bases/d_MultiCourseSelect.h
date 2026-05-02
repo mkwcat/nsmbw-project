@@ -80,6 +80,22 @@ public:
         NONE = 44,
     };
 
+    struct FavoriteCourse_s {
+    public:
+        SIZE_ASSERT(0x10);
+        /* 0x00 */ int mWorldNo;
+        /* 0x04 */ int mStageNo;
+        /* 0x08 */ u16 mPlayCount;
+        /* 0x0C */ int mClearState;
+
+        void initialize()
+        {
+            mWorldNo = WORLD_COUNT;
+            mStageNo = STAGE_COUNT;
+            mPlayCount = 0;
+        }
+    };
+
 public:
     // Instance Methods
     // ^^^^^^
@@ -99,6 +115,9 @@ public:
     /* 0x8079C410 */
     void getContentCourseNo(u8* worldNo, u8* courseNo, int index);
 
+    /* 0x80799DF0 */
+    void setFavoriteCourse(int worldNo, int courseNo, int playCount);
+
     PANE_LIST_e getPosPane(int playerCount, int player);
 
 public:
@@ -116,11 +135,19 @@ public:
     /* 0x40C */ LytTextBox_c* mpTextBoxes[7];
     /* 0x428 */ nw4r::lyt::Window* mpWindowPanes[5];
 
-    FILL(0x43C, 0x4F4);
+    FILL(0x43C, 0x440);
 
-    /* 0x4F4 */ int mCurrentSelection;
+    /* 0x400 */ FavoriteCourse_s mFavorites[10];
 
-    FILL(0x4F8, 0x50F);
+    FILL(0x4E0, 0x4F4);
+
+    /* 0x4F4 */ int mCurrButton;
+
+    FILL(0x4F8, 0x500);
+
+    /* 0x500 */ int mCurrPage;
+
+    FILL(0x504, 0x50F);
 
     /* 0x50F */ bool mBeginCourse;
     /* 0x510 */ bool mExitWindowActive;

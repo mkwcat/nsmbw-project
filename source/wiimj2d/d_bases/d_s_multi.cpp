@@ -16,7 +16,7 @@ void dScMulti_c::executeState_SelectCourse()
             u8 worldNum = 0;
             u8 levelNum = 0;
             mpCourseSelect->getContentCourseNo(
-              &worldNum, &levelNum, mpCourseSelect->mCurrentSelection
+              &worldNum, &levelNum, mpCourseSelect->mCurrButton
             );
 
             // Prepare the course
