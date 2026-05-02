@@ -1,78 +1,108 @@
 #pragma once
 
-#include <revolution/os/OSContext.h>
+#include <revolution/types.h>
 
 EXTERN_C_START
 
-enum PADButton : u16 {
-    PAD_BUTTON_LEFT = 0x0001,
-    PAD_BUTTON_RIGHT = 0x0002,
-    PAD_BUTTON_DOWN = 0x0004,
-    PAD_BUTTON_UP = 0x0008,
-    PAD_TRIGGER_Z = 0x0010,
-    PAD_TRIGGER_R = 0x0020,
-    PAD_TRIGGER_L = 0x0040,
-    PAD_BUTTON_A = 0x0100,
-    PAD_BUTTON_B = 0x0200,
-    PAD_BUTTON_X = 0x0400,
-    PAD_BUTTON_Y = 0x0800,
-    PAD_BUTTON_START = 0x1000,
+enum PADSpec {
+    PAD_SPEC_0 = 0,
+    PAD_SPEC_1 = 1,
+    PAD_SPEC_2 = 2,
+    PAD_SPEC_3 = 3,
+    PAD_SPEC_4 = 4,
+    PAD_SPEC_5 = 5,
 };
 
-// https://github.com/devkitPro/libogc/blob/bc4b778d558915aa40676e33514c4c9ba2af66b8/gc/ogc/pad.h#L46
-struct PADStatus {
-    SIZE_ASSERT(0xC);
+enum PADMotor {
+    PAD_MOTOR_STOP      = 0,
+    PAD_MOTOR_RUMBLE    = 1,
+    PAD_MOTOR_STOP_HARD = 2,
+};
 
-    /* 0x0 */ u16 button;
-    /* 0x2 */ s8 stickX;
-    /* 0x3 */ s8 stickY;
-    /* 0x4 */ s8 substickX;
-    /* 0x5 */ s8 substickY;
-    /* 0x6 */ u8 triggerL;
-    /* 0x7 */ u8 triggerR;
-    /* 0x8 */ u8 analogA;
-    /* 0x9 */ u8 analogB;
-    /* 0xA */ s8 err;
+enum PADChan {
+    PAD_CHAN0_BIT = 31_bit, // 0x80000000
+    PAD_CHAN1_BIT = 30_bit, // 0x40000000
+    PAD_CHAN2_BIT = 29_bit, // 0x20000000
+    PAD_CHAN3_BIT = 28_bit, // 0x10000000
+};
+
+enum PADButton {
+    PAD_BUTTON_LEFT  = 0_bit,  // 0x0001
+    PAD_BUTTON_RIGHT = 1_bit,  // 0x0002
+    PAD_BUTTON_DOWN  = 2_bit,  // 0x0004
+    PAD_BUTTON_UP    = 3_bit,  // 0x0008
+    PAD_TRIGGER_Z    = 4_bit,  // 0x0010
+    PAD_TRIGGER_R    = 5_bit,  // 0x0020
+    PAD_TRIGGER_L    = 6_bit,  // 0x0040
+    PAD_BUTTON_A     = 8_bit,  // 0x0100
+    PAD_BUTTON_B     = 9_bit,  // 0x0200
+    PAD_BUTTON_X     = 10_bit, // 0x0400
+    PAD_BUTTON_Y     = 11_bit, // 0x0800
+    PAD_BUTTON_MENU  = 12_bit, // 0x1000
+    PAD_BUTTON_START = 12_bit, // 0x1000
+};
+
+enum PADErr {
+    PAD_ERR_NONE          = 0,
+    PAD_ERR_NO_CONTROLLER = -1,
+    PAD_ERR_NOT_READY     = -2,
+    PAD_ERR_TRANSFER      = -3,
+};
+
+enum PAD {
+    PAD_MAX_CONTROLLERS = 4,
+    RES_WIRELESS_LITE   = 0x40000,
+};
+
+struct PADStatus {
+    /* 0x00 */ u16 button;
+    /* 0x02 */ s8  stickX;
+    /* 0x03 */ s8  stickY;
+    /* 0x04 */ s8  substickX;
+    /* 0x05 */ s8  substickY;
+    /* 0x06 */ u8  triggerLeft;
+    /* 0x07 */ u8  triggerRight;
+    /* 0x08 */ u8  analogA;
+    /* 0x09 */ u8  analogB;
+    /* 0x0A */ s8  err;
 };
 
 struct PADClampRegion {
-    SIZE_ASSERT(0xA);
-
-    /* 0x0 */ u8 minTrigger;
-    /* 0x1 */ u8 maxTrigger;
-    /* 0x2 */ s8 minStick;
-    /* 0x3 */ s8 maxStick;
-    /* 0x4 */ s8 xyStick;
-    /* 0x5 */ s8 minSubstick;
-    /* 0x6 */ s8 maxSubstick;
-    /* 0x7 */ s8 xySubstick;
-    /* 0x8 */ s8 radStick;
-    /* 0x9 */ s8 radSubstick;
+    u8 minTrigger;
+    u8 maxTrigger;
+    s8 minStick;
+    s8 maxStick;
+    s8 xyStick;
+    s8 minSubstick;
+    s8 maxSubstick;
+    s8 xySubstick;
+    s8 radStick;
+    s8 radSubstick;
 };
 
-void PADClamp(PADStatus*);
-void PAD_ClampCircle(s8*, s8*, s8, s8);
-void PADClampCircle(PADStatus*);
-void PADClampCircle2(PADStatus*, u32);
-void PAD_UpdateOrigin(s32);
-void PADOriginCallback(s32, u32, void*);
-void PADOriginUpdateCallback(s32, u32, void*);
-void PADProbeCallback(s32, u32, void*);
-void PADTypeAndStatusCallback(s32, u32);
-int PADReset(u32);
-int PADRecalibrate(u32);
-int PADInit();
-u32 PADRead(PADStatus*);
-void PADControlMotor(s32, u32);
-int PAD_OnReset(int);
-void PAD_SamplingHandler(s32, OSContext*);
+typedef void (*PADSamplingCallback)(void);
 
-/* 0x801DDB10 */
-int __PADDisableRecalibration(int);
+// Pad
+int PADReset(u32 mask);
+BOOL PADRecalibrate(u32 mask);
+BOOL PADInit(void);
+u32 PADRead(PADStatus* status);
+void PADSetSamplingRate(u32 msec);
+void __PADTestSamplingRate(u32 tvmode);
+void PADControlAllMotors(const u32* commandArray);
+void PADControlMotor(s32 chan, u32 command);
+void PADSetSpec(u32 spec);
+u32 PADGetSpec(void);
+int PADGetType(s32 chan, u32* type);
+BOOL PADSync(void);
+void PADSetAnalogMode(u32 mode);
+BOOL __PADDisableRecalibration(BOOL disable);
+BOOL PADIsBarrel(s32 chan);
 
-void PADSetSpec(u32 model);
-u32 PADGetSpec();
+PADSamplingCallback PADSetSamplingCallback(PADSamplingCallback callback);
 
-typedef void (*PADSamplingCallback)();
+// Padclamp
+void PADClamp(PADStatus* status);
+void PADClampCircle(PADStatus* status);
 
 EXTERN_C_END

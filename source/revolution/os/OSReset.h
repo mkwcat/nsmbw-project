@@ -1,0 +1,38 @@
+#pragma once
+
+#include <revolution/types.h>
+
+EXTERN_C_START
+
+#define OS_RESET_RESTART 0
+#define OS_RESET_HOTRESET 1
+#define OS_RESET_SHUTDOWN 2
+
+typedef struct OSShutdownFunctionInfo OSShutdownFunctionInfo;
+
+typedef struct OSShutdownFunctionQueue {
+    OSShutdownFunctionInfo* head;
+    OSShutdownFunctionInfo* tail;
+} OSShutdownFunctionQueue;
+
+typedef BOOL (*OSShutdownFunction)(BOOL, u32);
+
+struct OSShutdownFunctionInfo {
+    OSShutdownFunction func;
+    u32 priority;
+    OSShutdownFunctionInfo* next;
+    OSShutdownFunctionInfo* prev;
+};
+
+void OSRegisterShutdownFunction(OSShutdownFunctionInfo* info);
+void OSUnregisterShutdownFunction(OSShutdownFunctionInfo* info);
+void OSShutdownSystem();
+void OSRestart(u32 resetCode);
+void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu);
+u32 OSGetResetCode();
+u32 OSSetBootDol(u32 dolOffset);
+void OSReturnToMenu(void);
+
+#define OSIsRestart() ((OSGetResetCode() & 0x80000000) ? TRUE : FALSE)
+
+EXTERN_C_END

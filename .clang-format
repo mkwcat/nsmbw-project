@@ -9,6 +9,11 @@ AlignConsecutiveBitFields:
   Enabled: true
   AcrossEmptyLines: true
   AcrossComments: true
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignFunctionDeclarations: false
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: true

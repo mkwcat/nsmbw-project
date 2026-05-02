@@ -20,6 +20,9 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x801B2F60 - 0x801B3380
     OSMutex.c
 
+# NSMBW          .text:  0x801B3E20 - 0x801B48D0
+    OSRtc.c
+
 # NSMBW          .text:  0x801B4950 - 0x801B60C0
     OSThread.c
 # NSMBW          .text:  0x801B60C0 - 0x801B64F0

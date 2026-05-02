@@ -11,8 +11,7 @@
 #include <revolution/pad.h>
 #include <revolution/wpad.h>
 
-namespace EGG
-{
+namespace EGG {
 
 // Variables
 // ^^^^^^
@@ -26,10 +25,10 @@ bool s_allocatorCreated;
 // Functions
 // ^^^^^^
 
-namespace
-{
-u32 getStickButton(const f32& x, const f32& y)
-{
+namespace {
+u32 getStickButton(
+    const f32& x, const f32& y
+) {
     u32 result = 0;
 
     if (x <= -0.5f) {
@@ -49,8 +48,7 @@ u32 getStickButton(const f32& x, const f32& y)
 } // namespace
 
 [[nsmbw(0x802BC9E0)]]
-u32 CoreStatus::getFSStickButton() const
-{
+u32 CoreStatus::getFSStickButton() const {
     return getStickButton(getFSStickX(), getFSStickY())
            << std::countr_zero<u32>(cCORE_FSSTICK_BUTTONS);
 }
@@ -65,8 +63,7 @@ void CoreController::sceneReset();
 Vector2f CoreController::getDpdRawPos();
 
 [[nsmbw(0x802BCBF0)]]
-void Controller::startMotor()
-{
+void Controller::startMotor() {
     if (getClassicController()) {
         return;
     }
@@ -81,8 +78,7 @@ void Controller::startMotor()
 }
 
 [[nsmbw(0x802BCC00)]]
-void Controller::stopMotor()
-{
+void Controller::stopMotor() {
     if (getClassicController()) {
         return;
     }
@@ -97,8 +93,9 @@ void Controller::stopMotor()
 }
 
 [[nsmbw(0x802BCC10)]]
-void Controller::createRumbleMgr(u8 overlap_num)
-{
+void Controller::createRumbleMgr(
+    u8 overlap_num
+) {
     if (getClassicController()) {
         return;
     }
@@ -115,8 +112,9 @@ void Controller::createRumbleMgr(u8 overlap_num)
 }
 
 [[nsmbw(0x802BCC70)]]
-void Controller::startPatternRumble(const char* pattern, int frame, bool force)
-{
+void Controller::startPatternRumble(
+    const char* pattern, int frame, bool force
+) {
     if (getClassicController()) {
         return;
     }
@@ -131,8 +129,9 @@ void Controller::startPatternRumble(const char* pattern, int frame, bool force)
 }
 
 [[nsmbw(0x802BCC90)]]
-void Controller::startPowerFrameRumble(f32 power, int frame, bool force)
-{
+void Controller::startPowerFrameRumble(
+    f32 power, int frame, bool force
+) {
     if (getClassicController()) {
         return;
     }
@@ -147,8 +146,7 @@ void Controller::startPowerFrameRumble(f32 power, int frame, bool force)
 }
 
 [[nsmbw(0x802BCCB0)]]
-void Controller::stopRumbleMgr()
-{
+void Controller::stopRumbleMgr() {
     if (getClassicController()) {
         return;
     }
@@ -166,8 +164,9 @@ void Controller::stopRumbleMgr()
 void CoreController::calc_posture_matrix(Matrix34f& posture, bool checkStable);
 
 [[nsmbw(0x802BD0D0)]]
-void CoreController::beginFrame(PADStatus*)
-{
+void CoreController::beginFrame(
+    PADStatus*
+) {
     s32 kpad_result;
     mReadStatusIdx = KPADReadEx(mChannel, mStatus, std::size(mStatus), &kpad_result);
     if (mReadStatusIdx == 0 && kpad_result == -1) {
@@ -192,9 +191,9 @@ void CoreController::beginFrame(PADStatus*)
     }
 
     if (mReadStatusIdx > 0) {
-        CoreStatus* pStatus = mStatus;
-        u32 prev_held = mHeld;
-        mHeld = 0;
+        CoreStatus* pStatus   = mStatus;
+        u32         prev_held = mHeld;
+        mHeld                 = 0;
         if (pStatus->isFreestyle()) {
             mHeld = pStatus->getFSStickButton();
         }
@@ -209,7 +208,7 @@ void CoreController::beginFrame(PADStatus*)
         }
 
         mTriggered = mHeld & ~prev_held;
-        mReleased = prev_held & ~mHeld;
+        mReleased  = prev_held & ~mHeld;
         pStatus->hold &= ~cCORE_FSSTICK_BUTTONS;
         pStatus->trig &= ~cCORE_FSSTICK_BUTTONS;
         pStatus->release &= ~cCORE_FSSTICK_BUTTONS;
@@ -230,7 +229,7 @@ void CoreController::beginFrame(PADStatus*)
                 mPrevAccel(i) = acc(i);
             }
         } else {
-            mAccelFlags.value &= ~(1 << i); // ?
+            mAccelFlags.value &= ~(1 << i);
             mAccelFrameTime[i] = 0;
         }
     }
@@ -293,10 +292,9 @@ CoreController* CoreControllerMgr::getNthController(int n);
 [[nsmbw(0x802BD790)]]
 CoreControllerMgr::CoreControllerMgr();
 
-void CoreControllerMgr::initClassic()
-{
+void CoreControllerMgr::initClassic() {
     ClassicController* classicCtrl =
-      std::allocator<ClassicController>{}.allocate(mControllers.mSize);
+        std::allocator<ClassicController>{}.allocate(mControllers.mSize);
 
     for (int i = 0; i < mControllers.mSize; i++) {
         CoreController* core = mControllers(i);
@@ -312,8 +310,9 @@ void CoreControllerMgr::beginFrame();
 [[nsmbw(0x802BDC60)]]
 void CoreControllerMgr::endFrame();
 
-void GCController::beginFrame(PADStatus* status)
-{
+void GCController::beginFrame(
+    PADStatus* status
+) {
     mpStatus = status;
     if (status->err < 0) {
         mFlag.resetBit(0);
@@ -324,23 +323,25 @@ void GCController::beginFrame(PADStatus* status)
     // Triggers
     // OEM controllers never report a full analog value
     // So we report a full press if the digital input is being pressed
-    mLTrigger = mDown & PADButton::PAD_TRIGGER_L ? 1.0f : float(status->triggerL) / 255.0f;
-    mRTrigger = mDown & PADButton::PAD_TRIGGER_R ? 1.0f : float(status->triggerR) / 255.0f;
+    mLTrigger =
+        mDown & PADButton::PAD_TRIGGER_L ? 1.0f : static_cast<float>(status->triggerLeft) / 255.0f;
+    mRTrigger =
+        mDown & PADButton::PAD_TRIGGER_R ? 1.0f : static_cast<float>(status->triggerRight) / 255.0f;
 
     // Sticks
-    mStick.x = float(status->stickX) / 110.0f;
-    mStick.y = float(status->stickY) / 110.0f;
-    mSubstick.x = float(status->substickX) / 110.0f;
-    mSubstick.y = float(status->substickY) / 110.0f;
+    mStick.x      = static_cast<float>(status->stickX) / 110.0f;
+    mStick.y      = static_cast<float>(status->stickY) / 110.0f;
+    mSubstick.x   = static_cast<float>(status->substickX) / 110.0f;
+    mSubstick.y   = static_cast<float>(status->substickY) / 110.0f;
 
     // Buttons
     u32 prev_down = mDown;
-    mDown = status->button;
+    mDown         = status->button;
     mDown |= getStickButton(mStick.x, mStick.y) << std::countr_zero<u32>(cDOLPHIN_STICK_BUTTONS);
     mDown |= getStickButton(mSubstick.x, mSubstick.y)
              << std::countr_zero<u32>(cDOLPHIN_SUBSTICK_BUTTONS);
     mTrig = mDown & ~prev_down;
-    mUp = ~mDown & prev_down;
+    mUp   = ~mDown & prev_down;
 
     if (mRumbleMgr) {
         mRumbleMgr->calc();
@@ -374,19 +375,18 @@ void GCController::beginFrame(PADStatus* status)
     }
 }
 
-void GCController::endFrame()
-{
+void GCController::endFrame() {
 }
 
 EGG_SINGLETON_IMPL(GCControllerMgr);
 
-GCController* GCControllerMgr::getNthController(int n)
-{
+GCController* GCControllerMgr::getNthController(
+    int n
+) {
     return mControllers(n);
 }
 
-GCControllerMgr::GCControllerMgr()
-{
+GCControllerMgr::GCControllerMgr() {
     mControllers.allocate(4);
     GCController* gcCtrl = new GCController[4]{0, 1, 2, 3};
     for (int i = 0; i < mControllers.mSize; i++) {
@@ -394,8 +394,7 @@ GCControllerMgr::GCControllerMgr()
     }
 }
 
-void GCControllerMgr::beginFrame()
-{
+void GCControllerMgr::beginFrame() {
     std::memset(mPadStatus.data(), 0, sizeof(mPadStatus));
     ::PADRead(mPadStatus.data());
 
@@ -408,8 +407,7 @@ void GCControllerMgr::beginFrame()
     }
 }
 
-void GCControllerMgr::endFrame()
-{
+void GCControllerMgr::endFrame() {
     u32 mask = 0;
 
     for (int i = 0; i < mControllers.mSize; i++) {
@@ -424,25 +422,26 @@ void GCControllerMgr::endFrame()
     PADReset(mask);
 }
 
-void ClassicController::beginFrame(PADStatus*)
-{
+void ClassicController::beginFrame(
+    PADStatus*
+) {
     KPADEXStatus::Classic& cl = mpCore->mStatus->ex_status.cl;
 
-    u32 prev_stick_btn = mDown & (cCLASSIC_LSTICK_BUTTONS | cCLASSIC_RSTICK_BUTTONS);
+    u32 prev_stick_btn        = mDown & (cCLASSIC_LSTICK_BUTTONS | cCLASSIC_RSTICK_BUTTONS);
 
-    mDown = cl.hold;
-    mTrig = cl.trig;
-    mUp = cl.release;
+    mDown                     = cl.hold;
+    mTrig                     = cl.trig;
+    mUp                       = cl.release;
 
     // Triggers
-    mLTrigger = mDown & cCLASSIC_BUTTON_FULL_L ? 1.0f : cl.ltrigger;
-    mRTrigger = mDown & cCLASSIC_BUTTON_FULL_R ? 1.0f : cl.rtrigger;
+    mLTrigger                 = mDown & cCLASSIC_BUTTON_FULL_L ? 1.0f : cl.ltrigger;
+    mRTrigger                 = mDown & cCLASSIC_BUTTON_FULL_R ? 1.0f : cl.rtrigger;
 
     // Sticks
-    mLStick.x = cl.lstick.x;
-    mLStick.y = cl.lstick.y;
-    mRStick.x = cl.rstick.x;
-    mRStick.y = cl.rstick.y;
+    mLStick.x                 = cl.lstick.x;
+    mLStick.y                 = cl.lstick.y;
+    mRStick.x                 = cl.rstick.x;
+    mRStick.y                 = cl.rstick.y;
 
     mDown |= getStickButton(mLStick.x, mLStick.y) << std::countr_zero<u32>(cCLASSIC_LSTICK_BUTTONS);
     mDown |= getStickButton(mRStick.x, mRStick.y) << std::countr_zero<u32>(cCLASSIC_RSTICK_BUTTONS);
@@ -459,8 +458,7 @@ void ClassicController::beginFrame(PADStatus*)
     }
 }
 
-void ClassicController::endFrame()
-{
+void ClassicController::endFrame() {
 }
 
 [[nsmbw(0x802BDFF0)]]

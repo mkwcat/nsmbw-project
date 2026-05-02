@@ -2,6 +2,9 @@
 
 EXTERN_C_START
 
-typedef int BOOL;
+using BOOL = int;
+
+constexpr BOOL TRUE = true;
+constexpr BOOL FALSE = false;
 
 EXTERN_C_END

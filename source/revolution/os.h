@@ -7,6 +7,8 @@
 #include "os/OSInterrupt.h"
 #include "os/OSLink.h"
 #include "os/OSMutex.h"
+#include "os/OSReset.h"
+#include "os/OSRtc.h"
 #include "os/OSThread.h"
 #include "os/OSTime.h"
 
