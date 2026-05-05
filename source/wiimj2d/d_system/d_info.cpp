@@ -91,20 +91,22 @@ void dInfo_c::initMultiMode()
     }
 
     // Reset clear states
-    for (int i = 0; i < 100; i++) {
-        mCoinCourse[i].mClearState = MultiClearState_e::NONE;
-        mFreeCourse[i].mClearState = MultiClearState_e::NONE;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            mCoinCourse[i][j].mClearState = MultiClearState_e::NONE;
+            mFreeCourse[i][j].mClearState = MultiClearState_e::NONE;
+        }
     }
 
     // Reset favorited slots
     for (int i = 0; i < 10; i++) {
-        mCoinCourse[i].mWorld = 10;
-        mCoinCourse[i].mLevel = 42;
-        mCoinCourse[i].mClearState = MultiClearState_e::NONE;
+        mCoinFavorite[i].mWorld = 10;
+        mCoinFavorite[i].mLevel = 42;
+        mCoinFavorite[i].mClearState = MultiClearState_e::NONE;
 
-        mFreeCourse[i].mWorld = 10;
-        mFreeCourse[i].mLevel = 42;
-        mFreeCourse[i].mClearState = MultiClearState_e::NONE;
+        mFreeFavorite[i].mWorld = 10;
+        mFreeFavorite[i].mLevel = 42;
+        mFreeFavorite[i].mClearState = MultiClearState_e::NONE;
     }
 }
 
