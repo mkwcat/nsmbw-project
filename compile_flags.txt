@@ -25,6 +25,7 @@ c++
 -ffreestanding
 -ffunction-sections
 -fdata-sections
+-fconstexpr-steps=4000000
 
 -nostdinc
 -nostdinc++
