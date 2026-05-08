@@ -10,12 +10,11 @@ class dBase_c;
 
 using dProfName = fProfName;
 
-namespace dProf
-{
+namespace dProf {
 
 constexpr std::size_t BASE_COUNT = 754;
 
-constexpr std::size_t COUNT = [] -> std::size_t {
+constexpr std::size_t COUNT      = [] -> std::size_t {
     std::size_t max = 0;
 #define PROFILE(_ID, _NAME, _CLASS) _ID > max ? max = _ID : 0;
 #include "d_profile_table.inc"
@@ -25,25 +24,19 @@ constexpr std::size_t COUNT = [] -> std::size_t {
 
 constexpr std::size_t CUSTOM_COUNT = COUNT - BASE_COUNT;
 
-template <dProfName V>
-struct Name_c {
+template <dProfName V> struct Name_c {
     static constexpr dProfName StaticNonRegionalValue = V;
 
     static inline constexpr dProfName toNative();
 
-    constexpr operator dProfName() const
-    {
-        return toNative();
-    }
+    constexpr operator dProfName() const { return toNative(); }
 };
 
 #define PROFILE(_ID, _NAME, _CLASS) constexpr Name_c<_ID> _NAME;
 #include "d_profile_table.inc"
 #undef PROFILE
 
-template <dProfName V>
-inline constexpr dProfName Name_c<V>::toNative()
-{
+template <dProfName V> constexpr dProfName Name_c<V>::toNative() {
     // Apply the region-dependant changes to the value
     dProfName value = V;
 
@@ -65,13 +58,34 @@ inline constexpr dProfName Name_c<V>::toNative()
     return value;
 }
 
-template <class Owner, auto... Profiles>
-struct Info {
-};
+constexpr dProfName toStatic(
+    dProfName native
+) {
+    // Revert the region-dependant changes to the value
+    dProfName value = native;
+
+    if (value > LASTACTOR.StaticNonRegionalValue) {
+        // Custom actors are not region-dependent
+        return value;
+    }
+
+    if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::C &&
+        value > WII_STRAP.StaticNonRegionalValue) {
+        value += 2;
+    }
+    if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::K &&
+        value > MULTI_COURSE_SELECT.StaticNonRegionalValue) {
+        value += 2;
+    }
+    return value;
+}
+
+template <class Owner, auto... Profiles> struct Info {};
 
 template <class Owner, auto... Profiles>
-inline constexpr bool hasProfile(dProfName prof, const Info<Owner, Profiles...>*)
-{
+constexpr bool hasProfile(
+    dProfName prof, const Info<Owner, Profiles...>*
+) {
     return (false || ... || (Profiles == prof));
 }
 
@@ -80,8 +94,9 @@ inline constexpr bool hasProfile(dProfName prof, const Info<Owner, Profiles...>*
  * profile, and returns nullptr if the profile doesn't match.
  */
 template <class T>
-constexpr T* cast(fBase_c* base)
-{
+constexpr T* cast(
+    fBase_c* base
+) {
     static_assert(mkwcat::CompleteType<T>, "Cast to an incomplete type");
 
     if constexpr (std::is_same_v<T, dBase_c>) {

@@ -3,8 +3,7 @@
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_base.h"
 
-class daObjGrass_c : public dBase_c
-{
+class daObjGrass_c : public dBase_c {
 public:
     FILL(0x0070, 0x2464);
 

@@ -1,7 +1,8 @@
 #pragma once
 
-class daWmKinoBalloon_c
-{
+#include "d_system/d_base.h"
+
+class daWmKinoBalloon_c : public dBase_c {
 public:
     // Static Methods
     // ^^^^^^

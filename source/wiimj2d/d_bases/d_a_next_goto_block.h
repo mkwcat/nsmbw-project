@@ -7,8 +7,7 @@
 #include "machine/m_vec.h"
 #include "state/s_State.h"
 
-class daNextGotoBlock_c : public dActorState_c
-{
+class daNextGotoBlock_c : public dActorState_c {
 public:
     // Structors
     // ^^^^^^

@@ -4,8 +4,7 @@
 
 class dAcPy_c;
 
-class dBgGm_c : public dBg_c
-{
+class dBgGm_c : public dBg_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -14,7 +13,7 @@ public:
     bool inW2CastleMazeBounds(float param1, float param2);
 
     /* 0x801550A0 */
-    int execute();
+    PACK_RESULT_e execute() override;
 
     /* 0x80156960 */
     dAcPy_c* getNumberPlayerP(int player);

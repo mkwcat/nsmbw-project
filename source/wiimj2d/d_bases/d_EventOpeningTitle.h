@@ -3,8 +3,7 @@
 #include "d_system/d_base.h"
 #include "d_system/d_lytbase.h"
 
-class dEventOpeningTitle_c : public dBase_c
-{
+class dEventOpeningTitle_c : public dBase_c {
 public:
     // State ID Methods
     // ^^^^^^

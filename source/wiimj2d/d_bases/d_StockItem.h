@@ -14,8 +14,7 @@ class da2DPlayer_c;
 class daWmItem_c;
 class dStockItemShadow_c;
 
-class dStockItem_c : public dBase_c
-{
+class dStockItem_c : public dBase_c {
 public:
     // Structors
     // ^^^^^^
@@ -28,7 +27,7 @@ public:
     // ^^^^^^
 
     enum class PANE_LIST_e {
-        FIRST = 0,
+        FIRST         = 0,
 
         P_iconBase_00 = 8,
         P_iconBase_01 = 9,
@@ -74,7 +73,7 @@ public:
         P_iconBase_34 = 42,
         P_iconBase_35 = 43,
 
-        NONE = 44,
+        NONE          = 44,
     };
 
 #define PANE_LIST_e_NONE 44
@@ -111,12 +110,12 @@ public:
     /* 0x20C */
     sStateMgr_c<dStockItem_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c> mStateMgr;
 
-    /* 0x248 */ nw4r::lyt::Pane* mpRootPane;
-    /* 0x24C */ nw4r::lyt::Pane* mpNullPanes[14];
-    /* 0x284 */ nw4r::lyt::Picture* mpPicturePanes[24];
+    /* 0x248 */ nw4r::lyt::Pane*                                                 mpRootPane;
+    /* 0x24C */ nw4r::lyt::Pane*                                                 mpNullPanes[14];
+    /* 0x284 */ nw4r::lyt::Picture*                                              mpPicturePanes[24];
 
-    /* 0x2E4 */ da2DPlayer_c* REMOVED(mpa2DPlayer)[4];
-    /* 0x2F4 */ daWmItem_c* mpaItem[7];
+    /* 0x2E4 */ da2DPlayer_c*       REMOVED(mpa2DPlayer)[4];
+    /* 0x2F4 */ daWmItem_c*         mpaItem[7];
     /* 0x310 */ dStockItemShadow_c* mpShadow;
 
     FILL(0x314, 0x8B0);
@@ -142,7 +141,7 @@ public:
     /* 0x900 */ u8 maPlayerPresent[PLAYER_COUNT];
 
 #define dStockItem_c_OFFSET_mpNForUsePos (dStockItem_c_OFFSET_maPlayerPresent + PLAYER_COUNT)
-    /* 0x908 */ nw4r::lyt::Pane* mpNForUsePos[PLAYER_COUNT];
+    /* 0x908 */ nw4r::lyt::Pane*    mpNForUsePos[PLAYER_COUNT];
     /* 0x928 */ nw4r::lyt::Picture* mpPIconBase4P[4];
     /* 0x938 */ nw4r::lyt::Picture* mpPIconBase3P[3];
     /* 0x944 */ nw4r::lyt::Picture* mpPIconBase2P[2];

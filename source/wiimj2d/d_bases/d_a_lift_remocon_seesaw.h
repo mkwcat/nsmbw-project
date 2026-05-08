@@ -2,8 +2,7 @@
 
 #include "d_system/d_a_lift_remocon_main.h"
 
-class daLiftRemoconSeesaw_c : public daLiftRemoconMain_c
-{
+class daLiftRemoconSeesaw_c : public daLiftRemoconMain_c {
 public:
     // Instance Methods
     // ^^^^^^

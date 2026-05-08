@@ -1,7 +1,9 @@
 #pragma once
 
-class daWmKoopaShip_c {
-    public:
+#include "d_system/d_base.h"
+
+class daWmKoopaShip_c : public dBase_c {
+public:
     // Static Methods
     // ^^^^^^
 

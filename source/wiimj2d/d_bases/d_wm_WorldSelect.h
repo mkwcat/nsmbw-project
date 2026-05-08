@@ -11,8 +11,7 @@
 class daWmIsland_c;
 class dWorldSelectGuide_c;
 
-class dWorldSelect_c : public dBase_c
-{
+class dWorldSelect_c : public dBase_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -34,11 +33,11 @@ public:
 
     /* 0x20C */ sStateMgrDefault_c<dWorldSelect_c> m_stateMgr;
 
-    /* 0x248 */ daWmIsland_c* mpaIsland[9];
-    /* 0x26C */ dWorldSelectGuide_c* mpWSelectGuide;
+    /* 0x248 */ daWmIsland_c*                      mpaIsland[9];
+    /* 0x26C */ dWorldSelectGuide_c*               mpWSelectGuide;
 
-    /* 0x270 */ nw4r::lyt::Pane* mpP0x270;
-    /* 0x274 */ nw4r::lyt::Pane* mpP0x274;
+    /* 0x270 */ nw4r::lyt::Pane*                   mpP0x270;
+    /* 0x274 */ nw4r::lyt::Pane*                   mpP0x274;
 
     FILL(0x278, 0x27C);
 
@@ -53,8 +52,8 @@ public:
 
     FILL(0x29C, 0x2A4);
 
-    /* 0x2A4 */ mAng m_moveAngle;
-    /* 0x2A6 */ mAng m_moveAngle2;
+    /* 0x2A4 */ mAng                                 m_moveAngle;
+    /* 0x2A6 */ mAng                                 m_moveAngle2;
 
     /* 0x2A8 */ cArray_c<bool, ORIGINAL_WORLD_COUNT> m_isWorldOpen;
 

@@ -6,8 +6,7 @@
  * Displays the controller information screen. This is the screen that reads "Hold the Wii Remote
  * sideways".
  */
-class dControllerInformation_c : public dBase_c
-{
+class dControllerInformation_c : public dBase_c {
     SIZE_ASSERT(0x20A);
 
 public:
@@ -20,7 +19,7 @@ public:
         /**
          * The button's pop-out animation.
          */
-        IN2BTN = 0,
+        IN2BTN   = 0,
 
         /**
          * The button's blinking loop animation.
@@ -30,7 +29,7 @@ public:
         /**
          * The button's hit animation.
          */
-        HIT2BTN = 2,
+        HIT2BTN  = 2,
     };
 
     /**
@@ -40,17 +39,17 @@ public:
         /**
          * Initial state; waiting for layout creation.
          */
-        IDLE = 0,
+        IDLE            = 0,
 
         /**
          * Play the button pop-out animation.
          */
-        SHOW_IN = 1,
+        SHOW_IN         = 1,
 
         /**
          * Wait for the pop-out to finish.
          */
-        SHOW_LOOP = 2,
+        SHOW_LOOP       = 2,
 
         /**
          * Play the button animation while waiting for user input.
@@ -60,7 +59,7 @@ public:
         /**
          * The button has been pressed, play the sound effect and the shrinking button animation.
          */
-        END = 4,
+        END             = 4,
     };
 
     FILL(0x70, 0x208);

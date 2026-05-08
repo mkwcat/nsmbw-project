@@ -1,14 +1,13 @@
 #pragma once
 
-#include <array>
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actor.h"
 #include "d_system/d_cc.h"
+#include <array>
 
 class dAcPy_c;
 
-class daReverseBlock_c : public dActor_c
-{
+class daReverseBlock_c : public dActor_c {
     // Original size: 0x5A8
 
     /* 0x060 VTABLE 0x809790C4 */
@@ -66,7 +65,7 @@ public:
     /* 0x438 */ dCc_c mCc1;
     /* 0x4DC */ dCc_c mCc2;
 
-    /* 0x580 */ u32 mDirection;
+    /* 0x580 */ u32   mDirection;
     OFFSET_ASSERT(0x584);
 
     /* 0x584 */ std::array<u32, 4 * PLAYER_COUNT> mPlayerData;

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "d_system/d_base.h"
+
 class mVec3_c;
 
-class dSmallScoreManager_c
-{
+class dSmallScoreManager_c : public dBase_c {
 public:
     // Instance Methods
     // ^^^^^^

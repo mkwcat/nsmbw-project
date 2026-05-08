@@ -9,14 +9,13 @@
 #include "nw4r/lyt/Pane.h"
 #include "nw4r/lyt/Window.h"
 #include "state/s_FStateFct.h"
+#include "state/s_State.h"
 #include "state/s_StateMethodUsr_FI.h"
 #include "state/s_StateMgr.h"
-#include "state/s_State.h"
 
 class dMultiCourseSelectContents_c;
 
-class dMultiCourseSelect_c : public dBase_c
-{
+class dMultiCourseSelect_c : public dBase_c {
     SIZE_ASSERT(0x524 + 0xD0);
 
 public:
@@ -31,12 +30,12 @@ public:
     // ^^^^^^
 
     enum class PANE_LIST_e {
-        FIRST = 0,
+        FIRST            = 0,
 
         N_1Player_Pos_00 = 8,
 
-        N_2PlayerPos_00 = 9,
-        N_2PlayerPos_01 = 10,
+        N_2PlayerPos_00  = 9,
+        N_2PlayerPos_01  = 10,
 
         N_3Player_Pos_00 = 11,
         N_3Player_Pos_01 = 12,
@@ -77,7 +76,7 @@ public:
         N_8Player_Pos_06 = 42,
         N_8Player_Pos_07 = 43,
 
-        NONE = 44,
+        NONE             = 44,
     };
 
     struct FavoriteCourse_s {
@@ -124,16 +123,17 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x070 */ LytBase_c mLayout;
-    /* 0x208 */ d2d::ResAccMultLoader_c mContentsRes;
+    /* 0x070 */ LytBase_c                     mLayout;
+    /* 0x208 */ d2d::ResAccMultLoader_c       mContentsRes;
     /* 0x2DC */ dMultiCourseSelectContents_c* mpContents[20];
-    /* 0x32C */ sStateMgr_c<dMultiCourseSelect_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c> mStateMgr;
+    /* 0x32C */ sStateMgr_c<dMultiCourseSelect_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c>
+                                    mStateMgr;
 
-    /* 0x368 */ nw4r::lyt::Pane* mpRootPane;
+    /* 0x368 */ nw4r::lyt::Pane*    mpRootPane;
     /* 0x36C */ nw4r::lyt::Picture* mpPicturePanes[5];
-    /* 0x380 */ nw4r::lyt::Pane* mpNullPanes[35];
-    /* 0x40C */ LytTextBox_c* mpTextBoxes[7];
-    /* 0x428 */ nw4r::lyt::Window* mpWindowPanes[5];
+    /* 0x380 */ nw4r::lyt::Pane*    mpNullPanes[35];
+    /* 0x40C */ LytTextBox_c*       mpTextBoxes[7];
+    /* 0x428 */ nw4r::lyt::Window*  mpWindowPanes[5];
 
     FILL(0x43C, 0x440);
 
@@ -164,7 +164,7 @@ public:
     /* 0x580 */ nw4r::lyt::Pane* mpNPos6P[6];
     /* 0x598 */ nw4r::lyt::Pane* mpNPos7P[7];
     /* 0x5B4 */ nw4r::lyt::Pane* mpNPos8P[8];
-    /* 0x5D4 */ LytTextBox_c* mpTRankStar[8];
+    /* 0x5D4 */ LytTextBox_c*    mpTRankStar[8];
 
 public:
     // State IDs

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_system/d_base.h"
-#include "framework/f_list_nd.h"
+#include "framework/f_list.h"
 #include "machine/m_angle.h"
 #include "machine/m_mtx.h"
 #include "machine/m_vec.h"
@@ -16,8 +16,7 @@ struct dBaseActorProfile_s : dBaseProfile_s {
 /**
  * The minimum required implementation for an actor base.
  */
-class dBaseActor_c : public dBase_c
-{
+class dBaseActor_c : public dBase_c {
     SIZE_ASSERT(0x125);
 
 public:
@@ -26,14 +25,14 @@ public:
      */
     enum ACTOR_KIND_e {
         ACTOR_MAP_GENERIC = 0, // A generic map actor (dWmActor_c).
-        ACTOR_MAP_DEMO = 1, // A map actor affected by cutscenes (dWmDemoActor_c).
-        ACTOR_MAP_OBJECT = 2, // A map object (dWmObjActor_c).
-        ACTOR_MAP_ENEMY = 3, // A map enemy (dWmEnemy_c).
-        ACTOR_MAP_PLAYER = 4, // The worldmap player actor (dWmPlayer_c).
-        ACTOR_MAP_STOP = 5, // @unused The unused map stop actor (daWmStop_c).
-        ACTOR_UNK_6 = 6, // @unused Not used anywhere.
+        ACTOR_MAP_DEMO    = 1, // A map actor affected by cutscenes (dWmDemoActor_c).
+        ACTOR_MAP_OBJECT  = 2, // A map object (dWmObjActor_c).
+        ACTOR_MAP_ENEMY   = 3, // A map enemy (dWmEnemy_c).
+        ACTOR_MAP_PLAYER  = 4, // The worldmap player actor (dWmPlayer_c).
+        ACTOR_MAP_STOP    = 5, // @unused The unused map stop actor (daWmStop_c).
+        ACTOR_UNK_6       = 6, // @unused Not used anywhere.
         ACTOR_MENU_PLAYER = 7, // The menu player actor (da2DPlayer_c).
-        ACTOR_GENERIC = 8, // A generic non-map actor.
+        ACTOR_GENERIC     = 8, // A generic non-map actor.
     };
 
     /* 0x8006C6D0 */
@@ -114,18 +113,13 @@ protected:
      * VT+0x58 0x8001D1C0, 0x807B6C80 - d_a_boss_demo.o, ?
      * Gets the actor kind. See ACTOR_KIND_e.
      */
-    virtual ACTOR_KIND_e GetActorType()
-    {
-        return ACTOR_GENERIC;
-    }
+    virtual ACTOR_KIND_e GetActorType() { return ACTOR_GENERIC; }
 
     /**
      * VT+0x5C 0x8001D1B0, 0x807B6C70 - d_a_boss_demo.o, ?
      * Code to be executed after all actors' execute operation has run.
      */
-    virtual void finalUpdate()
-    {
-    }
+    virtual void finalUpdate() {}
 
 public:
     /**
@@ -234,7 +228,7 @@ public:
      * @return A pointer to the instantiated actor, or nullptr.
      */
     static dBaseActor_c* construct(
-      u16 profName, dBase_c* parent, u32 param, const mVec3_c* position, const mAng3_c* rotation
+        u16 profName, dBase_c* parent, u32 param, const mVec3_c* position, const mAng3_c* rotation
     );
 
 private:

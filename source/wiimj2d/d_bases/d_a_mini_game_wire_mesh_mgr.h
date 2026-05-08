@@ -5,8 +5,7 @@
 #include "d_system/d_mj2d_game.h"
 #include "machine/m_ef.h"
 
-class daMiniGameWireMeshMgrObj_c : dBase_c
-{
+class daMiniGameWireMeshMgrObj_c : public dBase_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -44,9 +43,9 @@ public:
     FILL(0x221, 0x224);
 
     /* 0x224 */ dEf::dLevelEffect_c mEffectCursor;
-    /* 0x34C */ mEf::effect_c mEffectCursorSt;
+    /* 0x34C */ mEf::effect_c       mEffectCursorSt;
 
-    /* 0x460 */ bool mHasPlayedCursorSt;
+    /* 0x460 */ bool                mHasPlayedCursorSt;
 
     FILL(0x461, 0x58C);
 

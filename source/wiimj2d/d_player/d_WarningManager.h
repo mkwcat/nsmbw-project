@@ -1,7 +1,8 @@
 #pragma once
 
-class dWarningManager_c
-{
+#include "d_system/d_base.h"
+
+class dWarningManager_c : public dBase_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -31,5 +32,5 @@ public:
     // ^^^^^^
 
     /* 0x8042A5B8 */ static dWarningManager_c* m_instance;
-    /* 0x8042A5C0 */ static s32 m_WarningForbid;
+    /* 0x8042A5C0 */ static s32                m_WarningForbid;
 };

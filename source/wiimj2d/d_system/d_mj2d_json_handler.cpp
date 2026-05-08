@@ -13,8 +13,9 @@
 #include <revolution/os/OSError.h>
 #include <variant>
 
-static inline constexpr u32 strHash(const char* str, std::size_t length)
-{
+static inline constexpr u32 strHash(
+    const char* str, std::size_t length
+) {
     u32 hash = 0;
     for (std::size_t i = 0; i < length; ++i) {
         hash = (hash * 9) + static_cast<u32>(str[i]);
@@ -23,13 +24,15 @@ static inline constexpr u32 strHash(const char* str, std::size_t length)
 }
 
 template <u32 N>
-static inline consteval u32 strHash(const char (&str)[N])
-{
+static inline consteval u32 strHash(
+    const char (&str)[N]
+) {
     return strHash(str, N - 1);
 }
 
-static STAGE_e decodeStageName(const char* str, std::size_t length, u32 hash)
-{
+static STAGE_e decodeStageName(
+    const char* str, std::size_t length, u32 hash
+) {
     bool notNumber = false;
     for (size_t i = 0; i < length; i++) {
         if (str[i] < '0' || str[i] > '9') {
@@ -42,7 +45,8 @@ static STAGE_e decodeStageName(const char* str, std::size_t length, u32 hash)
         int index = std::atoi(str) - 1;
         if (index < 0 || index >= STAGE_COUNT) {
             OS_REPORT(
-              "SAVE WARNING!! Unable to decode course name \"%.*s\"", static_cast<int>(length), str
+                "SAVE WARNING!! Unable to decode course name \"%.*s\"", static_cast<int>(length),
+                str
             );
             return STAGE_e::COUNT;
         }
@@ -81,67 +85,69 @@ static STAGE_e decodeStageName(const char* str, std::size_t length, u32 hash)
 #undef CASE
     default:
         OS_REPORT(
-          "SAVE WARNING!! Unable to decode course name \"%.*s\"", static_cast<int>(length), str
+            "SAVE WARNING!! Unable to decode course name \"%.*s\"", static_cast<int>(length), str
         );
         return STAGE_e::COUNT;
     }
 }
 
-static const char* encodeStageName(STAGE_e stage)
-{
+static const char* encodeStageName(
+    STAGE_e stage
+) {
     if (stage >= STAGE_e::COUNT || stage < STAGE_e::STAGE_1) {
         return "none";
     }
 
     using StringArray = const char* const[];
     return StringArray{
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "17",
-      "18",
-      "19",
-      "coin",
-      "ghost_house",
-      "tower",
-      "tower_2nd",
-      "castle",
-      "castle_2nd",
-      "toad_house_1",
-      "toad_house_2",
-      "toad_house_3",
-      "toad_house_4",
-      "toad_house_5",
-      "toad_house_6",
-      "toad_house_7",
-      "ambush_1",
-      "ambush_2",
-      "ambush_3",
-      "cannon",
-      "37",
-      "airship",
-      "rescue",
-      "title",
-      "peach_castle",
-      "staff_roll"
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "coin",
+        "ghost_house",
+        "tower",
+        "tower_2nd",
+        "castle",
+        "castle_2nd",
+        "toad_house_1",
+        "toad_house_2",
+        "toad_house_3",
+        "toad_house_4",
+        "toad_house_5",
+        "toad_house_6",
+        "toad_house_7",
+        "ambush_1",
+        "ambush_2",
+        "ambush_3",
+        "cannon",
+        "37",
+        "airship",
+        "rescue",
+        "title",
+        "peach_castle",
+        "staff_roll"
     }[static_cast<size_t>(stage)];
 }
 
-bool dMj2dJsonHandler_c::value(s64 number)
-{
+bool dMj2dJsonHandler_c::value(
+    s64 number
+) {
     u32 value = static_cast<u32>(number);
 
     if (!expectValue()) {
@@ -180,7 +186,7 @@ bool dMj2dJsonHandler_c::value(s64 number)
         }
 
         *std::get<dMj2dGame_c::COURSE_COMPLETION_e*>(mpValue) |=
-          static_cast<dMj2dGame_c::COURSE_COMPLETION_e>(1 << (value - 1));
+            static_cast<dMj2dGame_c::COURSE_COMPLETION_e>(1 << (value - 1));
         return true;
     } else if (mObject == Object_e::PLAY_COUNT_ARRAY) {
         if (!std::holds_alternative<u16*>(mpValue)) {
@@ -198,7 +204,7 @@ bool dMj2dJsonHandler_c::value(s64 number)
 
     if (std::holds_alternative<dMj2dGame_c::WORLD_COMPLETION_e*>(mpValue)) {
         *std::get<dMj2dGame_c::WORLD_COMPLETION_e*>(mpValue) =
-          static_cast<dMj2dGame_c::WORLD_COMPLETION_e>(!!value);
+            static_cast<dMj2dGame_c::WORLD_COMPLETION_e>(!!value);
         return true;
     }
 
@@ -210,26 +216,26 @@ bool dMj2dJsonHandler_c::value(s64 number)
     CASE(s8)
     else CASE(u8) else CASE(u16) else CASE(u32) else CASE(s32) else CASE(bool) else CASE(STAGE_e) //
 #undef CASE
-      else if (std::holds_alternative<dMj2dGame_c::PLAYER_TYPE_u8_e*>(mpValue))
-    {
+        else if (std::holds_alternative<dMj2dGame_c::PLAYER_TYPE_u8_e*>(mpValue)) {
         if (value >= PLAYER_COUNT || mPlayer == PLAYER_TYPE_e::COUNT) {
             // Ignore excess index
             return true;
         }
         *(std::get<dMj2dGame_c::PLAYER_TYPE_u8_e*>(mpValue) + value) =
-          static_cast<dMj2dGame_c::PLAYER_TYPE_u8_e>(mPlayer);
+            static_cast<dMj2dGame_c::PLAYER_TYPE_u8_e>(mPlayer);
     }
     else return false;
 
     return true;
 }
 
-bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
-{
+bool dMj2dJsonHandler_c::string(
+    const char* str, std::size_t length, bool copy
+) {
     if (!expectValue()) {
         OS_REPORT(
-          "Not expecting string() (UNKNOWN_OBJECT=%s)\n",
-          mkwcat::ToString(!!(mFlags & UNKNOWN_OBJECT)).data()
+            "Not expecting string() (UNKNOWN_OBJECT=%s)\n",
+            mkwcat::ToString(!!(mFlags & UNKNOWN_OBJECT))
         );
         return mFlags & UNKNOWN_OBJECT;
     }
@@ -254,24 +260,24 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
             return false;
         }
 
-        char* estr = const_cast<char*>(str);
+        char* estr     = const_cast<char*>(str);
         estr[dotIndex] = '\0';
-        int major = std::atoi(str);
+        int major      = std::atoi(str);
         estr[dotIndex] = '.';
         if (major < 0 || major > 255) {
             return false;
         }
 
-        char old = estr[length];
+        char old     = estr[length];
         estr[length] = '\0';
-        int minor = std::atoi(str + dotIndex + 1);
+        int minor    = std::atoi(str + dotIndex + 1);
         estr[length] = old;
         if (minor < 0 || minor > 255) {
             return false;
         }
 
         *std::get<dMj2dGame_c::Revision_s*>(mpValue)++ = {
-          static_cast<u8>(major), static_cast<u8>(minor)
+            static_cast<u8>(major), static_cast<u8>(minor)
         };
     } else if (std::holds_alternative<bool*>(mpValue)) {
         if (length == 4 && hash == strHash("true")) {
@@ -334,7 +340,7 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
             break;
         }
     } else if (std::holds_alternative<dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*>(mpValue)) {
-        auto& out = *std::get<dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*>(mpValue);
+        auto&                out   = *std::get<dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*>(mpValue);
         PLAYER_CREATE_ITEM_e value = static_cast<PLAYER_CREATE_ITEM_e>(out);
         switch (hash) {
         case strHash("star_power"):
@@ -352,7 +358,7 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
         }
         out = static_cast<dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e>(value);
     } else if (std::holds_alternative<dMj2dGame_c::PLAYER_MODE_u8_e*>(mpValue)) {
-        auto& out = *std::get<dMj2dGame_c::PLAYER_MODE_u8_e*>(mpValue);
+        auto&         out   = *std::get<dMj2dGame_c::PLAYER_MODE_u8_e*>(mpValue);
         PLAYER_MODE_e value = static_cast<PLAYER_MODE_e>(out);
         switch (hash) {
         case strHash("small"):
@@ -381,15 +387,15 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
     } else if (std::holds_alternative<dMj2dGame_c::WORLD_COMPLETION_e*>(mpValue)) {
         if (hash == strHash("true")) {
             *std::get<dMj2dGame_c::WORLD_COMPLETION_e*>(mpValue) =
-              dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED;
+                dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED;
         } else if (hash == strHash("false")) {
             *std::get<dMj2dGame_c::WORLD_COMPLETION_e*>(mpValue) =
-              static_cast<dMj2dGame_c::WORLD_COMPLETION_e>(0);
+                static_cast<dMj2dGame_c::WORLD_COMPLETION_e>(0);
         } else {
             return false;
         }
     } else if (std::holds_alternative<PATH_DIRECTION_e*>(mpValue)) {
-        auto& out = *std::get<PATH_DIRECTION_e*>(mpValue);
+        auto&            out   = *std::get<PATH_DIRECTION_e*>(mpValue);
         PATH_DIRECTION_e value = static_cast<PATH_DIRECTION_e>(out);
         switch (hash) {
         case strHash("normal"):
@@ -427,7 +433,7 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
     } else if (std::holds_alternative<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>(mpValue)) {
         auto& out = *std::get<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>(mpValue);
         dMj2dGame_c::PIPE_RANDOMIZER_MODE_e value =
-          static_cast<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e>(out);
+            static_cast<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e>(out);
         switch (hash) {
         case strHash("disabled"):
             value = dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED;
@@ -450,8 +456,9 @@ bool dMj2dJsonHandler_c::string(const char* str, std::size_t length, bool copy)
     return true;
 }
 
-bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
-{
+bool dMj2dJsonHandler_c::key(
+    const char* str, std::size_t length, bool copy
+) {
     u32 hash = strHash(str, length);
 
     if (length == 0 || mValueCount != 0 ||
@@ -488,7 +495,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             }
 
             mSaveSlot = slot;
-            mFlags = Flag_e::EXPECT_OBJECT_START;
+            mFlags    = Flag_e::EXPECT_OBJECT_START;
             if (temp) {
                 mFlags |= TEMP_SAVE;
             }
@@ -497,7 +504,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
         }
 
         dMj2dHeader_c& header = dNandThread_c::getSaveData()->mHeader;
-        mValueCount = 1;
+        mValueCount           = 1;
 
         switch (hash) {
         case strHash("version"):
@@ -523,7 +530,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             break;
 
         case strHash("available_worlds"):
-            mpValue = &header.mMultiWorldOpenFlag;
+            mpValue     = &header.mMultiWorldOpenFlag;
             mValueCount = WORLD_COUNT;
             mFlags |= EXPECT_ARRAY_START | BIT_FLAGS_LE;
             break;
@@ -559,18 +566,18 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             return true;
         }
 
-        char* estr = const_cast<char*>(str);
+        char* estr      = const_cast<char*>(str);
         estr[dashIndex] = '\0';
-        int world = std::atoi(str);
+        int world       = std::atoi(str);
         estr[dashIndex] = '.';
         if (world < 1 || world > WORLD_COUNT) {
             return false;
         }
-        mWorld = static_cast<WORLD_e>(world - 1);
+        mWorld  = static_cast<WORLD_e>(world - 1);
 
         mCourse = decodeStageName(
-          str + dashIndex + 1, length - dashIndex - 1,
-          strHash(str + dashIndex + 1, length - dashIndex - 1)
+            str + dashIndex + 1, length - dashIndex - 1,
+            strHash(str + dashIndex + 1, length - dashIndex - 1)
         );
         if (mCourse == STAGE_e::COUNT) {
             // Invalid course, ignore
@@ -641,17 +648,17 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             mValueCount = 0;
             mFlags |= EXPECT_OBJECT_START;
             mObject = Object_e::WORLD_KEY;
-            mWorld = WORLD_e::COUNT;
+            mWorld  = WORLD_e::COUNT;
             break;
 
         case strHash("pipe_randomizer_mode"):
             mValueCount = 1;
-            mpValue = &game.mPipeRandomizerMode;
+            mpValue     = &game.mPipeRandomizerMode;
             break;
 
         case strHash("pipe_randomizer_seed"):
             mValueCount = 1;
-            mpValue = &game.mPipeRandomizerSeed;
+            mpValue     = &game.mPipeRandomizerSeed;
             break;
 
         default:
@@ -695,7 +702,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             return true;
         }
 
-        mpValue = &game.mStockItemCount[static_cast<int>(item)];
+        mpValue     = &game.mStockItemCount[static_cast<int>(item)];
         mValueCount = 1;
         return true;
     }
@@ -739,7 +746,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
     }
 
     case Object_e::PLAYER: {
-        int index = static_cast<int>(mPlayer);
+        int index   = static_cast<int>(mPlayer);
         mValueCount = 1;
 
         switch (hash) {
@@ -756,14 +763,14 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
             mValueCount = 8;
             mFlags |= EXPECT_ARRAY_START;
             game.mPlayerCreateItem[index] = static_cast<dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e>(0);
-            mpValue = &game.mPlayerCreateItem[index];
+            mpValue                       = &game.mPlayerCreateItem[index];
             break;
         case strHash("powerup"):
             mpValue = &game.mPlayerPowerup[index];
             break;
         case strHash("player"):
             mValueCount = 1;
-            mpValue = &game.mPlayerCharacter[0];
+            mpValue     = &game.mPlayerCharacter[0];
             break;
 
         default:
@@ -794,7 +801,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
         }
 
         mFlags |= EXPECT_OBJECT_START;
-        mObject = Object_e::ENEMY;
+        mObject  = Object_e::ENEMY;
         mWmEnemy = enemyIndex;
         return true;
     }
@@ -841,7 +848,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
 
     case Object_e::COURSE: {
         int wmIndex = static_cast<int>(mWorld);
-        int index = static_cast<int>(mCourse);
+        int index   = static_cast<int>(mCourse);
 
         mValueCount = 1;
         switch (hash) {
@@ -901,12 +908,12 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
 
         mFlags |= EXPECT_OBJECT_START;
         mObject = Object_e::WORLD;
-        mWorld = static_cast<WORLD_e>(worldIndex);
+        mWorld  = static_cast<WORLD_e>(worldIndex);
         return true;
     }
 
     case Object_e::WORLD: {
-        int index = static_cast<int>(mWorld);
+        int index   = static_cast<int>(mWorld);
         mValueCount = 1;
         switch (hash) {
         case strHash("open"):
@@ -969,8 +976,7 @@ bool dMj2dJsonHandler_c::key(const char* str, std::size_t length, bool copy)
     }
 }
 
-bool dMj2dJsonHandler_c::startObject()
-{
+bool dMj2dJsonHandler_c::startObject() {
     if (mFlags & UNKNOWN_OBJECT) {
         mUnknownNest++;
         return true;
@@ -985,8 +991,7 @@ bool dMj2dJsonHandler_c::startObject()
     return false;
 }
 
-bool dMj2dJsonHandler_c::endObject()
-{
+bool dMj2dJsonHandler_c::endObject() {
     if (mFlags & UNKNOWN_OBJECT) {
         if (mUnknownNest == 0) {
             return false;
@@ -1014,7 +1019,7 @@ bool dMj2dJsonHandler_c::endObject()
         mObject = Object_e::FILE;
         return true;
     } else if (mObject == Object_e::ENEMY) {
-        mObject = Object_e::ENEMY_KEY;
+        mObject  = Object_e::ENEMY_KEY;
         mWmEnemy = AMBUSH_ENEMY_COUNT;
         return true;
     } else if (mObject == Object_e::ENEMY_KEY) {
@@ -1029,13 +1034,13 @@ bool dMj2dJsonHandler_c::endObject()
         return true;
     } else if (mObject == Object_e::WORLD) {
         mObject = Object_e::WORLD_KEY;
-        mWorld = WORLD_e::COUNT;
+        mWorld  = WORLD_e::COUNT;
         return true;
     } else if (mObject == Object_e::WORLD_KEY) {
         mObject = Object_e::FILE;
         return true;
     } else if (mObject == Object_e::FILE) {
-        mObject = Object_e::BASE;
+        mObject   = Object_e::BASE;
         mSaveSlot = -1;
         return true;
     } else if (mObject == Object_e::PLAY_COUNT_ARRAY) {
@@ -1050,8 +1055,7 @@ bool dMj2dJsonHandler_c::endObject()
     return false;
 }
 
-bool dMj2dJsonHandler_c::startArray()
-{
+bool dMj2dJsonHandler_c::startArray() {
     if (mFlags & UNKNOWN_OBJECT) {
         mUnknownNest++;
         return true;
@@ -1066,8 +1070,7 @@ bool dMj2dJsonHandler_c::startArray()
     return false;
 }
 
-bool dMj2dJsonHandler_c::endArray()
-{
+bool dMj2dJsonHandler_c::endArray() {
     if (mFlags & UNKNOWN_OBJECT) {
         if (mUnknownNest == 0) {
             return false;
@@ -1093,12 +1096,13 @@ bool dMj2dJsonHandler_c::endArray()
     return true;
 }
 
-bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
-{
-    dMj2dData_c* data = dNandThread_c::getSaveData();
+bool dMj2dJsonHandler_c::writeJSON(
+    std::FILE* f
+) {
+    dMj2dData_c*   data   = dNandThread_c::getSaveData();
     dMj2dHeader_c& header = data->mHeader;
 
-    using StringArray = const char* const[];
+    using StringArray     = const char* const[];
 
 #define W(field, fmt, ...) std::fprintf(f, #field ":" fmt ",", __VA_ARGS__)
     std::fprintf(f, "{");
@@ -1113,8 +1117,8 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 continue;
             }
             std::fprintf(
-              f, "%s\"%d-%s\":%u", comma ? "," : "", w + 1,
-              encodeStageName(static_cast<STAGE_e>(s)), v
+                f, "%s\"%d-%s\":%u", comma ? "," : "", w + 1,
+                encodeStageName(static_cast<STAGE_e>(s)), v
             );
             comma = true;
         }
@@ -1128,8 +1132,8 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 continue;
             }
             std::fprintf(
-              f, "%s\"%d-%s\":%u", comma ? "," : "", w + 1,
-              encodeStageName(static_cast<STAGE_e>(s)), v
+                f, "%s\"%d-%s\":%u", comma ? "," : "", w + 1,
+                encodeStageName(static_cast<STAGE_e>(s)), v
             );
             comma = true;
         }
@@ -1152,11 +1156,11 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
     bool firstSlot = true;
     for (int i = 0; i < SAVE_SLOT_COUNT * 2; i++) {
         dMj2dGame_c& game =
-          i < SAVE_SLOT_COUNT ? data->mSaveGames[i] : data->mTempGames[i - SAVE_SLOT_COUNT];
+            i < SAVE_SLOT_COUNT ? data->mSaveGames[i] : data->mTempGames[i - SAVE_SLOT_COUNT];
 
         std::fprintf(
-          f, "%s\"%s%d\":{", !firstSlot ? "," : "", i < SAVE_SLOT_COUNT ? "file" : "temp",
-          (i % SAVE_SLOT_COUNT) + 1
+            f, "%s\"%s%d\":{", !firstSlot ? "," : "", i < SAVE_SLOT_COUNT ? "file" : "temp",
+            (i % SAVE_SLOT_COUNT) + 1
         );
         firstSlot = false;
         W("version", "\"%d.%d\"", game.mRevision.mMajor, game.mRevision.mMinor);
@@ -1201,7 +1205,7 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
         if (game.mPipeRandomizerMode != dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED) {
             W("pipe_randomizer_mode", "\"%s\"",
               StringArray{
-                "disabled", "per_game", "per_course", "per_exit"
+                  "disabled", "per_game", "per_course", "per_exit"
               }[static_cast<int>(game.mPipeRandomizerMode)]);
         }
         if (game.mPipeRandomizerSeed != 0) {
@@ -1211,12 +1215,12 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
         std::fprintf(f, "\"stock_item\":{");
         for (int i = 0; i < STOCK_ITEM_COUNT; i++) {
             std::fprintf(
-              f, "\"%s\":%u%s",
-              StringArray{
-                "mushroom", "fire_flower", "propeller_shroom", "ice_flower", "penguin_suit",
-                "mini_mushroom", "star"
-              }[i],
-              game.mStockItemCount[i], i + 1 < STOCK_ITEM_COUNT ? "," : "},"
+                f, "\"%s\":%u%s",
+                StringArray{
+                    "mushroom", "fire_flower", "propeller_shroom", "ice_flower", "penguin_suit",
+                    "mini_mushroom", "star"
+                }[i],
+                game.mStockItemCount[i], i + 1 < STOCK_ITEM_COUNT ? "," : "},"
             );
         }
 
@@ -1236,11 +1240,11 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
         std::fprintf(f, "],\"player\":{");
         for (int i = 0; i < PLAYER_COUNT; i++) {
             std::fprintf(
-              f, "\"%s\":{",
-              StringArray{
-                "mario", "luigi", "yellow_toad", "blue_toad", "toadette", "purple_toadette",
-                "orange_toad", "black_toad"
-              }[i]
+                f, "\"%s\":{",
+                StringArray{
+                    "mario", "luigi", "yellow_toad", "blue_toad", "toadette", "purple_toadette",
+                    "orange_toad", "black_toad"
+                }[i]
             );
 
             int index = static_cast<int>(game.scDefaultPlayerTypes[i]);
@@ -1248,12 +1252,10 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
             W("coins", "%d", game.mPlayerCoin[index]);
             W("continues", "%d", game.mPlayerContinue[index]);
             W("equip", "[%s]",
-              !!(
-                static_cast<PLAYER_CREATE_ITEM_e>(game.mPlayerCreateItem[index]) &
-                PLAYER_CREATE_ITEM_e::STAR_POWER
-              )
-                ? "\"star_power\""
-                : "");
+              !!(static_cast<PLAYER_CREATE_ITEM_e>(game.mPlayerCreateItem[index]) &
+                 PLAYER_CREATE_ITEM_e::STAR_POWER)
+                  ? "\"star_power\""
+                  : "");
             u32 v = u32(game.mPlayerPowerup[index]);
             if (v >= PLAYER_MODE_COUNT) {
                 OS_REPORT("SAVE WARNING!! Invalid player powerup for %d: %ld\n", index, v);
@@ -1270,7 +1272,7 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 }
             }
             std::fprintf(
-              f, "\"player\":%d}%s", player, i + 1 < PLAYER_COUNT ? "," : "},\"world\":{"
+                f, "\"player\":%d}%s", player, i + 1 < PLAYER_COUNT ? "," : "},\"world\":{"
             );
         }
 
@@ -1278,19 +1280,19 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
             std::fprintf(f, "\"%d\":{", i + 1);
             W("open", "%s",
               !!(game.mWorldCompletion[i] & dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED)
-                ? "true"
-                : "false");
+                  ? "true"
+                  : "false");
             W("toad_rescue_course", "\"%s\"", encodeStageName(game.mKinopioCourseNo[i]));
             u32 kinokoType = static_cast<u32>(game.mStartKinokoType[i]);
             if (kinokoType >= static_cast<u32>(dMj2dGame_c::START_KINOKO_KIND_e::COUNT)) {
                 OS_REPORT(
-                  "SAVE WARNING!! Invalid start toad house type for w%d: %ld\n", i, kinokoType
+                    "SAVE WARNING!! Invalid start toad house type for w%d: %ld\n", i, kinokoType
                 );
                 kinokoType = 0;
             }
             W("start_minigame_type", "\"%s\"",
               StringArray{
-                "none", "yellow", "red", "green", "yellow_r", "red_r", "green_r"
+                  "none", "yellow", "red", "green", "yellow_r", "red_r", "green_r"
               }[kinokoType]);
 
             std::fprintf(f, "\"ambush_enemy\":{");
@@ -1302,14 +1304,15 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 u32 walkDir = static_cast<u32>(game.mEnemyWalkDir[i][e]);
                 if (walkDir >= 3) {
                     OS_REPORT(
-                      "SAVE WARNING!! Invalid enemy walk direction for w%de%d: %ld\n", i, e, walkDir
+                        "SAVE WARNING!! Invalid enemy walk direction for w%de%d: %ld\n", i, e,
+                        walkDir
                     );
                     walkDir = 2;
                 }
                 std::fprintf(
-                  f, "\"walk_direction\":\"%s\"}%s",
-                  StringArray{"normal", "reverse", "initial"}[walkDir],
-                  e + 1 < AMBUSH_ENEMY_COUNT ? "," : "},\"course\":{"
+                    f, "\"walk_direction\":\"%s\"}%s",
+                    StringArray{"normal", "reverse", "initial"}[walkDir],
+                    e + 1 < AMBUSH_ENEMY_COUNT ? "," : "},\"course\":{"
                 );
             }
 
@@ -1321,59 +1324,47 @@ bool dMj2dJsonHandler_c::writeJSON(std::FILE* f)
                 }
 
                 std::fprintf(
-                  f, "%s\"%s\":{\"goal\":[", comma ? "," : "",
-                  encodeStageName(static_cast<STAGE_e>(c))
+                    f, "%s\"%s\":{\"goal\":[", comma ? "," : "",
+                    encodeStageName(static_cast<STAGE_e>(c))
                 );
 
-                comma = true;
+                comma          = true;
                 bool goalcomma = false;
 
-                if (!!(
-                      game.mCourseCompletion[i][c] & dMj2dGame_c::COURSE_COMPLETION_e::GOAL_NORMAL
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::GOAL_NORMAL)) {
                     std::fprintf(f, "\"normal\"");
                     goalcomma = true;
                 }
-                if (!!(
-                      game.mCourseCompletion[i][c] & dMj2dGame_c::COURSE_COMPLETION_e::GOAL_SECRET
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::GOAL_SECRET)) {
                     std::fprintf(f, "%s\"secret\"", goalcomma ? "," : "");
                     goalcomma = true;
                 }
-                if (!!(
-                      game.mCourseCompletion[i][c] &
-                      dMj2dGame_c::COURSE_COMPLETION_e::SUPER_GUIDE_GOAL_NORMAL
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::SUPER_GUIDE_GOAL_NORMAL)) {
                     std::fprintf(f, "%s\"super_guide_normal\"", goalcomma ? "," : "");
                     goalcomma = true;
                 }
-                if (!!(
-                      game.mCourseCompletion[i][c] &
-                      dMj2dGame_c::COURSE_COMPLETION_e::SUPER_GUIDE_GOAL_SECRET
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::SUPER_GUIDE_GOAL_SECRET)) {
                     std::fprintf(f, "%s\"super_guide_secret\"", goalcomma ? "," : "");
                 }
 
                 std::fprintf(f, "],\"star_coin\":[");
                 goalcomma = false;
-                if (!!(
-                      game.mCourseCompletion[i][c] &
-                      dMj2dGame_c::COURSE_COMPLETION_e::COIN1_COLLECTED
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::COIN1_COLLECTED)) {
                     std::fprintf(f, "1");
                     goalcomma = true;
                 }
-                if (!!(
-                      game.mCourseCompletion[i][c] &
-                      dMj2dGame_c::COURSE_COMPLETION_e::COIN2_COLLECTED
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::COIN2_COLLECTED)) {
                     std::fprintf(f, "%s2", goalcomma ? "," : "");
                     goalcomma = true;
                 }
-                if (!!(
-                      game.mCourseCompletion[i][c] &
-                      dMj2dGame_c::COURSE_COMPLETION_e::COIN3_COLLECTED
-                    )) {
+                if (!!(game.mCourseCompletion[i][c] &
+                       dMj2dGame_c::COURSE_COMPLETION_e::COIN3_COLLECTED)) {
                     std::fprintf(f, "%s3", goalcomma ? "," : "");
                 }
                 std::fprintf(f, "],\"deaths\":%d", game.mDeathCount[i][c]);

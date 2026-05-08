@@ -7,8 +7,9 @@
 #include "d_system/d_mj2d_game.h"
 #include <bit>
 
-u32 dBgGm_countr_one(u32 v)
-{
+u32 dBgGm_countr_one(
+    u32 v
+) {
     u32 r = std::countr_zero(v);
     if (r >= PLAYER_COUNT) {
         return 0;
@@ -91,8 +92,9 @@ UNDEF_8015505c:;
   // clang-format on
 );
 
-u8 getFirstActivePlayer(u32 mask)
-{
+u8 getFirstActivePlayer(
+    u32 mask
+) {
     if (mask == 0) {
         return 0;
     }
@@ -108,7 +110,7 @@ u8 getFirstActivePlayer(u32 mask)
 }
 
 [[nsmbw(0x801550A0)]]
-int dBgGm_c::execute() ASM_METHOD(
+fBase_c::PACK_RESULT_e dBgGm_c::execute() ASM_METHOD(
   // clang-format off
 /* 801550A0 9421FE40 */  stwu     r1, -448(r1);
 /* 801550A4 7C0802A6 */  mflr     r0;
@@ -1816,8 +1818,9 @@ UNDEF_801568c8:;
 );
 
 [[nsmbw(0x80156960)]]
-dAcPy_c* dBgGm_c::getNumberPlayerP(int player)
-{
+dAcPy_c* dBgGm_c::getNumberPlayerP(
+    int player
+) {
     u8 mask = daPyMng_c::getActScrollInfo();
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -1833,11 +1836,10 @@ dAcPy_c* dBgGm_c::getNumberPlayerP(int player)
 }
 
 [[nsmbw(0x80156A10)]]
-int dBgGm_c::getActScrPlayerNum()
-{
-    u8 mask = daPyMng_c::getActScrollInfo();
+int dBgGm_c::getActScrPlayerNum() {
+    u8  mask = daPyMng_c::getActScrollInfo();
 
-    int num = 0;
+    int num  = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mask & (1 << i)) {
             num++;

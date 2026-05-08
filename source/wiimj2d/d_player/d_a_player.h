@@ -9,9 +9,7 @@
 #include "d_system/d_player_model_manager.h"
 #include "state/s_State.h"
 
-class dAcPy_c : public daPlBase_c, public dProf::Info<dAcPy_c, dProf::PLAYER>
-{
-
+class dAcPy_c : public daPlBase_c, public dProf::Info<dAcPy_c, dProf::PLAYER> {
 public:
     // Instance Methods
     // ^^^^^^

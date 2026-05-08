@@ -4,8 +4,7 @@
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actor.h"
 
-class daNiceBoat_c : public daLiftRemoconMain_c
-{
+class daNiceBoat_c : public daLiftRemoconMain_c {
 public:
     // Instance Methods
     // ^^^^^^

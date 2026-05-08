@@ -7,8 +7,7 @@
 #include "state/s_StateMethodUsr_FI.h"
 #include "state/s_StateMgr.h"
 
-class dCourseSelectMenu_c : public dBase_c
-{
+class dCourseSelectMenu_c : public dBase_c {
     SIZE_ASSERT(0x278);
 
     /* 0x060 VTABLE 0x809415D8 */

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "framework/f_base.h"
+#include "d_system/d_base.h"
 
-class dDateFile_c : public fBase_c
-{
-};
+class dDateFile_c : public dBase_c {};

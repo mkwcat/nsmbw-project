@@ -1,17 +1,16 @@
 #pragma once
 
+#include "d_system/d_base.h"
 #include "d_system/d_mj2d_game.h"
-#include "framework/f_base.h"
 
 class dDateFile_c;
 class dInfoWindow_c;
 
-class dFileSelect_c : public fBase_c
-{
+class dFileSelect_c : public dBase_c {
 public:
-    FILL(0x064, 0x24C);
+    FILL(0x070, 0x24C);
 
-    /* 0x24C */ dDateFile_c* mpDateFile[SAVE_SLOT_COUNT];
+    /* 0x24C */ dDateFile_c*   mpDateFile[SAVE_SLOT_COUNT];
     /* 0x258 */ dInfoWindow_c* mpInfoWindow;
 
     FILL(0x25C, 0x2A4);

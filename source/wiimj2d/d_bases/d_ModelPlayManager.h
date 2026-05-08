@@ -1,7 +1,8 @@
 #pragma once
 
-class dModelPlayManager_c
-{
+#include "d_system/d_base.h"
+
+class dModelPlayManager_c : public dBase_c {
 public:
     // Nested Types
     // ^^^^^^
@@ -24,7 +25,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x000, 0xA7C);
+    FILL(0x070, 0xA7C);
 
     /* 0xA7C */ bool mReady;
 

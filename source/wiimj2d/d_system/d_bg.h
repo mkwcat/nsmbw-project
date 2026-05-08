@@ -1,9 +1,9 @@
 #pragma once
 
 #include "d_PanelObjMgr.h"
+#include "d_system/d_base.h"
 
-class dBg_c
-{
+class dBg_c : public dBase_c {
     SIZE_ASSERT(0x90AAC);
 
 public:
@@ -25,19 +25,16 @@ public:
     /* 0x8007BEF0 */
     void initScroll();
 
-    bool isAutoscroll() const
-    {
-        return mIsAutoscroll;
-    }
+    bool isAutoscroll() const { return mIsAutoscroll; }
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00000, 0x00110);
+    FILL(0x00070, 0x00110);
 
     /* 0x00110 */ float m0x00110;
-    /* 0x00114 */ u8 m0x00114;
+    /* 0x00114 */ u8    m0x00114;
 
     FILL(0x00115, 0x900C6);
 
