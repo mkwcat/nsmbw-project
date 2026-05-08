@@ -5,6 +5,9 @@
 # PowerPC_EABI_Support/MSL/MSL_C/MSL_Common/Src
 #
 target_sources(project PRIVATE
+# NSMBW          .data:  0x80350D58 - 0x80350E98
+    ansi_files.c
+
 # NSMBW          .text:  0x802DEC0C - 0x802DEDFC
     file_io.c
 
