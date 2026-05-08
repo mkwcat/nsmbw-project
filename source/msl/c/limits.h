@@ -15,4 +15,6 @@
 #define ULONG_MAX 4294967295UL
 #define ULONG_MIN 0UL
 
+#define UINT_MAX ULONG_MAX
+
 #define CHAR_BIT 8

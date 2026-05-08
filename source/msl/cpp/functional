@@ -1,23 +1,23 @@
 #pragma once
 
-namespace std
-{
+#include "utility"
 
-template <class T = void>
-struct equal_to {
-    constexpr bool operator()(const T& lhs, const T& rhs) const
-    {
+namespace std {
+
+template <class T = void> struct equal_to {
+    constexpr bool operator()(
+        const T& lhs, const T& rhs
+    ) const {
         return lhs == rhs;
     }
 };
 
-template <>
-struct equal_to<void> {
+template <> struct equal_to<void> {
     template <class T, class U>
-    constexpr auto operator()(T&& lhs, U&& rhs) const
-      -> decltype(static_cast<T&&>(lhs) == static_cast<U&&>(rhs))
-    {
-        return static_cast<T&&>(lhs) == static_cast<U&&>(rhs);
+    constexpr auto operator()(
+        T&& lhs, U&& rhs
+    ) const -> decltype(std::forward<T>(lhs) == std::forward<U>(rhs)) {
+        return std::forward<T>(lhs) == std::forward<U>(rhs);
     }
 };
 

@@ -3,38 +3,42 @@
 #include "iterator"
 #include "utility"
 
-namespace std
-{
+namespace std {
 
 template <class T>
-constexpr inline const T& min(const T& l, const T& r)
-{
+constexpr inline const T& min(
+    const T& l, const T& r
+) {
     return (r < l) ? r : l;
 }
 
 template <class T>
-constexpr inline const T& max(const T& l, const T& r)
-{
+constexpr inline const T& max(
+    const T& l, const T& r
+) {
     return (l < r) ? r : l;
 }
 
 template <class T>
-constexpr inline const T& clamp(const T& v, const T& lo, const T& hi)
-{
+constexpr inline const T& clamp(
+    const T& v, const T& lo, const T& hi
+) {
     return (v < lo) ? lo : (hi < v) ? hi : v;
 }
 
 template <class T, class Compare>
-constexpr inline const T& clamp(const T& v, const T& lo, const T& hi, Compare comp)
-{
+constexpr inline const T& clamp(
+    const T& v, const T& lo, const T& hi, Compare comp
+) {
     return comp(v, lo) ? lo : comp(hi, v) ? hi : v;
 }
 
 template <class Iterator, class Compare>
-constexpr inline void sort(Iterator begin, Iterator end, Compare comp)
-{
+constexpr inline void sort(
+    Iterator begin, Iterator end, Compare comp
+) {
     auto partition = [](Iterator begin, Iterator end, Compare comp) {
-        auto pivot = *end;
+        auto pivot       = *end;
         auto sortedIndex = begin;
 
         for (auto i = begin; i < end; ++i) {
@@ -58,14 +62,16 @@ constexpr inline void sort(Iterator begin, Iterator end, Compare comp)
 }
 
 template <class Iterator>
-constexpr inline void sort(Iterator begin, Iterator end)
-{
+constexpr inline void sort(
+    Iterator begin, Iterator end
+) {
     sort(begin, end, [](auto l, auto r) { return l < r; });
 }
 
 template <class InputIt, class T>
-constexpr std::ptrdiff_t count(InputIt first, InputIt last, const T& value)
-{
+constexpr std::ptrdiff_t count(
+    InputIt first, InputIt last, const T& value
+) {
     std::ptrdiff_t count = 0;
     for (; first != last; first++) {
         if (*first == value) {
@@ -76,8 +82,9 @@ constexpr std::ptrdiff_t count(InputIt first, InputIt last, const T& value)
 }
 
 template <class InputIt1, class InputIt2>
-constexpr bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2)
-{
+constexpr bool equal(
+    InputIt1 first1, InputIt1 last1, InputIt2 first2
+) {
     for (; first1 != last1; first1++, first2++) {
         if (!(*first1 == *first2)) {
             return false;
@@ -87,8 +94,9 @@ constexpr bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2)
 }
 
 template <class InputIt, class T>
-constexpr InputIt find(InputIt first, InputIt last, const T& value)
-{
+constexpr InputIt find(
+    InputIt first, InputIt last, const T& value
+) {
     for (; first != last; first++) {
         if (*first == value) {
             return first;
@@ -98,11 +106,22 @@ constexpr InputIt find(InputIt first, InputIt last, const T& value)
 }
 
 template <class ForwardIt, class T>
-void fill(ForwardIt first, ForwardIt last, const T& value)
-{
+void fill(
+    ForwardIt first, ForwardIt last, const T& value
+) {
     for (; first != last; first++) {
         *first = value;
     }
+}
+
+template <class InputIt, class OutputIt>
+constexpr OutputIt copy(
+    InputIt first, InputIt last, OutputIt d_first
+) {
+    for (; first != last; first++, d_first++) {
+        *d_first = *first;
+    }
+    return d_first;
 }
 
 } // namespace std

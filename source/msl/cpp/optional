@@ -92,6 +92,11 @@ public:
     // Operators
     // ^^^^^^
 
+    constexpr explicit operator bool() const noexcept
+    {
+        return has_value();
+    }
+
     constexpr const value_type& operator*() const noexcept
     {
         return *m_pointer;
