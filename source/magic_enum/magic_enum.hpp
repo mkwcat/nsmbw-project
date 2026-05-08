@@ -618,8 +618,16 @@ constexpr auto enum_name() noexcept {
   }
 }
 
+namespace detail {
+// For compatibility with custom mangling
 template <typename E, E V>
-inline constexpr auto enum_name_v = enum_name<E, V>();
+struct enum_name_storage {
+  static inline constexpr auto name = enum_name<E, V>();
+};
+}
+
+template <typename E, E V>
+inline constexpr auto& enum_name_v = detail::enum_name_storage<E, V>::name;
 
 template <typename E, auto V>
 constexpr bool is_valid() noexcept {
