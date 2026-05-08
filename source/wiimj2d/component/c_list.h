@@ -4,29 +4,20 @@
  * A doubly-linked list node. See cListMg_c.
  * @unofficial
  */
-class cListNd_c
-{
+class cListNd_c {
     SIZE_ASSERT(0x8);
 
 public:
     /**
      * Constructs a new list node.
      */
-    cListNd_c()
-      : mpPrev(nullptr)
-      , mpNext(nullptr)
-    {
-    }
+    constexpr cListNd_c()
+        : mpPrev(nullptr)
+        , mpNext(nullptr) {}
 
-    cListNd_c* getPrev() const
-    {
-        return mpPrev;
-    }
+    cListNd_c* getPrev() const { return mpPrev; }
 
-    cListNd_c* getNext() const
-    {
-        return mpNext;
-    }
+    cListNd_c* getNext() const { return mpNext; }
 
 protected:
     /**
@@ -46,19 +37,16 @@ protected:
  * A doubly-linked list container. See cListNd_c.
  * @unofficial
  */
-class cListMg_c
-{
+class cListMg_c {
     SIZE_ASSERT(0x8);
 
 public:
     /**
      * Constructs a new list container.
      */
-    cListMg_c()
-      : mpFirst(nullptr)
-      , mpLast(nullptr)
-    {
-    }
+    constexpr cListMg_c()
+        : mpFirst(nullptr)
+        , mpLast(nullptr) {}
 
     /**
      * Inserts a node after the given previous node.
@@ -93,15 +81,9 @@ public:
      */
     bool prepend(cListNd_c* node);
 
-    cListNd_c* getFirst() const
-    {
-        return mpFirst;
-    }
+    cListNd_c* getFirst() const { return mpFirst; }
 
-    cListNd_c* getLast() const
-    {
-        return mpLast;
-    }
+    cListNd_c* getLast() const { return mpLast; }
 
 protected:
     /**

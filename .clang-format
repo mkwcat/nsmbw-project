@@ -12,7 +12,7 @@ AlignConsecutiveBitFields:
 AlignConsecutiveDeclarations:
   Enabled: true
   AcrossEmptyLines: true
-  AcrossComments: true
+  AcrossComments: false
   AlignFunctionDeclarations: false
 AlignConsecutiveShortCaseStatements:
   Enabled: true

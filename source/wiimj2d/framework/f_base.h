@@ -1,12 +1,20 @@
 #pragma once
 
-#include "framework/f_base_id.h"
-#include "framework/f_profile.h"
+#include "f_base_id.h"
+#include "f_manager.h"
+#include "f_profile.h"
 #include <cstdlib>
 
-class fBase_c
-{
+class fBaHelper_c;
+
+namespace EGG {
+class FrmHeap;
+}
+
+class fBase_c {
     SIZE_ASSERT(0x64);
+
+    friend class fManager_c;
 
 public:
     // Structors
@@ -105,7 +113,7 @@ public:
         /**
          * The step could not be completed.
          */
-        FAILED = 2,
+        FAILED    = 2,
     };
 
     /**
@@ -119,15 +127,15 @@ public:
         /**
          * Execution is disabled.
          */
-        DISABLE_EXECUTE = 2,
+        DISABLE_EXECUTE      = 2,
         /**
          * Drawing is disabled, and this is a root base.
          */
-        ROOT_DISABLE_DRAW = 4,
+        ROOT_DISABLE_DRAW    = 4,
         /**
          * Drawing is disabled.
          */
-        DISABLE_DRAW = 8,
+        DISABLE_DRAW         = 8,
     };
 
 public:
@@ -199,29 +207,46 @@ protected:
     /**
      * Checks if a flag is set in ::mProcControl.
      */
-    bool isProcControlFlag(u8 flag) const
-    {
+    bool isProcControlFlag(
+        u8 flag
+    ) const {
         return (mProcControl & flag) != 0;
     }
 
     /**
      * Sets a flag in ::mProcControl.
      */
-    void setProcControlFlag(u8 flag)
-    {
+    void setProcControlFlag(
+        u8 flag
+    ) {
         mProcControl |= flag;
     }
 
     /**
      * Clears a flag in ::mProcControl.
      */
-    void clearProcControlFlag(u8 flag)
-    {
+    void clearProcControlFlag(
+        u8 flag
+    ) {
         mProcControl &= ~flag;
     }
 
-    // Temporary fill data
-    /* 0x10 */ FILL(0x10, 0x60);
+    /**
+     * The base's process manager.
+     */
+    /* 0x10 */ fManager_c mMng;
+
+    /* @unused */
+    /* 0x54 */ fBaHelper_c* mpUnusedHelper;
+
+    /* @unused */
+    /* 0x58 */ fLiMgBa_c mUnusedList;
+
+    /**
+     * The base's dedicated heap.
+     * @unused
+     */
+    /* 0x60 */ EGG::FrmHeap* mHeap;
 
 public:
     // Virtual Functions
