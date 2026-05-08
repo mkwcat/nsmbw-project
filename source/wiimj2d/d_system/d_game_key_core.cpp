@@ -21,30 +21,29 @@ dGameKeyCore_c::dGameKeyCore_c(mPad::CH_e channel);
 void dGameKeyCore_c::allclear();
 
 [[nsmbw(0x800B5CB0)]]
-void dGameKeyCore_c::read()
-{
+void dGameKeyCore_c::read() {
     // Set data from previous frame
-    mPrevRawHeld = mRawHeld;
-    mPrevHeld = mHeld;
-    mAccelOld = mAccel;
-    mAccelVerticalXOld = mAccelVerticalX;
-    mAccelVerticalYOld = mAccelVerticalY;
-    mAngleOld = mAngle;
-    mMoveDistanceOld = mMoveDistance;
+    mPrevRawHeld                = mRawHeld;
+    mPrevHeld                   = mHeld;
+    mAccelOld                   = mAccel;
+    mAccelVerticalXOld          = mAccelVerticalX;
+    mAccelVerticalYOld          = mAccelVerticalY;
+    mAngleOld                   = mAngle;
+    mMoveDistanceOld            = mMoveDistance;
 
     EGG::Controller* controller = getController();
 
-    dReplayPlay_c* replayData = dScStage_c::m_replayPlay_p[mPlayerNo];
+    dReplayPlay_c*   replayData = dScStage_c::m_replayPlay_p[mPlayerNo];
     if (replayData == nullptr) {
         // Replay is not active for this channel, sssign controller type
         using Extension_e = dRemoconMng_c::dConnect_c::dExtension_c::Type_e;
         Extension_e devType =
-          dRemoconMng_c::m_instance->mpConnect[mPlayerNo]->getExtension()->getType();
+            dRemoconMng_c::m_instance->mpConnect[mPlayerNo]->getExtension()->getType();
 
-        EGG::CoreController* core = nullptr;
-        EGG::GCController* dolphin = nullptr;
+        EGG::CoreController*    core    = nullptr;
+        EGG::GCController*      dolphin = nullptr;
         EGG::ClassicController* classic = nullptr;
-        mType = Type_e::CORE;
+        mType                           = Type_e::CORE;
         if (devType == Extension_e::NONE) {
             // Sideways Wii Remote
         } else if (devType == Extension_e::FREESTYLE) {
@@ -84,32 +83,32 @@ void dGameKeyCore_c::read()
             }
 
             mPad::CH_e channel = mPad::g_playerChannel[mPlayerNo];
-            mAccelVerticalX = mPad::g_PadAdditionalData[channel].mAccVertical[0];
-            mAccelVerticalY = mPad::g_PadAdditionalData[channel].mAccVertical[1];
-            mAccelVerticalZ = mPad::g_PadAdditionalData[channel].mAccVertical[2];
+            mAccelVerticalX    = mPad::g_PadAdditionalData[channel].mAccVertical[0];
+            mAccelVerticalY    = mPad::g_PadAdditionalData[channel].mAccVertical[1];
+            mAccelVerticalZ    = mPad::g_PadAdditionalData[channel].mAccVertical[2];
 
             // Pointer
-            mAngle.x = core->mStatus->horizon.x;
-            mAngle.y = core->mStatus->horizon.y;
+            mAngle.x           = core->mStatus->horizon.x;
+            mAngle.y           = core->mStatus->horizon.y;
         } else if (isClassic() && classic) {
-            mRawHeld = classic->mDown;
+            mRawHeld        = classic->mDown;
 
-            mAccel = {0.0f, classic->mLTrigger - classic->mRTrigger, 0.0f};
+            mAccel          = {0.0f, classic->mLTrigger - classic->mRTrigger, 0.0f};
 
-            mVec2_c x = {0.0f, classic->mRTrigger - classic->mLTrigger};
-            mVec2_c y = x - mAccelVerticalX;
-            mVec2_c z = y - mAccelVerticalY;
+            mVec2_c x       = {0.0f, classic->mRTrigger - classic->mLTrigger};
+            mVec2_c y       = x - mAccelVerticalX;
+            mVec2_c z       = y - mAccelVerticalY;
             mAccelVerticalX = x;
             mAccelVerticalY = y;
             mAccelVerticalZ = z;
         } else if (isDolphin() && dolphin) {
-            mRawHeld = dolphin->mDown;
+            mRawHeld        = dolphin->mDown;
 
-            mAccel = {0.0f, dolphin->mLTrigger - dolphin->mRTrigger, 0.0f};
+            mAccel          = {0.0f, dolphin->mLTrigger - dolphin->mRTrigger, 0.0f};
 
-            mVec2_c x = {0.0f, dolphin->mRTrigger - dolphin->mLTrigger};
-            mVec2_c y = x - mAccelVerticalX;
-            mVec2_c z = y - mAccelVerticalY;
+            mVec2_c x       = {0.0f, dolphin->mRTrigger - dolphin->mLTrigger};
+            mVec2_c y       = x - mAccelVerticalX;
+            mVec2_c z       = y - mAccelVerticalY;
             mAccelVerticalX = x;
             mAccelVerticalY = y;
             mAccelVerticalZ = z;
@@ -120,16 +119,16 @@ void dGameKeyCore_c::read()
         if (replayData->mFrameFlags & 0x10000000) {
             mPrevRawHeld = replayData->mPrevFrameInput;
         }
-        mRawHeld = replayData->mFrameInput;
-        mAccel = replayData->mFrameAccel;
+        mRawHeld        = replayData->mFrameInput;
+        mAccel          = replayData->mFrameAccel;
         mAccelVerticalX = replayData->mFrameAccelVertX;
         mAccelVerticalY = replayData->mFrameAccelVertY;
         mAccelVerticalZ = replayData->mFrameAccelVertZ;
     }
 
     // "Process" inputs for Nunchuck mode
-    mPrevHeld = setConfigKey(mPrevRawHeld);
-    mHeld = setConfigKey(mRawHeld);
+    mPrevHeld  = setConfigKey(mPrevRawHeld);
+    mHeld      = setConfigKey(mRawHeld);
     mTriggered = mHeld & (mHeld ^ mPrevHeld);
 
     // Not sure what this does
@@ -168,7 +167,7 @@ void dGameKeyCore_c::read()
 
     handleTilting();
     mMoveDistance = EGG::Math<float>::sqrt(
-      static_cast<float>(mAccel.z * mAccel.z + mAccel.x * mAccel.x + mAccel.y * mAccel.y)
+        static_cast<float>(mAccel.z * mAccel.z + mAccel.x * mAccel.x + mAccel.y * mAccel.y)
     );
     if (mMoveDistance < 1.2) {
         mMoveDistance = 1.0;
@@ -179,14 +178,15 @@ void dGameKeyCore_c::read()
         mTriggered |= m0x30;
     }
     if (mShakeOld) {
-        mShake = mShakeOld;
+        mShake    = mShakeOld;
         mShakeOld = 0;
     }
 }
 
 [[nsmbw(0x800B60D0)]]
-u32 dGameKeyCore_c::setConfigKey(u32 input)
-{
+u32 dGameKeyCore_c::setConfigKey(
+    u32 input
+) {
     u32 processed;
     switch (mType) {
     default:
@@ -325,8 +325,7 @@ u32 dGameKeyCore_c::setConfigKey(u32 input)
 }
 
 [[nsmbw(0x800B61F0)]]
-void dGameKeyCore_c::handleTilting()
-{
+void dGameKeyCore_c::handleTilting() {
     if (dScStage_c::m_replayPlay_p[mPlayerNo] != nullptr) {
         mTilt = dScStage_c::m_replayPlay_p[mPlayerNo]->mFrameTilt;
         return;
@@ -340,8 +339,7 @@ void dGameKeyCore_c::handleTilting()
 }
 
 [[nsmbw(0x800B62A0)]]
-void dGameKeyCore_c::setShakeY()
-{
+void dGameKeyCore_c::setShakeY() {
     if (dScStage_c::m_replayPlay_p[mPlayerNo] != nullptr) {
         mShake = dScStage_c::m_replayPlay_p[mPlayerNo]->mFrameFlags & 29_bit;
         return;
@@ -374,7 +372,7 @@ void dGameKeyCore_c::setShakeY()
         if (mShakeTimer1 >= 4 && (accZDiff <= accYDiff || accZDiff <= accXDiff)) {
             mShakeTimer3 = 5;
             mShakeTimer1 = 0;
-            mShake = true;
+            mShake       = true;
         } else {
             mShake = false;
         }

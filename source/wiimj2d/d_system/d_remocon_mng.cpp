@@ -6,10 +6,13 @@
 #include "d_system/d_mj2d_game.h"
 #include "egg/audio/eggAudioRmtSpeaker.h"
 #include "machine/m_pad.h"
+#include "mkwcat/ToString.hpp"
 #include <egg/core/eggController.h>
 #include <memory>
 #include <revolution/os.h>
 #include <revolution/wpad.h>
+
+static_assert(std::__is_invocable_r<bool, std::equal_to<>, char, char>);
 
 [[nsmbw_data(0x80428280)]]
 bool dRemoconMng_c::dConnect_c::m_isBoot;
@@ -23,18 +26,19 @@ void ClearDeviceCallback(s32);
 [[nsmbw(0x800DC040)]]
 dRemoconMng_c::dRemoconMng_c();
 
-dRemoconMng_c::dRemoconMng_c(dRemoconMng_c* old)
-  : mDummyConnect(*new dConnect_c(mPad::CH_e::COUNT))
-{
+dRemoconMng_c::dRemoconMng_c(
+    dRemoconMng_c* old
+)
+    : mDummyConnect(*new dConnect_c(mPad::CH_e::COUNT)) {
     for (std::size_t connect = 0; connect < 4; connect++) {
         dConnect_c* pConnect = mpConnectAll[connect] = old->mpConnect[connect];
-        pConnect->mChannel = connect;
-        pConnect->mPlayerNo = -1;
+        pConnect->mChannel                           = connect;
+        pConnect->mPlayerNo                          = -1;
     }
     dConnect_c* pAllConnect = std::allocator<dConnect_c>{}.allocate(CONNECT_COUNT - 4);
     for (std::size_t connect = 4; connect < CONNECT_COUNT; connect++) {
         mpConnectAll[connect] =
-          std::construct_at<dConnect_c>(pAllConnect + (connect - 4), mPad::CH_e(connect));
+            std::construct_at<dConnect_c>(pAllConnect + (connect - 4), mPad::CH_e(connect));
     }
 
     operator delete(old);
@@ -46,8 +50,8 @@ dRemoconMng_c::dRemoconMng_c(dRemoconMng_c* old)
         }
 
         dConnect_c* pConnect = mpConnectAll[connect];
-        pConnect->mPlayerNo = player;
-        mpConnect[player] = pConnect;
+        pConnect->mPlayerNo  = player;
+        mpConnect[player]    = pConnect;
         mPad::setPlayerOrder(player++, pConnect->getChannel());
     }
 
@@ -57,31 +61,27 @@ dRemoconMng_c::dRemoconMng_c(dRemoconMng_c* old)
 }
 
 [[nsmbw(0x800DC0D0)]]
-dRemoconMng_c::~dRemoconMng_c()
-{
+dRemoconMng_c::~dRemoconMng_c() {
     for (std::size_t connect = 0; connect < CONNECT_COUNT; connect++) {
         dConnect_c* pConnect = mpConnectAll[connect];
-        mpConnect[connect] = nullptr;
+        mpConnect[connect]   = nullptr;
         delete pConnect;
     }
 }
 
 [[nsmbw(0x800DC180)]]
-dRemoconMng_c::dConnect_c::~dConnect_c()
-{
+dRemoconMng_c::dConnect_c::~dConnect_c() {
 #ifndef __has_macintosh_dt_fix
     mExtension.~dExtension_c();
 #endif // !__has_macintosh_dt_fix
 }
 
 [[nsmbw(0x800DC360)]]
-dRemoconMng_c::dConnect_c::dExtension_c::~dExtension_c()
-{
+dRemoconMng_c::dConnect_c::dExtension_c::~dExtension_c() {
 }
 
 [[nsmbw(0x800DC570)]]
-void dRemoconMng_c::execute()
-{
+void dRemoconMng_c::execute() {
     for (int i = 0; i < CONNECT_COUNT; i++) {
         m_instance->mpConnectAll[i]->execute();
     }
@@ -105,9 +105,10 @@ void dRemoconMng_c::execute()
     WPADSetAcceptConnection(allowConnect);
 }
 
-void dRemoconMng_c::setFirstConnect(int first)
-{
-    int base = mFirstConnect;
+void dRemoconMng_c::setFirstConnect(
+    int first
+) {
+    int base   = mFirstConnect;
     int target = first;
 
     if (base == target) {
@@ -126,8 +127,8 @@ void dRemoconMng_c::setFirstConnect(int first)
         }
     } else {
         int count = PLAYER_COUNT - target;
-        target = PLAYER_COUNT - 1;
-        base = base + count - 1;
+        target    = PLAYER_COUNT - 1;
+        base      = base + count - 1;
         for (; count > 0; count--, base--, target--) {
             mpConnect[target] = mpConnect[base];
             mPad::setPlayerOrder(target, mpConnect[base]->getChannel());
@@ -139,22 +140,22 @@ void dRemoconMng_c::setFirstConnect(int first)
 }
 
 [[nsmbw(0x800DC660)]]
-dRemoconMng_c::dConnect_c::dConnect_c(mPad::CH_e channel)
-  : mPlayerNo(-1)
-  , mExtension(channel)
-  , mBattery(-1)
-  , mAllowConnect(true)
-  , mEnableMotor(false)
-  , mChannel(channel)
-  , mStateMgr(*this, StateID_Shutdown)
-{
+dRemoconMng_c::dConnect_c::dConnect_c(
+    mPad::CH_e channel
+)
+    : mPlayerNo(-1)
+    , mExtension(channel)
+    , mBattery(-1)
+    , mAllowConnect(true)
+    , mEnableMotor(false)
+    , mChannel(channel)
+    , mStateMgr(*this, StateID_Shutdown) {
     if (channel != mPad::CH_e::COUNT) {
         mPad::g_core[channel]->createRumbleMgr(8);
     }
 }
 
-void dRemoconMng_c::dConnect_c::registerOrder()
-{
+void dRemoconMng_c::dConnect_c::registerOrder() {
     if (mPlayerNo >= 0) {
         return;
     }
@@ -170,27 +171,25 @@ void dRemoconMng_c::dConnect_c::registerOrder()
     }
 }
 
-void dRemoconMng_c::dConnect_c::deregisterOrder()
-{
+void dRemoconMng_c::dConnect_c::deregisterOrder() {
     if (mPlayerNo < 0) {
         return;
     }
 
-    auto* mng = dRemoconMng_c::m_instance;
+    auto* mng                 = dRemoconMng_c::m_instance;
     mng->mpConnect[mPlayerNo] = &mng->mDummyConnect;
-    mPlayerNo = -1;
+    mPlayerNo                 = -1;
 }
 
-bool dRemoconMng_c::dConnect_c::splitExtension()
-{
+bool dRemoconMng_c::dConnect_c::splitExtension() {
     if (mPlayerNo < 0 || mExtension.getType() != dExtension_c::Type_e::CLASSIC ||
         (mChannel >= mPad::CH_e::CHAN_CL_0 && mChannel <= mPad::CH_e::CHAN_CL_LAST)) {
         return false;
     }
 
-    int classic = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
+    int         classic       = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
 
-    auto* mng = dRemoconMng_c::m_instance;
+    auto*       mng           = dRemoconMng_c::m_instance;
 
     std::size_t classicPlayer = mng->mFirstConnect;
     for (; classicPlayer < PLAYER_COUNT; classicPlayer++) {
@@ -203,7 +202,7 @@ bool dRemoconMng_c::dConnect_c::splitExtension()
     }
 
     dConnect_c* classicConnect = mng->mpConnectAll[classic];
-    classicConnect->mPlayerNo = classicPlayer;
+    classicConnect->mPlayerNo  = classicPlayer;
     classicConnect->mStateMgr.changeState(StateID_Setup);
     classicConnect->mExtension.mStateMgr.changeState(*mExtension.mStateMgr.getStateID());
 
@@ -216,8 +215,7 @@ bool dRemoconMng_c::dConnect_c::splitExtension()
 }
 
 [[nsmbw(0x800DC7E0)]]
-void dRemoconMng_c::dConnect_c::executeState_Shutdown()
-{
+void dRemoconMng_c::dConnect_c::executeState_Shutdown() {
     EGG::Controller* controller = mPad::g_core[mChannel];
     if (controller->getClassicController()) {
         return;
@@ -259,11 +257,10 @@ void dRemoconMng_c::dConnect_c::executeState_Shutdown()
 }
 
 [[nsmbw(0x800DC910)]]
-void dRemoconMng_c::dConnect_c::initializeState_Setup()
-{
+void dRemoconMng_c::dConnect_c::initializeState_Setup() {
     // Call to dRemoconMng_c::dConnect_c::dExtension_c::setup removed because it's just a blr
 
-    OS_REPORT("Controller setup %d\n", static_cast<int>(mChannel));
+    OS_REPORT("Remocon Setup: %s\n", mkwcat::ToString(static_cast<mPad::CH_e>(mChannel)));
 
     mBattery = mPad::getBatteryLevel_ch(mPad::CH_e(mChannel));
 
@@ -281,8 +278,9 @@ void dRemoconMng_c::dConnect_c::initializeState_Setup()
 }
 
 [[nsmbw(0x800DC990)]]
-void dRemoconMng_c::dConnect_c::finalizeState_Setup()
-{
+void dRemoconMng_c::dConnect_c::finalizeState_Setup() {
+    OS_REPORT("Remocon Shutdown: %s\n", mkwcat::ToString(static_cast<mPad::CH_e>(mChannel)));
+
     deregisterOrder();
 
     mExtension.shutdown();
@@ -293,8 +291,7 @@ void dRemoconMng_c::dConnect_c::finalizeState_Setup()
 }
 
 [[nsmbw(0x800DC9D0)]]
-void dRemoconMng_c::dConnect_c::executeState_Setup()
-{
+void dRemoconMng_c::dConnect_c::executeState_Setup() {
     EGG::Controller* controller = mPad::g_core[mChannel];
     if (controller->getClassicController()) {
         auto type = mExtension.getType();
@@ -326,8 +323,7 @@ void dRemoconMng_c::dConnect_c::execute();
 [[nsmbw(0x800DCA80)]]
 void dRemoconMng_c::dConnect_c::onRumbleEnable();
 
-void dRemoconMng_c::dConnect_c::dExtension_c::checkState()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::checkState() {
     EGG::CoreController* core = mPad::g_core[mChannel]->getCoreController();
     if (!core) {
         return;
@@ -367,8 +363,7 @@ void dRemoconMng_c::dConnect_c::dExtension_c::checkState()
 }
 
 [[nsmbw(0x800DCAF0)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Wait()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Wait() {
     mType = Type_e::WAIT;
 }
 
@@ -377,14 +372,12 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Wait()
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Wait();
 
 [[nsmbw(0x800DCB10)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Wait()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Wait() {
     checkState();
 }
 
 [[nsmbw(0x800DCC40)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_None()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_None() {
     mType = Type_e::NONE;
 }
 
@@ -393,14 +386,12 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_None()
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_None();
 
 [[nsmbw(0x800DCC60)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_None()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_None() {
     checkState();
 }
 
 [[nsmbw(0x800DCD70)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Freestyle()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Freestyle() {
     mType = Type_e::FREESTYLE;
 }
 
@@ -409,14 +400,12 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Freestyle()
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Freestyle();
 
 [[nsmbw(0x800DCCA0)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Freestyle()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Freestyle() {
     checkState();
 }
 
 [[nsmbw(0x800DCEA0)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Other()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Other() {
     mType = Type_e::OTHER;
 }
 
@@ -425,18 +414,15 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Other()
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Other();
 
 [[nsmbw(0x800DCEC0)]]
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Other()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Other() {
     checkState();
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Split()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Split() {
     mType = Type_e::NONE;
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Split()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Split() {
     int classic = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
     if (!dRemoconMng_c::m_instance->mpConnectAll[classic]->isSetup()) {
         mType = Type_e::WAIT;
@@ -444,40 +430,33 @@ void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Split()
     }
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Split()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Split() {
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Classic()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Classic() {
     mType = Type_e::CLASSIC;
 
     mPad::setPlayerOrder(
-      dRemoconMng_c::m_instance->mpConnectAll[mChannel]->mPlayerNo, getChannel()
+        dRemoconMng_c::m_instance->mpConnectAll[mChannel]->mPlayerNo, getChannel()
     );
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Classic()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Classic() {
     mPad::setPlayerOrder(dRemoconMng_c::m_instance->mpConnectAll[mChannel]->mPlayerNo, mChannel);
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Classic()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Classic() {
     checkState();
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Dolphin()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Dolphin() {
     mType = Type_e::DOLPHIN;
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Dolphin()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Dolphin() {
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Dolphin()
-{
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Dolphin() {
 }
 
 [[nsmbw(0x800DCFD0)]]
