@@ -19,6 +19,7 @@
 [[gnu::constructor]]
 static void initCallback() {
     nw4r::db::Exception_SetUserCallback(dException_c::callback, nullptr);
+    *(int*) 1 = 4;
 }
 
 bool dException_c::callback(
@@ -81,6 +82,57 @@ void dException_c::dumpFile(
     for (int line = 0; line < lineCount - 1; line++) {
         const u8* textBuf = &console->textBuf[(console->width + 1) * line + 0];
         std::fprintf(pipe, "%s\n", textBuf);
+    }
+
+    std::fprintf(
+        pipe, "---THREAD_CONTEXT_INFO---\n"
+              "-------------------------------- THREAD\n"
+    );
+
+    OSThreadQueue* threads = reinterpret_cast<OSThreadQueue*>(0x800000DC);
+    for (OSThread* thread = threads->head; thread != nullptr; thread = thread->nextActive) {
+        std::fprintf(
+            pipe,
+            "---ThreadInfo---\n"
+            "STATE:  %04XH",
+            thread->state
+        );
+
+        const char* stateName = nullptr;
+        switch (thread->state) {
+        case OS_THREAD_STATE_EXITED:
+            stateName = "EXITED";
+            break;
+        case OS_THREAD_STATE_READY:
+            stateName = "READY";
+            break;
+        case OS_THREAD_STATE_RUNNING:
+            stateName = "RUNNING";
+            break;
+        case OS_THREAD_STATE_SLEEPING:
+            stateName = "SLEEPING";
+            break;
+        case OS_THREAD_STATE_MORIBUND:
+            stateName = "MORIBUND";
+            break;
+        }
+
+        if (stateName) {
+            std::fprintf(pipe, "      (%s)\n", stateName);
+        } else {
+            std::fprintf(pipe, "\n");
+        }
+
+        std::fprintf(
+            pipe, "CONTEXT:%08lXH   PRIO:%lu (%lu)\n", reinterpret_cast<std::size_t>(&thread),
+            thread->base, thread->priority
+        );
+        std::fprintf(pipe, "SUSPEND:%-12dFLAG:%04XH\n", thread->state, thread->flags);
+        std::fprintf(
+            pipe, "STACK:  %08lXH - %08lXH\n", reinterpret_cast<u32>(thread->stackBegin),
+            reinterpret_cast<u32>(thread->stackEnd)
+        );
+        std::fprintf(pipe, "CSTATE: %04XH       ERR: %ld\n", thread->context.state, thread->error);
     }
 
     std::fprintf(
