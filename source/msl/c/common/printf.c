@@ -1,8 +1,9 @@
 // printf.c
 // NSMBW .text: 0x802DF7A8 - 0x802E1BA0
 
-#include "stdio.h"
-#include "wchar.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include <wchar.h>
 
 EXTERN_C_START
 
@@ -20,8 +21,8 @@ EXTERN_C_START
 
 [[nsmbw(0x802E0EE0)]]
 int __pformatter(
-  void* (*WriteProc)(void*, const char*, size_t), void* WriteProcArg, const char* format_str,
-  va_list arg
+    void* (*WriteProc)(void*, const char*, size_t), void* WriteProcArg, const char* format_str,
+    va_list arg
 );
 
 [[nsmbw(0x802E178C)]]
@@ -29,8 +30,9 @@ void* __FileWrite(void* pFile, const char* pBuffer, size_t char_num);
 
 // 0x802E17E4: __StringWrite
 
-int fprintf(FILE* file, const char* format, ...)
-{
+int fprintf(
+    FILE* file, const char* format, ...
+) {
     if (fwide(file, -1) >= 0) {
         return -1;
     }

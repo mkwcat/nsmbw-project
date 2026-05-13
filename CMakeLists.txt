@@ -37,7 +37,7 @@ set(CMAKE_CXX_LINK_FLAGS "")
 
 include_directories(
     source
-    source/msl/c
+    source/msl/c/include
     source/msl/cpp
     source/wiimj2d
 )
@@ -83,6 +83,7 @@ add_compile_options(
     -Wno-nested-anon-types
     -Wno-gnu-anonymous-struct
     -Wno-gnu-case-range
+    -Wno-gnu-conditional-omitted-operand
     -Wno-c99-extensions
     -Wno-c++26-extensions
     -Wno-unused-private-field

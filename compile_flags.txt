@@ -30,7 +30,7 @@ c++
 -nostdinc
 -nostdinc++
 -Isource
--Isource/msl/c
+-Isource/msl/c/include
 -Isource/msl/cpp
 -Isource/wiimj2d
 -include
@@ -48,6 +48,7 @@ source/System.h
 -Wno-nested-anon-types
 -Wno-gnu-anonymous-struct
 -Wno-gnu-case-range
+-Wno-gnu-conditional-omitted-operand
 -Wno-c99-extensions
 -Wno-c++26-extensions
 -Wno-unused-private-field

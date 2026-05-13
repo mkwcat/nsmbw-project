@@ -1,4 +1,5 @@
 add_subdirectory(d_system)
+add_subdirectory(d_error)
 add_subdirectory(d_stage)
 add_subdirectory(d_profile)
 add_subdirectory(d_bases)

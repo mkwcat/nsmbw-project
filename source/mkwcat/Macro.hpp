@@ -3,8 +3,7 @@
 //  nsmbw-project
 //
 
-namespace peli::Macro
-{
+namespace peli::Macro {
 
 /**
  * Macro shortcut for #pragma.
@@ -26,7 +25,9 @@ namespace peli::Macro
  */
 #define EXTERN_C_START                                                                             \
     extern "C" {                                                                                   \
-    PRAGMA(clang diagnostic push)                                                                  \
+    PRAGMA(                                                                                        \
+        clang diagnostic push                                                                      \
+    )                                                                                              \
     PRAGMA(clang diagnostic ignored "-Wold-style-cast")
 
 /**
@@ -52,5 +53,10 @@ namespace peli::Macro
  * Set the section of a definition.
  */
 #define SECTION(_SECTION) [[__gnu__::__section__(CONCAT(_SECTION, ))]]
+
+/**
+ * The restrict keyword from C.
+ */
+#define restrict __restrict
 
 } // namespace peli::Macro

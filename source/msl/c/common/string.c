@@ -1,7 +1,7 @@
 // string.c
 // NSMBW .text: 0x802E1C28 - 0x802E4FC8
 
-#include "string.h"
+#include <string.h>
 
 EXTERN_C_START
 

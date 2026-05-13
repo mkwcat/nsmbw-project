@@ -5,8 +5,7 @@
 #include <revolution/os/OSMutex.h>
 #include <revolution/os/OSThread.h>
 
-class dNandThread_c
-{
+class dNandThread_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -30,26 +29,20 @@ private:
     /* 0x800CFC20 */
     void setNandError(s32 result);
 
-    inline bool isError() const
-    {
-        return mError != 0;
-    }
+    inline bool isError() const { return mError != 0; }
 
-    inline bool isNandFailure() const
-    {
-        return mError == 6;
-    }
+    inline bool isNandFailure() const { return mError == 6; }
 
 public:
     // Instance Variables
     // ^^^^^^
 
     FILL(0x00, 0x54);
-    /* 0x54 */ OSMutex mMutex;
+    /* 0x54 */ OSMutex       mMutex;
     /* 0x6C */ OSThreadQueue mThreadQueue;
-    /* 0x74 */ s32 mState;
-    /* 0x78 */ s32 mError;
-    /* 0x7C */ bool mExists;
+    /* 0x74 */ s32           mState;
+    /* 0x78 */ s32           mError;
+    /* 0x7C */ bool          mExists;
 
 public:
     // Static Methods
@@ -59,9 +52,6 @@ public:
 
     /* 0x800CFCA0 */
     static dMj2dData_c* getSaveData();
-
-private:
-    static int ioProc(__file_handle file, u8* buff, std::size_t* count, __idle_proc idle_proc);
 
 public:
     // Static Variables

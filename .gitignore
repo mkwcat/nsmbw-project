@@ -20,6 +20,8 @@
 # vim swap files
 .*.sw?
 .sw?
+# kate swap files
+*.kate-swp
 # macOS specific files.
 .DS_Store
 # Windows specific files.

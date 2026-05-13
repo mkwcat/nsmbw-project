@@ -1,7 +1,7 @@
 #pragma once
 
-#include "mkwcat/BaseTypes.hpp"
 #include <component/c_bitmask.h>
+#include <mkwcat/Enum.h>
 
 /**
  * The maximum amount of ambush enemies per world map.
@@ -47,14 +47,14 @@
  * The identifiers for each character.
  */
 enum class PLAYER_TYPE_e {
-    MARIO = 0,
-    LUIGI = 1,
-    BLUE_TOAD = 2,
-    YELLOW_TOAD = 3,
-    TOADETTE = 4,
+    MARIO           = 0,
+    LUIGI           = 1,
+    BLUE_TOAD       = 2,
+    YELLOW_TOAD     = 3,
+    TOADETTE        = 4,
     PURPLE_TOADETTE = 5,
-    ORANGE_TOAD = 6,
-    BLACK_TOAD = 7,
+    ORANGE_TOAD     = 6,
+    BLACK_TOAD      = 7,
     COUNT,
 };
 
@@ -67,22 +67,22 @@ enum class PLAYER_TYPE_e {
  * @unofficial
  */
 enum class PLAYER_CREATE_ITEM_e {
-    NONE = 0,
+    NONE        = 0,
 
     /**
      * Gives the player Star Power.
      */
-    STAR_POWER = 0_bit,
+    STAR_POWER  = 0_bit,
 
     /**
      * Spawns a Yoshi along with the player.
      */
-    YOSHI = 1_bit,
+    YOSHI       = 1_bit,
 
     /**
      * Spawns the player inside a bubble.
      */
-    BUBBLE = 2_bit,
+    BUBBLE      = 2_bit,
 
     /**
      * Spawns a Rescue Toad instead of the regular player character.
@@ -95,13 +95,13 @@ enum class PLAYER_CREATE_ITEM_e {
  * @unofficial
  */
 enum class PLAYER_MODE_e {
-    NONE = 0,
-    MUSHROOM = 1,
-    FIRE_FLOWER = 2,
-    MINI_MUSHROOM = 3,
+    NONE             = 0,
+    MUSHROOM         = 1,
+    FIRE_FLOWER      = 2,
+    MINI_MUSHROOM    = 3,
     PROPELLER_SHROOM = 4,
-    PENGUIN_SUIT = 5,
-    ICE_FLOWER = 6,
+    PENGUIN_SUIT     = 5,
+    ICE_FLOWER       = 6,
     COUNT,
 };
 
@@ -112,29 +112,29 @@ enum class PLAYER_MODE_e {
  * @unofficial
  */
 enum class STOCK_ITEM_e : u8 {
-    MUSHROOM = 0,
-    FIRE_FLOWER = 1,
+    MUSHROOM         = 0,
+    FIRE_FLOWER      = 1,
     PROPELLER_SHROOM = 2,
-    ICE_FLOWER = 3,
-    PENGUIN_SUIT = 4,
-    MINI_MUSHROOM = 5,
-    STAR = 6,
+    ICE_FLOWER       = 3,
+    PENGUIN_SUIT     = 4,
+    MINI_MUSHROOM    = 5,
+    STAR             = 6,
     COUNT,
 };
 
 #define STOCK_ITEM_COUNT 7
 
 enum class ITEM_e : u8 {
-    MUSHROOM = 0,
-    FIRE_FLOWER = 1,
-    STAR = 2,
-    COIN = 3,
-    ICE_FLOWER = 4,
-    ONE_UP = 6,
+    MUSHROOM         = 0,
+    FIRE_FLOWER      = 1,
+    STAR             = 2,
+    COIN             = 3,
+    ICE_FLOWER       = 4,
+    ONE_UP           = 6,
     PROPELLER_SHROOM = 11,
-    MINI_MUSHROOM = 13,
-    PENGUIN_SUIT = 14,
-    COIN2 = 16,
+    MINI_MUSHROOM    = 13,
+    PENGUIN_SUIT     = 14,
+    COIN2            = 16,
 };
 
 /**
@@ -142,54 +142,54 @@ enum class ITEM_e : u8 {
  * @unofficial
  */
 enum class STAGE_e : u8 {
-    STAGE_1 = 0,
-    STAGE_2 = 1,
-    STAGE_3 = 2,
-    STAGE_4 = 3,
-    STAGE_5 = 4,
-    STAGE_6 = 5,
-    STAGE_7 = 6,
-    STAGE_8 = 7,
-    STAGE_9 = 8,
-    STAGE_10 = 9,
-    STAGE_11 = 10,
-    STAGE_12 = 11,
-    STAGE_13 = 12,
-    STAGE_14 = 13,
-    STAGE_15 = 14,
-    STAGE_16 = 15,
-    STAGE_17 = 16,
-    STAGE_18 = 17,
-    STAGE_19 = 18,
-    COIN_BATTLE = 19,
-    GHOST_HOUSE = 20,
-    TOWER = 21,
-    TOWER_2 = 22, // @unused
-    CASTLE = 23,
-    CASTLE_2 = 24, // @unused
-    KINOKO_HOUSE = 25,
+    STAGE_1        = 0,
+    STAGE_2        = 1,
+    STAGE_3        = 2,
+    STAGE_4        = 3,
+    STAGE_5        = 4,
+    STAGE_6        = 5,
+    STAGE_7        = 6,
+    STAGE_8        = 7,
+    STAGE_9        = 8,
+    STAGE_10       = 9,
+    STAGE_11       = 10,
+    STAGE_12       = 11,
+    STAGE_13       = 12,
+    STAGE_14       = 13,
+    STAGE_15       = 14,
+    STAGE_16       = 15,
+    STAGE_17       = 16,
+    STAGE_18       = 17,
+    STAGE_19       = 18,
+    COIN_BATTLE    = 19,
+    GHOST_HOUSE    = 20,
+    TOWER          = 21,
+    TOWER_2        = 22, // @unused
+    CASTLE         = 23,
+    CASTLE_2       = 24, // @unused
+    KINOKO_HOUSE   = 25,
     KINOKO_HOUSE_2 = 26,
     KINOKO_HOUSE_3 = 27,
     KINOKO_HOUSE_4 = 28,
     KINOKO_HOUSE_5 = 29, // @unused
     KINOKO_HOUSE_6 = 30, // @unused
     KINOKO_HOUSE_7 = 31, // @unused
-    ENEMY = 32,
-    ENEMY_2 = 33,
-    ENEMY_3 = 34,
-    CANNON = 35,
-    DOOMSHIP = 37,
+    ENEMY          = 32,
+    ENEMY_2        = 33,
+    ENEMY_3        = 34,
+    CANNON         = 35,
+    DOOMSHIP       = 37,
 
     /**
      * When used, it loads the Toad Rescue level for the corresponding world.
      */
-    RESCUE = 38,
+    RESCUE         = 38,
 
-    TITLE = 39,
-    PEACH_CASTLE = 40,
-    STAFFROLL = 41,
+    TITLE          = 39,
+    PEACH_CASTLE   = 40,
+    STAFFROLL      = 41,
 
-    COUNT = 42,
+    COUNT          = 42,
 };
 
 #define STAGE_COUNT 42
@@ -198,21 +198,21 @@ enum class STAGE_e : u8 {
  * The numbers corresponding to each world.
  */
 enum class WORLD_e : u8 {
-    WORLD_1 = 0,
-    WORLD_2 = 1,
-    WORLD_3 = 2,
-    WORLD_4 = 3,
-    WORLD_5 = 4,
-    WORLD_6 = 5,
-    WORLD_7 = 6,
-    WORLD_8 = 7,
-    WORLD_9 = 8,
-    WORLD_10 = 9, // @unused
-    COUNT = 10,
+    WORLD_1             = 0,
+    WORLD_2             = 1,
+    WORLD_3             = 2,
+    WORLD_4             = 3,
+    WORLD_5             = 4,
+    WORLD_6             = 5,
+    WORLD_7             = 6,
+    WORLD_8             = 7,
+    WORLD_9             = 8,
+    WORLD_10            = 9, // @unused
+    COUNT               = 10,
 
-    LAST_WORLD = WORLD_8,
-    LAST_SPECIAL_WORLD = WORLD_9,
-    NORMAL_WORLD_COUNT = LAST_WORLD + 1,
+    LAST_WORLD          = WORLD_8,
+    LAST_SPECIAL_WORLD  = WORLD_9,
+    NORMAL_WORLD_COUNT  = LAST_WORLD + 1,
     SPECIAL_WORLD_COUNT = LAST_SPECIAL_WORLD - LAST_WORLD,
 };
 
@@ -229,7 +229,7 @@ enum class WORLD_e : u8 {
 #define SAVE_REVISION_MINOR 0
 
 enum PATH_DIRECTION_e : s8 {
-    NORMAL = 0,
+    NORMAL  = 0,
     REVERSE = 1,
     INITIAL = 2,
 };
@@ -243,8 +243,9 @@ class dScWMap_c;
  * The data stored here is temporary, as it is discarded unless the game is saved.
  * Size must be 32-byte aligned.
  */
-class alignas(32) dMj2dGame_c
-{
+class alignas(
+    32
+) dMj2dGame_c {
     /* ORIGINAL SIZE: 0x980 */
 
     friend class dSaveMng_c;
@@ -267,31 +268,31 @@ public:
         /**
          * The first Star Coin was obtained.
          */
-        COIN1_COLLECTED = 0_bit,
+        COIN1_COLLECTED         = 0_bit,
 
         /**
          * The second Star Coin was obtained.
          */
-        COIN2_COLLECTED = 1_bit,
+        COIN2_COLLECTED         = 1_bit,
 
         /**
          * The third Star Coin was obtained.
          */
-        COIN3_COLLECTED = 2_bit,
+        COIN3_COLLECTED         = 2_bit,
 
-        COIN_MASK = COIN1_COLLECTED | COIN2_COLLECTED | COIN3_COLLECTED,
+        COIN_MASK               = COIN1_COLLECTED | COIN2_COLLECTED | COIN3_COLLECTED,
 
         /**
          * The regular exit was cleared.
          */
-        GOAL_NORMAL = 4_bit,
+        GOAL_NORMAL             = 4_bit,
 
         /**
          * The secret exit was cleared.
          */
-        GOAL_SECRET = 5_bit,
+        GOAL_SECRET             = 5_bit,
 
-        GOAL_MASK = GOAL_NORMAL | GOAL_SECRET,
+        GOAL_MASK               = GOAL_NORMAL | GOAL_SECRET,
 
         /**
          * The regular exit was cleared with the Super Guide.
@@ -303,7 +304,7 @@ public:
          */
         SUPER_GUIDE_GOAL_SECRET = 8_bit,
 
-        SUPER_GUIDE_GOAL_MASK = SUPER_GUIDE_GOAL_NORMAL | SUPER_GUIDE_GOAL_SECRET,
+        SUPER_GUIDE_GOAL_MASK   = SUPER_GUIDE_GOAL_NORMAL | SUPER_GUIDE_GOAL_SECRET,
     };
 
     /**
@@ -320,32 +321,32 @@ public:
         /**
          * The slot is empty.
          */
-        SAVE_EMPTY = 0_bit,
+        SAVE_EMPTY            = 0_bit,
 
         /**
          * The final boss was beaten.
          */
-        FINAL_BOSS_BEATEN = 1_bit,
+        FINAL_BOSS_BEATEN     = 1_bit,
 
         /**
          * All levels were completed.
          */
-        GOAL_ALL = 2_bit,
+        GOAL_ALL              = 2_bit,
 
         /**
          * All the Star Coins in the regular worlds were obtained.
          */
-        COIN_ALL = 3_bit,
+        COIN_ALL              = 3_bit,
 
         /**
          * All the Star Coins in the special worlds were obtained.
          */
-        COIN_ALL_SPECIAL = 4_bit,
+        COIN_ALL_SPECIAL      = 4_bit,
 
         /**
          * All the above objectives were completed.
          */
-        GAME_COMPLETED = 5_bit,
+        GAME_COMPLETED        = 5_bit,
 
         /**
          * The player died at least SUPER_GUIDE_DEATH_COUNT times in a single stage.
@@ -358,13 +359,13 @@ public:
      * Values marked with R are used for houses that spawn after a successful Toad Rescue mission.
      */
     enum class START_KINOKO_KIND_e : u8 {
-        NONE = 0,
-        YELLOW = 1,
-        RED = 2,
-        GREEN = 3,
+        NONE     = 0,
+        YELLOW   = 1,
+        RED      = 2,
+        GREEN    = 3,
         YELLOW_R = 4,
-        RED_R = 5,
-        GREEN_R = 6,
+        RED_R    = 5,
+        GREEN_R  = 6,
         COUNT,
     };
 
@@ -551,8 +552,9 @@ public:
      */
     void setStockItem(int item, s8 count);
 
-    inline s8 getStockItem(int item)
-    {
+    inline s8 getStockItem(
+        int item
+    ) {
         return mStockItemCount[item];
     }
 
@@ -661,45 +663,32 @@ public:
      */
     u8 getIbaraNow() const;
 
-    bool isEmpty() const
-    {
-        return u8(mGameCompletion) & u8(GAME_COMPLETION_e::SAVE_EMPTY);
-    }
+    bool isEmpty() const { return u8(mGameCompletion) & u8(GAME_COMPLETION_e::SAVE_EMPTY); }
 
-    void setEmpty()
-    {
-        mGameCompletion = GAME_COMPLETION_e::SAVE_EMPTY;
-    }
+    void setEmpty() { mGameCompletion = GAME_COMPLETION_e::SAVE_EMPTY; }
 
-    PIPE_RANDOMIZER_MODE_e getPipeRandomizerMode() const
-    {
-        return mPipeRandomizerMode;
-    }
+    PIPE_RANDOMIZER_MODE_e getPipeRandomizerMode() const { return mPipeRandomizerMode; }
 
-    s32 getPipeRandomizerSeed() const
-    {
-        return mPipeRandomizerSeed;
-    }
+    s32 getPipeRandomizerSeed() const { return mPipeRandomizerSeed; }
 
-    void setPipeRandomizerMode(PIPE_RANDOMIZER_MODE_e mode)
-    {
+    void setPipeRandomizerMode(
+        PIPE_RANDOMIZER_MODE_e mode
+    ) {
         mPipeRandomizerMode = mode;
     }
 
-    void setPipeRandomizerSeed(s32 seed)
-    {
+    void setPipeRandomizerSeed(
+        s32 seed
+    ) {
         mPipeRandomizerSeed = seed;
     }
 
 private:
-    enum PLAYER_TYPE_u8_e : u8 {
-    };
+    enum PLAYER_TYPE_u8_e : u8 {};
 
-    enum PLAYER_MODE_u8_e : u8 {
-    };
+    enum PLAYER_MODE_u8_e : u8 {};
 
-    enum PLAYER_CREATE_ITEM_u8_e : u8 {
-    };
+    enum PLAYER_CREATE_ITEM_u8_e : u8 {};
 
     /**
      * Checks that the save data version matches the current one and clears the slot if not.
@@ -885,78 +874,7 @@ public:
     friend class dSaveMng_c;
 };
 
-template <typename T>
-    requires(sizeof(T) == 1)
-constexpr u8 ENUM_UNDERLYING()
-{
-    return 0;
-}
-
-template <typename T>
-    requires(sizeof(T) == 2)
-constexpr u16 ENUM_UNDERLYING()
-{
-    return 0;
-}
-
-template <typename T>
-    requires(sizeof(T) == 4)
-constexpr u32 ENUM_UNDERLYING()
-{
-    return 0;
-}
-
-template <typename T>
-    requires(sizeof(T) == 8)
-constexpr u64 ENUM_UNDERLYING()
-{
-    return 0;
-}
-
-#define ENUM_BITWISE_OPERATORS(_T)                                                                 \
-    constexpr _T operator~(_T a)                                                                   \
-    {                                                                                              \
-        return static_cast<_T>(~static_cast<decltype(ENUM_UNDERLYING<_T>())>(a));                  \
-    }                                                                                              \
-    constexpr _T operator&(_T a, _T b)                                                             \
-    {                                                                                              \
-        return static_cast<_T>(                                                                    \
-          static_cast<decltype(ENUM_UNDERLYING<_T>())>(a) &                                        \
-          static_cast<decltype(ENUM_UNDERLYING<_T>())>(b)                                          \
-        );                                                                                         \
-    }                                                                                              \
-    constexpr _T operator|(_T a, _T b)                                                             \
-    {                                                                                              \
-        return static_cast<_T>(                                                                    \
-          static_cast<decltype(ENUM_UNDERLYING<_T>())>(a) |                                        \
-          static_cast<decltype(ENUM_UNDERLYING<_T>())>(b)                                          \
-        );                                                                                         \
-    }                                                                                              \
-    constexpr _T operator^(_T a, _T b)                                                             \
-    {                                                                                              \
-        return static_cast<_T>(                                                                    \
-          static_cast<decltype(ENUM_UNDERLYING<_T>())>(a) ^                                        \
-          static_cast<decltype(ENUM_UNDERLYING<_T>())>(b)                                          \
-        );                                                                                         \
-    }                                                                                              \
-    constexpr _T& operator&=(_T& a, _T b)                                                          \
-    {                                                                                              \
-        return a = a & b;                                                                          \
-    }                                                                                              \
-    constexpr _T& operator|=(_T& a, _T b)                                                          \
-    {                                                                                              \
-        return a = a | b;                                                                          \
-    }                                                                                              \
-    constexpr _T& operator^=(_T& a, _T b)                                                          \
-    {                                                                                              \
-        return a = a ^ b;                                                                          \
-    }                                                                                              \
-    constexpr bool operator!(_T a)                                                                 \
-    {                                                                                              \
-        return !static_cast<decltype(ENUM_UNDERLYING<_T>())>(a);                                   \
-    }
-
-ENUM_BITWISE_OPERATORS(PLAYER_CREATE_ITEM_e);
-ENUM_BITWISE_OPERATORS(dMj2dGame_c::COURSE_COMPLETION_e);
-ENUM_BITWISE_OPERATORS(dMj2dGame_c::WORLD_COMPLETION_e);
-ENUM_BITWISE_OPERATORS(dMj2dGame_c::GAME_COMPLETION_e);
+ENUM_ALLOW_BITWISE(PLAYER_CREATE_ITEM_e);
+ENUM_ALLOW_BITWISE(dMj2dGame_c::COURSE_COMPLETION_e);
+ENUM_ALLOW_BITWISE(dMj2dGame_c::WORLD_COMPLETION_e);
+ENUM_ALLOW_BITWISE(dMj2dGame_c::GAME_COMPLETION_e);

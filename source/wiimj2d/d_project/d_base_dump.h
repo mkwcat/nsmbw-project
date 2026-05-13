@@ -8,4 +8,6 @@ namespace dBaseDump {
 
 void dump(std::FILE* out, const dBase_c* base);
 
-}
+void dumpAll(std::FILE* out);
+
+} // namespace dBaseDump

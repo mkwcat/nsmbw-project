@@ -1,7 +1,7 @@
 // w_sqrt.c
 // NSMBW .text: 0x802E8B58 - 0x802E8B5C
 
-#include "msl/c/math.h"
+#include <math.h>
 
 EXTERN_C_START
 

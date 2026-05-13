@@ -1,6 +1,6 @@
 #pragma once
 
-#include "msl/c/math.h"
+#include <math.h>
 
 namespace std
 {

@@ -9,9 +9,10 @@ EXTERN_C_START
 //
 
 /* 0x80004364 */
-constexpr inline void* memcpy(void* __restrict dest, const void* __restrict src, size_t n)
-{
-    unsigned char* d = static_cast<unsigned char*>(dest);
+constexpr inline void* memcpy(
+    void* __restrict dest, const void* __restrict src, size_t n
+) {
+    unsigned char*       d = static_cast<unsigned char*>(dest);
     const unsigned char* s = static_cast<const unsigned char*>(src);
     for (size_t i = 0; i < n; i++) {
         d[i] = s[i];
@@ -20,8 +21,9 @@ constexpr inline void* memcpy(void* __restrict dest, const void* __restrict src,
 }
 
 /* 0x800046B4 */
-constexpr inline void* memset(void* s, int c, size_t n)
-{
+constexpr inline void* memset(
+    void* s, int c, size_t n
+) {
     unsigned char* p = static_cast<unsigned char*>(s);
     for (size_t i = 0; i < n; i++) {
         p[i] = static_cast<unsigned char>(c);
@@ -30,8 +32,9 @@ constexpr inline void* memset(void* s, int c, size_t n)
 }
 
 /* 0x800046B4 */
-constexpr inline size_t strlen(const char* s)
-{
+constexpr inline size_t strlen(
+    const char* s
+) {
     size_t length = 0;
     while (s[length] != char()) {
         ++length;
@@ -50,7 +53,6 @@ void* memmove(void* dest, const void* src, size_t n);
 void* memchr(const void* s, int c, size_t n);
 
 /* 0x802DF35C */
-void* __memrchr(const void* s, int c, size_t n);
 void* memrchr(const void* s, int c, size_t n) asm("__memrchr");
 
 /* 0x802DF388 */

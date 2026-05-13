@@ -5,11 +5,9 @@
 #include <new>
 #include <revolution/mem.h>
 
-namespace EGG
-{
+namespace EGG {
 
-class Heap : public Disposer
-{
+class Heap : public Disposer {
 public:
     /* 0x00 VTABLE 0x80350050 */
 
@@ -29,10 +27,12 @@ public:
     virtual void initAllocator(Allocator* allocator, s32 align);
 
     /* VT+0x14 */
-    [[gnu::malloc]] virtual void* alloc(u32 size, s32 align) = 0;
+    [[gnu::malloc]]
+    virtual void* alloc(u32 size, s32 align) = 0;
 
     /* 0x802B8E00 */
-    [[gnu::malloc]] static void* alloc(u32 size, s32 align, Heap* heap);
+    [[gnu::malloc]]
+    static void* alloc(u32 size, s32 align, Heap* heap);
 
     /* VT+0x18 */
     virtual void free(void* block) = 0;
@@ -75,6 +75,12 @@ public:
 
     /* 0x802B9310 */
     Heap* _becomeCurrentHeapWithoutLock();
+
+public:
+    // Static Inline Methods
+    // ^^^^^^
+
+    static Heap* getCurrentHeap() { return sCurrentHeap; }
 
 public:
     // Static Variables

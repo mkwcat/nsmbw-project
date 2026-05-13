@@ -415,8 +415,11 @@ void dumpStructure(
     std::FILE* out, const void* ptr, u16 structure
 ) {
     if (structure == StructureProvider_c::cCount) {
+        std::fprintf(out, "no information\n");
         return;
     }
+
+    std::fprintf(out, "-------------------------------- STRUCT\n");
 
     const Structure_s&   info            = StructureProvider_c::s_result.structures[structure];
     const char* const    strings         = StructureProvider_c::s_result.strings.data();
@@ -587,7 +590,7 @@ void dump(
     std::FILE* out, const dBase_c* base
 ) {
     std::fprintf(
-        out, "## @%p %d '%s'\n", static_cast<const void*>(base), base->mProfName,
+        out, "---%08lX: %03d: '%s'---\n", reinterpret_cast<std::size_t>(base), base->mProfName,
         dProf::getName(base->mProfName)
     );
 

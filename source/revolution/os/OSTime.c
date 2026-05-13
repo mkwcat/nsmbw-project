@@ -20,7 +20,8 @@ EXTERN_SYMBOL(0x801B6160, "__OSTimeToSystemTime");
 
 // UNUSED: __OSSetTick
 
-EXTERN_SYMBOL(0x801B61C0, "OSTicksToCalendarTime");
+[[nsmbw(0x801B61C0)]]
+void OSTicksToCalendarTime(OSTime time, OSCalendarTime* cal);
 
 // UNUSED: OSCalendarTimeToTicks
 

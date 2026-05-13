@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cstddef"
-#include "msl/c/string.h"
+#include <cstddef>
+#include <string.h>
 
 namespace std
 {

@@ -45,11 +45,16 @@ target_sources(project PRIVATE
 # NSMBW          .sbss:  0x8042A720 - 0x8042A728
     m_fader.cpp
 
-# NSMBW  .bss: 0x80377F48 - 0x80377F58
+# nsmbw-project
+    m_nandfile.cpp
+
+# NSMBW          .bss:   0x80377F48 - 0x80377F58
     m_heap.cpp
 
 # NSMBW          .text:  0x8016F330 - 0x8016F880
     m_pad.cpp
+# nsmbw-project
+    m_pipe.cpp
 
 # NSMBW          .text:  0x80170AC0 - 0x80170D90
 # NSMBW          .bss:   0x803780C8 - 0x803780F8

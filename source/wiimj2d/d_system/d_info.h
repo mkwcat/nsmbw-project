@@ -4,9 +4,9 @@
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_save_manager.h"
 #include "d_system/d_start_info.h"
+#include <mkwcat/Enum.h>
 
-class dInfo_c
-{
+class dInfo_c {
     VTABLE(0x000, dInfo_c, 0x80315EA0);
 
 public:
@@ -15,44 +15,43 @@ public:
 
     /* @unofficial */
     enum class DemoType_e {
-        NONE = 0,
-        SUPER_GUIDE = 1,
-        TITLE = 2,
+        NONE         = 0,
+        SUPER_GUIDE  = 1,
+        TITLE        = 2,
         TITLE_REPLAY = 3,
-        HINT_MOVIE = 4,
+        HINT_MOVIE   = 4,
     };
 
     enum class OtehonType_e : u8 {
         SUPER_SKILLS = 0,
         ENDLESS_1UPS = 1,
-        STAR_COIN = 2,
-        SECRET_EXIT = 3,
+        STAR_COIN    = 2,
+        SECRET_EXIT  = 3,
     };
 
     /* @unofficial */
     enum class MultiClearState_e {
-        NONE = 0, ///< Course is uncleared
-        NOW_CLEAR = 1, ///< Cleared by some players, activates the button frame
-        CLEAR = 2, ///< Cleared by some players, button frame is already active
+        NONE           = 0, ///< Course is uncleared
+        NOW_CLEAR      = 1, ///< Cleared by some players, activates the button frame
+        CLEAR          = 2, ///< Cleared by some players, button frame is already active
         NOW_TEAM_CLEAR = 3, ///< Cleared by all players, activates the button frame
-        TEAM_CLEAR = 4, ///< Cleared by all players, button frame is already active
+        TEAM_CLEAR     = 4, ///< Cleared by all players, button frame is already active
     };
 
-    enum class IbaraMode_e {
-    };
+    enum class IbaraMode_e {};
 
     /* @unofficial */
     enum class PlyConnectStage_e {
-        OFF = 0,
-        SETUP = 1,
+        OFF    = 0,
+        SETUP  = 1,
         SELECT = 2,
-        ENTER = 3,
+        ENTER  = 3,
     };
 
     enum class GameFlag_e : u32 {
-        MULTI_MODE = 4_bit,
+        MULTI_MODE   = 4_bit,
         FREE_FOR_ALL = 5_bit,
-        COIN_BATTLE = 6_bit,
+        COIN_BATTLE  = 6_bit,
     };
 
     /* @unofficial? */
@@ -60,35 +59,31 @@ public:
         WORLD_e world;
         STAGE_e stage;
 
-        constexpr bool isInSaveGame() const
-        {
+        constexpr bool isInSaveGame() const {
             return world < WORLD_e::COUNT && stage < STAGE_e::COUNT;
         }
 
-        constexpr bool operator==(const StageNo_s& other) const
-        {
+        constexpr bool operator==(
+            const StageNo_s& other
+        ) const {
             return world == other.world && stage == other.stage;
         }
 
-        constexpr bool operator==(const STAGE_e& stage) const
-        {
+        constexpr bool operator==(
+            const STAGE_e& stage
+        ) const {
             return this->stage == stage;
         }
 
-        constexpr bool operator==(const WORLD_e& world) const
-        {
+        constexpr bool operator==(
+            const WORLD_e& world
+        ) const {
             return this->world == world;
         }
 
-        constexpr operator STAGE_e() const
-        {
-            return stage;
-        }
+        constexpr operator STAGE_e() const { return stage; }
 
-        constexpr operator WORLD_e() const
-        {
-            return world;
-        }
+        constexpr operator WORLD_e() const { return world; }
     };
 
     struct StartGameInfo_s {
@@ -124,8 +119,8 @@ public:
          */
         /* 0x08 */ DemoType_e demoType;
 
-        /* 0x0C */ StageNo_s stage1;
-        /* 0x0E */ StageNo_s stage2;
+        /* 0x0C */ StageNo_s  stage1;
+        /* 0x0E */ StageNo_s  stage2;
     };
 
     struct enemy_s {
@@ -134,15 +129,15 @@ public:
         /* 0x00 */ int mSceneNo;
         /* 0x04 */ int mPosIndex;
         /* 0x08 */ int mWalkDir;
-        /* 0x0C */ u8 mRevivalCnt;
+        /* 0x0C */ u8  mRevivalCnt;
     };
 
     /* @unofficial */
     struct MultiCourse_s {
         SIZE_ASSERT(0x8);
 
-        /* 0x00 */ u8 mWorld;
-        /* 0x01 */ u8 mLevel;
+        /* 0x00 */ u8                mWorld;
+        /* 0x01 */ u8                mLevel;
 
         /* 0x04 */ MultiClearState_e mClearState;
     };
@@ -220,8 +215,9 @@ public:
     // Inline Nethods
     // ^^^^^^
 
-    inline PlyConnectStage_e getPlyConnectStage(u32 index)
-    {
+    inline PlyConnectStage_e getPlyConnectStage(
+        u32 index
+    ) {
         if (index < 4) {
             return mPlyConnectStage[index];
         } else {
@@ -229,8 +225,9 @@ public:
         }
     }
 
-    inline PlyConnectStage_e& setPlyConnectStage(u32 index, PlyConnectStage_e value)
-    {
+    inline PlyConnectStage_e& setPlyConnectStage(
+        u32 index, PlyConnectStage_e value
+    ) {
         if (index < 4) {
             return mPlyConnectStage[index] = value;
         } else {
@@ -238,20 +235,21 @@ public:
         }
     }
 
-    static inline bool isPipeRandomizer()
-    {
+    static inline bool isPipeRandomizer() {
         return dSaveMng_c::m_instance->getSaveGame()->getPipeRandomizerMode() !=
                dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED;
     }
 
     /* 0x807823C0 */
-    static void clearGameFlag(GameFlag_e flag)
-    {
+    static void clearGameFlag(
+        GameFlag_e flag
+    ) {
         mGameFlag = static_cast<GameFlag_e>(static_cast<u32>(mGameFlag) & ~static_cast<u32>(flag));
     }
 
-    static inline bool isGameFlag(GameFlag_e flag)
-    {
+    static inline bool isGameFlag(
+        GameFlag_e flag
+    ) {
         return (static_cast<u32>(mGameFlag) & static_cast<u32>(flag)) != 0;
     }
 
@@ -259,34 +257,34 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x004 */ s32 m0x004;
+    /* 0x004 */ s32        m0x004;
 
     /* 0x008 */ dCyuukan_c mCyuukan;
 
-    /* 0x03C */ WORLD_e mWorld;
-    /* 0x040 */ int mWmSceneNo;
-    /* 0x044 */ int mWmNode;
-    /* 0x048 */ s32 m0x048;
+    /* 0x03C */ WORLD_e    mWorld;
+    /* 0x040 */ int        mWmSceneNo;
+    /* 0x044 */ int        mWmNode;
+    /* 0x048 */ s32        m0x048;
 
     FILL(0x04C, 0x060);
 
     /* 0x060 */ s32 m0x060;
     /* 0x064 */ int m_zoromeTime;
     /* 0x068 */ s32 m0x068;
-    /* 0x06C */ u8 m0x06C;
+    /* 0x06C */ u8  m0x06C;
 
     FILL(0x06D, 0x380);
 
     /**
      * The status of the World 3 switch.
      */
-    /* 0x380 */ bool mSwitchOn;
+    /* 0x380 */ bool              mSwitchOn;
 
     /* 0x384 */ PlyConnectStage_e mPlyConnectStage[4];
-    /* 0x394 */ u8 m0x394;
-    /* 0x395 */ STAGE_e mKinopioCourseNo[WORLD_COUNT];
-    /* 0x39F */ STAGE_e mStage0x39F[WORLD_COUNT];
-    /* 0x3A9 */ bool mKinopioCourseInvalid[WORLD_COUNT];
+    /* 0x394 */ u8                m0x394;
+    /* 0x395 */ STAGE_e           mKinopioCourseNo[WORLD_COUNT];
+    /* 0x39F */ STAGE_e           mStage0x39F[WORLD_COUNT];
+    /* 0x3A9 */ bool              mKinopioCourseInvalid[WORLD_COUNT];
 
     FILL(0x3B3, 0x3CC);
 
@@ -341,11 +339,13 @@ public:
 
     /* 0x80315E98 */ static StartGameInfo_s m_startGameInfo;
 
-    /* 0x80359054 */ static dStartInfo_c m_startInfo;
+    /* 0x80359054 */ static dStartInfo_c    m_startInfo;
 
-    /* 0x8042A25C */ static dInfo_c* m_instance;
+    /* 0x8042A25C */ static dInfo_c*        m_instance;
 
-    /* 0x8042A260 */ static GameFlag_e mGameFlag;
+    /* 0x8042A260 */ static GameFlag_e      mGameFlag;
 };
 
-ENUM_BITWISE_OPERATORS(dInfo_c::GameFlag_e)
+ENUM_ALLOW_BITWISE(
+    dInfo_c::GameFlag_e
+)

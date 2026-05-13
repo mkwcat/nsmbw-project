@@ -1,10 +1,14 @@
 #pragma once
 
-#include "cstddef"
-#include "msl/c/stdlib.h"
+#include <cstddef>
+#include <stdlib.h>
 
 namespace std
 {
+
+using ::malloc;
+using ::calloc;
+using ::free;
 
 using ::mbstowcs;
 using ::atoi;
