@@ -38,9 +38,9 @@ public:
 
     constexpr const std::FILE* file() const { return mValid ? &mFile : nullptr; }
 
-    constexpr operator std::FILE*() { return file(); }
+    constexpr operator std::FILE*() { return &mFile; }
 
-    constexpr operator const std::FILE*() const { return file(); }
+    constexpr operator const std::FILE*() const { return &mFile; }
 
     constexpr void detach() { mDetached = true; }
 

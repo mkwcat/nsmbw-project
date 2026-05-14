@@ -415,11 +415,11 @@ void dumpStructure(
     std::FILE* out, const void* ptr, u16 structure
 ) {
     if (structure == StructureProvider_c::cCount) {
-        std::fprintf(out, "no information\n");
+        std::fprintf(out, "no information\r\n");
         return;
     }
 
-    std::fprintf(out, "-------------------------------- STRUCT\n");
+    std::fprintf(out, "\r\n");
 
     const Structure_s&   info            = StructureProvider_c::s_result.structures[structure];
     const char* const    strings         = StructureProvider_c::s_result.strings.data();
@@ -460,11 +460,11 @@ void dumpStructure(
         }
 
         if (token == Analysis_c::Token_e::KEY_OBJECT) {
-            std::fprintf(out, "%.*s%.*s { \n", indent, c_indentStr, *name, name + 1);
+            std::fprintf(out, "%.*s%.*s { \r\n", indent, c_indentStr, *name, name + 1);
             indent += c_indentWidth;
         } else if (token == Analysis_c::Token_e::END) {
             indent = std::max(0, indent - c_indentWidth);
-            std::fprintf(out, "%.*s}\n", indent, c_indentStr);
+            std::fprintf(out, "%.*s}\r\n", indent, c_indentStr);
         }
 
         if (indent < c_indentWidth) {
@@ -484,7 +484,7 @@ void dumpStructure(
 
         for (int elem = 0; elem < arrayCount; elem++) {
             if (breakEachElement && breakCounter++ == breakAt) {
-                std::fprintf(out, "\n%.*s", indent + c_indentWidth, c_indentStr);
+                std::fprintf(out, "\r\n%.*s", indent + c_indentWidth, c_indentStr);
                 breakCounter = 0;
             }
             const bool hasComma = breakEachElement || elem + 1 < arrayCount;
@@ -571,11 +571,11 @@ void dumpStructure(
         }
 
         if (breakEachElement) {
-            std::fprintf(out, "\n%.*s}\n", indent, c_indentStr);
+            std::fprintf(out, "\r\n%.*s}\r\n", indent, c_indentStr);
         } else if (isArray) {
-            std::fprintf(out, "}\n");
+            std::fprintf(out, "}\r\n");
         } else {
-            std::fprintf(out, "\n");
+            std::fprintf(out, "\r\n");
         }
     }
 }
@@ -590,8 +590,8 @@ void dump(
     std::FILE* out, const dBase_c* base
 ) {
     std::fprintf(
-        out, "---%08lX: %03d: '%s'---\n", reinterpret_cast<std::size_t>(base), base->mProfName,
-        dProf::getName(base->mProfName)
+        out, "-----%08lX: %03d: '%s'-----\r\n", reinterpret_cast<std::size_t>(base),
+        base->mProfName, dProf::getName(base->mProfName)
     );
 
     dProfName staticName = dProf::toStatic(base->mProfName);
