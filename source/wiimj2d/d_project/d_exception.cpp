@@ -21,7 +21,6 @@
 [[gnu::constructor]]
 static void initCallback() {
     nw4r::db::Exception_SetUserCallback(dException_c::callback, nullptr);
-    *(int*) 1 = 4;
 }
 
 bool dException_c::callback(
