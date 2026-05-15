@@ -8,16 +8,18 @@
 #include "d_system/d_actorcreate_mng.h"
 #include "d_system/d_yoshi_model.h"
 #include "framework/f_feature.h"
+#include <algorithm>
 
 [[nsmbw(0x80021AB0)]]
-bool daEnBlockMain_c::isYossyColor(u16 yoshiColor)
-{
-    int index = 0;
-    int checkColor = dYoshiMdl_c::s_yoshiColors[yoshiColor];
+bool daEnBlockMain_c::isYossyColor(
+    u16 yoshiColor
+) {
+    int        index      = 0;
+    int        checkColor = dYoshiMdl_c::s_yoshiColors[yoshiColor];
     daYoshi_c* yoshi;
     while (yoshi = daPyMng_c::getYoshi(index),
            yoshi == nullptr ||
-             checkColor != static_cast<dYoshiMdl_c*>(yoshi->mModelMng.mModel)->mColor) {
+               checkColor != static_cast<dYoshiMdl_c*>(yoshi->mModelMng.mModel)->mColor) {
         index++;
         if (index > dYoshiMdl_c::COLOR_COUNT) {
             return false;
@@ -27,8 +29,7 @@ bool daEnBlockMain_c::isYossyColor(u16 yoshiColor)
 }
 
 [[nsmbw(0x80021B30)]]
-s16 daEnBlockMain_c::yossy_color_search()
-{
+s16 daEnBlockMain_c::yossy_color_search() {
     s16 yoshiColor;
     switch (fFeat::yoshi_color_mode) {
     default:
@@ -47,6 +48,56 @@ s16 daEnBlockMain_c::yossy_color_search()
         return 0;
     }
 }
+
+[[nsmbw(0x80022180)]]
+bool daEnBlockMain_c::player_bigmario_check(s8 player);
+
+[[nsmbw(0x800221E0)]]
+void daEnBlockMain_c::player_item_set(int item);
+
+void daEnBlockMain_c::player_item_set(
+    int item, int* player_item, int count
+) {
+    int  base_item    = 8;
+    bool is_base_item = item == 1 || item == 27 || item == 7;
+    if (is_base_item) {
+        base_item = item;
+    }
+
+    for (int i = 0; i < count; i++) {
+        player_item[i] = base_item;
+    }
+
+    if (is_base_item) {
+        return;
+    }
+
+    if (count == 1) {
+        player_item[0] = item;
+        return;
+    }
+
+    int num_bigmario = 0;
+    int num_in_game  = daPyMng_c::getNumInGame();
+
+    for (int plr = 0, i = 0; plr < num_in_game && i < count; plr++) {
+        if (daPyMng_c::getPlayer(plr)) {
+            if (player_bigmario_check(plr)) {
+                player_item[num_bigmario++] = item;
+            }
+            i++;
+        }
+    }
+
+    // Always one of the full powerup
+    player_item[0] = item;
+}
+
+[[nsmbw(0x80022390)]]
+int daEnBlockMain_c::playernumber_set();
+
+[[nsmbw(0x80022490)]]
+void daEnBlockMain_c::item_sound_set(mVec3_c& pos, int item, s8 player, u8, u8);
 
 [[nsmbw(0x80022810)]]
 void daEnBlockMain_c::FUN_80022810() ASM_METHOD(

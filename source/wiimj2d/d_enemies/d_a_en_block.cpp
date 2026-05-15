@@ -1,6 +1,11 @@
 // d_a_en_block.cpp
 // NSMBW d_enemies.text: 0x809BED80 - 0x809C0770
 
+#include "d_a_en_block.h"
+
+#include "d_enemies/d_a_en_item.h"
+#include "framework//f_param.h"
+
 [[nsmbw(0x809BEE00)]]
 void daEnBlock_c_onCreate() ASM_METHOD(
   // clang-format off
@@ -305,183 +310,77 @@ UNDEF_809bf190:;
 );
 
 [[nsmbw(0x809BF590)]]
-void daEnBlock_c_spawnItems() ASM_METHOD(
-  // clang-format off
-/* 809BF590 9421FFC0 */  stwu     r1, -64(r1);
-/* 809BF594 7C0802A6 */  mflr     r0;
-/* 809BF598 90010044 */  stw      r0, 68(r1);
-/* 809BF59C 39610040 */  addi     r11, r1, 64;
-/* 809BF5A0 4B91DABD */  bl       UNDEF_802dd05c;
-/* 809BF5A4 80030648 */  lwz      r0, 1608(r3);
-/* 809BF5A8 3FA080AD */  lis      r29, UNDEF_80ace250@ha;
-/* 809BF5AC 7C7F1B78 */  mr       r31, r3;
-/* 809BF5B0 7C992378 */  mr       r25, r4;
-/* 809BF5B4 2C000000 */  cmpwi    r0, 0;
-/* 809BF5B8 3BBDE250 */  addi     r29, r29, UNDEF_80ace250@l;
-/* 809BF5BC 4182000C */  beq-     UNDEF_809bf5c8;
-/* 809BF5C0 38600000 */  li       r3, 0;
-/* 809BF5C4 48000230 */  b        UNDEF_809bf7f4;
-UNDEF_809bf5c8:;
-/* 809BF5C8 80C30004 */  lwz      r6, 4(r3);
-/* 809BF5CC          */  lis      r5, 0xF0FF;
-/* 809BF5D0 C00300B4 */  lfs      f0, 180(r3);
-/* 809BF5D4          */  ori      r0, r5, 0xFF7F;
-/* 809BF5D8 C02300B0 */  lfs      f1, 176(r3);
-                         rlwimi   r6, r6, 32 - 15, 16, 17; // Move direction
-/* 809BF5DC 7CDC0038 */  and      r28, r6, r0;
-/* 809BF5E0 C04300AC */  lfs      f2, 172(r3);
-/* 809BF5E4 D0410008 */  stfs     f2, 8(r1);
-/* 809BF5E8 D021000C */  stfs     f1, 12(r1);
-/* 809BF5EC D0010010 */  stfs     f0, 16(r1);
-/* 809BF5F0 80030800 */  lwz      r0, 2048(r3);
-/* 809BF5F4 28000015 */  cmplwi   r0, 21;
-/* 809BF5F8 40820028 */  bne-     UNDEF_809bf620;
-/* 809BF5FC 2C040001 */  cmpwi    r4, 1;
-/* 809BF600 40820020 */  bne-     UNDEF_809bf620;
-/* 809BF604 88030823 */  lbz      r0, 2083(r3);
-/* 809BF608 7C040774 */  extsb    r4, r0;
-/* 809BF60C 4B662B75 */  bl       UNDEF_80022180;
-/* 809BF610 2C030000 */  cmpwi    r3, 0;
-/* 809BF614 4182000C */  beq-     UNDEF_809bf620;
-/* 809BF618 38600000 */  li       r3, 0;
-/* 809BF61C 480001D8 */  b        UNDEF_809bf7f4;
-UNDEF_809bf620:;
-/* 809BF620 801F0800 */  lwz      r0, 2048(r31);
-/* 809BF624 3B600000 */  li       r27, 0;
-/* 809BF628 2800001E */  cmplwi   r0, 30;
-/* 809BF62C 41810020 */  bgt-     UNDEF_809bf64c;
-/* 809BF630 3C6080AE */  lis      r3, UNDEF_80adafd4@ha;
-/* 809BF634 5400103A */  slwi     r0, r0, 2;
-/* 809BF638 3863AFD4 */  addi     r3, r3, UNDEF_80adafd4@l;
-/* 809BF63C 7C63002E */  lwzx     r3, r3, r0;
-/* 809BF640 7C6903A6 */  mtctr    r3;
-/* 809BF644 4E800420 */  bctr;
-/* 809BF648 3B600001 */  li       r27, 1;
-UNDEF_809bf64c:;
-/* 809BF64C 7FE3FB78 */  mr       r3, r31;
-/* 809BF650 4B662D41 */  bl       UNDEF_80022390;
-/* 809BF654 2C030000 */  cmpwi    r3, 0;
-/* 809BF658 7C7E1B78 */  mr       r30, r3;
-/* 809BF65C 418200E4 */  beq-     UNDEF_809bf740;
-/* 809BF660 801F0804 */  lwz      r0, 2052(r31);
-/* 809BF664 2C000000 */  cmpwi    r0, 0;
-/* 809BF668 408200D8 */  bne-     UNDEF_809bf740;
-/* 809BF66C 2C1B0000 */  cmpwi    r27, 0;
-/* 809BF670 408200D0 */  bne-     UNDEF_809bf740;
-/* 809BF674 7FE3FB78 */  mr       r3, r31;
-/* 809BF678 578406FE */  clrlwi   r4, r28, 27;
-/* 809BF67C 4B662B65 */  bl       UNDEF_800221e0;
-/* 809BF680 881F0824 */  lbz      r0, 2084(r31);
-/* 809BF684 28000003 */  cmplwi   r0, 3;
-/* 809BF688 4182001C */  beq-     UNDEF_809bf6a4;
-/* 809BF68C C021000C */  lfs      f1, 12(r1);
-/* 809BF690 3F600B00 */  lis      r27, 2816;
-/* 809BF694 C01D0068 */  lfs      f0, 104(r29);
-/* 809BF698 EC01002A */  fadds    f0, f1, f0;
-/* 809BF69C D001000C */  stfs     f0, 12(r1);
-/* 809BF6A0 48000018 */  b        UNDEF_809bf6b8;
-UNDEF_809bf6a4:;
-/* 809BF6A4 C021000C */  lfs      f1, 12(r1);
-/* 809BF6A8 3F600C00 */  lis      r27, 3072;
-/* 809BF6AC C01D0064 */  lfs      f0, 100(r29);
-/* 809BF6B0 EC010028 */  fsubs    f0, f1, f0;
-/* 809BF6B4 D001000C */  stfs     f0, 12(r1);
-UNDEF_809bf6b8:;
-/* 809BF6B8 3B5E0001 */  addi     r26, r30, 1;
-/* 809BF6BC 3BDD0090 */  addi     r30, r29, 144;
-/* 809BF6C0 7FFCFB78 */  mr       r28, r31;
-/* 809BF6C4 3BBD0080 */  addi     r29, r29, 128;
-/* 809BF6C8 3B200000 */  li       r25, 0;
-/* 809BF6CC 48000060 */  b        UNDEF_809bf72c;
-UNDEF_809bf6d0:;
-/* 809BF6D0 811C0650 */  lwz      r8, 1616(r28);
-/* 809BF6D4 38A10008 */  addi     r5, r1, 8;
-/* 809BF6D8 809E0000 */  lwz      r4, 0(r30);
-/* 809BF6DC 3860003C */  li       r3, 60;
-/* 809BF6E0 801D0000 */  lwz      r0, 0(r29);
-/* 809BF6E4 38C00000 */  li       r6, 0;
-/* 809BF6E8 7D082378 */  or       r8, r8, r4;
-/* 809BF6EC 88FF038F */  lbz      r7, 911(r31);
-/* 809BF6F0 7D080378 */  or       r8, r8, r0;
-/* 809BF6F4 7D04DB78 */  or       r4, r8, r27;
-/* 809BF6F8 4B6A4F19 */  bl       UNDEF_80064610;
-/* 809BF6FC 881F0823 */  lbz      r0, 2083(r31);
-/* 809BF700 7FE3FB78 */  mr       r3, r31;
-/* 809BF704 80BC0650 */  lwz      r5, 1616(r28);
-/* 809BF708 38810008 */  addi     r4, r1, 8;
-/* 809BF70C 7C060774 */  extsb    r6, r0;
-/* 809BF710 38E00001 */  li       r7, 1;
-/* 809BF714 39000000 */  li       r8, 0;
-/* 809BF718 4B662D79 */  bl       UNDEF_80022490;
-/* 809BF71C 3B9C0004 */  addi     r28, r28, 4;
-/* 809BF720 3BDE0004 */  addi     r30, r30, 4;
-/* 809BF724 3BBD0004 */  addi     r29, r29, 4;
-/* 809BF728 3B390001 */  addi     r25, r25, 1;
-UNDEF_809bf72c:;
-/* 809BF72C 7C19D000 */  cmpw     r25, r26;
-/* 809BF730 4180FFA0 */  blt+     UNDEF_809bf6d0;
-/* 809BF734 38000001 */  li       r0, 1;
-/* 809BF738 901F0648 */  stw      r0, 1608(r31);
-/* 809BF73C 480000B4 */  b        UNDEF_809bf7f0;
-UNDEF_809bf740:;
-/* 809BF740 801F0800 */  lwz      r0, 2048(r31);
-/* 809BF744 28000015 */  cmplwi   r0, 21;
-/* 809BF748 40820034 */  bne-     UNDEF_809bf77c;
-/* 809BF74C 2C190000 */  cmpwi    r25, 0;
-/* 809BF750 4082002C */  bne-     UNDEF_809bf77c;
-/* 809BF754 881F0823 */  lbz      r0, 2083(r31);
-/* 809BF758 7FE3FB78 */  mr       r3, r31;
-/* 809BF75C 7C040774 */  extsb    r4, r0;
-/* 809BF760 4B662A21 */  bl       UNDEF_80022180;
-/* 809BF764 2C030000 */  cmpwi    r3, 0;
-/* 809BF768 41820014 */  beq-     UNDEF_809bf77c;
-/* 809BF76C C021000C */  lfs      f1, 12(r1);
-/* 809BF770 C01D0064 */  lfs      f0, 100(r29);
-/* 809BF774 EC010028 */  fsubs    f0, f1, f0;
-/* 809BF778 D001000C */  stfs     f0, 12(r1);
-UNDEF_809bf77c:;
-/* 809BF77C 881F081C */  lbz      r0, 2076(r31);
-/* 809BF780 2C000000 */  cmpwi    r0, 0;
-/* 809BF784 4182002C */  beq-     UNDEF_809bf7b0;
-/* 809BF788          */  lis      r3, 0x800F;
-/* 809BF78C 38A10008 */  addi     r5, r1, 8;
-/* 809BF790          */  ori      r0, r3, 0x001F;
-/* 809BF794 38C00000 */  li       r6, 0;
-/* 809BF798 7F800038 */  and      r0, r28, r0;
-/* 809BF79C 3860003C */  li       r3, 60;
-/* 809BF7A0 64040300 */  oris     r4, r0, 768;
-/* 809BF7A4 38E00000 */  li       r7, 0;
-/* 809BF7A8 4B6A4E69 */  bl       UNDEF_80064610;
-/* 809BF7AC 4800001C */  b        UNDEF_809bf7c8;
-UNDEF_809bf7b0:;
-/* 809BF7B0 7F84E378 */  mr       r4, r28;
-/* 809BF7B4 38A10008 */  addi     r5, r1, 8;
-/* 809BF7B8 3860003C */  li       r3, 60;
-/* 809BF7BC 38C00000 */  li       r6, 0;
-/* 809BF7C0 38E00000 */  li       r7, 0;
-/* 809BF7C4 4B6A4E4D */  bl       UNDEF_80064610;
-UNDEF_809bf7c8:;
-/* 809BF7C8 881F0823 */  lbz      r0, 2083(r31);
-/* 809BF7CC 38600001 */  li       r3, 1;
-/* 809BF7D0 907F0648 */  stw      r3, 1608(r31);
-/* 809BF7D4 7FE3FB78 */  mr       r3, r31;
-/* 809BF7D8 80BF0800 */  lwz      r5, 2048(r31);
-/* 809BF7DC 38810008 */  addi     r4, r1, 8;
-/* 809BF7E0 7C060774 */  extsb    r6, r0;
-/* 809BF7E4 38E00000 */  li       r7, 0;
-/* 809BF7E8 39000000 */  li       r8, 0;
-/* 809BF7EC 4B662CA5 */  bl       UNDEF_80022490;
-UNDEF_809bf7f0:;
-/* 809BF7F0 38600001 */  li       r3, 1;
-UNDEF_809bf7f4:;
-/* 809BF7F4 39610040 */  addi     r11, r1, 64;
-/* 809BF7F8 4B91D8B1 */  bl       UNDEF_802dd0a8;
-/* 809BF7FC 80010044 */  lwz      r0, 68(r1);
-/* 809BF800 7C0803A6 */  mtlr     r0;
-/* 809BF804 38210040 */  addi     r1, r1, 64;
-/* 809BF808 4E800020 */  blr;
-  // clang-format on
-);
+bool daEnBlock_c::create_items(
+    int param
+) {
+    if (m_item_created) {
+        return false;
+    }
+
+    if (m_set_item == 21 && param == 1 && player_bigmario_check(m_player_number)) {
+        return false;
+    }
+
+    bool single_item = false;
+    switch (m_set_item) {
+    case 2:
+    case 3:
+    case 4:
+    case 10:
+    case 12:
+    case 13:
+    case 18:
+    case 29:
+    case 30:
+        single_item = true;
+    }
+
+    int     extra_player_count = playernumber_set();
+    u32     base_param         = mParam;
+    mVec3_c pos                = mPos;
+
+    if (extra_player_count == 0 || m_block_type != 0 || single_item) {
+        if (m_set_item == 21 && param == 0 && player_bigmario_check(m_player_number)) {
+            pos.y -= 8.0f;
+        }
+
+        if (m0x81C) {
+            dActor_c::construct(
+                dProf::EN_ITEM, (base_param & 0x800F001Fu) | 0x03000000u, &pos, nullptr, mLayer
+            );
+        } else {
+            fParam_c<daEnItem_c> item_param{base_param & 0xF0FFFF7Fu};
+            item_param.direction = (base_param >> 29) & 3;
+            dActor_c::construct(dProf::EN_ITEM, item_param, &pos, nullptr, mLayer);
+        }
+
+        m_item_created = true;
+        item_sound_set(pos, m_set_item, m_player_number, 0, 0);
+    } else {
+        int player_item[PLAYER_COUNT];
+        player_item_set(base_param & 0x1F, player_item, std::size(player_item));
+
+        fParam_c<daEnItem_c> item_param{};
+        if (m0x824 == 3) {
+            item_param.create_type = 12;
+            pos.y -= 8.0;
+        } else {
+            item_param.create_type = 11;
+            pos.y += 16.0;
+        }
+
+        for (int i = 0; i < extra_player_count + 1; i++) {
+            item_param.type = player_item[i];
+            item_param.unk0 = i & 1;
+            item_param.unk8 = (i % 4) >= 2;
+            dActor_c::construct(dProf::EN_ITEM, item_param, &pos, nullptr, mLayer);
+            item_sound_set(pos, player_item[i], m_player_number, 1, 0);
+        }
+        m_item_created = true;
+    }
+
+    return true;
+}
 
 [[nsmbw(0x809BFB40)]]
 void daEnBlock_c_spawnSubItem() ASM_METHOD(
