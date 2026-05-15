@@ -370,9 +370,9 @@ bool daEnBlock_c::create_items(
         }
 
         for (int i = 0; i < extra_player_count + 1; i++) {
-            item_param.type = player_item[i];
-            item_param.unk0 = i & 1;
-            item_param.unk8 = (i % 4) >= 2;
+            item_param.type        = player_item[i];
+            item_param.facing      = i & 1;
+            item_param.appear_type = i / 2;
             dActor_c::construct(dProf::EN_ITEM, item_param, &pos, nullptr, mLayer);
             item_sound_set(pos, player_item[i], m_player_number, 1, 0);
         }

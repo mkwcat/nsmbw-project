@@ -7,6 +7,7 @@
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_audio.h"
 #include "d_system/d_enemy_manager.h"
+#include "d_system/d_game_common.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_score_mng.h"
 #include "framework/f_feature.h"
@@ -563,8 +564,7 @@ UNDEF_80a27410:;
 void daEnItem_c::playGetItemEffect();
 
 [[nsmbw(0x80A282F0)]]
-bool daEnItem_c::collectItem()
-{
+bool daEnItem_c::collectItem() {
     if (!mpCollectPlayer || mCollectPlayerNo == -1) {
         return false;
     }
@@ -572,7 +572,7 @@ bool daEnItem_c::collectItem()
     dAcPy_c* player = daPyMng_c::getPlayer(mCollectPlayerNo);
 
     if (player->isDemo()) {
-        mpCollectPlayer = nullptr;
+        mpCollectPlayer  = nullptr;
         mCollectPlayerNo = -1;
         return false;
     }
@@ -594,7 +594,7 @@ bool daEnItem_c::collectItem()
     }
 
     if (player->isItemKinopio()) {
-        mpCollectPlayer = nullptr;
+        mpCollectPlayer  = nullptr;
         mCollectPlayerNo = -1;
         return false;
     }
@@ -609,13 +609,13 @@ bool daEnItem_c::collectItem()
         return true;
     }
 
-    PLAYER_MODE_e mode = player->mNextMode;
-    unsigned collect = 0, change = 6;
+    PLAYER_MODE_e mode    = player->mNextMode;
+    unsigned      collect = 0, change = 6;
     switch (item) {
     case ITEM_e::MUSHROOM:
         if (mode != PLAYER_MODE_e::NONE && mode != PLAYER_MODE_e::MINI_MUSHROOM) {
             collect = 2;
-            change = 0;
+            change  = 0;
         } else if (player->switchMode(PLAYER_MODE_e::MUSHROOM)) {
             collect = 1;
         }
@@ -624,7 +624,7 @@ bool daEnItem_c::collectItem()
     case ITEM_e::FIRE_FLOWER:
         if (mode == PLAYER_MODE_e::FIRE_FLOWER) {
             collect = 2;
-            change = 1;
+            change  = 1;
         } else if (player->switchMode(PLAYER_MODE_e::FIRE_FLOWER)) {
             collect = 1;
         }
@@ -633,7 +633,7 @@ bool daEnItem_c::collectItem()
     case ITEM_e::PROPELLER_SHROOM:
         if (mode == PLAYER_MODE_e::PROPELLER_SHROOM) {
             collect = 2;
-            change = 2;
+            change  = 2;
         } else if (player->switchMode(PLAYER_MODE_e::PROPELLER_SHROOM)) {
             collect = 1;
         }
@@ -642,7 +642,7 @@ bool daEnItem_c::collectItem()
     case ITEM_e::PENGUIN_SUIT:
         if (mode == PLAYER_MODE_e::PENGUIN_SUIT) {
             collect = 2;
-            change = 3;
+            change  = 3;
         } else if (player->switchMode(PLAYER_MODE_e::PENGUIN_SUIT)) {
             collect = 1;
         }
@@ -651,7 +651,7 @@ bool daEnItem_c::collectItem()
     case ITEM_e::MINI_MUSHROOM:
         if (mode == PLAYER_MODE_e::MINI_MUSHROOM) {
             collect = 2;
-            change = 4;
+            change  = 4;
         } else if (player->switchMode(PLAYER_MODE_e::MINI_MUSHROOM)) {
             collect = 1;
         }
@@ -660,7 +660,7 @@ bool daEnItem_c::collectItem()
     case ITEM_e::ICE_FLOWER:
         if (mode == PLAYER_MODE_e::ICE_FLOWER) {
             collect = 2;
-            change = 5;
+            change  = 5;
         } else if (player->switchMode(PLAYER_MODE_e::ICE_FLOWER)) {
             collect = 1;
         }
@@ -673,7 +673,7 @@ bool daEnItem_c::collectItem()
     if (collect == 2 && change != 6) {
         playGetItemQuake();
         dAudio::g_pSndObjMap->startSound(
-          SndID::SE_PLY_GET_ITEM_AGAIN, dAudio::cvtSndObjctPos(mPos), 0
+            SndID::SE_PLY_GET_ITEM_AGAIN, dAudio::cvtSndObjctPos(mPos), 0
         );
     } else if (collect == 1) {
         startGetItemShock();
@@ -686,8 +686,122 @@ bool daEnItem_c::collectItem()
     return true;
 }
 
+[[nsmbw(0x80A289C0)]]
+float daEnItem_c::calcZPos();
+
 [[nsmbw(0x80A29070)]]
 void daEnItem_c::playGetItemQuake();
 
 [[nsmbw(0x80A290A0)]]
 void daEnItem_c::startGetItemShock();
+
+[[nsmbw(0x80A290C0)]]
+bool daEnItem_c::checkWater();
+
+[[nsmbw(0x80A2AE70)]]
+void daEnItem_c::initializeState_ObliquelyJumpMove();
+
+[[nsmbw(0x80A2B120)]]
+void daEnItem_c::initializeState_BlockAppearMultiJumpUp() {
+    if (mItemType == static_cast<u16>(ITEM_e::PROPELLER_SHROOM)) {
+        mPos.z = calcZPos();
+        if (mAppearType == AppearType_e::FIXED_SET) {
+            mSpeed.x = 1.8f;
+            mSpeed.y = 3.5f - 1.0f;
+        } else if (mAppearType == AppearType_e::RND_1ST_SET) {
+            mSpeed.x = dGameCom::rndF(0.5f) + 0.5f;
+            mSpeed.y = dGameCom::rndF(1.1f) + 3.5f - 1.0f;
+        } else if (mAppearType == AppearType_e::RND_2ND_SET) {
+            mSpeed.x = dGameCom::rndF(0.5f) + 3.5f;
+            mSpeed.y = dGameCom::rndF(1.2f) + 3.5f - 1.5f;
+        } else if (mAppearType == AppearType_e::RND_3RD_SET) {
+            mSpeed.x = dGameCom::rndF(0.5f) + 4.2f;
+            mSpeed.y = dGameCom::rndF(1.3f) + 3.5f - 3.0f;
+        }
+    } else {
+        if (mAppearType == AppearType_e::FIXED_SET) {
+            mSpeed.x = 1.8f;
+            mSpeed.y = 3.4f;
+        } else {
+            mSpeed.x = dGameCom::rndF(0.7f) + 0.3f;
+            mSpeed.y = dGameCom::rndF(2.1f) + 2.5f;
+        }
+    }
+
+    if (mDirection != 0) {
+        mSpeed.x = -mSpeed.x;
+    }
+    mSpeed.z = 0.0f;
+
+    initializeState_ObliquelyJumpMove();
+
+    if (mItemType == static_cast<u16>(ITEM_e::PROPELLER_SHROOM)) {
+        if (mAppearType == AppearType_e::RND_1ST_SET) {
+            mPropellerWaitTime = 64;
+        } else if (mAppearType == AppearType_e::RND_2ND_SET) {
+            mPropellerWaitTime = 82;
+        } else if (mAppearType == AppearType_e::RND_3RD_SET) {
+            mPropellerWaitTime = 98;
+        }
+    }
+}
+
+[[nsmbw(0x80A2B2B0)]]
+void daEnItem_c::initializeState_BlockAppearMultiJumpDown() {
+    if (mItemType == static_cast<u16>(ITEM_e::PROPELLER_SHROOM)) {
+        mPos.z           = calcZPos();
+        m0xDAC           = 3;
+        m0xDC8           = 2;
+        m0xE02           = 2;
+        m0xD78           = 0;
+        m0xDBC           = 1;
+        mAccelY          = -0.046875f;
+        mAccelF          = 0.0625f;
+        mStoredDirection = mDirection;
+        m0xD74           = 16;
+        if (mAppearType == AppearType_e::FIXED_SET) {
+            mSpeed.x           = 3.0f;
+            mSpeedMax.y        = 1.8f;
+            mPropellerWaitTime = 32;
+        } else if (mAppearType == AppearType_e::RND_1ST_SET) {
+            mSpeed.x           = dGameCom::rndF(0.5f) + 1.8f;
+            mSpeedMax.y        = 2.0f;
+            mPropellerWaitTime = 64;
+        } else if (mAppearType == AppearType_e::RND_2ND_SET) {
+            mSpeed.x           = dGameCom::rndF(0.2f) + 3.5f;
+            mSpeedMax.y        = 1.4f;
+            mPropellerWaitTime = 82;
+        } else if (mAppearType == AppearType_e::RND_3RD_SET) {
+            mSpeed.x           = dGameCom::rndF(0.2f) + 4.0f;
+            mSpeedMax.y        = 0.8f;
+            mPropellerWaitTime = 98;
+        }
+        if (mDirection != 0) {
+            mSpeed.x = -mSpeed.x;
+        }
+        mSpeed.y    = 0.0f;
+        mSpeed.z    = 0.0f;
+        mSpeedMax.x = 0.0f;
+        mSpeedMax.z = 0.0f;
+    } else {
+        if (mAppearType == AppearType_e::FIXED_SET) {
+            mSpeed.x = 2.0f;
+        } else {
+            mSpeed.x = dGameCom::rndF(0.7f) + 0.3f;
+        }
+        if (mDirection != 0) {
+            mSpeed.x = -mSpeed.x;
+        }
+        mSpeed.y = -0.5f;
+        mSpeed.z = 0.0f;
+
+        initializeState_ObliquelyJumpMove();
+
+        if (checkWater()) {
+            mSpeed.y *= 0.5f;
+            mSpeedMax.y *= 0.5f;
+            mAccelY = -0.03125f;
+        }
+        m0xDAC = 3;
+    }
+}
