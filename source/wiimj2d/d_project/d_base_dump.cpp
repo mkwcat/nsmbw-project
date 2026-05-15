@@ -607,10 +607,4 @@ void dumpAll(
     }
 }
 
-[[gnu::constructor]]
-void testDump() {
-    std::fprintf(stdout, "test dump\n");
-    dumpAll(stdout);
-}
-
 } // namespace dBaseDump
