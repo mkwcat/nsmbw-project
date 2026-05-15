@@ -13,11 +13,6 @@ if(EXISTS ${CLANG_DEFAULT})
     set(CMAKE_CXX_COMPILER ${CLANG_DEFAULT})
 endif()
 
-file(TO_CMAKE_PATH "$ENV{DEVKITPPC}" DEVKITPPC)
-if(NOT DEVKITPPC)
-    message(FATAL_ERROR "Please set DEVKITPPC in your environment")
-endif()
-
 # Specify the target triple as the custom platform
 set(CMAKE_CXX_COMPILER_TARGET powerpc-eabi-kuribo)
 
@@ -95,8 +90,7 @@ add_compile_options(
 )
 
 add_link_options(
-    --prefix "${DEVKITPPC}/bin/powerpc-eabi-"
-    -fuse-ld=ld
+    -fuse-ld=lld
     -Wl,-n
     -Wl,--gc-sections
     -fno-exceptions
