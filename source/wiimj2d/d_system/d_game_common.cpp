@@ -22,8 +22,7 @@
 #include <nw4r/lyt/Window.h>
 #include <nw4r/ut/Color.h>
 
-namespace dGameCom
-{
+namespace dGameCom {
 
 [[nsmbw(0x800B2E70)]]
 void initRandomSeed();
@@ -50,32 +49,35 @@ mVec3_c ScalePosForAspectRatio(const mVec3_c&);
 void getGlbPosToLyt(mVec3_c&);
 
 [[nsmbw(0x800B34D0)]]
-void CreateBlueNumber(const mVec3_c& pos, int type, int playerNo)
-{
+void CreateBlueNumber(
+    const mVec3_c& pos, int type, int playerNo
+) {
     if (playerNo >= PLAYER_COUNT) {
         return;
     }
 
     dSmallScoreManager_c::m_instance->CreateBlueNumber(
-      pos, type, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
+        pos, type, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
     );
 }
 
 [[nsmbw(0x800B3510)]]
-void CreateRedNumber(const mVec3_c& pos, int playerNo)
-{
+void CreateRedNumber(
+    const mVec3_c& pos, int playerNo
+) {
     if (playerNo >= PLAYER_COUNT) {
         return;
     }
 
     dSmallScoreManager_c::m_instance->CreateRedNumber(
-      pos, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
+        pos, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
     );
 }
 
 [[nsmbw(0x800B3540)]]
-void CreateSmallScore(const mVec3_c& pos, int type, int playerNo, bool goal)
-{
+void CreateSmallScore(
+    const mVec3_c& pos, int type, int playerNo, bool goal
+) {
     int color = PLAYER_COUNT;
     if (playerNo != -1) {
         if (playerNo >= PLAYER_COUNT) {
@@ -95,14 +97,15 @@ void CreateSmallScore(const mVec3_c& pos, int type, int playerNo, bool goal)
 void CreateSmallAll1up(const mVec3_c&);
 
 [[nsmbw(0x800B35D0)]]
-void GoalScoreExecute(const mVec3_c& pos, int playerNo)
-{
+void GoalScoreExecute(
+    const mVec3_c& pos, int playerNo
+) {
     if (playerNo >= PLAYER_COUNT) {
         playerNo = 0;
     }
 
     dSmallScoreManager_c::m_instance->GoalScoreExecute(
-      pos, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
+        pos, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
     );
 }
 
@@ -113,16 +116,15 @@ void ScalePosForLayoutEffect(const mVec3_c&, bool);
 short CalculateTilt(int, float, float);
 
 bool CalculateTiltShoulder(
-  short* target_var, short target_value, short increment, s8 playerNo, short max
-)
-{
+    short* target_var, short target_value, short increment, s8 playerNo, short max
+) {
     if (playerNo < 0) {
         return sLib::chaseAngle(target_var, target_value, increment);
     }
 
     dGameKeyCore_c* currentCore = dGameKey_c::m_instance->mpCores[playerNo];
     if (currentCore->isClassic() || currentCore->isDolphin()) {
-        short LR = currentCore->getTiltLR();
+        short LR        = currentCore->getTiltLR();
         short newTarget = *target_var + LR;
         if (max) {
             newTarget = std::clamp<short>(newTarget, -max, max);
@@ -224,28 +226,29 @@ void LayoutDispNumber(const int& value, const int& maxChars, LytTextBox_c* textB
 void LayoutDispNumberDigit(const int& value, LytTextBox_c* textBox, bool itoaType);
 
 [[nsmbw(0x800B3C50)]]
-void WindowPaneColorSet(nw4r::lyt::Window* window, int playerNum)
-{
+void WindowPaneColorSet(
+    nw4r::lyt::Window* window, int playerNum
+) {
     static constinit const nw4r::ut::Color l_PLY_COLOR_0[] = {
-      "#32000000", // Mario
-      "#00461400", // Luigi
-      "#00005A00", // Blue Toad
-      "#28280000", // Yellow Toad
-      "#32102A00", // Toadette
-      "#2F004100", // Purple Toadette
-      "#32320000", // Orange Toad
-      "#10101000", // Black Toad
+        "#32000000", // Mario
+        "#00461400", // Luigi
+        "#00005A00", // Blue Toad
+        "#28280000", // Yellow Toad
+        "#32102A00", // Toadette
+        "#2F004100", // Purple Toadette
+        "#32320000", // Orange Toad
+        "#10101000", // Black Toad
     };
 
     static constinit const nw4r::ut::Color l_PLY_COLOR_2[] = {
-      "#E65050FF", // Mario
-      "#3CBE32FF", // Luigi
-      "#4178FAFF", // Blue Toad
-      "#FFFF3CFF", // Yellow Toad
-      "#E97EDBFF", // Toadette
-      "#C179FFFF", // Purple Toadette
-      "#FF8200FF", // Orange Toad
-      "#303030FF", // Black Toad
+        "#E65050FF", // Mario
+        "#3CBE32FF", // Luigi
+        "#4178FAFF", // Blue Toad
+        "#FFFF3CFF", // Yellow Toad
+        "#E97EDBFF", // Toadette
+        "#C179FFFF", // Purple Toadette
+        "#FF8200FF", // Orange Toad
+        "#303030FF", // Black Toad
     };
 
     int index = daPyMng_c::getPlayerColorType(static_cast<PLAYER_TYPE_e>(playerNum));
@@ -260,34 +263,36 @@ void WindowPaneColorSet(nw4r::lyt::Window* window, int playerNum)
 void SelectCursorSetup(nw4r::lyt::Picture* pane, int param2, bool param3);
 
 [[nsmbw(0x800B4760)]]
-bool PlayerEnterCheck(int player)
-{
+bool PlayerEnterCheck(
+    int player
+) {
     return dInfo_c::m_instance->getPlyConnectStage(player) == dInfo_c::PlyConnectStage_e::ENTER;
 }
 
 [[nsmbw(0x800B4780)]]
-void Player1upColor(LytTextBox_c* textBox, int player)
-{
+void Player1upColor(
+    LytTextBox_c* textBox, int player
+) {
     static constinit const nw4r::ut::Color l_PLY_COLOR_0[] = {
-      "#FFFF32", // Mario
-      "#D2FF00", // Luigi
-      "#D2F0FF", // Blue Toad
-      "#FFFF64", // Yellow Toad
-      "#FFBEFF", // Toadette
-      "#E7C9FF", // Purple Toadette
-      "#FFD85A", // Orange Toad
-      "#6B6B6B", // Black Toad
+        "#FFFF32", // Mario
+        "#D2FF00", // Luigi
+        "#D2F0FF", // Blue Toad
+        "#FFFF64", // Yellow Toad
+        "#FFBEFF", // Toadette
+        "#E7C9FF", // Purple Toadette
+        "#FFD85A", // Orange Toad
+        "#6B6B6B", // Black Toad
     };
 
     static constinit const nw4r::ut::Color l_PLY_COLOR_2[] = {
-      "#E60000", // Mario
-      "#197D0A", // Luigi
-      "#1E2DF0", // Blue Toad
-      "#FFBE00", // Yellow Toad
-      "#D676D6", // Toadette
-      "#A472F8", // Purple Toadette
-      "#FF8200", // Orange Toad
-      "#464646", // Black Toad
+        "#E60000", // Mario
+        "#197D0A", // Luigi
+        "#1E2DF0", // Blue Toad
+        "#FFBE00", // Yellow Toad
+        "#D676D6", // Toadette
+        "#A472F8", // Purple Toadette
+        "#FF8200", // Orange Toad
+        "#464646", // Black Toad
     };
 
     int index = daPyMng_c::getPlayerColorType(static_cast<PLAYER_TYPE_e>(player));
@@ -297,37 +302,33 @@ void Player1upColor(LytTextBox_c* textBox, int player)
 }
 
 [[nsmbw(0x800B4940)]]
-void MiniGameCannonTitle()
-{
+void MiniGameCannonTitle() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
-        mg->mActive = true;
+        mg->mActive      = true;
         mg->mIsTitleOpen = true;
     }
 }
 
 [[nsmbw(0x800B4970)]]
-void MiniGameCannonStart()
-{
+void MiniGameCannonStart() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
-        mg->mActive = true;
+        mg->mActive       = true;
         mg->mIsWindowOpen = true;
         mg->mCurrentState = false;
     }
 }
 
 [[nsmbw(0x800B49A0)]]
-void MiniGameCannonResult()
-{
+void MiniGameCannonResult() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
-        mg->mActive = true;
+        mg->mActive       = true;
         mg->mIsWindowOpen = true;
         mg->mCurrentState = true;
     }
 }
 
 [[nsmbw(0x800B49D0)]]
-bool MiniGameCannonEndCheck()
-{
+bool MiniGameCannonEndCheck() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
         return mg->mActive;
     }
@@ -335,24 +336,21 @@ bool MiniGameCannonEndCheck()
 }
 
 [[nsmbw(0x800B4A00)]]
-void MiniGameCannonTitleCloseRequest()
-{
+void MiniGameCannonTitleCloseRequest() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
         mg->mCloseTitle = true;
     }
 }
 
 [[nsmbw(0x800B4A30)]]
-void MiniGameCannonOperateCloseRequest()
-{
+void MiniGameCannonOperateCloseRequest() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
         mg->mCloseOperate = true;
     }
 }
 
 [[nsmbw(0x800B4A60)]]
-void MiniGameCannonResultCloseRequest()
-{
+void MiniGameCannonResultCloseRequest() {
     if (dMiniGameCannon_c* mg = dScStage_c::getMiniGameCannon()) {
         mg->mCloseResult = true;
     }
@@ -401,8 +399,7 @@ void MiniGameMessageDisp(int param);
 void MiniGameMessageClose();
 
 [[nsmbw(0x800B4E30)]]
-bool isNowCourseClear()
-{
+bool isNowCourseClear() {
     if (fFeat::always_can_exit_course) {
         return true;
     }
@@ -415,14 +412,13 @@ bool isNowCourseClear()
 
     dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame();
     return save->isCourseDataFlag(
-      dInfo_c::m_startGameInfo.stage1.world, dInfo_c::m_startGameInfo.stage1.stage,
-      dMj2dGame_c::COURSE_COMPLETION_e::GOAL_MASK
+        dInfo_c::m_startGameInfo.stage1.world, dInfo_c::m_startGameInfo.stage1.stage,
+        dMj2dGame_c::COURSE_COMPLETION_e::GOAL_MASK
     );
 }
 
 [[nsmbw(0x800B5340)]]
-bool chkContinue()
-{
+bool chkContinue() {
     // Original function is flawed as it indexes in mPlayerType twice (so like
     // mRest[int(mPlayerType[int(mPlayerType[i])])]). It doesn't matter but i think it's kinda
     // interesting.
@@ -437,14 +433,19 @@ bool chkContinue()
 }
 
 [[nsmbw(0x800B53F0)]]
-bool chkCancelButton(int player)
-{
+bool chkCancelButton(
+    int player
+) {
     return dGameKey_c::m_instance->mpCores[player]->checkMenuCancel();
 }
 
+[[nsmbw(0x800B5140)]]
+void DispSizeScale(nw4r::math::VEC2&);
+
 [[nsmbw(0x800B51D0)]]
-void StaffCreditAddCoin(int player)
-{
+void StaffCreditAddCoin(
+    int player
+) {
     if (dStaffCreditScore_c* staffCredit = dScStage_c::m_instance->mpStaffCreditScore) {
         int num = staffCredit->mCoinNum[player] + 1;
         if (num > 999) {

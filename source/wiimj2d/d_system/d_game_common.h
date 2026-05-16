@@ -1,9 +1,9 @@
 #pragma once
 
+#include <nw4r/math/vec.h>
 #include <revolution/sc.h>
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 class Picture;
 
 class Window;
@@ -15,8 +15,7 @@ class mVec3_c;
 
 class mVec2_c;
 
-namespace dGameCom
-{
+namespace dGameCom {
 
 /* 0x800B2E70 */
 void initRandomSeed();
@@ -64,7 +63,7 @@ void ScalePosForLayoutEffect(const mVec3_c&, bool);
 short CalculateTilt(int, float, float);
 
 bool CalculateTiltShoulder(
-  short* target_var, short target_value, short increment, s8 playerNo, short max
+    short* target_var, short target_value, short increment, s8 playerNo, short max
 );
 
 /* 0x800B3600 */
@@ -162,6 +161,9 @@ void MiniGameMessageDisp(int param);
 
 /* 0x800B4E00 */
 void MiniGameMessageClose();
+
+/* 0x800B5140 */
+void DispSizeScale(nw4r::math::VEC2&);
 
 /* 0x800B51D0 */
 void StaffCreditAddCoin(int player);
