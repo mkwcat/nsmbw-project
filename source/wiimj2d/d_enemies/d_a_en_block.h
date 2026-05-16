@@ -8,6 +8,7 @@ public:
     // ^^^^^^
 
     /* 0x809BF590 */ bool create_items(int param);
+    /* 0x809BFB40 */ void create_sub_item();
 
 public:
     // Instance Variables

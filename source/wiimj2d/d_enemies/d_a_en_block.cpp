@@ -383,45 +383,18 @@ bool daEnBlock_c::create_items(
 }
 
 [[nsmbw(0x809BFB40)]]
-void daEnBlock_c_spawnSubItem() ASM_METHOD(
-  // clang-format off
-/* 809BFB40 9421FFE0 */  stwu     r1, -32(r1);
-/* 809BFB44 7C0802A6 */  mflr     r0;
-/* 809BFB48 3C8080AD */  lis      r4, UNDEF_80ace320@ha;
-/* 809BFB4C 3D0080AD */  lis      r8, UNDEF_80ace318@ha;
-/* 809BFB50 90010024 */  stw      r0, 36(r1);
-/* 809BFB54          */  lis      r5, 0x80ffff7f@ha;
-/* 809BFB58          */  subi     r0, r5, 0x80ffff7f@l;
-/* 809BFB5C C004E320 */  lfs      f0, UNDEF_80ace320@l(r4);
-/* 809BFB60 80C30004 */  lwz      r6, 4(r3);
-/* 809BFB64 3908E318 */  addi     r8, r8, UNDEF_80ace318@l;
-/* 809BFB68 C04300B0 */  lfs      f2, 176(r3);
-/* 809BFB6C 38A10008 */  addi     r5, r1, 8;
-/* 809BFB70 C02300B4 */  lfs      f1, 180(r3);
-                         rlwimi   r6, r6, 32 - 15, 16, 17; // Move direction
-/* 809BFB74 7CC00038 */  and      r0, r6, r0;
-/* 809BFB78 C06300AC */  lfs      f3, 172(r3);
-/* 809BFB7C 64040400 */  oris     r4, r0, 1024;
-/* 809BFB80 D0610008 */  stfs     f3, 8(r1);
-/* 809BFB84 EC02002A */  fadds    f0, f2, f0;
-/* 809BFB88 38C00000 */  li       r6, 0;
-/* 809BFB8C 38E00000 */  li       r7, 0;
-/* 809BFB90 D041000C */  stfs     f2, 12(r1);
-/* 809BFB94 D0210010 */  stfs     f1, 16(r1);
-/* 809BFB98 88030348 */  lbz      r0, 840(r3);
-/* 809BFB9C 3860003C */  li       r3, 60;
-/* 809BFBA0 5400103A */  slwi     r0, r0, 2;
-/* 809BFBA4 D001000C */  stfs     f0, 12(r1);
-/* 809BFBA8 7C08042E */  lfsx     f0, r8, r0;
-/* 809BFBAC EC03002A */  fadds    f0, f3, f0;
-/* 809BFBB0 D0010008 */  stfs     f0, 8(r1);
-/* 809BFBB4 4B6A4A5D */  bl       UNDEF_80064610;
-/* 809BFBB8 80010024 */  lwz      r0, 36(r1);
-/* 809BFBBC 7C0803A6 */  mtlr     r0;
-/* 809BFBC0 38210020 */  addi     r1, r1, 32;
-/* 809BFBC4 4E800020 */  blr;
-  // clang-format on
-);
+void daEnBlock_c::create_sub_item() {
+    mVec3_c pos = {
+        .x = mPos.x + (mDirection ? 6.0f : -6.0f),
+        .y = mPos.y + 12.0f,
+        .z = mPos.z,
+    };
+
+    fParam_c<daEnItem_c> item_param = mParam & 0x80FFFF7Fu;
+    item_param.create_type          = 4;
+    item_param.direction            = (mParam >> 29) & 3;
+    dActor_c::construct(dProf::EN_ITEM, item_param, &pos, nullptr, mLayer);
+}
 
 [[nsmbw(0x809BFDD0)]]
 void daEnBlock_c_spawnContent() ASM_METHOD(
