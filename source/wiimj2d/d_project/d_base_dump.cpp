@@ -506,7 +506,7 @@ void dumpStructure(
                     value          = *ptr++;
                     offset         = ptr;
                 }
-                std::fprintf(out, "*%f%s", value, hasComma ? "," : "");
+                std::fprintf(out, "%f%s", value, hasComma ? "," : "");
                 continue;
             }
 
