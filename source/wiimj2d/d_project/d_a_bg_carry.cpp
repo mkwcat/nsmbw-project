@@ -2,16 +2,18 @@
 // nsmbw-project
 
 #include "d_a_bg_carry.h"
+
 #include "d_player/d_a_player.h"
 #include "d_system/d_actor.h"
 #include "d_system/d_audio.h"
-#include "d_system/d_effactor_mng.h"
 #include "d_system/d_bg.h"
+#include "d_system/d_effactor_mng.h"
 #include "d_system/d_mj2d_game.h"
 #include "egg/prim/eggBitFlag.h"
 
-void daBgCarry_c::callBackF(dActor_c* self, dActor_c* other)
-{
+void daBgCarry_c::callBackF(
+    dActor_c* self, dActor_c* other
+) {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
         daPlBase_c* player = static_cast<daPlBase_c*>(other);
         player->setStatus5D(self->mPosDelta.x);
@@ -23,8 +25,9 @@ void daBgCarry_c::callBackF(dActor_c* self, dActor_c* other)
     }
 }
 
-void daBgCarry_c::callBackH(dActor_c* self, dActor_c* other)
-{
+void daBgCarry_c::callBackH(
+    dActor_c* self, dActor_c* other
+) {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
         daPlBase_c* player = static_cast<daPlBase_c*>(other);
         if (self->mPosDelta.y < 0.0f) {
@@ -35,8 +38,9 @@ void daBgCarry_c::callBackH(dActor_c* self, dActor_c* other)
     }
 }
 
-void daBgCarry_c::callBackW(dActor_c* self, dActor_c* other, u8 direction)
-{
+void daBgCarry_c::callBackW(
+    dActor_c* self, dActor_c* other, u8 direction
+) {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
         daPlBase_c* player = static_cast<daPlBase_c*>(other);
         if (direction == 1) {
@@ -55,18 +59,21 @@ void daBgCarry_c::callBackW(dActor_c* self, dActor_c* other, u8 direction)
     }
 }
 
-bool daBgCarry_c::checkRevFoot(dActor_c* self, dActor_c* other)
-{
+bool daBgCarry_c::checkRevFoot(
+    dActor_c* self, dActor_c* other
+) {
     return self->mPosDelta.y > 0.0f;
 }
 
-bool daBgCarry_c::checkRevHead(dActor_c* self, dActor_c* other)
-{
+bool daBgCarry_c::checkRevHead(
+    dActor_c* self, dActor_c* other
+) {
     return self->mPosDelta.y < 0.0f;
 }
 
-bool daBgCarry_c::checkRevWall(dActor_c* self, dActor_c* other, u8 direction)
-{
+bool daBgCarry_c::checkRevWall(
+    dActor_c* self, dActor_c* other, u8 direction
+) {
     if (direction == 0) {
         return self->mPosDelta.x < 0.0f;
     } else {
@@ -74,8 +81,9 @@ bool daBgCarry_c::checkRevWall(dActor_c* self, dActor_c* other, u8 direction)
     }
 }
 
-void daBgCarry_c::collisionCallback(dCc_c* self, dCc_c* other)
-{
+void daBgCarry_c::collisionCallback(
+    dCc_c* self, dCc_c* other
+) {
     daBgCarry_c* bgCarry = static_cast<daBgCarry_c*>(self->mpOwner);
     if (bgCarry->isState(StateID_Throw)) {
         if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
@@ -100,43 +108,42 @@ void daBgCarry_c::collisionCallback(dCc_c* self, dCc_c* other)
 }
 
 dBaseActorProfile_s g_profile_AC_BG_CARRY{
-  {{
-    .mClassInit = []() -> fBase_c* { return new daBgCarry_c(); },
-    .mExecuteOrder = 412,
-    .mDrawOrder = 523,
-  }},
-  .mActorProps = 0x14,
+    {{
+        .mClassInit    = []() -> fBase_c* { return new daBgCarry_c(); },
+        .mExecuteOrder = 412,
+        .mDrawOrder    = 523,
+    }},
+    .mActorProps = 0x14,
 };
 
-const float daBgCarry_c::smc_THROW_SPEED_X = 2.5f;
+const float          daBgCarry_c::smc_THROW_SPEED_X = 2.5f;
 
-const sBcSensorPoint l_bgcarry_foot = {{0}, 0, -0x8000};
-const sBcSensorPoint l_bgcarry_head = {{0}, 0, 0x8000};
-const sBcSensorLine l_bgcarry_wall = {{1}, -0x5000, 0x5000, 0x6000};
+const sBcSensorPoint l_bgcarry_foot                 = {{0}, 0, -0x8000};
+const sBcSensorPoint l_bgcarry_head                 = {{0}, 0, 0x8000};
+const sBcSensorLine  l_bgcarry_wall                 = {{1}, -0x5000, 0x5000, 0x6000};
 
-sBgSetInfo l_bgcarry_bgc_info = {
-  mVec2_c(-8, 8), mVec2_c(8, -8), &daBgCarry_c::callBackF, &daBgCarry_c::callBackH,
-  &daBgCarry_c::callBackW
+sBgSetInfo           l_bgcarry_bgc_info             = {
+    mVec2_c(-8, 8), mVec2_c(8, -8), &daBgCarry_c::callBackF, &daBgCarry_c::callBackH,
+    &daBgCarry_c::callBackW
 };
 
 sCcDatNewF l_bgcarry_cc = {
-  {0.0f, 0.0f},
-  {8.0f, 8.0f},
-  CC_KIND_ENEMY,
-  CC_ATTACK_NONE,
-  EGG::BitFlag(CC_KIND_PLAYER) | EGG::BitFlag(CC_KIND_PLAYER_ATTACK) | EGG::BitFlag(CC_KIND_YOSHI) |
-    EGG::BitFlag(CC_KIND_ENEMY) | EGG::BitFlag(CC_KIND_BALLOON) | EGG::BitFlag(CC_KIND_KILLER),
-  0x40000,
-  CC_STATUS_NONE,
-  &daBgCarry_c::collisionCallback,
+    {0.0f, 0.0f},
+    {8.0f, 8.0f},
+    CC_KIND_ENEMY,
+    CC_ATTACK_NONE,
+    EGG::BitFlag(CC_KIND_PLAYER) | EGG::BitFlag(CC_KIND_PLAYER_ATTACK) |
+        EGG::BitFlag(CC_KIND_YOSHI) | EGG::BitFlag(CC_KIND_ENEMY) | EGG::BitFlag(CC_KIND_BALLOON) |
+        EGG::BitFlag(CC_KIND_KILLER),
+    0x40000,
+    CC_STATUS_NONE,
+    &daBgCarry_c::collisionCallback,
 };
 
-daBgCarry_c::daBgCarry_c()
-{
+daBgCarry_c::daBgCarry_c() {
 }
 
-daBgCarry_c::~daBgCarry_c()
-{
+daBgCarry_c::~daBgCarry_c() {
     mPanelObj.~dPanelObjList_c();
     mBg.~dBg_ctr_c();
 }
@@ -145,17 +152,16 @@ daBgCarry_c::~daBgCarry_c()
  * VT+0x08
  * do method for the create operation.
  */
-fBase_c::PACK_RESULT_e daBgCarry_c::create()
-{
+fBase_c::PACK_RESULT_e daBgCarry_c::create() {
     // Assign members based on actor parameters
-    mTileNum = mParam & 0xFFFF;
+    mTileNum                    = mParam & 0xFFFF;
 
     // Initialize the tile renderer
     dPanelObjMgr_c* panelObjMgr = dBg_c::m_bg_p->getPanelObjMgr(0);
     panelObjMgr->addPanelObjList(&mPanelObj);
 
-    mPanelObj.mPos.x = mPos.x - 8;
-    mPanelObj.mPos.y = -(8 + mPos.y);
+    mPanelObj.mPos.x      = mPos.x - 8;
+    mPanelObj.mPos.y      = -(8 + mPos.y);
     mPanelObj.mTileNumber = mTileNum;
 
     // Tile sensors
@@ -163,15 +169,15 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create()
 
     // Surface collider
     mBg.set(this, &l_bgcarry_bgc_info, 3, mLayer, nullptr);
-    mBg.mFlags = 0x260;
+    mBg.mFlags          = 0x260;
 
     mBg.mBelowCheckFunc = &daBgCarry_c::checkRevFoot;
     mBg.mAboveCheckFunc = &daBgCarry_c::checkRevHead;
-    mBg.mAdjCheckFunc = &daBgCarry_c::checkRevWall;
+    mBg.mAdjCheckFunc   = &daBgCarry_c::checkRevWall;
 
-    mBg.mBelowCallback = &daBgCarry_c::callBackF;
-    mBg.mAboveCallback = &daBgCarry_c::callBackH;
-    mBg.mAdjCallback = &daBgCarry_c::callBackW;
+    mBg.mBelowCallback  = &daBgCarry_c::callBackF;
+    mBg.mAboveCallback  = &daBgCarry_c::callBackH;
+    mBg.mAdjCallback    = &daBgCarry_c::callBackW;
 
     mBg.entry();
 
@@ -180,7 +186,7 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create()
     mCc.entry();
 
     // Set y acceleration and max speed for gravity
-    mAccelY = -0.1875f;
+    mAccelY     = -0.1875f;
     mSpeedMax.y = -4.0f;
 
     return fBase_c::PACK_RESULT_e::SUCCEEDED;
@@ -191,8 +197,7 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create()
  * do method for the delete operation. This method was renamed due to conflict with the delete
  * C++ keyword.
  */
-fBase_c::PACK_RESULT_e daBgCarry_c::doDelete()
-{
+fBase_c::PACK_RESULT_e daBgCarry_c::doDelete() {
     //  Remove tile renderer
     dPanelObjMgr_c* panelObjMgr = dBg_c::m_bg_p->getPanelObjMgr(0);
     panelObjMgr->removePanelObjList(&mPanelObj);
@@ -204,8 +209,7 @@ fBase_c::PACK_RESULT_e daBgCarry_c::doDelete()
  * VT+0x20
  * do method for the execute operation.
  */
-fBase_c::PACK_RESULT_e daBgCarry_c::execute()
-{
+fBase_c::PACK_RESULT_e daBgCarry_c::execute() {
     mStateMgr.executeState();
     ActorScrOutCheck(0);
 
@@ -216,10 +220,9 @@ fBase_c::PACK_RESULT_e daBgCarry_c::execute()
  * VT+0x5C
  * Code to be executed after all actors' execute operation has run.
  */
-void daBgCarry_c::finalUpdate()
-{
+void daBgCarry_c::finalUpdate() {
     if (isState(StateID_Carry)) {
-        mPos = calcCarryPos(mCarryOffset);
+        mPos            = calcCarryPos(mCarryOffset);
 
         dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
         if (player->mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
@@ -233,10 +236,11 @@ void daBgCarry_c::finalUpdate()
     mBg.calc();
 }
 
-void daBgCarry_c::setSpinLiftUpActor(dActor_c* actor)
-{
-    mCarryNo = actor->getPlrNo();
-    mCarryOffset.y = 6.0f;
+void daBgCarry_c::setSpinLiftUpActor(
+    dActor_c* actor
+) {
+    mCarryNo        = actor->getPlrNo();
+    mCarryOffset.y  = 6.0f;
 
     dAcPy_c* player = static_cast<dAcPy_c*>(actor);
     if (player->mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
@@ -247,21 +251,21 @@ void daBgCarry_c::setSpinLiftUpActor(dActor_c* actor)
     changeState(StateID_Carry);
 }
 
-mVec3_c daBgCarry_c::calcCarryPos(const mVec3_c& offset)
-{
+mVec3_c daBgCarry_c::calcCarryPos(
+    const mVec3_c& offset
+) {
     dAcPy_c* player = daPyMng_c::getPlayer(mPlrNo);
     if (player->isStatus(4)) {
         return mPos;
     }
-    mMtx_c mtx = player->getCarryMtx();
-    mMtx_c transposeMtx = mMtx_c::createTrans(offset);
+    mMtx_c  mtx          = player->getCarryMtx();
+    mMtx_c  transposeMtx = mMtx_c::createTrans(offset);
     mVec3_c res;
-    mtx.concat(transposeMtx).multVecZero(res);
+    mtx.concat(transposeMtx).multVecZero(reinterpret_cast<nw4r::math::VEC3&>(res));
     return res;
 }
 
-void daBgCarry_c::placeTile()
-{
+void daBgCarry_c::placeTile() {
     deleteActor(1);
 
     // Create empty block tile
@@ -271,8 +275,7 @@ void daBgCarry_c::placeTile()
     dBg_c::m_bg_p->BgUnitChange(worldX, worldY, mLayer, mTileNum | 0x8000);
 }
 
-void daBgCarry_c::destroyBrick()
-{
+void daBgCarry_c::destroyBrick() {
     deleteActor(1);
 
     // Play break sound and spawn shard effect
@@ -280,41 +283,37 @@ void daBgCarry_c::destroyBrick()
     dEffActorMng_c::m_instance->createBlockFragEff(mPos, 0x3, -1);
 }
 
-void daBgCarry_c::initializeState_Carry()
-{
-    mPlrNo = mCarryNo;
+void daBgCarry_c::initializeState_Carry() {
+    mPlrNo          = mCarryNo;
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
-    mAmiLayer = player->mAmiLayer;
+    mAmiLayer       = player->mAmiLayer;
 
-    mCc.mAmiLine = l_Ami_Line[mAmiLayer];
-    mBc.mAmiLine = l_Ami_Line[mAmiLayer];
+    mCc.mAmiLine    = l_Ami_Line[mAmiLayer];
+    mBc.mAmiLine    = l_Ami_Line[mAmiLayer];
     mActorProperties &= ~0x2;
 }
 
-void daBgCarry_c::finalizeState_Carry()
-{
+void daBgCarry_c::finalizeState_Carry() {
     dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
     player->cancelCarry(this);
     mCc.mCcData.mVsKind &= ~EGG::BitFlag(CC_KIND_KILLER);
     mCc.mCcData.mAttack = CC_ATTACK_NONE;
-    mBc.mFlags = 0;
+    mBc.mFlags          = 0;
     mCarryingFlags &= ~(CARRY_RELEASE | CARRY_THROW);
     mActorProperties |= 0x2;
 }
 
-void daBgCarry_c::executeState_Carry()
-{
+void daBgCarry_c::executeState_Carry() {
     if (mCarryingFlags & CARRY_RELEASE) {
         mDirection = mThrowDirection;
         changeState(StateID_Throw);
     }
 }
 
-void daBgCarry_c::initializeState_Throw()
-{
+void daBgCarry_c::initializeState_Throw() {
     static const float dirSpeed[] = {smc_THROW_SPEED_X, -smc_THROW_SPEED_X};
-    dAcPy_c* player = daPyMng_c::getPlayer(mCarryNo);
-    float xSpeed = 0.0f;
+    dAcPy_c*           player     = daPyMng_c::getPlayer(mCarryNo);
+    float              xSpeed     = 0.0f;
     if (player != nullptr) {
         xSpeed = dirSpeed[mDirection] + player->mSpeed.x * 0.75f;
     }
@@ -324,12 +323,10 @@ void daBgCarry_c::initializeState_Throw()
     mBg.release();
 }
 
-void daBgCarry_c::finalizeState_Throw()
-{
+void daBgCarry_c::finalizeState_Throw() {
 }
 
-void daBgCarry_c::executeState_Throw()
-{
+void daBgCarry_c::executeState_Throw() {
     calcSpeedY();
     posMove();
 

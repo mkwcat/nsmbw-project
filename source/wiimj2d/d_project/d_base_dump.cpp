@@ -120,7 +120,7 @@ public:
         assert(N <= 256);
 
         // Insert the name into the string table
-        if constexpr (N > 3) {
+        if constexpr (N > 1) {
             // Find if the string already exists
             if (std::size_t found = findString(name); found != std::string_view::npos) {
                 return found;
@@ -307,7 +307,7 @@ public:
     std::size_t mPosStrings      = 0;
     char        mStrings[0x8000] = {};
     std::size_t mPosTokens       = 0;
-    u8          mTokens[0x2000]  = {};
+    u8          mTokens[0x3000]  = {};
     std::size_t mPosOffsets      = 0;
     const void* mOffsets[0x1000] = {};
     int         mSkipDepth       = 0;

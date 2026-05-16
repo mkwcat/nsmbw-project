@@ -8,25 +8,25 @@
  * The null vector.
  */
 [[nsmbw_data(0x803780C8)]]
-mVec3_c mVec3_c::Zero;
+mVec3_c mVec3_c::Zero{};
 
 /**
  * The unit vector for the X axis.
  */
 [[nsmbw_data(0x803780D4)]]
-mVec3_c mVec3_c::Ex;
+mVec3_c mVec3_c::Ex{};
 
 /**
  * The unit vector for the Y axis.
  */
 [[nsmbw_data(0x803780E0)]]
-mVec3_c mVec3_c::Ey;
+mVec3_c mVec3_c::Ey{};
 
 /**
  * The unit vector for the Z axis.
  */
 [[nsmbw_data(0x803780EC)]]
-mVec3_c mVec3_c::Ez;
+mVec3_c mVec3_c::Ez{};
 
 /**
  * Normalizes the vector.

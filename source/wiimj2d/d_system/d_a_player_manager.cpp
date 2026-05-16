@@ -45,7 +45,7 @@ int daPyMng_c::mNum;
 s32 daPyMng_c::mCtrlPlrNo;
 
 [[nsmbw_data(0x80429F88)]]
-u8 daPyMng_c::mOldActPlayerInfo;
+u8  daPyMng_c::mOldActPlayerInfo;
 
 u64 daPyMng_c::mActPlayerInfo;
 
@@ -70,7 +70,7 @@ cArray_c<s32, PLAYER_COUNT, int> daPyMng_c::mPlayerEntry;
 /* 0x80355160 */
 // Index is player ID
 cArray_c<PLAYER_TYPE_e, PLAYER_COUNT, int> daPyMng_c::mPlayerType =
-  std::bit_cast<cArray_c<PLAYER_TYPE_e, PLAYER_COUNT, int>>(dMj2dGame_c::scDefaultPlayerTypes);
+    std::bit_cast<cArray_c<PLAYER_TYPE_e, PLAYER_COUNT, int>>(dMj2dGame_c::scDefaultPlayerTypes);
 
 /* 0x80355170 */
 cEnumArray_c<PLAYER_MODE_e, PLAYER_TYPE_e> daPyMng_c::mPlayerMode;
@@ -142,38 +142,36 @@ int daPyMng_c::mKinopioCarryCount;
 void daPyMng_c::createYoshi(mVec3_c&, int, dAcPy_c*);
 
 [[nsmbw(0x8005EA60)]]
-void daPyMng_c::initGame()
-{
+void daPyMng_c::initGame() {
     mActPlayerInfo |= 1;
     mOldActPlayerInfo |= 1;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        mPlayerType[i] = dMj2dGame_c::scDefaultPlayerTypes[i];
-        mPlayerEntry[i] = 0;
+        mPlayerType[i]     = dMj2dGame_c::scDefaultPlayerTypes[i];
+        mPlayerEntry[i]    = 0;
 
         PLAYER_TYPE_e type = dMj2dGame_c::scDefaultPlayerTypes[i];
-        mPlayerMode[type] = PLAYER_MODE_e::NONE;
-        mCreateItem[type] = PLAYER_CREATE_ITEM_e::NONE;
+        mPlayerMode[type]  = PLAYER_MODE_e::NONE;
+        mCreateItem[type]  = PLAYER_CREATE_ITEM_e::NONE;
     }
 
     setDefaultParam();
 
-    mBonusNoCap = 0;
+    mBonusNoCap        = 0;
     mKinopioCarryCount = 0;
 }
 
 [[nsmbw(0x8005EB10)]]
-void daPyMng_c::initStage()
-{
+void daPyMng_c::initStage() {
     checkCorrectCreateInfo();
 
-    mNum = 0;
-    mActPlayerInfo = 0;
+    mNum              = 0;
+    mActPlayerInfo    = 0;
     mOldActPlayerInfo = 0;
 
     for (int ply = 0; ply < PLAYER_COUNT; ply++) {
         setPlayer(ply, nullptr);
-        m_star_time[ply] = 0;
+        m_star_time[ply]  = 0;
         m_star_count[ply] = 0;
     }
 
@@ -193,13 +191,13 @@ void daPyMng_c::initStage()
         }
     }
 
-    mTimeUpPlayerNum = 0;
-    mAllBalloon = 0;
-    mPauseEnableInfo = 0;
-    mPauseDisable = 0;
-    mStopTimerInfo = 0;
+    mTimeUpPlayerNum  = 0;
+    mAllBalloon       = 0;
+    mPauseEnableInfo  = 0;
+    mPauseDisable     = 0;
+    mStopTimerInfo    = 0;
     mStopTimerInfoOld = 0;
-    mQuakeTrigger = 0;
+    mQuakeTrigger     = 0;
 
     for (auto& timer : m_quakeTimer) {
         timer = 0;
@@ -219,14 +217,13 @@ void daPyMng_c::initStage()
 }
 
 [[nsmbw(0x8005ECE0)]]
-void daPyMng_c::setDefaultParam()
-{
+void daPyMng_c::setDefaultParam() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         PLAYER_TYPE_e type = mPlayerType[i];
-        mRest[type] = 5;
-        mCoin[type] = 0;
-        m_playerID[i] = fBaseID_e::NONE;
-        m_yoshiID[i] = fBaseID_e::NONE;
+        mRest[type]        = 5;
+        mCoin[type]        = 0;
+        m_playerID[i]      = fBaseID_e::NONE;
+        m_yoshiID[i]       = fBaseID_e::NONE;
     }
 
     mScore = 0;
@@ -239,30 +236,30 @@ mVec3_c daPyMng_c::getPlayerSetPos(u8 course, u8 gotoID);
 u8 daPyMng_c::getPlayerCreateAction();
 
 [[nsmbw(0x8005EEE0)]]
-bool daPyMng_c::create(int player, mVec3_c position, int gotoKind, u8 faceLeft)
-{
+bool daPyMng_c::create(
+    int player, mVec3_c position, int gotoKind, u8 faceLeft
+) {
     if (!(mPlayerEntry[player])) {
         return false;
     }
 
     dActor_c::construct(
-      dProf::PLAYER, u32(faceLeft) << 24 | u32(gotoKind & 0xFF) << 16 | u32(player & 63), &position,
-      nullptr, 0
+        dProf::PLAYER, u32(faceLeft) << 24 | u32(gotoKind & 0xFF) << 16 | u32(player & 63),
+        &position, nullptr, 0
     );
     return true;
 }
 
 [[nsmbw(0x8005EF50)]]
-void daPyMng_c::createCourseInit()
-{
-    dScStage_c* stage = dScStage_c::m_instance;
-    mVec3_c playerSetPos = getPlayerSetPos(stage->mCourse, stage->mGoto);
+void daPyMng_c::createCourseInit() {
+    dScStage_c* stage        = dScStage_c::m_instance;
+    mVec3_c     playerSetPos = getPlayerSetPos(stage->mCourse, stage->mGoto);
 
-    u8 entType = getPlayerCreateAction();
+    u8          entType      = getPlayerCreateAction();
 
     OS_REPORT(
-      "daPyMng_c::createCourseInit: Course(%d) Goto(%d) EntranceType(%d) Position(%f, %f, %f)\n",
-      stage->mCourse, stage->mGoto, entType, playerSetPos.x, playerSetPos.y, playerSetPos.z
+        "daPyMng_c::createCourseInit: Course(%d) Goto(%d) EntranceType(%d) Position(%f, %f, %f)\n",
+        stage->mCourse, stage->mGoto, entType, playerSetPos.x, playerSetPos.y, playerSetPos.z
     );
 
     if (entType != 0 /* NORMAL */ && entType != 1 /* NORMAL1 */ && entType != 27 /* BOSS_STAND */) {
@@ -285,7 +282,7 @@ void daPyMng_c::createCourseInit()
 
         if (stage->m_isCourseIn && dInfo_c::m_instance->mCyuukanState >= 0) {
             playerSetPos = dInfo_c::m_instance->mCyuukan.mPlayerSetPos;
-            isAmbush = dInfo_c::m_instance->mCyuukan.m0x14 & 1;
+            isAmbush     = dInfo_c::m_instance->mCyuukan.m0x14 & 1;
         } else {
             isAmbush = dCd_c::getFileP(stage->mCourse)->mpCourseInfo->mIsAmbush;
         }
@@ -297,16 +294,16 @@ void daPyMng_c::createCourseInit()
         if (dInfo_c::m_startGameInfo.demoType != dInfo_c::DemoType_e::TITLE) {
             // Randomize the spawn order
             float createOrderRandom[PLAYER_COUNT];
-            int randomCount = entryNum > 4 ? entryNum : 4;
+            int   randomCount = entryNum > 4 ? entryNum : 4;
 
             for (int i = 0; i < randomCount; i++) {
                 createOrderRandom[i] = dGameCom::rnd();
             }
 
             std::sort(
-              &createOrder[0], &createOrder[PLAYER_COUNT], [createOrderRandom](int l, int r) {
-                return createOrderRandom[l] < createOrderRandom[r];
-            }
+                &createOrder[0], &createOrder[PLAYER_COUNT], [createOrderRandom](int l, int r) {
+                    return createOrderRandom[l] < createOrderRandom[r];
+                }
             );
         }
 
@@ -351,24 +348,24 @@ void daPyMng_c::createCourseInit()
         playerSetPos.x += 512 - 320;
 
         static const f32 l_STAFF_CREDIT_POS[8][2] = {
-          {-192, -48},
-          {192, -48},
-          {-216, 0},
-          {216, 0},
+            {-192, -48},
+            {192, -48},
+            {-216, 0},
+            {216, 0},
 
-          // New positions
-          {-168, -80},
-          {168, -80},
-          {-144, -80},
-          {144, -80},
+            // New positions
+            {-168, -80},
+            {168, -80},
+            {-144, -80},
+            {144, -80},
         };
 
         for (int i = 0; i < PLAYER_COUNT; i++) {
             if (mPlayerEntry[i] != 0) {
                 mVec3_c pos = {
-                  playerSetPos.x + l_STAFF_CREDIT_POS[i % 8][0],
-                  playerSetPos.y + l_STAFF_CREDIT_POS[i % 8][1],
-                  playerSetPos.z,
+                    playerSetPos.x + l_STAFF_CREDIT_POS[i % 8][0],
+                    playerSetPos.y + l_STAFF_CREDIT_POS[i % 8][1],
+                    playerSetPos.z,
                 };
                 create(i, pos, 0, l_STAFF_CREDIT_POS[i % 8][0] > 0);
             }
@@ -377,20 +374,20 @@ void daPyMng_c::createCourseInit()
 }
 
 [[nsmbw(0x8005F570)]]
-void daPyMng_c::initKinopioPlayer(PLAYER_MODE_e playerMode, int index)
-{
+void daPyMng_c::initKinopioPlayer(
+    PLAYER_MODE_e playerMode, int index
+) {
     mActPlayerInfo |= 1 << index;
     mOldActPlayerInfo |= 1 << index;
-    mPlayerEntry[index] = 1;
+    mPlayerEntry[index]             = 1;
     mCreateItem[mPlayerType[index]] = PLAYER_CREATE_ITEM_e::RESCUE_TOAD;
-    mKinopioMode = playerMode;
+    mKinopioMode                    = playerMode;
 }
 
 static cArray_c<int, PLAYER_COUNT, PLAYER_TYPE_e> mDeathCount = {};
 
 [[nsmbw(0x8005F5C0)]]
-void daPyMng_c::update()
-{
+void daPyMng_c::update() {
     // Hack for incrementing death count
     if (fFeat::infinite_lives) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -467,7 +464,7 @@ void daPyMng_c::update()
 
     if (mStopTimerInfo != mStopTimerInfoOld) {
         dStageTimer_c::m_instance->m_isStop = mStopTimerInfo != 0;
-        mStopTimerInfoOld = mStopTimerInfo;
+        mStopTimerInfoOld                   = mStopTimerInfo;
     }
 
     daPyDemoMng_c::mspInstance->update();
@@ -481,8 +478,7 @@ void daPyMng_c::setPlayer(int plrNo, dAcPy_c* player);
 dAcPy_c* daPyMng_c::getPlayer(int plrNo);
 
 [[nsmbw(0x8005F920)]]
-void daPyMng_c::decideCtrlPlrNo()
-{
+void daPyMng_c::decideCtrlPlrNo() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mActPlayerInfo & (1 << i)) {
             mCtrlPlrNo = i;
@@ -492,8 +488,9 @@ void daPyMng_c::decideCtrlPlrNo()
 }
 
 [[nsmbw(0x8005F990)]]
-bool daPyMng_c::setYoshi(daPlBase_c* yoshi)
-{
+bool daPyMng_c::setYoshi(
+    daPlBase_c* yoshi
+) {
     if (yoshi == nullptr) {
         return false;
     }
@@ -508,8 +505,9 @@ bool daPyMng_c::setYoshi(daPlBase_c* yoshi)
 }
 
 [[nsmbw(0x8005FA00)]]
-void daPyMng_c::releaseYoshi(daPlBase_c* yoshi)
-{
+void daPyMng_c::releaseYoshi(
+    daPlBase_c* yoshi
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (m_yoshiID[i] == yoshi->mUniqueID) {
             m_yoshiID[i] = fBaseID_e::NONE;
@@ -519,8 +517,9 @@ void daPyMng_c::releaseYoshi(daPlBase_c* yoshi)
 }
 
 [[nsmbw(0x8005FA60)]]
-daYoshi_c* daPyMng_c::getYoshi(int index)
-{
+daYoshi_c* daPyMng_c::getYoshi(
+    int index
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
         if (yoshi != nullptr && yoshi->getPlrNo() == index) {
@@ -532,8 +531,7 @@ daYoshi_c* daPyMng_c::getYoshi(int index)
 }
 
 [[nsmbw(0x8005FB00)]]
-int daPyMng_c::getYoshiNum()
-{
+int daPyMng_c::getYoshiNum() {
     int yoshiNum = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (fManager_c::searchBaseByID(m_yoshiID[i]) != nullptr) {
@@ -546,63 +544,73 @@ int daPyMng_c::getYoshiNum()
 [[nsmbw(0x8005FB90)]]
 daPlBase_c* daPyMng_c::getCtrlPlayer(int plrNo);
 
-PLAYER_TYPE_e daPyMng_c::getModelPlayerType(dPyMdlMng_c::ModelType_e modelType)
-{
+PLAYER_TYPE_e daPyMng_c::getModelPlayerType(
+    dPyMdlMng_c::ModelType_e modelType
+) {
     return cEnumArray_c<PLAYER_TYPE_e, dPyMdlMng_c::ModelType_e>{
-      PLAYER_TYPE_e::MARIO,       PLAYER_TYPE_e::LUIGI,           PLAYER_TYPE_e::BLUE_TOAD,
-      PLAYER_TYPE_e::YELLOW_TOAD, PLAYER_TYPE_e::BLUE_TOAD,       PLAYER_TYPE_e::LUIGI,
-      PLAYER_TYPE_e::TOADETTE,    PLAYER_TYPE_e::PURPLE_TOADETTE, PLAYER_TYPE_e::BLACK_TOAD,
-      PLAYER_TYPE_e::ORANGE_TOAD,
+        PLAYER_TYPE_e::MARIO,       PLAYER_TYPE_e::LUIGI,           PLAYER_TYPE_e::BLUE_TOAD,
+        PLAYER_TYPE_e::YELLOW_TOAD, PLAYER_TYPE_e::BLUE_TOAD,       PLAYER_TYPE_e::LUIGI,
+        PLAYER_TYPE_e::TOADETTE,    PLAYER_TYPE_e::PURPLE_TOADETTE, PLAYER_TYPE_e::BLACK_TOAD,
+        PLAYER_TYPE_e::ORANGE_TOAD,
     }[modelType];
 }
 
-dPyMdlMng_c::ModelType_e daPyMng_c::getPlayerTypeModelType(PLAYER_TYPE_e playerType)
-{
+dPyMdlMng_c::ModelType_e daPyMng_c::getPlayerTypeModelType(
+    PLAYER_TYPE_e playerType
+) {
     if (!!(mCreateItem[playerType] & PLAYER_CREATE_ITEM_e::RESCUE_TOAD)) {
         return dPyMdlMng_c::ModelType_e::MODEL_TOAD_RED;
     }
 
     return cEnumArray_c<dPyMdlMng_c::ModelType_e, PLAYER_TYPE_e>{
-      dPyMdlMng_c::ModelType_e::MODEL_MARIO,       dPyMdlMng_c::ModelType_e::MODEL_LUIGI,
-      dPyMdlMng_c::ModelType_e::MODEL_TOAD_BLUE,   dPyMdlMng_c::ModelType_e::MODEL_TOAD_YELLOW,
-      dPyMdlMng_c::ModelType_e::MODEL_TOADETTE,    dPyMdlMng_c::ModelType_e::MODEL_TOADETTE_PURPLE,
-      dPyMdlMng_c::ModelType_e::MODEL_TOAD_ORANGE, dPyMdlMng_c::ModelType_e::MODEL_TOAD_BLACK,
+        dPyMdlMng_c::ModelType_e::MODEL_MARIO,
+        dPyMdlMng_c::ModelType_e::MODEL_LUIGI,
+        dPyMdlMng_c::ModelType_e::MODEL_TOAD_BLUE,
+        dPyMdlMng_c::ModelType_e::MODEL_TOAD_YELLOW,
+        dPyMdlMng_c::ModelType_e::MODEL_TOADETTE,
+        dPyMdlMng_c::ModelType_e::MODEL_TOADETTE_PURPLE,
+        dPyMdlMng_c::ModelType_e::MODEL_TOAD_ORANGE,
+        dPyMdlMng_c::ModelType_e::MODEL_TOAD_BLACK,
     }[playerType];
 }
 
 [[nsmbw(0x8005FBE0)]]
-dPyMdlMng_c::ModelType_e daPyMng_c::getCourseInPlayerModelType(u8 index)
-{
+dPyMdlMng_c::ModelType_e daPyMng_c::getCourseInPlayerModelType(
+    u8 index
+) {
     return getPlayerTypeModelType(mPlayerType[index]);
 }
 
-int daPyMng_c::getPlayerColorType(PLAYER_TYPE_e playerType)
-{
+int daPyMng_c::getPlayerColorType(
+    PLAYER_TYPE_e playerType
+) {
     return static_cast<int>(getModelPlayerType(getPlayerTypeModelType(playerType)));
 }
 
 [[nsmbw(0x8005FC20)]]
-void daPyMng_c::setCarryOverYoshiInfo(u8 index, dYoshiMdl_c::COLOR_e color, int fruit)
-{
+void daPyMng_c::setCarryOverYoshiInfo(
+    u8 index, dYoshiMdl_c::COLOR_e color, int fruit
+) {
     m_yoshiColor[index] = static_cast<u8>(color);
     m_yoshiFruit[index] = fruit;
 }
 
 [[nsmbw(0x8005FC40)]]
-dYoshiMdl_c::COLOR_e daPyMng_c::getYoshiColor(int index)
-{
+dYoshiMdl_c::COLOR_e daPyMng_c::getYoshiColor(
+    int index
+) {
     return static_cast<dYoshiMdl_c::COLOR_e>(m_yoshiColor[index]);
 }
 
 [[nsmbw(0x8005FC50)]]
-int daPyMng_c::getYoshiFruit(int index)
-{
+int daPyMng_c::getYoshiFruit(
+    int index
+) {
     return m_yoshiFruit[index];
 }
 
 [[nsmbw(0x8005FC70)]]
-u32 daPyMng_c::getActScrollInfo()
-{
+u32 daPyMng_c::getActScrollInfo() {
     u32 info = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i] == 0) {
@@ -618,8 +626,7 @@ u32 daPyMng_c::getActScrollInfo()
 }
 
 [[nsmbw(0x8005FD20)]]
-u8 daPyMng_c::getScrollNum()
-{
+u8 daPyMng_c::getScrollNum() {
     int scrollNum = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i] == 0) {
@@ -635,8 +642,9 @@ u8 daPyMng_c::getScrollNum()
 }
 
 [[nsmbw(0x8005FDB0)]]
-bool daPyMng_c::addNum(int num)
-{
+bool daPyMng_c::addNum(
+    int num
+) {
     if (mActPlayerInfo & (1 << num)) {
         return false;
     }
@@ -650,8 +658,9 @@ bool daPyMng_c::addNum(int num)
 }
 
 [[nsmbw(0x8005FE30)]]
-bool daPyMng_c::decNum(int num)
-{
+bool daPyMng_c::decNum(
+    int num
+) {
     if (!(mActPlayerInfo & (1 << num))) {
         return false;
     }
@@ -667,8 +676,7 @@ bool daPyMng_c::decNum(int num)
 }
 
 [[nsmbw(0x8005FEB0)]]
-int daPyMng_c::addNum()
-{
+int daPyMng_c::addNum() {
     if (mNum >= PLAYER_COUNT) {
         return mNum;
     }
@@ -676,8 +684,7 @@ int daPyMng_c::addNum()
 }
 
 [[nsmbw(0x8005FED0)]]
-int daPyMng_c::decNum()
-{
+int daPyMng_c::decNum() {
     if (mNum <= 0) {
         return mNum;
     }
@@ -685,8 +692,7 @@ int daPyMng_c::decNum()
 }
 
 [[nsmbw(0x8005FEF0)]]
-int daPyMng_c::getNumInGame()
-{
+int daPyMng_c::getNumInGame() {
     int inGameCount = 0;
     for (int i = 0; i < CHARACTER_COUNT; i++) {
         if (mPlayerEntry[i] != 0 && mRest[mPlayerType[i]] > 0) {
@@ -697,8 +703,7 @@ int daPyMng_c::getNumInGame()
 }
 
 [[nsmbw(0x8005FFB0)]]
-int daPyMng_c::getEntryNum()
-{
+int daPyMng_c::getEntryNum() {
     int entryNum = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i] != 0) {
@@ -709,8 +714,9 @@ int daPyMng_c::getEntryNum()
 }
 
 [[nsmbw(0x80060110)]]
-int daPyMng_c::findPlayerWithType(PLAYER_TYPE_e playerType)
-{
+int daPyMng_c::findPlayerWithType(
+    PLAYER_TYPE_e playerType
+) {
     for (int i = 0; i < CHARACTER_COUNT; i++) {
         if (mPlayerType[i] == playerType) {
             return i;
@@ -723,8 +729,7 @@ int daPyMng_c::findPlayerWithType(PLAYER_TYPE_e playerType)
 bool daPyMng_c::changeItemKinopioPlrNo(int* ownedPlayer);
 
 [[nsmbw(0x80060200)]]
-int daPyMng_c::getCoinAll()
-{
+int daPyMng_c::getCoinAll() {
     int totalCoins = 0;
     for (int coin : mCoin) {
         totalCoins += coin;
@@ -733,8 +738,9 @@ int daPyMng_c::getCoinAll()
 }
 
 [[nsmbw(0x80060250)]]
-void daPyMng_c::incCoin(int player)
-{
+void daPyMng_c::incCoin(
+    int player
+) {
     changeItemKinopioPlrNo(&player);
     dMultiMng_c::mspInstance->incCoin(player);
 
@@ -745,11 +751,13 @@ void daPyMng_c::incCoin(int player)
 
     int noEntry = getEntryNum() <= 0;
     if (!noEntry) {
-        dBgParameter_c* bgParam = dBgParameter_c::ms_Instance_p;
-        nw4r::math::VEC2 pos = dAudio::cvtSndObjctPos({
-          bgParam->mScreenLeft + bgParam->mScreenWidth / 2,
-          bgParam->mScreenTop - bgParam->mScreenHeight / 2,
-        });
+        dBgParameter_c*  bgParam = dBgParameter_c::ms_Instance_p;
+        nw4r::math::VEC2 pos     = dAudio::cvtSndObjctPos(
+            mVec2_c{
+                bgParam->mScreenLeft + bgParam->mScreenWidth / 2,
+                bgParam->mScreenTop - bgParam->mScreenHeight / 2,
+            }
+        );
 
         u32 remoteMask = 0;
         for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -784,8 +792,9 @@ void daPyMng_c::incCoin(int player)
 void daPyMng_c::addRest(int player, int num, bool playEffect);
 
 [[nsmbw(0x80060590)]]
-void daPyMng_c::incRestAll(bool playEffect)
-{
+void daPyMng_c::incRestAll(
+    bool playEffect
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i] != 0) {
             addRest(i, fFeat::infinite_lives ? 0 : 1, playEffect);
@@ -810,8 +819,7 @@ void daPyMng_c::stopYoshiBGM();
 void daPyMng_c::checkLastAlivePlayer();
 
 [[nsmbw(0x80060970)]]
-void daPyMng_c::executeLastPlayer()
-{
+void daPyMng_c::executeLastPlayer() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
         if (yoshi != nullptr) {
@@ -828,8 +836,7 @@ void daPyMng_c::executeLastPlayer()
 }
 
 [[nsmbw(0x80060A10)]]
-void daPyMng_c::executeLastAll()
-{
+void daPyMng_c::executeLastAll() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
         if (yoshi != nullptr) {
@@ -850,8 +857,9 @@ void daPyMng_c::executeLastAll()
 void daPyMng_c::deleteCullingYoshi();
 
 [[nsmbw(0x80060C10)]]
-void daPyMng_c::setHipAttackQuake(int type, u8 player)
-{
+void daPyMng_c::setHipAttackQuake(
+    int type, u8 player
+) {
     if (player == 0xFF) {
         return;
     }
@@ -861,10 +869,10 @@ void daPyMng_c::setHipAttackQuake(int type, u8 player)
         return;
     }
 
-    m_quakeTimer[player] = 5;
+    m_quakeTimer[player]      = 5;
     m_quakeEffectFlag[player] = 0;
 
-    int count = 0;
+    int count                 = 0;
     for (int other = 0; other < PLAYER_COUNT; other++) {
         if (other != player && m_quakeTimer[other] != 0) {
             count++;
@@ -875,18 +883,18 @@ void daPyMng_c::setHipAttackQuake(int type, u8 player)
         (!fFeat::one_player_special_hip_attack_quake && count == 0)) {
         if (type == 1) {
             dQuake_c::m_instance->startShock(
-              player, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK, 3, 0, false
+                player, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK, 3, 0, false
             );
         } else {
             dQuake_c::m_instance->shockMotor(
-              player, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false
+                player, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false
             );
         }
     } else {
         SndID::Type l_QUAKE_SOUND_LIST[] = {
-          SndID::SE_PLY_HPDP_SPECIAL_TWO,
-          SndID::SE_PLY_HPDP_SPECIAL_THREE,
-          SndID::SE_PLY_HPDP_SPECIAL_FOUR,
+            SndID::SE_PLY_HPDP_SPECIAL_TWO,
+            SndID::SE_PLY_HPDP_SPECIAL_THREE,
+            SndID::SE_PLY_HPDP_SPECIAL_FOUR,
         };
 
         SndAudioMgr::sInstance->startSystemSe(l_QUAKE_SOUND_LIST[std::clamp(count - 1, 0, 2)], 1);
@@ -900,8 +908,7 @@ void daPyMng_c::setHipAttackQuake(int type, u8 player)
 }
 
 [[nsmbw(0x80060DB0)]]
-void daPyMng_c::setHipAttackSpecialEffect()
-{
+void daPyMng_c::setHipAttackSpecialEffect() {
     SndSceneMgr::sInstance->onPowerImpact();
 
     for (std::size_t ply = 0; ply < PLAYER_COUNT; ply++) {
@@ -911,7 +918,7 @@ void daPyMng_c::setHipAttackSpecialEffect()
 
         m_quakeEffectFlag[ply] = 1;
 
-        dAcPy_c* player = getPlayer(ply);
+        dAcPy_c* player        = getPlayer(ply);
         if (player == nullptr) {
             continue;
         }
@@ -933,8 +940,7 @@ void daPyMng_c::setHipAttackSpecialEffect()
 }
 
 [[nsmbw(0x80060EF0)]]
-void daPyMng_c::checkBonusNoCap()
-{
+void daPyMng_c::checkBonusNoCap() {
     mBonusNoCap = mRest[PLAYER_TYPE_e::MARIO] >= MAX_LIVES;
 }
 
@@ -947,16 +953,16 @@ void daPyMng_c::initYoshiPriority();
 void daPyMng_c::setYoshiPriority();
 
 [[nsmbw(0x80061110)]]
-bool daPyMng_c::isCreateBalloon(int plrNo)
-{
+bool daPyMng_c::isCreateBalloon(
+    int plrNo
+) {
     PLAYER_TYPE_e type = mPlayerType[plrNo];
 
     return !!(mCreateItem[type] & PLAYER_CREATE_ITEM_e::BUBBLE) || mRest[type] <= 0;
 }
 
 [[nsmbw(0x80061160)]]
-void daPyMng_c::checkCorrectCreateInfo()
-{
+void daPyMng_c::checkCorrectCreateInfo() {
     for (int ply = 0; ply < PLAYER_COUNT; ply++) {
         if (mPlayerType[ply] >= PLAYER_TYPE_e::COUNT || mPlayerType[ply] < PLAYER_TYPE_e::MARIO) {
             mPlayerType[ply] = PLAYER_TYPE_e::MARIO;
@@ -985,232 +991,232 @@ void daPyMng_c::checkCorrectCreateInfo()
 }
 
 PATCH_REFERENCES(
-  daPyMng_c::m_playerID.data(), //
-  {
-    {0x8005EA6A, R_PPC_ADDR16_HA}, {0x8005EA76, R_PPC_ADDR16_LO}, {0x8005EB26, R_PPC_ADDR16_HA},
-    {0x8005EB2A, R_PPC_ADDR16_LO}, {0x8005ECE6, R_PPC_ADDR16_HA}, {0x8005ECEA, R_PPC_ADDR16_LO},
-    {0x8005F572, R_PPC_ADDR16_HA}, {0x8005F57A, R_PPC_ADDR16_LO}, {0x8005F5D6, R_PPC_ADDR16_HA},
-    {0x8005F5DA, R_PPC_ADDR16_LO}, {0x8005F8CA, R_PPC_ADDR16_HA}, {0x8005F8D2, R_PPC_ADDR16_LO},
-    {0x8005F8E2, R_PPC_ADDR16_HA}, {0x8005F8EA, R_PPC_ADDR16_LO}, {0x8005F902, R_PPC_ADDR16_HA},
-    {0x8005F90A, R_PPC_ADDR16_LO}, {0x8005FEF2, R_PPC_ADDR16_HA}, {0x8005FEFA, R_PPC_ADDR16_LO},
-    {0x8006026A, R_PPC_ADDR16_HA}, {0x8006026E, R_PPC_ADDR16_LO}, {0x80060C1E, R_PPC_ADDR16_HA},
-    {0x80060C26, R_PPC_ADDR16_LO}, {0x80061112, R_PPC_ADDR16_HA}, {0x8006111A, R_PPC_ADDR16_LO},
-    {0x80061182, R_PPC_ADDR16_HA}, {0x80061186, R_PPC_ADDR16_LO}, {0x80061322, R_PPC_ADDR16_HA},
-    {0x80061326, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::m_playerID.data(), //
+    {
+        {0x8005EA6A, R_PPC_ADDR16_HA}, {0x8005EA76, R_PPC_ADDR16_LO}, {0x8005EB26, R_PPC_ADDR16_HA},
+        {0x8005EB2A, R_PPC_ADDR16_LO}, {0x8005ECE6, R_PPC_ADDR16_HA}, {0x8005ECEA, R_PPC_ADDR16_LO},
+        {0x8005F572, R_PPC_ADDR16_HA}, {0x8005F57A, R_PPC_ADDR16_LO}, {0x8005F5D6, R_PPC_ADDR16_HA},
+        {0x8005F5DA, R_PPC_ADDR16_LO}, {0x8005F8CA, R_PPC_ADDR16_HA}, {0x8005F8D2, R_PPC_ADDR16_LO},
+        {0x8005F8E2, R_PPC_ADDR16_HA}, {0x8005F8EA, R_PPC_ADDR16_LO}, {0x8005F902, R_PPC_ADDR16_HA},
+        {0x8005F90A, R_PPC_ADDR16_LO}, {0x8005FEF2, R_PPC_ADDR16_HA}, {0x8005FEFA, R_PPC_ADDR16_LO},
+        {0x8006026A, R_PPC_ADDR16_HA}, {0x8006026E, R_PPC_ADDR16_LO}, {0x80060C1E, R_PPC_ADDR16_HA},
+        {0x80060C26, R_PPC_ADDR16_LO}, {0x80061112, R_PPC_ADDR16_HA}, {0x8006111A, R_PPC_ADDR16_LO},
+        {0x80061182, R_PPC_ADDR16_HA}, {0x80061186, R_PPC_ADDR16_LO}, {0x80061322, R_PPC_ADDR16_HA},
+        {0x80061326, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::m_yoshiID.data(), //
-  {
-    {0x8005F9A2, R_PPC_ADDR16_HA}, {0x8005F9AA, R_PPC_ADDR16_LO}, {0x8005F9C6, R_PPC_ADDR16_HA},
-    {0x8005F9D6, R_PPC_ADDR16_LO}, {0x8005FA0A, R_PPC_ADDR16_HA}, {0x8005FA12, R_PPC_ADDR16_LO},
-    {0x8005FA32, R_PPC_ADDR16_HA}, {0x8005FA3A, R_PPC_ADDR16_LO}, {0x8005FA72, R_PPC_ADDR16_HA},
-    {0x8005FA76, R_PPC_ADDR16_LO}, {0x8005FB12, R_PPC_ADDR16_HA}, {0x8005FB16, R_PPC_ADDR16_LO},
-    {0x8005FB72, R_PPC_ADDR16_HA}, {0x8005FB7A, R_PPC_ADDR16_LO}, {0x80060982, R_PPC_ADDR16_HA},
-    {0x80060986, R_PPC_ADDR16_LO}, {0x80060A22, R_PPC_ADDR16_HA}, {0x80060A26, R_PPC_ADDR16_LO},
-    {0x80060AD2, R_PPC_ADDR16_HA}, {0x80060AD6, R_PPC_ADDR16_LO}, {0x80060F3A, R_PPC_ADDR16_HA},
-    {0x80060F46, R_PPC_ADDR16_LO}, {0x80060FFA, R_PPC_ADDR16_HA}, {0x80060FFE, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::m_yoshiID.data(), //
+    {
+        {0x8005F9A2, R_PPC_ADDR16_HA}, {0x8005F9AA, R_PPC_ADDR16_LO}, {0x8005F9C6, R_PPC_ADDR16_HA},
+        {0x8005F9D6, R_PPC_ADDR16_LO}, {0x8005FA0A, R_PPC_ADDR16_HA}, {0x8005FA12, R_PPC_ADDR16_LO},
+        {0x8005FA32, R_PPC_ADDR16_HA}, {0x8005FA3A, R_PPC_ADDR16_LO}, {0x8005FA72, R_PPC_ADDR16_HA},
+        {0x8005FA76, R_PPC_ADDR16_LO}, {0x8005FB12, R_PPC_ADDR16_HA}, {0x8005FB16, R_PPC_ADDR16_LO},
+        {0x8005FB72, R_PPC_ADDR16_HA}, {0x8005FB7A, R_PPC_ADDR16_LO}, {0x80060982, R_PPC_ADDR16_HA},
+        {0x80060986, R_PPC_ADDR16_LO}, {0x80060A22, R_PPC_ADDR16_HA}, {0x80060A26, R_PPC_ADDR16_LO},
+        {0x80060AD2, R_PPC_ADDR16_HA}, {0x80060AD6, R_PPC_ADDR16_LO}, {0x80060F3A, R_PPC_ADDR16_HA},
+        {0x80060F46, R_PPC_ADDR16_LO}, {0x80060FFA, R_PPC_ADDR16_HA}, {0x80060FFE, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mCourseInList.data(), //
-  {
-    {0x8005D656, R_PPC_ADDR16_HA},
-    {0x8005D65E, R_PPC_ADDR16_LO},
-    {0x8005D662, R_PPC_ADDR16_LO},
-    {0x800601E2, R_PPC_ADDR16_HA},
-    {0x800601EA, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mCourseInList.data(), //
+    {
+        {0x8005D656, R_PPC_ADDR16_HA},
+        {0x8005D65E, R_PPC_ADDR16_LO},
+        {0x8005D662, R_PPC_ADDR16_LO},
+        {0x800601E2, R_PPC_ADDR16_HA},
+        {0x800601EA, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::m_yoshiFruit.data(), //
-  {
-    {0x8005FC22, R_PPC_ADDR16_HA},
-    {0x8005FC32, R_PPC_ADDR16_LO},
-    {0x8005FC52, R_PPC_ADDR16_HA},
-    {0x8005FC5A, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::m_yoshiFruit.data(), //
+    {
+        {0x8005FC22, R_PPC_ADDR16_HA},
+        {0x8005FC32, R_PPC_ADDR16_LO},
+        {0x8005FC52, R_PPC_ADDR16_HA},
+        {0x8005FC5A, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mPlayerEntry.data(), //
-  {
-    {0x8005D31A, R_PPC_ADDR16_HA}, {0x8005D32E, R_PPC_ADDR16_LO}, {0x8005EEEA, R_PPC_ADDR16_HA},
-    {0x8005EEF6, R_PPC_ADDR16_LO}, {0x8005F38A, R_PPC_ADDR16_HA}, {0x8005F392, R_PPC_ADDR16_LO},
-    {0x8005FC8A, R_PPC_ADDR16_HA}, {0x8005FC8E, R_PPC_ADDR16_LO}, {0x8005FD32, R_PPC_ADDR16_HA},
-    {0x8005FD36, R_PPC_ADDR16_LO}, {0x800605A2, R_PPC_ADDR16_HA}, {0x800605A6, R_PPC_ADDR16_LO},
-    {0x800BB96A, R_PPC_ADDR16_HA}, {0x800BB99E, R_PPC_ADDR16_LO}, {0x80101AEE, R_PPC_ADDR16_HA},
-    {0x80101AF2, R_PPC_ADDR16_LO}, {0x8013D822, R_PPC_ADDR16_HA}, {0x8013D826, R_PPC_ADDR16_LO},
-    {0x8013D826, R_PPC_ADDR16_LO}, {0x80144762, R_PPC_ADDR16_HA}, {0x8014476E, R_PPC_ADDR16_LO},
-    {0x80144E0E, R_PPC_ADDR16_HA}, {0x80144E2A, R_PPC_ADDR16_LO}, {0x801586E2, R_PPC_ADDR16_HA},
-    {0x8015870A, R_PPC_ADDR16_LO}, {0x8090CE32, R_PPC_ADDR16_HA}, {0x8090CE56, R_PPC_ADDR16_LO},
-    {0x8091AC92, R_PPC_ADDR16_HA}, {0x8091ACA6, R_PPC_ADDR16_LO}, {0x8091F786, R_PPC_ADDR16_HA},
-    {0x8091F7A2, R_PPC_ADDR16_LO}, {0x8091FE66, R_PPC_ADDR16_HA}, {0x8091FE6E, R_PPC_ADDR16_LO},
-    {0x8091FE9E, R_PPC_ADDR16_LO}, {0x8091FEDA, R_PPC_ADDR16_HA}, {0x8091FEF2, R_PPC_ADDR16_LO},
-    {0x80924EC6, R_PPC_ADDR16_LO}, {0x8092542A, R_PPC_ADDR16_HA}, {0x8092545A, R_PPC_ADDR16_LO},
-    {0x80B6C712, R_PPC_ADDR16_HA}, {0x80B6C722, R_PPC_ADDR16_LO}, {0x80B6C932, R_PPC_ADDR16_HA},
-    {0x80B6C93A, R_PPC_ADDR16_LO}, {0x80B6CE52, R_PPC_ADDR16_HA}, {0x80B6CE56, R_PPC_ADDR16_LO},
-    {0x80B6CFBE, R_PPC_ADDR16_HA}, {0x80B6CFC6, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mPlayerEntry.data(), //
+    {
+        {0x8005D31A, R_PPC_ADDR16_HA}, {0x8005D32E, R_PPC_ADDR16_LO}, {0x8005EEEA, R_PPC_ADDR16_HA},
+        {0x8005EEF6, R_PPC_ADDR16_LO}, {0x8005F38A, R_PPC_ADDR16_HA}, {0x8005F392, R_PPC_ADDR16_LO},
+        {0x8005FC8A, R_PPC_ADDR16_HA}, {0x8005FC8E, R_PPC_ADDR16_LO}, {0x8005FD32, R_PPC_ADDR16_HA},
+        {0x8005FD36, R_PPC_ADDR16_LO}, {0x800605A2, R_PPC_ADDR16_HA}, {0x800605A6, R_PPC_ADDR16_LO},
+        {0x800BB96A, R_PPC_ADDR16_HA}, {0x800BB99E, R_PPC_ADDR16_LO}, {0x80101AEE, R_PPC_ADDR16_HA},
+        {0x80101AF2, R_PPC_ADDR16_LO}, {0x8013D822, R_PPC_ADDR16_HA}, {0x8013D826, R_PPC_ADDR16_LO},
+        {0x8013D826, R_PPC_ADDR16_LO}, {0x80144762, R_PPC_ADDR16_HA}, {0x8014476E, R_PPC_ADDR16_LO},
+        {0x80144E0E, R_PPC_ADDR16_HA}, {0x80144E2A, R_PPC_ADDR16_LO}, {0x801586E2, R_PPC_ADDR16_HA},
+        {0x8015870A, R_PPC_ADDR16_LO}, {0x8090CE32, R_PPC_ADDR16_HA}, {0x8090CE56, R_PPC_ADDR16_LO},
+        {0x8091AC92, R_PPC_ADDR16_HA}, {0x8091ACA6, R_PPC_ADDR16_LO}, {0x8091F786, R_PPC_ADDR16_HA},
+        {0x8091F7A2, R_PPC_ADDR16_LO}, {0x8091FE66, R_PPC_ADDR16_HA}, {0x8091FE6E, R_PPC_ADDR16_LO},
+        {0x8091FE9E, R_PPC_ADDR16_LO}, {0x8091FEDA, R_PPC_ADDR16_HA}, {0x8091FEF2, R_PPC_ADDR16_LO},
+        {0x80924EC6, R_PPC_ADDR16_LO}, {0x8092542A, R_PPC_ADDR16_HA}, {0x8092545A, R_PPC_ADDR16_LO},
+        {0x80B6C712, R_PPC_ADDR16_HA}, {0x80B6C722, R_PPC_ADDR16_LO}, {0x80B6C932, R_PPC_ADDR16_HA},
+        {0x80B6C93A, R_PPC_ADDR16_LO}, {0x80B6CE52, R_PPC_ADDR16_HA}, {0x80B6CE56, R_PPC_ADDR16_LO},
+        {0x80B6CFBE, R_PPC_ADDR16_HA}, {0x80B6CFC6, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mPlayerType.data(), //
-  {
-    {0x8001B7E2, R_PPC_ADDR16_HA}, {0x8001B7F2, R_PPC_ADDR16_LO}, {0x8001CD52, R_PPC_ADDR16_HA},
-    {0x8001CD5A, R_PPC_ADDR16_LO}, {0x8005D31E, R_PPC_ADDR16_HA}, {0x8005D336, R_PPC_ADDR16_LO},
-    {0x8005FBE2, R_PPC_ADDR16_HA}, {0x8005FBEE, R_PPC_ADDR16_LO}, {0x80060116, R_PPC_ADDR16_LO},
-    {0x80060202, R_PPC_ADDR16_HA}, {0x8006020A, R_PPC_ADDR16_LO}, {0x8006020E, R_PPC_ADDR16_LO},
-    {0x8006052A, R_PPC_ADDR16_HA}, {0x8006053A, R_PPC_ADDR16_LO}, {0x80060636, R_PPC_ADDR16_HA},
-    {0x80060642, R_PPC_ADDR16_LO}, {0x8008EF42, R_PPC_ADDR16_HA}, {0x8008EF4E, R_PPC_ADDR16_LO},
-    {0x800B1CD6, R_PPC_ADDR16_HA}, {0x800B1CDE, R_PPC_ADDR16_LO}, {0x800B34E6, R_PPC_ADDR16_HA},
-    {0x800B34EE, R_PPC_ADDR16_LO}, {0x800B3522, R_PPC_ADDR16_HA}, {0x800B352A, R_PPC_ADDR16_LO},
-    {0x800B3566, R_PPC_ADDR16_HA}, {0x800B356E, R_PPC_ADDR16_LO}, {0x800B35E6, R_PPC_ADDR16_HA},
-    {0x800B35EE, R_PPC_ADDR16_LO}, {0x800B5346, R_PPC_ADDR16_LO}, {0x800BB182, R_PPC_ADDR16_HA},
-    {0x800BB18A, R_PPC_ADDR16_LO}, {0x800BB19E, R_PPC_ADDR16_LO}, {0x800BB95A, R_PPC_ADDR16_HA},
-    {0x800BB99A, R_PPC_ADDR16_LO}, {0x800D0C8A, R_PPC_ADDR16_HA}, {0x800D0C9A, R_PPC_ADDR16_LO},
-    {0x800E17B6, R_PPC_ADDR16_HA}, {0x800E17CA, R_PPC_ADDR16_LO}, {0x800E196A, R_PPC_ADDR16_HA},
-    {0x800E1982, R_PPC_ADDR16_LO}, {0x800E2556, R_PPC_ADDR16_HA}, {0x800E255E, R_PPC_ADDR16_LO},
-    {0x801011A2, R_PPC_ADDR16_HA}, {0x801011AA, R_PPC_ADDR16_LO}, {0x801023FE, R_PPC_ADDR16_HA},
-    {0x80102406, R_PPC_ADDR16_LO}, {0x8010B74E, R_PPC_ADDR16_HA}, {0x8010B756, R_PPC_ADDR16_LO},
-    {0x8010DA36, R_PPC_ADDR16_HA}, {0x8010DA3E, R_PPC_ADDR16_LO}, {0x8010DAE6, R_PPC_ADDR16_HA},
-    {0x8010DAEE, R_PPC_ADDR16_LO}, {0x8010DB96, R_PPC_ADDR16_HA}, {0x8010DB9E, R_PPC_ADDR16_LO},
-    {0x80138896, R_PPC_ADDR16_HA}, {0x801388A6, R_PPC_ADDR16_LO}, {0x8013D82A, R_PPC_ADDR16_HA},
-    {0x8013D83A, R_PPC_ADDR16_LO}, {0x80140FA2, R_PPC_ADDR16_HA}, {0x80140FAE, R_PPC_ADDR16_LO},
-    {0x801446F6, R_PPC_ADDR16_HA}, {0x8014470A, R_PPC_ADDR16_LO}, {0x80144DCE, R_PPC_ADDR16_HA},
-    {0x80144DDE, R_PPC_ADDR16_LO}, {0x80144E0A, R_PPC_ADDR16_HA}, {0x80144E22, R_PPC_ADDR16_LO},
-    {0x8014503A, R_PPC_ADDR16_HA}, {0x80145046, R_PPC_ADDR16_LO}, {0x8076FE66, R_PPC_ADDR16_HA},
-    {0x8076FE72, R_PPC_ADDR16_LO}, {0x80771192, R_PPC_ADDR16_HA}, {0x8077119A, R_PPC_ADDR16_LO},
-    {0x807714CE, R_PPC_ADDR16_HA}, {0x807714E2, R_PPC_ADDR16_LO}, {0x80777EE6, R_PPC_ADDR16_HA},
-    {0x80777EFE, R_PPC_ADDR16_LO}, {0x80788FDA, R_PPC_ADDR16_HA}, {0x80788FE2, R_PPC_ADDR16_LO},
-    {0x80788FE6, R_PPC_ADDR16_LO}, {0x80789082, R_PPC_ADDR16_HA}, {0x807890BE, R_PPC_ADDR16_LO},
-    {0x8078C2A2, R_PPC_ADDR16_HA}, {0x8078C2AE, R_PPC_ADDR16_LO}, {0x8078C40E, R_PPC_ADDR16_HA},
-    {0x8078C416, R_PPC_ADDR16_LO}, {0x8078CCC6, R_PPC_ADDR16_HA}, {0x8078CCCE, R_PPC_ADDR16_LO},
-    {0x8078CE3A, R_PPC_ADDR16_HA}, {0x8078CE42, R_PPC_ADDR16_LO}, {0x8079A002, R_PPC_ADDR16_HA},
-    {0x8079A00A, R_PPC_ADDR16_LO}, {0x8079A00E, R_PPC_ADDR16_LO}, {0x8079A056, R_PPC_ADDR16_LO},
-    {0x807A0BFA, R_PPC_ADDR16_HA}, {0x807A0C02, R_PPC_ADDR16_LO}, {0x807A0C6E, R_PPC_ADDR16_HA},
-    {0x807A0C7A, R_PPC_ADDR16_LO}, {0x807A0DFE, R_PPC_ADDR16_LO}, {0x807A0EAE, R_PPC_ADDR16_HA},
-    {0x807A0ECA, R_PPC_ADDR16_LO}, {0x807A1EEA, R_PPC_ADDR16_HA}, {0x807A1F02, R_PPC_ADDR16_LO},
-    {0x807A53CE, R_PPC_ADDR16_HA}, {0x807A53DE, R_PPC_ADDR16_LO}, {0x807A7FFA, R_PPC_ADDR16_HA},
-    {0x807A8006, R_PPC_ADDR16_LO}, {0x807AA146, R_PPC_ADDR16_HA}, {0x807AA14E, R_PPC_ADDR16_LO},
-    {0x807AA3F2, R_PPC_ADDR16_HA}, {0x807AA3FA, R_PPC_ADDR16_LO}, {0x807AE142, R_PPC_ADDR16_HA},
-    {0x807AE14A, R_PPC_ADDR16_LO}, {0x807AE5D2, R_PPC_ADDR16_HA}, {0x807AE5DA, R_PPC_ADDR16_LO},
-    {0x807AFBF2, R_PPC_ADDR16_HA}, {0x807AFC12, R_PPC_ADDR16_LO}, {0x807B00CE, R_PPC_ADDR16_HA},
-    {0x807B00DA, R_PPC_ADDR16_LO}, {0x807B01CA, R_PPC_ADDR16_HA}, {0x807B01E2, R_PPC_ADDR16_LO},
-    {0x807B070A, R_PPC_ADDR16_HA}, {0x807B0712, R_PPC_ADDR16_LO}, {0x807B072E, R_PPC_ADDR16_HA},
-    {0x807B073E, R_PPC_ADDR16_LO}, {0x807B07BA, R_PPC_ADDR16_HA}, {0x807B07CA, R_PPC_ADDR16_LO},
-    {0x807B09F2, R_PPC_ADDR16_HA}, {0x807B0A02, R_PPC_ADDR16_LO}, {0x807B13CA, R_PPC_ADDR16_HA},
-    {0x807B13D6, R_PPC_ADDR16_LO}, {0x808EB7DA, R_PPC_ADDR16_HA}, {0x808EB7E6, R_PPC_ADDR16_LO},
-    {0x80902B4E, R_PPC_ADDR16_HA}, {0x80902B6A, R_PPC_ADDR16_LO}, {0x80903022, R_PPC_ADDR16_HA},
-    {0x8090302A, R_PPC_ADDR16_LO}, {0x809093D6, R_PPC_ADDR16_HA}, {0x809093DE, R_PPC_ADDR16_LO},
-    {0x8090947E, R_PPC_ADDR16_HA}, {0x80909492, R_PPC_ADDR16_LO}, {0x8090CE36, R_PPC_ADDR16_HA},
-    {0x8090CE5A, R_PPC_ADDR16_LO}, {0x809188E2, R_PPC_ADDR16_HA}, {0x809188EA, R_PPC_ADDR16_LO},
-    {0x809188FA, R_PPC_ADDR16_LO}, {0x80918C36, R_PPC_ADDR16_HA}, {0x80918C46, R_PPC_ADDR16_LO},
-    {0x8091AC96, R_PPC_ADDR16_HA}, {0x8091ACAA, R_PPC_ADDR16_LO}, {0x8091D3F6, R_PPC_ADDR16_LO},
-    {0x8091F78A, R_PPC_ADDR16_HA}, {0x8091F7A6, R_PPC_ADDR16_LO}, {0x8091FE72, R_PPC_ADDR16_HA},
-    {0x8091FE82, R_PPC_ADDR16_LO}, {0x8091FEA2, R_PPC_ADDR16_LO}, {0x8091FEDE, R_PPC_ADDR16_HA},
-    {0x8091FEF6, R_PPC_ADDR16_LO}, {0x80925422, R_PPC_ADDR16_HA}, {0x80925452, R_PPC_ADDR16_LO},
-    {0x8092F772, R_PPC_ADDR16_HA}, {0x8092F77A, R_PPC_ADDR16_LO}, {0x8092F87E, R_PPC_ADDR16_HA},
-    {0x8092F88E, R_PPC_ADDR16_LO}, {0x8092FAFA, R_PPC_ADDR16_HA}, {0x8092FB0A, R_PPC_ADDR16_LO},
-    {0x8092FE02, R_PPC_ADDR16_HA}, {0x8092FE0A, R_PPC_ADDR16_LO}, {0x8092FE12, R_PPC_ADDR16_LO},
-    {0x809311E2, R_PPC_ADDR16_HA}, {0x809311EA, R_PPC_ADDR16_LO}, {0x8093352E, R_PPC_ADDR16_HA},
-    {0x80933556, R_PPC_ADDR16_LO}, {0x80A2B70A, R_PPC_ADDR16_HA}, {0x80A2B71A, R_PPC_ADDR16_LO},
-    {0x80B6BCE6, R_PPC_ADDR16_HA}, {0x80B6BCFA, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mPlayerType.data(), //
+    {
+        {0x8001B7E2, R_PPC_ADDR16_HA}, {0x8001B7F2, R_PPC_ADDR16_LO}, {0x8001CD52, R_PPC_ADDR16_HA},
+        {0x8001CD5A, R_PPC_ADDR16_LO}, {0x8005D31E, R_PPC_ADDR16_HA}, {0x8005D336, R_PPC_ADDR16_LO},
+        {0x8005FBE2, R_PPC_ADDR16_HA}, {0x8005FBEE, R_PPC_ADDR16_LO}, {0x80060116, R_PPC_ADDR16_LO},
+        {0x80060202, R_PPC_ADDR16_HA}, {0x8006020A, R_PPC_ADDR16_LO}, {0x8006020E, R_PPC_ADDR16_LO},
+        {0x8006052A, R_PPC_ADDR16_HA}, {0x8006053A, R_PPC_ADDR16_LO}, {0x80060636, R_PPC_ADDR16_HA},
+        {0x80060642, R_PPC_ADDR16_LO}, {0x8008EF42, R_PPC_ADDR16_HA}, {0x8008EF4E, R_PPC_ADDR16_LO},
+        {0x800B1CD6, R_PPC_ADDR16_HA}, {0x800B1CDE, R_PPC_ADDR16_LO}, {0x800B34E6, R_PPC_ADDR16_HA},
+        {0x800B34EE, R_PPC_ADDR16_LO}, {0x800B3522, R_PPC_ADDR16_HA}, {0x800B352A, R_PPC_ADDR16_LO},
+        {0x800B3566, R_PPC_ADDR16_HA}, {0x800B356E, R_PPC_ADDR16_LO}, {0x800B35E6, R_PPC_ADDR16_HA},
+        {0x800B35EE, R_PPC_ADDR16_LO}, {0x800B5346, R_PPC_ADDR16_LO}, {0x800BB182, R_PPC_ADDR16_HA},
+        {0x800BB18A, R_PPC_ADDR16_LO}, {0x800BB19E, R_PPC_ADDR16_LO}, {0x800BB95A, R_PPC_ADDR16_HA},
+        {0x800BB99A, R_PPC_ADDR16_LO}, {0x800D0C8A, R_PPC_ADDR16_HA}, {0x800D0C9A, R_PPC_ADDR16_LO},
+        {0x800E17B6, R_PPC_ADDR16_HA}, {0x800E17CA, R_PPC_ADDR16_LO}, {0x800E196A, R_PPC_ADDR16_HA},
+        {0x800E1982, R_PPC_ADDR16_LO}, {0x800E2556, R_PPC_ADDR16_HA}, {0x800E255E, R_PPC_ADDR16_LO},
+        {0x801011A2, R_PPC_ADDR16_HA}, {0x801011AA, R_PPC_ADDR16_LO}, {0x801023FE, R_PPC_ADDR16_HA},
+        {0x80102406, R_PPC_ADDR16_LO}, {0x8010B74E, R_PPC_ADDR16_HA}, {0x8010B756, R_PPC_ADDR16_LO},
+        {0x8010DA36, R_PPC_ADDR16_HA}, {0x8010DA3E, R_PPC_ADDR16_LO}, {0x8010DAE6, R_PPC_ADDR16_HA},
+        {0x8010DAEE, R_PPC_ADDR16_LO}, {0x8010DB96, R_PPC_ADDR16_HA}, {0x8010DB9E, R_PPC_ADDR16_LO},
+        {0x80138896, R_PPC_ADDR16_HA}, {0x801388A6, R_PPC_ADDR16_LO}, {0x8013D82A, R_PPC_ADDR16_HA},
+        {0x8013D83A, R_PPC_ADDR16_LO}, {0x80140FA2, R_PPC_ADDR16_HA}, {0x80140FAE, R_PPC_ADDR16_LO},
+        {0x801446F6, R_PPC_ADDR16_HA}, {0x8014470A, R_PPC_ADDR16_LO}, {0x80144DCE, R_PPC_ADDR16_HA},
+        {0x80144DDE, R_PPC_ADDR16_LO}, {0x80144E0A, R_PPC_ADDR16_HA}, {0x80144E22, R_PPC_ADDR16_LO},
+        {0x8014503A, R_PPC_ADDR16_HA}, {0x80145046, R_PPC_ADDR16_LO}, {0x8076FE66, R_PPC_ADDR16_HA},
+        {0x8076FE72, R_PPC_ADDR16_LO}, {0x80771192, R_PPC_ADDR16_HA}, {0x8077119A, R_PPC_ADDR16_LO},
+        {0x807714CE, R_PPC_ADDR16_HA}, {0x807714E2, R_PPC_ADDR16_LO}, {0x80777EE6, R_PPC_ADDR16_HA},
+        {0x80777EFE, R_PPC_ADDR16_LO}, {0x80788FDA, R_PPC_ADDR16_HA}, {0x80788FE2, R_PPC_ADDR16_LO},
+        {0x80788FE6, R_PPC_ADDR16_LO}, {0x80789082, R_PPC_ADDR16_HA}, {0x807890BE, R_PPC_ADDR16_LO},
+        {0x8078C2A2, R_PPC_ADDR16_HA}, {0x8078C2AE, R_PPC_ADDR16_LO}, {0x8078C40E, R_PPC_ADDR16_HA},
+        {0x8078C416, R_PPC_ADDR16_LO}, {0x8078CCC6, R_PPC_ADDR16_HA}, {0x8078CCCE, R_PPC_ADDR16_LO},
+        {0x8078CE3A, R_PPC_ADDR16_HA}, {0x8078CE42, R_PPC_ADDR16_LO}, {0x8079A002, R_PPC_ADDR16_HA},
+        {0x8079A00A, R_PPC_ADDR16_LO}, {0x8079A00E, R_PPC_ADDR16_LO}, {0x8079A056, R_PPC_ADDR16_LO},
+        {0x807A0BFA, R_PPC_ADDR16_HA}, {0x807A0C02, R_PPC_ADDR16_LO}, {0x807A0C6E, R_PPC_ADDR16_HA},
+        {0x807A0C7A, R_PPC_ADDR16_LO}, {0x807A0DFE, R_PPC_ADDR16_LO}, {0x807A0EAE, R_PPC_ADDR16_HA},
+        {0x807A0ECA, R_PPC_ADDR16_LO}, {0x807A1EEA, R_PPC_ADDR16_HA}, {0x807A1F02, R_PPC_ADDR16_LO},
+        {0x807A53CE, R_PPC_ADDR16_HA}, {0x807A53DE, R_PPC_ADDR16_LO}, {0x807A7FFA, R_PPC_ADDR16_HA},
+        {0x807A8006, R_PPC_ADDR16_LO}, {0x807AA146, R_PPC_ADDR16_HA}, {0x807AA14E, R_PPC_ADDR16_LO},
+        {0x807AA3F2, R_PPC_ADDR16_HA}, {0x807AA3FA, R_PPC_ADDR16_LO}, {0x807AE142, R_PPC_ADDR16_HA},
+        {0x807AE14A, R_PPC_ADDR16_LO}, {0x807AE5D2, R_PPC_ADDR16_HA}, {0x807AE5DA, R_PPC_ADDR16_LO},
+        {0x807AFBF2, R_PPC_ADDR16_HA}, {0x807AFC12, R_PPC_ADDR16_LO}, {0x807B00CE, R_PPC_ADDR16_HA},
+        {0x807B00DA, R_PPC_ADDR16_LO}, {0x807B01CA, R_PPC_ADDR16_HA}, {0x807B01E2, R_PPC_ADDR16_LO},
+        {0x807B070A, R_PPC_ADDR16_HA}, {0x807B0712, R_PPC_ADDR16_LO}, {0x807B072E, R_PPC_ADDR16_HA},
+        {0x807B073E, R_PPC_ADDR16_LO}, {0x807B07BA, R_PPC_ADDR16_HA}, {0x807B07CA, R_PPC_ADDR16_LO},
+        {0x807B09F2, R_PPC_ADDR16_HA}, {0x807B0A02, R_PPC_ADDR16_LO}, {0x807B13CA, R_PPC_ADDR16_HA},
+        {0x807B13D6, R_PPC_ADDR16_LO}, {0x808EB7DA, R_PPC_ADDR16_HA}, {0x808EB7E6, R_PPC_ADDR16_LO},
+        {0x80902B4E, R_PPC_ADDR16_HA}, {0x80902B6A, R_PPC_ADDR16_LO}, {0x80903022, R_PPC_ADDR16_HA},
+        {0x8090302A, R_PPC_ADDR16_LO}, {0x809093D6, R_PPC_ADDR16_HA}, {0x809093DE, R_PPC_ADDR16_LO},
+        {0x8090947E, R_PPC_ADDR16_HA}, {0x80909492, R_PPC_ADDR16_LO}, {0x8090CE36, R_PPC_ADDR16_HA},
+        {0x8090CE5A, R_PPC_ADDR16_LO}, {0x809188E2, R_PPC_ADDR16_HA}, {0x809188EA, R_PPC_ADDR16_LO},
+        {0x809188FA, R_PPC_ADDR16_LO}, {0x80918C36, R_PPC_ADDR16_HA}, {0x80918C46, R_PPC_ADDR16_LO},
+        {0x8091AC96, R_PPC_ADDR16_HA}, {0x8091ACAA, R_PPC_ADDR16_LO}, {0x8091D3F6, R_PPC_ADDR16_LO},
+        {0x8091F78A, R_PPC_ADDR16_HA}, {0x8091F7A6, R_PPC_ADDR16_LO}, {0x8091FE72, R_PPC_ADDR16_HA},
+        {0x8091FE82, R_PPC_ADDR16_LO}, {0x8091FEA2, R_PPC_ADDR16_LO}, {0x8091FEDE, R_PPC_ADDR16_HA},
+        {0x8091FEF6, R_PPC_ADDR16_LO}, {0x80925422, R_PPC_ADDR16_HA}, {0x80925452, R_PPC_ADDR16_LO},
+        {0x8092F772, R_PPC_ADDR16_HA}, {0x8092F77A, R_PPC_ADDR16_LO}, {0x8092F87E, R_PPC_ADDR16_HA},
+        {0x8092F88E, R_PPC_ADDR16_LO}, {0x8092FAFA, R_PPC_ADDR16_HA}, {0x8092FB0A, R_PPC_ADDR16_LO},
+        {0x8092FE02, R_PPC_ADDR16_HA}, {0x8092FE0A, R_PPC_ADDR16_LO}, {0x8092FE12, R_PPC_ADDR16_LO},
+        {0x809311E2, R_PPC_ADDR16_HA}, {0x809311EA, R_PPC_ADDR16_LO}, {0x8093352E, R_PPC_ADDR16_HA},
+        {0x80933556, R_PPC_ADDR16_LO}, {0x80A2B70A, R_PPC_ADDR16_HA}, {0x80A2B71A, R_PPC_ADDR16_LO},
+        {0x80B6BCE6, R_PPC_ADDR16_HA}, {0x80B6BCFA, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mPlayerMode.data(), //
-  {
-    {0x8001B7E6, R_PPC_ADDR16_HA}, {0x8001B7FE, R_PPC_ADDR16_LO}, {0x800BB96E, R_PPC_ADDR16_HA},
-    {0x800BB9A2, R_PPC_ADDR16_LO}, {0x800E17BA, R_PPC_ADDR16_HA}, {0x800E17CE, R_PPC_ADDR16_LO},
-    {0x800E196E, R_PPC_ADDR16_HA}, {0x800E1986, R_PPC_ADDR16_LO}, {0x801446FE, R_PPC_ADDR16_HA},
-    {0x8014470E, R_PPC_ADDR16_LO}, {0x80144DD2, R_PPC_ADDR16_HA}, {0x80144DE6, R_PPC_ADDR16_LO},
-    {0x80144E12, R_PPC_ADDR16_HA}, {0x80144E36, R_PPC_ADDR16_LO}, {0x807786BA, R_PPC_ADDR16_HA},
-    {0x807786CE, R_PPC_ADDR16_LO}, {0x80789056, R_PPC_ADDR16_HA}, {0x8078906E, R_PPC_ADDR16_LO},
-    {0x807B01D2, R_PPC_ADDR16_HA}, {0x807B01EA, R_PPC_ADDR16_LO}, {0x807B070E, R_PPC_ADDR16_HA},
-    {0x807B0716, R_PPC_ADDR16_LO}, {0x807B07C2, R_PPC_ADDR16_HA}, {0x807B07D2, R_PPC_ADDR16_LO},
-    {0x808C59B2, R_PPC_ADDR16_HA}, {0x808C59C2, R_PPC_ADDR16_LO}, {0x808C5C5E, R_PPC_ADDR16_HA},
-    {0x808C5C66, R_PPC_ADDR16_LO}, {0x808EB7DE, R_PPC_ADDR16_HA}, {0x808EB7EA, R_PPC_ADDR16_LO},
-    {0x80902B4A, R_PPC_ADDR16_HA}, {0x80902B56, R_PPC_ADDR16_LO}, {0x8090CE3A, R_PPC_ADDR16_HA},
-    {0x8090CE5E, R_PPC_ADDR16_LO}, {0x80918C3A, R_PPC_ADDR16_HA}, {0x80918C4A, R_PPC_ADDR16_LO},
-    {0x8091AC9A, R_PPC_ADDR16_HA}, {0x8091ACAE, R_PPC_ADDR16_LO}, {0x8091F78E, R_PPC_ADDR16_HA},
-    {0x8091F7AA, R_PPC_ADDR16_LO}, {0x8091FE5E, R_PPC_ADDR16_HA}, {0x8091FE6A, R_PPC_ADDR16_LO},
-    {0x8091FEE2, R_PPC_ADDR16_HA}, {0x8091FEFA, R_PPC_ADDR16_LO}, {0x8092540A, R_PPC_ADDR16_HA},
-    {0x8092543A, R_PPC_ADDR16_LO}, {0x8092FAFE, R_PPC_ADDR16_HA}, {0x8092FB0E, R_PPC_ADDR16_LO},
-    {0x8093352A, R_PPC_ADDR16_HA}, {0x80933536, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mPlayerMode.data(), //
+    {
+        {0x8001B7E6, R_PPC_ADDR16_HA}, {0x8001B7FE, R_PPC_ADDR16_LO}, {0x800BB96E, R_PPC_ADDR16_HA},
+        {0x800BB9A2, R_PPC_ADDR16_LO}, {0x800E17BA, R_PPC_ADDR16_HA}, {0x800E17CE, R_PPC_ADDR16_LO},
+        {0x800E196E, R_PPC_ADDR16_HA}, {0x800E1986, R_PPC_ADDR16_LO}, {0x801446FE, R_PPC_ADDR16_HA},
+        {0x8014470E, R_PPC_ADDR16_LO}, {0x80144DD2, R_PPC_ADDR16_HA}, {0x80144DE6, R_PPC_ADDR16_LO},
+        {0x80144E12, R_PPC_ADDR16_HA}, {0x80144E36, R_PPC_ADDR16_LO}, {0x807786BA, R_PPC_ADDR16_HA},
+        {0x807786CE, R_PPC_ADDR16_LO}, {0x80789056, R_PPC_ADDR16_HA}, {0x8078906E, R_PPC_ADDR16_LO},
+        {0x807B01D2, R_PPC_ADDR16_HA}, {0x807B01EA, R_PPC_ADDR16_LO}, {0x807B070E, R_PPC_ADDR16_HA},
+        {0x807B0716, R_PPC_ADDR16_LO}, {0x807B07C2, R_PPC_ADDR16_HA}, {0x807B07D2, R_PPC_ADDR16_LO},
+        {0x808C59B2, R_PPC_ADDR16_HA}, {0x808C59C2, R_PPC_ADDR16_LO}, {0x808C5C5E, R_PPC_ADDR16_HA},
+        {0x808C5C66, R_PPC_ADDR16_LO}, {0x808EB7DE, R_PPC_ADDR16_HA}, {0x808EB7EA, R_PPC_ADDR16_LO},
+        {0x80902B4A, R_PPC_ADDR16_HA}, {0x80902B56, R_PPC_ADDR16_LO}, {0x8090CE3A, R_PPC_ADDR16_HA},
+        {0x8090CE5E, R_PPC_ADDR16_LO}, {0x80918C3A, R_PPC_ADDR16_HA}, {0x80918C4A, R_PPC_ADDR16_LO},
+        {0x8091AC9A, R_PPC_ADDR16_HA}, {0x8091ACAE, R_PPC_ADDR16_LO}, {0x8091F78E, R_PPC_ADDR16_HA},
+        {0x8091F7AA, R_PPC_ADDR16_LO}, {0x8091FE5E, R_PPC_ADDR16_HA}, {0x8091FE6A, R_PPC_ADDR16_LO},
+        {0x8091FEE2, R_PPC_ADDR16_HA}, {0x8091FEFA, R_PPC_ADDR16_LO}, {0x8092540A, R_PPC_ADDR16_HA},
+        {0x8092543A, R_PPC_ADDR16_LO}, {0x8092FAFE, R_PPC_ADDR16_HA}, {0x8092FB0E, R_PPC_ADDR16_LO},
+        {0x8093352A, R_PPC_ADDR16_HA}, {0x80933536, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mCreateItem.data(), //
-  {
-    {0x8005D326, R_PPC_ADDR16_HA}, {0x8005D342, R_PPC_ADDR16_LO}, {0x8005FBE6, R_PPC_ADDR16_HA},
-    {0x8005FBF2, R_PPC_ADDR16_LO}, {0x800BB97A, R_PPC_ADDR16_HA}, {0x800BB9B2, R_PPC_ADDR16_LO},
-    {0x800E17C2, R_PPC_ADDR16_HA}, {0x800E17D6, R_PPC_ADDR16_LO}, {0x800E1976, R_PPC_ADDR16_HA},
-    {0x800E198E, R_PPC_ADDR16_LO}, {0x801011A6, R_PPC_ADDR16_HA}, {0x801011AE, R_PPC_ADDR16_LO},
-    {0x80140FA6, R_PPC_ADDR16_HA}, {0x80140FB6, R_PPC_ADDR16_LO}, {0x80144706, R_PPC_ADDR16_HA},
-    {0x80144716, R_PPC_ADDR16_LO}, {0x80144DD6, R_PPC_ADDR16_HA}, {0x80144DEE, R_PPC_ADDR16_LO},
-    {0x80144E1A, R_PPC_ADDR16_HA}, {0x80144E3E, R_PPC_ADDR16_LO}, {0x8014503E, R_PPC_ADDR16_HA},
-    {0x8014504E, R_PPC_ADDR16_LO}, {0x807786B6, R_PPC_ADDR16_HA}, {0x807786CA, R_PPC_ADDR16_LO},
-    {0x8078905E, R_PPC_ADDR16_HA}, {0x80789076, R_PPC_ADDR16_LO}, {0x807B00CA, R_PPC_ADDR16_HA},
-    {0x807B00DE, R_PPC_ADDR16_LO}, {0x807B01CE, R_PPC_ADDR16_HA}, {0x807B01E6, R_PPC_ADDR16_LO},
-    {0x807B0732, R_PPC_ADDR16_HA}, {0x807B0742, R_PPC_ADDR16_LO}, {0x807B07BE, R_PPC_ADDR16_HA},
-    {0x807B07CE, R_PPC_ADDR16_LO}, {0x808C5C9A, R_PPC_ADDR16_HA}, {0x808C5C9E, R_PPC_ADDR16_LO},
-    {0x808EF2D6, R_PPC_ADDR16_HA}, {0x808EF2DA, R_PPC_ADDR16_LO}, {0x80903026, R_PPC_ADDR16_HA},
-    {0x80903036, R_PPC_ADDR16_LO}, {0x8090947A, R_PPC_ADDR16_HA}, {0x80909486, R_PPC_ADDR16_LO},
-    {0x80918C3E, R_PPC_ADDR16_HA}, {0x80918C4E, R_PPC_ADDR16_LO}, {0x8091AC9E, R_PPC_ADDR16_HA},
-    {0x8091ACB6, R_PPC_ADDR16_LO}, {0x8091F792, R_PPC_ADDR16_HA}, {0x8091F7AE, R_PPC_ADDR16_LO},
-    {0x8091FE7A, R_PPC_ADDR16_HA}, {0x8091FE7E, R_PPC_ADDR16_LO}, {0x8091FEEA, R_PPC_ADDR16_HA},
-    {0x8091FF02, R_PPC_ADDR16_LO}, {0x80925242, R_PPC_ADDR16_HA}, {0x8092524E, R_PPC_ADDR16_LO},
-    {0x8092525E, R_PPC_ADDR16_LO}, {0x80925416, R_PPC_ADDR16_HA}, {0x80925446, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mCreateItem.data(), //
+    {
+        {0x8005D326, R_PPC_ADDR16_HA}, {0x8005D342, R_PPC_ADDR16_LO}, {0x8005FBE6, R_PPC_ADDR16_HA},
+        {0x8005FBF2, R_PPC_ADDR16_LO}, {0x800BB97A, R_PPC_ADDR16_HA}, {0x800BB9B2, R_PPC_ADDR16_LO},
+        {0x800E17C2, R_PPC_ADDR16_HA}, {0x800E17D6, R_PPC_ADDR16_LO}, {0x800E1976, R_PPC_ADDR16_HA},
+        {0x800E198E, R_PPC_ADDR16_LO}, {0x801011A6, R_PPC_ADDR16_HA}, {0x801011AE, R_PPC_ADDR16_LO},
+        {0x80140FA6, R_PPC_ADDR16_HA}, {0x80140FB6, R_PPC_ADDR16_LO}, {0x80144706, R_PPC_ADDR16_HA},
+        {0x80144716, R_PPC_ADDR16_LO}, {0x80144DD6, R_PPC_ADDR16_HA}, {0x80144DEE, R_PPC_ADDR16_LO},
+        {0x80144E1A, R_PPC_ADDR16_HA}, {0x80144E3E, R_PPC_ADDR16_LO}, {0x8014503E, R_PPC_ADDR16_HA},
+        {0x8014504E, R_PPC_ADDR16_LO}, {0x807786B6, R_PPC_ADDR16_HA}, {0x807786CA, R_PPC_ADDR16_LO},
+        {0x8078905E, R_PPC_ADDR16_HA}, {0x80789076, R_PPC_ADDR16_LO}, {0x807B00CA, R_PPC_ADDR16_HA},
+        {0x807B00DE, R_PPC_ADDR16_LO}, {0x807B01CE, R_PPC_ADDR16_HA}, {0x807B01E6, R_PPC_ADDR16_LO},
+        {0x807B0732, R_PPC_ADDR16_HA}, {0x807B0742, R_PPC_ADDR16_LO}, {0x807B07BE, R_PPC_ADDR16_HA},
+        {0x807B07CE, R_PPC_ADDR16_LO}, {0x808C5C9A, R_PPC_ADDR16_HA}, {0x808C5C9E, R_PPC_ADDR16_LO},
+        {0x808EF2D6, R_PPC_ADDR16_HA}, {0x808EF2DA, R_PPC_ADDR16_LO}, {0x80903026, R_PPC_ADDR16_HA},
+        {0x80903036, R_PPC_ADDR16_LO}, {0x8090947A, R_PPC_ADDR16_HA}, {0x80909486, R_PPC_ADDR16_LO},
+        {0x80918C3E, R_PPC_ADDR16_HA}, {0x80918C4E, R_PPC_ADDR16_LO}, {0x8091AC9E, R_PPC_ADDR16_HA},
+        {0x8091ACB6, R_PPC_ADDR16_LO}, {0x8091F792, R_PPC_ADDR16_HA}, {0x8091F7AE, R_PPC_ADDR16_LO},
+        {0x8091FE7A, R_PPC_ADDR16_HA}, {0x8091FE7E, R_PPC_ADDR16_LO}, {0x8091FEEA, R_PPC_ADDR16_HA},
+        {0x8091FF02, R_PPC_ADDR16_LO}, {0x80925242, R_PPC_ADDR16_HA}, {0x8092524E, R_PPC_ADDR16_LO},
+        {0x8092525E, R_PPC_ADDR16_LO}, {0x80925416, R_PPC_ADDR16_HA}, {0x80925446, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mRest.data(), //
-  {
-    {0x80010822, R_PPC_ADDR16_HA}, {0x80010832, R_PPC_ADDR16_LO}, {0x8001CD56, R_PPC_ADDR16_HA},
-    {0x8001CD62, R_PPC_ADDR16_LO}, {0x8006052E, R_PPC_ADDR16_HA}, {0x80060542, R_PPC_ADDR16_LO},
-    {0x8006055E, R_PPC_ADDR16_HA}, {0x80060566, R_PPC_ADDR16_LO}, {0x8006063A, R_PPC_ADDR16_HA},
-    {0x8006064A, R_PPC_ADDR16_LO}, {0x80060EF2, R_PPC_ADDR16_HA}, {0x80060EFA, R_PPC_ADDR16_LO},
-    {0x800B534A, R_PPC_ADDR16_HA}, {0x800B5356, R_PPC_ADDR16_LO}, {0x800BB972, R_PPC_ADDR16_HA},
-    {0x800BB9AA, R_PPC_ADDR16_LO}, {0x800E17BE, R_PPC_ADDR16_HA}, {0x800E17D2, R_PPC_ADDR16_LO},
-    {0x800E1972, R_PPC_ADDR16_HA}, {0x800E198A, R_PPC_ADDR16_LO}, {0x80102402, R_PPC_ADDR16_HA},
-    {0x8010240E, R_PPC_ADDR16_LO}, {0x8010B752, R_PPC_ADDR16_HA}, {0x8010B75E, R_PPC_ADDR16_LO},
-    {0x8013889A, R_PPC_ADDR16_HA}, {0x801388AE, R_PPC_ADDR16_LO}, {0x8013D82E, R_PPC_ADDR16_HA},
-    {0x8013D83E, R_PPC_ADDR16_LO}, {0x80777EEA, R_PPC_ADDR16_HA}, {0x80777F02, R_PPC_ADDR16_LO},
-    {0x807786C2, R_PPC_ADDR16_HA}, {0x807786D2, R_PPC_ADDR16_LO}, {0x80788FDE, R_PPC_ADDR16_HA},
-    {0x80788FEE, R_PPC_ADDR16_LO}, {0x8078904A, R_PPC_ADDR16_HA}, {0x8078905A, R_PPC_ADDR16_LO},
-    {0x8091885A, R_PPC_ADDR16_LO}, {0x8091D3FA, R_PPC_ADDR16_HA}, {0x8091D402, R_PPC_ADDR16_LO},
-    {0x8091F796, R_PPC_ADDR16_HA}, {0x8091F7B2, R_PPC_ADDR16_LO}, {0x8091FEE6, R_PPC_ADDR16_HA},
-    {0x8091FEFE, R_PPC_ADDR16_LO}, {0x80925412, R_PPC_ADDR16_HA}, {0x80925442, R_PPC_ADDR16_LO},
-    {0x8092F776, R_PPC_ADDR16_HA}, {0x8092F782, R_PPC_ADDR16_LO}, {0x8092F882, R_PPC_ADDR16_HA},
-    {0x8092F892, R_PPC_ADDR16_LO}, {0x80B6BCEA, R_PPC_ADDR16_HA}, {0x80B6BCFE, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mRest.data(), //
+    {
+        {0x80010822, R_PPC_ADDR16_HA}, {0x80010832, R_PPC_ADDR16_LO}, {0x8001CD56, R_PPC_ADDR16_HA},
+        {0x8001CD62, R_PPC_ADDR16_LO}, {0x8006052E, R_PPC_ADDR16_HA}, {0x80060542, R_PPC_ADDR16_LO},
+        {0x8006055E, R_PPC_ADDR16_HA}, {0x80060566, R_PPC_ADDR16_LO}, {0x8006063A, R_PPC_ADDR16_HA},
+        {0x8006064A, R_PPC_ADDR16_LO}, {0x80060EF2, R_PPC_ADDR16_HA}, {0x80060EFA, R_PPC_ADDR16_LO},
+        {0x800B534A, R_PPC_ADDR16_HA}, {0x800B5356, R_PPC_ADDR16_LO}, {0x800BB972, R_PPC_ADDR16_HA},
+        {0x800BB9AA, R_PPC_ADDR16_LO}, {0x800E17BE, R_PPC_ADDR16_HA}, {0x800E17D2, R_PPC_ADDR16_LO},
+        {0x800E1972, R_PPC_ADDR16_HA}, {0x800E198A, R_PPC_ADDR16_LO}, {0x80102402, R_PPC_ADDR16_HA},
+        {0x8010240E, R_PPC_ADDR16_LO}, {0x8010B752, R_PPC_ADDR16_HA}, {0x8010B75E, R_PPC_ADDR16_LO},
+        {0x8013889A, R_PPC_ADDR16_HA}, {0x801388AE, R_PPC_ADDR16_LO}, {0x8013D82E, R_PPC_ADDR16_HA},
+        {0x8013D83E, R_PPC_ADDR16_LO}, {0x80777EEA, R_PPC_ADDR16_HA}, {0x80777F02, R_PPC_ADDR16_LO},
+        {0x807786C2, R_PPC_ADDR16_HA}, {0x807786D2, R_PPC_ADDR16_LO}, {0x80788FDE, R_PPC_ADDR16_HA},
+        {0x80788FEE, R_PPC_ADDR16_LO}, {0x8078904A, R_PPC_ADDR16_HA}, {0x8078905A, R_PPC_ADDR16_LO},
+        {0x8091885A, R_PPC_ADDR16_LO}, {0x8091D3FA, R_PPC_ADDR16_HA}, {0x8091D402, R_PPC_ADDR16_LO},
+        {0x8091F796, R_PPC_ADDR16_HA}, {0x8091F7B2, R_PPC_ADDR16_LO}, {0x8091FEE6, R_PPC_ADDR16_HA},
+        {0x8091FEFE, R_PPC_ADDR16_LO}, {0x80925412, R_PPC_ADDR16_HA}, {0x80925442, R_PPC_ADDR16_LO},
+        {0x8092F776, R_PPC_ADDR16_HA}, {0x8092F782, R_PPC_ADDR16_LO}, {0x8092F882, R_PPC_ADDR16_HA},
+        {0x8092F892, R_PPC_ADDR16_LO}, {0x80B6BCEA, R_PPC_ADDR16_HA}, {0x80B6BCFE, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  daPyMng_c::mCoin.data(), //
-  {
-    {0x80060206, R_PPC_ADDR16_HA},
-    {0x80060216, R_PPC_ADDR16_LO},
-    {0x800BB982, R_PPC_ADDR16_HA},
-    {0x800BB9B6, R_PPC_ADDR16_LO},
-    {0x800E17C6, R_PPC_ADDR16_HA},
-    {0x800E17DA, R_PPC_ADDR16_LO},
-    {0x800E197A, R_PPC_ADDR16_HA},
-    {0x800E1992, R_PPC_ADDR16_LO},
-    {0x8078904E, R_PPC_ADDR16_HA},
-    {0x8078906A, R_PPC_ADDR16_LO},
-    {0x8091F79E, R_PPC_ADDR16_HA},
-    {0x8091F7BA, R_PPC_ADDR16_LO},
-    {0x8092541A, R_PPC_ADDR16_HA},
-    {0x8092544A, R_PPC_ADDR16_LO},
-    {0x80A2B70E, R_PPC_ADDR16_HA},
-    {0x80A2B722, R_PPC_ADDR16_LO},
-  }
+    daPyMng_c::mCoin.data(), //
+    {
+        {0x80060206, R_PPC_ADDR16_HA},
+        {0x80060216, R_PPC_ADDR16_LO},
+        {0x800BB982, R_PPC_ADDR16_HA},
+        {0x800BB9B6, R_PPC_ADDR16_LO},
+        {0x800E17C6, R_PPC_ADDR16_HA},
+        {0x800E17DA, R_PPC_ADDR16_LO},
+        {0x800E197A, R_PPC_ADDR16_HA},
+        {0x800E1992, R_PPC_ADDR16_LO},
+        {0x8078904E, R_PPC_ADDR16_HA},
+        {0x8078906A, R_PPC_ADDR16_LO},
+        {0x8091F79E, R_PPC_ADDR16_HA},
+        {0x8091F7BA, R_PPC_ADDR16_LO},
+        {0x8092541A, R_PPC_ADDR16_HA},
+        {0x8092544A, R_PPC_ADDR16_LO},
+        {0x80A2B70E, R_PPC_ADDR16_HA},
+        {0x80A2B722, R_PPC_ADDR16_LO},
+    }
 );
