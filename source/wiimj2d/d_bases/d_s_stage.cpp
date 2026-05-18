@@ -17,8 +17,7 @@
 #include "d_system/d_wm_lib.h"
 
 [[nsmbw(0x80924950)]]
-bool dScStage_c::CreatedLayouts() const
-{
+bool dScStage_c::CreatedLayouts() const {
     return !checkChildProcessCreateState() && (!mpMiniGameCannon || mpMiniGameCannon->mReady) &&
            (!mpMiniGameWire || mpMiniGameWire->mReady) &&
            (!mpModelPlayManager || mpModelPlayManager->mReady) &&
@@ -27,16 +26,15 @@ bool dScStage_c::CreatedLayouts() const
 }
 
 [[nsmbw(0x809251C0)]]
-void dScStage_c::procExitMode()
-{
+void dScStage_c::procExitMode() {
     switch (m_exitMode) {
-    case ExitMode_e::CLEAR:
+    case Exit_e::CLEAR:
         exitClear();
         break;
-    case ExitMode_e::DOWN:
+    case Exit_e::DOWN:
         exitDown();
         break;
-    case ExitMode_e::CARRY_OVER_RNDIZER:
+    case Exit_e::CARRY_OVER_RNDIZER:
         break;
     default:
         exitRestore();
@@ -45,8 +43,7 @@ void dScStage_c::procExitMode()
 }
 
 [[nsmbw(0x809251F0)]]
-void dScStage_c::exitClear()
-{
+void dScStage_c::exitClear() {
     WORLD_e world = m_instance->mWorld;
     STAGE_e stage = m_instance->mStage;
 
@@ -54,8 +51,8 @@ void dScStage_c::exitClear()
         return;
     }
 
-    dInfo_c* info = dInfo_c::m_instance;
-    dCyuukan_c* cyuukan = &info->mCyuukan;
+    dInfo_c*      info      = dInfo_c::m_instance;
+    dCyuukan_c*   cyuukan   = &info->mCyuukan;
     dStartInfo_c& startInfo = info->m_startInfo;
 
     if (m_miniGame == 0) {
@@ -65,11 +62,11 @@ void dScStage_c::exitClear()
             // Even though the original game's version doesn't.
             PLAYER_TYPE_e type = static_cast<PLAYER_TYPE_e>(i);
             daPyMng_c::mCreateItem[type] =
-              startInfo.mCreateItem[type] & ~PLAYER_CREATE_ITEM_e::STAR_POWER;
+                startInfo.mCreateItem[type] & ~PLAYER_CREATE_ITEM_e::STAR_POWER;
         }
     }
 
-    dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame();
+    dMj2dGame_c*              save          = dSaveMng_c::m_instance->getSaveGame();
 
     dInfo_c::StartGameInfo_s& startGameInfo = info->m_startGameInfo;
 
@@ -86,9 +83,9 @@ void dScStage_c::exitClear()
 
         for (int i = 0; i < COLLECTION_COIN_COUNT; i++) {
             static constexpr dMj2dGame_c::COURSE_COMPLETION_e COLLECTION_COIN_FLAGS[] = {
-              dMj2dGame_c::COURSE_COMPLETION_e::COIN1_COLLECTED,
-              dMj2dGame_c::COURSE_COMPLETION_e::COIN2_COLLECTED,
-              dMj2dGame_c::COURSE_COMPLETION_e::COIN3_COLLECTED,
+                dMj2dGame_c::COURSE_COMPLETION_e::COIN1_COLLECTED,
+                dMj2dGame_c::COURSE_COMPLETION_e::COIN2_COLLECTED,
+                dMj2dGame_c::COURSE_COMPLETION_e::COIN3_COLLECTED,
             };
 
             if (mCollectionCoin[i] != PLAYER_TYPE_e::COUNT) {
@@ -110,7 +107,7 @@ void dScStage_c::exitClear()
     }
 
     dWmLib::procCourseClear(
-      isSecretExit, startGameInfo.demoType == dInfo_c::DemoType_e::SUPER_GUIDE, world, stage
+        isSecretExit, startGameInfo.demoType == dInfo_c::DemoType_e::SUPER_GUIDE, world, stage
     );
 
     if (startGameInfo.demoType != dInfo_c::DemoType_e::NONE) {
@@ -119,36 +116,35 @@ void dScStage_c::exitClear()
 }
 
 [[nsmbw(0x809253E0)]]
-void dScStage_c::exitRestore()
-{
-    dInfo_c* info = dInfo_c::m_instance;
-    dCyuukan_c* cyuukan = &info->mCyuukan;
-    dStartInfo_c& startInfo = info->m_startInfo;
+void dScStage_c::exitRestore() {
+    dInfo_c*      info          = dInfo_c::m_instance;
+    dCyuukan_c*   cyuukan       = &info->mCyuukan;
+    dStartInfo_c& startInfo     = info->m_startInfo;
 
-    cyuukan->mState = startInfo.mCyuukan.mState;
-    cyuukan->mPlayerSetPos = startInfo.mCyuukan.mPlayerSetPos;
-    cyuukan->m0x14 = startInfo.mCyuukan.m0x14;
-    cyuukan->mWorld = startInfo.mCyuukan.mWorld;
-    cyuukan->mStage = startInfo.mCyuukan.mStage;
-    cyuukan->mCourse = startInfo.mCyuukan.mCourse;
-    cyuukan->mGoto = startInfo.mCyuukan.mGoto;
+    cyuukan->mState             = startInfo.mCyuukan.mState;
+    cyuukan->mPlayerSetPos      = startInfo.mCyuukan.mPlayerSetPos;
+    cyuukan->m0x14              = startInfo.mCyuukan.m0x14;
+    cyuukan->mWorld             = startInfo.mCyuukan.mWorld;
+    cyuukan->mStage             = startInfo.mCyuukan.mStage;
+    cyuukan->mCourse            = startInfo.mCyuukan.mCourse;
+    cyuukan->mGoto              = startInfo.mCyuukan.mGoto;
     cyuukan->mIsKinopioInChukan = startInfo.mCyuukan.mIsKinopioInChukan;
     cyuukan->mCollectionCoin[0] = startInfo.mCyuukan.mCollectionCoin[0];
     cyuukan->mCollectionCoin[1] = startInfo.mCyuukan.mCollectionCoin[1];
     cyuukan->mCollectionCoin[2] = startInfo.mCyuukan.mCollectionCoin[2];
-    cyuukan->m0x2C[0] = startInfo.mCyuukan.m0x2C[0];
-    cyuukan->m0x2C[1] = startInfo.mCyuukan.m0x2C[1];
-    info->mSwitchOn = startInfo.mSwitchOn;
+    cyuukan->m0x2C[0]           = startInfo.mCyuukan.m0x2C[0];
+    cyuukan->m0x2C[1]           = startInfo.mCyuukan.m0x2C[1];
+    info->mSwitchOn             = startInfo.mSwitchOn;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        PLAYER_TYPE_e type = static_cast<PLAYER_TYPE_e>(i);
-        int index = startInfo.mPlayerIndex[type];
-        daPyMng_c::mPlayerType[index] = type;
-        daPyMng_c::mPlayerMode[type] = startInfo.mPlayerMode[type];
+        PLAYER_TYPE_e type             = static_cast<PLAYER_TYPE_e>(i);
+        int           index            = startInfo.mPlayerIndex[type];
+        daPyMng_c::mPlayerType[index]  = type;
+        daPyMng_c::mPlayerMode[type]   = startInfo.mPlayerMode[type];
         daPyMng_c::mPlayerEntry[index] = startInfo.mIsEntry[type];
-        daPyMng_c::mCoin[type] = startInfo.mCoin[type];
-        daPyMng_c::mRest[type] = startInfo.mRest[type];
-        daPyMng_c::mCreateItem[type] = startInfo.mCreateItem[type];
+        daPyMng_c::mCoin[type]         = startInfo.mCoin[type];
+        daPyMng_c::mRest[type]         = startInfo.mRest[type];
+        daPyMng_c::mCreateItem[type]   = startInfo.mCreateItem[type];
     }
 
     daPyMng_c::mScore = startInfo.mScore;
@@ -159,7 +155,7 @@ void dScStage_c::exitRestore()
     UNDEF_8042a458 = UNDEF_8042a459;
     UNDEF_8042a460 = UNDEF_8042a461;
 
-    info->m0x06C = 0;
+    info->m0x06C   = 0;
 }
 
 [[nsmbw(0x809255B0)]]

@@ -13,15 +13,13 @@
 #include "sound/SndSceneMgr.h"
 
 [[nsmbw(0x80866120)]]
-daMiniGameGunBatteryMgrObj_c* daMiniGameGunBatteryMgrObj_c_classInit()
-{
+daMiniGameGunBatteryMgrObj_c* daMiniGameGunBatteryMgrObj_c_classInit() {
     return new daMiniGameGunBatteryMgrObj_c();
 }
 
 [[nsmbw(0x80866210)]]
 daMiniGameGunBatteryMgrObj_c::daMiniGameGunBatteryMgrObj_c()
-  : mStateMgr(*this, StateID_ShowRule)
-{
+    : mStateMgr(*this, StateID_ShowRule) {
 }
 
 [[nsmbw(0x80866450)]]
@@ -34,15 +32,15 @@ fBase_c::PACK_RESULT_e daMiniGameGunBatteryMgrObj_c::preExecute();
 fBase_c::PACK_RESULT_e daMiniGameGunBatteryMgrObj_c::execute();
 
 [[nsmbw(0x80866530)]]
-void daMiniGameGunBatteryMgrObj_c::hitBalloon(int player, int lives)
-{
+void daMiniGameGunBatteryMgrObj_c::hitBalloon(
+    int player, int lives
+) {
     mPlayers[player].mNumLives += lives;
     mPlayers[player].mNumHit++;
 }
 
 [[nsmbw(0x80866560)]]
-void daMiniGameGunBatteryMgrObj_c::addResultRest()
-{
+void daMiniGameGunBatteryMgrObj_c::addResultRest() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (dAcPy_c* player = daPyMng_c::getPlayer(i); player && mPlayers[i].mNumLives > 0) {
             daPyMng_c::addRest(player->getPlrNo(), mPlayers[i].mNumLives, false);
@@ -54,14 +52,16 @@ void daMiniGameGunBatteryMgrObj_c::addResultRest()
 bool daMiniGameGunBatteryMgrObj_c::checkMessageClose();
 
 [[nsmbw(0x80866640)]]
-void daMiniGameGunBatteryMgrObj_c::setMessageCloseWait(int value)
-{
+void daMiniGameGunBatteryMgrObj_c::setMessageCloseWait(
+    int value
+) {
     mMessageCloseWaitTimer = value;
 }
 
 [[nsmbw(0x80866650)]]
-void daMiniGameGunBatteryMgrObj_c::setPlayerDone(int player)
-{
+void daMiniGameGunBatteryMgrObj_c::setPlayerDone(
+    int player
+) {
     if (player == -1 || mPlayers[player].mDone) {
         return;
     }
@@ -71,8 +71,7 @@ void daMiniGameGunBatteryMgrObj_c::setPlayerDone(int player)
 }
 
 [[nsmbw(0x808666E0)]]
-void daMiniGameGunBatteryMgrObj_c::executeState_ShowRule()
-{
+void daMiniGameGunBatteryMgrObj_c::executeState_ShowRule() {
     bool closed;
 
     switch (mMessageState) {
@@ -120,7 +119,7 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowRule()
 
         dGameCom::MiniGameCannonOperateCloseRequest();
         SndAudioMgr::sInstance->startSystemSe(
-          closed ? SndID::SE_MG_CMN_WIN_CLK : SndID::SE_MG_CMN_WIN_CLOSE, 1
+            closed ? SndID::SE_MG_CMN_WIN_CLK : SndID::SE_MG_CMN_WIN_CLOSE, 1
         );
 
         mMessageState = 4;
@@ -141,8 +140,7 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowRule()
 }
 
 [[nsmbw(0x80866A90)]]
-void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult()
-{
+void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult() {
     bool win, closed;
 
     switch (mMessageState) {
@@ -173,7 +171,7 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult()
 
         SndSceneMgr::sInstance->setMiniGameTrack(win ? 10 : 9);
         SndAudioMgr::sInstance->startSystemSe(
-          win ? SndID::SE_MG_UH_NICE : SndID::SE_MG_UH_WIN_BR_OPEN, 1
+            win ? SndID::SE_MG_UH_NICE : SndID::SE_MG_UH_WIN_BR_OPEN, 1
         );
 
         mMessageState = 2;
@@ -188,7 +186,7 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult()
 
         dGameCom::MiniGameCannonResultCloseRequest();
         SndAudioMgr::sInstance->startSystemSe(
-          closed ? SndID::SE_MG_CMN_WIN_CLK : SndID::SE_MG_CMN_WIN_CLOSE, 1
+            closed ? SndID::SE_MG_CMN_WIN_CLK : SndID::SE_MG_CMN_WIN_CLOSE, 1
         );
 
         mMessageState = 3;
@@ -201,7 +199,7 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult()
         }
 
         dScStage_c::setNextScene(
-          dProf::WORLD_MAP, 0, dScStage_c::Exit_e(0), dFader_c::fader_type_e::MARIO
+            dProf::WORLD_MAP, 0, dScStage_c::Exit_e::CLEAR, dFader_c::fader_type_e::MARIO
         );
 
         mMessageState = 4;
@@ -209,6 +207,5 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult()
 }
 
 [[nsmbw(0x80866CF0)]]
-daMiniGameGunBatteryMgrObj_c::~daMiniGameGunBatteryMgrObj_c()
-{
+daMiniGameGunBatteryMgrObj_c::~daMiniGameGunBatteryMgrObj_c() {
 }

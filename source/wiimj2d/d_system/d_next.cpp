@@ -48,7 +48,7 @@ void dNext_c::changeSceneRndizer(int index)
 
     dScCrsin_c::m_isDispOff = true;
 
-    dScStage_c::m_exitMode = dScStage_c::ExitMode_e::CARRY_OVER_RNDIZER;
+    dScStage_c::m_exitMode = dScStage_c::Exit_e::CARRY_OVER_RNDIZER;
 
     const dNextGotoList_c::Entry_s& entry = dNextGotoList_c::ms_instance[nextIndex];
     return dInfo_c::m_instance->startGame({

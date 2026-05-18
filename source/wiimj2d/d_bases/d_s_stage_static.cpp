@@ -8,7 +8,7 @@
 #include <mkwcat/Relocate.hpp>
 
 [[nsmbw_data(0x8042931C)]]
-dScStage_c::ExitMode_e dScStage_c::m_exitMode = dScStage_c::ExitMode_e(2);
+dScStage_c::Exit_e dScStage_c::m_exitMode = dScStage_c::Exit_e::RESTORE_INFO;
 
 [[nsmbw_data(0x8042A4A8)]]
 dScStage_c* dScStage_c::m_instance;
@@ -59,7 +59,8 @@ dReplayPlay_c* dScStage_c::m_replayPlay_p[PLAYER_COUNT];
 dGameDisplay_c* dScStage_c::getGameDisplay();
 
 [[nsmbw(0x80101AA0)]]
-void dScStage_c::setLoopType() ASM_METHOD(
+void dScStage_c::setLoopType()
+    ASM_METHOD(
   // clang-format off
 /* 80101AA0 9421FFE0 */  stwu     r1, -32(r1);
 /* 80101AA4 7C0802A6 */  mflr     r0;
@@ -134,8 +135,10 @@ void dScStage_c::setCollectionCoin(int coin, PLAYER_TYPE_e player);
 bool dScStage_c::isNowReplay();
 
 [[nsmbw(0x80102370)]]
-void dScStage_c::
-  setNextScene(dProfName profile, int param, Exit_e exitMode, dFader_c::fader_type_e faderType) ASM_METHOD(
+void dScStage_c::setNextScene(
+    dProfName profile, int param, Exit_e exitMode, dFader_c::fader_type_e faderType
+)
+    ASM_METHOD(
     // clang-format off
 /* 80102370 9421FFE0 */  stwu     r1, -32(r1);
 /* 80102374 7C0802A6 */  mflr     r0;
@@ -294,8 +297,7 @@ UNDEF_80102598:;
   );
 
 [[nsmbw(0x801026B0)]]
-void dScStage_c::calcTitleCount()
-{
+void dScStage_c::calcTitleCount() {
     if (fFeat::autoboot_title_demo) {
         // Moved to dScRestartCrsin_c::startTitle()
         return;
@@ -305,15 +307,15 @@ void dScStage_c::calcTitleCount()
 }
 
 PATCH_REFERENCES(
-  &dScStage_c::m_replayPlay_p, //
-  {
-    {0x8006A18A, R_PPC_ADDR16_HA}, {0x8006A18E, R_PPC_ADDR16_LO}, {0x800B5CBA, R_PPC_ADDR16_HA},
-    {0x800B5CC2, R_PPC_ADDR16_LO}, {0x800B61FA, R_PPC_ADDR16_HA}, {0x800B6202, R_PPC_ADDR16_LO},
-    {0x800B62A6, R_PPC_ADDR16_HA}, {0x800B62AA, R_PPC_ADDR16_LO}, {0x80102142, R_PPC_ADDR16_HA},
-    {0x8010214A, R_PPC_ADDR16_LO}, {0x80102182, R_PPC_ADDR16_HA}, {0x80102186, R_PPC_ADDR16_LO},
-    {0x8010226A, R_PPC_ADDR16_HA}, {0x8010226E, R_PPC_ADDR16_LO}, {0x801022C2, R_PPC_ADDR16_HA},
-    {0x801022C6, R_PPC_ADDR16_LO}, {0x8091F6FE, R_PPC_ADDR16_HA}, {0x8091F706, R_PPC_ADDR16_LO},
-    {0x8091F79A, R_PPC_ADDR16_HA}, {0x8091F7B6, R_PPC_ADDR16_LO}, {0x809246AE, R_PPC_ADDR16_HA},
-    {0x809246B6, R_PPC_ADDR16_LO},
-  }
+    &dScStage_c::m_replayPlay_p, //
+    {
+        {0x8006A18A, R_PPC_ADDR16_HA}, {0x8006A18E, R_PPC_ADDR16_LO}, {0x800B5CBA, R_PPC_ADDR16_HA},
+        {0x800B5CC2, R_PPC_ADDR16_LO}, {0x800B61FA, R_PPC_ADDR16_HA}, {0x800B6202, R_PPC_ADDR16_LO},
+        {0x800B62A6, R_PPC_ADDR16_HA}, {0x800B62AA, R_PPC_ADDR16_LO}, {0x80102142, R_PPC_ADDR16_HA},
+        {0x8010214A, R_PPC_ADDR16_LO}, {0x80102182, R_PPC_ADDR16_HA}, {0x80102186, R_PPC_ADDR16_LO},
+        {0x8010226A, R_PPC_ADDR16_HA}, {0x8010226E, R_PPC_ADDR16_LO}, {0x801022C2, R_PPC_ADDR16_HA},
+        {0x801022C6, R_PPC_ADDR16_LO}, {0x8091F6FE, R_PPC_ADDR16_HA}, {0x8091F706, R_PPC_ADDR16_LO},
+        {0x8091F79A, R_PPC_ADDR16_HA}, {0x8091F7B6, R_PPC_ADDR16_LO}, {0x809246AE, R_PPC_ADDR16_HA},
+        {0x809246B6, R_PPC_ADDR16_LO},
+    }
 );

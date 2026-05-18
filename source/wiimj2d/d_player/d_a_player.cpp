@@ -603,8 +603,8 @@ void dAcPy_c::setChange(int param);
 void dAcPy_c::setSceneChangeInfo()
 {
     if (isItemKinopio()) {
-        if (dScStage_c::getExitMode() == dScStage_c::ExitMode_e::CARRY_OVER ||
-            dScStage_c::getExitMode() == dScStage_c::ExitMode_e::CARRY_OVER_RNDIZER) {
+        if (dScStage_c::getExitMode() == dScStage_c::Exit_e::CARRY_OVER ||
+            dScStage_c::getExitMode() == dScStage_c::Exit_e::CARRY_OVER_RNDIZER) {
             dAcPy_c* ctrlPlayer = static_cast<dAcPy_c*>(daPyMng_c::getCtrlPlayer(mPlrNo));
             if (ctrlPlayer != nullptr && !ctrlPlayer->isStatus(101) && !isStatus(4) &&
                 !isStatus(6)) {
@@ -618,8 +618,8 @@ void dAcPy_c::setSceneChangeInfo()
     PLAYER_MODE_e powerup = mPlayerMode;
 
     switch (dScStage_c::getExitMode()) {
-    case dScStage_c::ExitMode_e::CARRY_OVER:
-    case dScStage_c::ExitMode_e::CARRY_OVER_RNDIZER: {
+    case dScStage_c::Exit_e::CARRY_OVER:
+    case dScStage_c::Exit_e::CARRY_OVER_RNDIZER: {
         if (!isStatus(85) || isNotBalloonCourse()) {
             if (isStatus(83)) {
                 createItem = PLAYER_CREATE_ITEM_e::BUBBLE;
@@ -638,11 +638,11 @@ void dAcPy_c::setSceneChangeInfo()
         }
         break;
     }
-    case dScStage_c::ExitMode_e::RESTORE_INFO:
+    case dScStage_c::Exit_e::RESTORE_INFO:
         powerup = daPyMng_c::mPlayerMode[daPyMng_c::mPlayerType[mPlrNo]];
         createItem = daPyMng_c::mCreateItem[daPyMng_c::mPlayerType[mPlrNo]];
         break;
-    case dScStage_c::ExitMode_e::DOWN:
+    case dScStage_c::Exit_e::DOWN:
         powerup = PLAYER_MODE_e::NONE;
         break;
     default:
