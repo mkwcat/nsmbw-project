@@ -59,10 +59,6 @@ public:
         WORLD_e world;
         STAGE_e stage;
 
-        constexpr bool isInSaveGame() const {
-            return world < WORLD_e::COUNT && stage < STAGE_e::COUNT;
-        }
-
         constexpr bool operator==(
             const StageNo_s& other
         ) const {
@@ -84,6 +80,33 @@ public:
         constexpr operator STAGE_e() const { return stage; }
 
         constexpr operator WORLD_e() const { return world; }
+
+        constexpr bool isInSaveGame() const {
+            return world < WORLD_e::COUNT && stage < STAGE_e::COUNT;
+        }
+
+        constexpr bool isTower() const {
+            return stage == STAGE_e::TOWER || stage == STAGE_e::TOWER_2;
+        }
+
+        constexpr bool isCastle() const {
+            return stage == STAGE_e::CASTLE || stage == STAGE_e::CASTLE_2;
+        }
+
+        constexpr bool isNumberedStage() const {
+            return stage >= STAGE_e::STAGE_1 && stage <= STAGE_e::STAGE_19;
+        }
+
+        constexpr u8 getWorldSceneNo() const {
+            if (world != WORLD_e::WORLD_3) {
+                return 0u;
+            }
+            if ((isNumberedStage() && stage >= STAGE_e::STAGE_4) || isCastle() ||
+                stage == STAGE_e::KINOKO_HOUSE_3 || stage == STAGE_e::KINOKO_HOUSE_4) {
+                return 1u;
+            }
+            return 0;
+        }
     };
 
     struct StartGameInfo_s {

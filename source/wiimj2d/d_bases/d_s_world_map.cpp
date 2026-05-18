@@ -33,60 +33,58 @@
 #include <iterator>
 
 [[nsmbw(0x80926E10)]]
-bool dScWMap_c::createLayoutPhase()
-{
+bool dScWMap_c::createLayoutPhase() {
 #define NEW(_TYPE, _PROFILE, _PARAM)                                                               \
     static_cast<_TYPE>(fBase_c::createChild(dProf::_PROFILE, this, _PARAM, 0))
 
-    mpSelectCursor = NEW(dSelectCursor_c*, SELECT_CURSOR, 0);
+    mpSelectCursor                       = NEW(dSelectCursor_c*, SELECT_CURSOR, 0);
 
-    dCourseSelectManager_c* crsSelMng = NEW(dCourseSelectManager_c*, COURSE_SELECT_MANAGER, 0);
+    dCourseSelectManager_c* crsSelMng    = NEW(dCourseSelectManager_c*, COURSE_SELECT_MANAGER, 0);
 
-    crsSelMng->mpWSelect = NEW(dWorldSelect_c*, WORLD_SELECT, 0);
+    crsSelMng->mpWSelect                 = NEW(dWorldSelect_c*, WORLD_SELECT, 0);
     crsSelMng->mpWSelect->mpWSelectGuide = crsSelMng->mpWSelectGuide =
-      NEW(dWorldSelectGuide_c*, WORLD_SELECT_GUIDE, 0);
+        NEW(dWorldSelectGuide_c*, WORLD_SELECT_GUIDE, 0);
 
     dCollectionCoin_c* colCoin = crsSelMng->mpCollectionCoin =
-      NEW(dCollectionCoin_c*, COLLECTION_COIN, 0);
+        NEW(dCollectionCoin_c*, COLLECTION_COIN, 0);
     for (std::size_t i = 0; i < std::size(colCoin->mpColCoinBase); i++) {
         colCoin->mpColCoinBase[i] = NEW(dCollectionCoinBase_c*, COLLECTION_COIN_BASE, 0);
     }
     for (std::size_t i = 0; i < std::size(colCoin->mpColCoinDate); i++) {
         colCoin->mpColCoinDate[i] = NEW(dCollectionCoinDate_c*, COLLECTION_COIN_DATE, 0);
     }
-    colCoin->mpMdlPlyArrow = NEW(dModelPlayArrow_c*, MODEL_PLAY_ARROW, 0);
+    colCoin->mpMdlPlyArrow     = NEW(dModelPlayArrow_c*, MODEL_PLAY_ARROW, 0);
 
     crsSelMng->mpCrsSelectMenu = NEW(dCourseSelectMenu_c*, COURSE_SELECT_MENU, 0);
 
-    crsSelMng->mpNumPyChg = NEW(dNumberOfPeopleChange_c*, NUMBER_OF_PEOPLE_CHANGE, 0);
+    crsSelMng->mpNumPyChg      = NEW(dNumberOfPeopleChange_c*, NUMBER_OF_PEOPLE_CHANGE, 0);
     for (std::size_t cc = 0; cc < crsSelMng->mpNumPyChg->mCcCount; cc++) {
         crsSelMng->mpNumPyChg->mpCcSelBase[cc] =
-          NEW(dCharacterChangeSelectBase_c*, CHARACTER_CHANGE_SELECT_BASE, cc);
+            NEW(dCharacterChangeSelectBase_c*, CHARACTER_CHANGE_SELECT_BASE, cc);
         crsSelMng->mpNumPyChg->mpCcSelContents[cc] =
-          NEW(dCharacterChangeSelectContents_c*, CHARACTER_CHANGE_SELECT_CONTENTS, cc);
+            NEW(dCharacterChangeSelectContents_c*, CHARACTER_CHANGE_SELECT_CONTENTS, cc);
         crsSelMng->mpNumPyChg->mpCcSelArrow[cc] =
-          NEW(dCharacterChangeSelectArrow_c*, CHARACTER_CHANGE_SELECT_ARROW, cc);
+            NEW(dCharacterChangeSelectArrow_c*, CHARACTER_CHANGE_SELECT_ARROW, cc);
         crsSelMng->mpNumPyChg->mpCcIndicator[cc] =
-          NEW(dCharacterChangeIndicator_c*, CHARACTER_CHANGE_INDICATOR, cc);
+            NEW(dCharacterChangeIndicator_c*, CHARACTER_CHANGE_INDICATOR, cc);
     }
 
-    crsSelMng->mpStockItem = NEW(dStockItem_c*, STOCK_ITEM, 0);
+    crsSelMng->mpStockItem           = NEW(dStockItem_c*, STOCK_ITEM, 0);
     crsSelMng->mpStockItem->mpShadow = crsSelMng->mpStockItemSha =
-      NEW(dStockItemShadow_c*, STOCK_ITEM_SHADOW, 0);
+        NEW(dStockItemShadow_c*, STOCK_ITEM_SHADOW, 0);
 
-    crsSelMng->mpEasyPairing = NEW(dEasyPairing_c*, EASY_PAIRING, 0);
-    crsSelMng->mpContinue = NEW(dContinue_c*, CONTINUE, 0);
-    crsSelMng->mpYesNoWindow = NEW(dYesNoWindow_c*, YES_NO_WINDOW, 0);
+    crsSelMng->mpEasyPairing   = NEW(dEasyPairing_c*, EASY_PAIRING, 0);
+    crsSelMng->mpContinue      = NEW(dContinue_c*, CONTINUE, 0);
+    crsSelMng->mpYesNoWindow   = NEW(dYesNoWindow_c*, YES_NO_WINDOW, 0);
     crsSelMng->mpMessageWindow = NEW(dMessageWindow_c*, MESSAGE_WINDOW, 0);
-    crsSelMng->mpLetterWindow = NEW(dLetterWindow_c*, LETTER_WINDOW, 0);
+    crsSelMng->mpLetterWindow  = NEW(dLetterWindow_c*, LETTER_WINDOW, 0);
 
     return true;
 #undef NEW
 }
 
 [[nsmbw(0x809271C0)]]
-bool dScWMap_c::createActorsPhase()
-{
+bool dScWMap_c::createActorsPhase() {
     dWmActor_c::construct(dProf::WM_MAP, this, 0, nullptr, nullptr);
     dWmActor_c::construct(dProf::WM_CS_SEQ_MNG, this, 0, nullptr, nullptr);
     dWmActor_c::construct(dProf::WM_PLAYER, this, 0, nullptr, nullptr);
@@ -99,13 +97,13 @@ bool dScWMap_c::createActorsPhase()
 
     daWmKoopaShip_c::setup();
 
-    dCourseSelectManager_c* crsSelMng = dCourseSelectManager_c::m_instance;
-    dNumberOfPeopleChange_c* numPyChg = crsSelMng->mpNumPyChg;
-    dStockItem_c* stockItem = crsSelMng->mpStockItem;
+    dCourseSelectManager_c*  crsSelMng = dCourseSelectManager_c::m_instance;
+    dNumberOfPeopleChange_c* numPyChg  = crsSelMng->mpNumPyChg;
+    dStockItem_c*            stockItem = crsSelMng->mpStockItem;
 
     for (int type = 0; type < CHARACTER_COUNT; type++) {
         crsSelMng->mpa2DPlayer[type] = reinterpret_cast<da2DPlayer_c*>(
-          dBaseActor_c::construct(dProf::WM_2D_PLAYER, this, type, nullptr, nullptr)
+            dBaseActor_c::construct(dProf::WM_2D_PLAYER, this, type, nullptr, nullptr)
         );
 
         if (numPyChg != nullptr) {
@@ -122,7 +120,7 @@ bool dScWMap_c::createActorsPhase()
     if (stockItem != nullptr) {
         for (int i = 0; i < std::size(stockItem->mpaItem); i++) {
             stockItem->mpaItem[i] = reinterpret_cast<daWmItem_c*>(
-              dBaseActor_c::construct(dProf::WM_ITEM, this, i, nullptr, nullptr)
+                dBaseActor_c::construct(dProf::WM_ITEM, this, i, nullptr, nullptr)
             );
         }
     }
@@ -131,7 +129,7 @@ bool dScWMap_c::createActorsPhase()
     if (wSelect != nullptr) {
         for (int i = 0; i < std::size(wSelect->mpaIsland); i++) {
             wSelect->mpaIsland[i] = reinterpret_cast<daWmIsland_c*>(
-              dBaseActor_c::construct(dProf::WM_ISLAND, this, i, nullptr, nullptr)
+                dBaseActor_c::construct(dProf::WM_ISLAND, this, i, nullptr, nullptr)
             );
         }
     }

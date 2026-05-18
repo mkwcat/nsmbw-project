@@ -5,16 +5,15 @@
 
 class dSelectCursor_c;
 
-class dScWMap_c : public dScene_c
-{
+class dScWMap_c : public dScene_c {
     SIZE_ASSERT(0xEC);
 
 public:
     // Static Methods
     // ^^^^^^
 
-    /* 0x801027A0 @unofficial */
-    static void EnterWorld(WORLD_e world, int node);
+    /* 0x801027A0 */
+    static void setNextWorldScene(u8 world, u8 node, u8 = 0);
 
     /* 0x80102B50 */
     static u32 CreateBootParam();
@@ -26,10 +25,13 @@ public:
     static void initLoadGame();
 
     /* 0x800105B0, 0x808DEB70 */
-    static WORLD_e getWorldNo()
-    {
-        return m_WorldNo;
-    }
+    static WORLD_e getWorldNo() { return m_WorldNo; }
+
+public:
+    // Static Methods
+    // ++++++
+
+    static void returnToWorldScene();
 
 public:
     // Instance Methods
@@ -56,7 +58,9 @@ public:
     // ^^^^^^
 
     /* 0x8042A52D */ static WORLD_e m_WorldNo;
-    /* 0x8042A52E */ static u8 m_SceneNo;
+    /* 0x8042A52E */ static u8      m_SceneNo;
+    /* 0x80429355 */ static WORLD_e m_PrevWorldNo;
+    /* 0x80429356 */ static u8      m_PrevSceneNo;
 
-    /* 0x8042A538 */ static bool m_GameOver;
+    /* 0x8042A538 */ static bool    m_GameOver;
 };
