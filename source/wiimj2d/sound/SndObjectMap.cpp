@@ -31,5 +31,5 @@ nw4r::snd::SoundHandle* SndObjctCmnMap::holdSound(
   u32 soundId, int, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
 );
 
-[[nsmbw(00x80199950)]]
+[[nsmbw(0x80199950)]]
 void SndObjctCmnMap::stopSound(u32 soundId);

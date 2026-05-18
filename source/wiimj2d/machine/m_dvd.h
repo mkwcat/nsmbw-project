@@ -97,15 +97,17 @@ void initAutoStreamDecompInfo(
 /* 0x8016B3E0 */
 void* loadToMainRAM(
   int entryNum, char* dst, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir, s32 offset,
-  u32* outAmountRead, u32* outFileSize, u32 decompressorType
+  std::size_t* outAmountRead, std::size_t* outFileSize, std::size_t decompressorType
 );
 
+/* +++ */
 void* loadToMainRAM(
   const char* path, char* dst, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
-  s32 offset, u32* outAmountRead, u32* outFileSize, u32 decompressorType
+  s32 offset, std::size_t* outAmountRead, std::size_t* outFileSize
 );
 
-bool getFileSize(const char* path, u32* outFileSize);
+/* +++ */
+bool getFileSize(const char* path, std::size_t* outFileSize);
 
 /* 0x8016BD60 */
 bool isAutoStreamDecomp();
