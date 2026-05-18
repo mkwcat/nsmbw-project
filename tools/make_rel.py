@@ -114,7 +114,7 @@ def create_import_table(self_module_id, module_id, imports, out_sections, mapper
             assert(reloc.offset < out_sections[section].size)
             offset = reloc.offset - current_offset
             while offset > 0xFFFF:
-                # Add nop relocation to skip 0xFFFF bytes 
+                # Add nop relocation to skip 0xFFFF bytes
                 nop_reloc = rel.RELRelocation()
                 nop_reloc.offset = 0xFFFF
                 nop_reloc.type = rel.RELRelocationType.R_DOLPHIN_NOP
@@ -207,12 +207,12 @@ def main():
     assert prolog is not None, "Couldn't find _prolog symbol in the ELF file"
     assert prolog['st_shndx'] != 'SHN_UNDEF', "_prolog symbol is in undefined section"
     assert elf.get_section(prolog['st_shndx']) is not None and elf.get_section(prolog['st_shndx']).name in nsmbw_constants.REL_SECTION_NAMES, "_prolog symbol is an unwritten section"
-   
+
     epilog = find_symbol(symtab_section, "_epilog")
     assert epilog is not None, "Couldn't find _epilog symbol in the ELF file"
     assert epilog['st_shndx'] != 'SHN_UNDEF', "_epilog symbol is in undefined section"
     assert elf.get_section(epilog['st_shndx']) is not None and elf.get_section(epilog['st_shndx']).name in nsmbw_constants.REL_SECTION_NAMES, "_epilog symbol is an unwritten section"
-   
+
     unresolved = find_symbol(symtab_section, "_unresolved")
     assert unresolved is not None, "Couldn't find _unresolved symbol in the ELF file"
     assert unresolved['st_shndx'] != 'SHN_UNDEF', "_unresolved symbol is in undefined section"
@@ -287,6 +287,11 @@ def main():
                 addr += rela['r_addend']
                 addr &= 0xFFFFFFFF
 
+                # Some relocations need not be ported and can be resolved now
+                if addr < 0x80000000 and rela['r_info_type'] == rel.RELRelocationType.R_PPC_ADDR32:
+                    rel_section.data = rel_section.data[:rela['r_offset']] + struct.pack('>I', addr) + rel_section.data[rela['r_offset']+4:]
+                    continue
+
                 module_id = 0
                 relocation.section = 0
                 relocation.addend = addr
@@ -308,7 +313,7 @@ def main():
                             break
                     if module_id != 0:
                         break
-                
+
                 if rela['r_info_type'] == 47: # R_PPC_TOC
                     # Use this relocation type to mimick SDA21, patched more later
                     instruction = struct.unpack_from('>I', rel_section.data, relocation.offset-2)[0]
@@ -324,7 +329,7 @@ def main():
                     else:
                         print(f"Warning: Relocation to symbol {symbol.name} with address {addr:08x} is out of range of SDA21 access")
                         continue
-                    
+
                     instruction |= (reg << 16)
                     rel_section.data = rel_section.data[:relocation.offset-2] + struct.pack('>I', instruction) + rel_section.data[relocation.offset+2:]
                 else:
@@ -409,5 +414,5 @@ def main():
                         written = len(imp.relocations) * 0x8
                         if written < import_table_sizes[index]:
                             imp_file.write(b'\x00' * (import_table_sizes[index] - written))
-        
+
 main()

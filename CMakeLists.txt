@@ -52,16 +52,18 @@ add_compile_options(
     -fno-unwind-tables
     -fno-threadsafe-statics
     -fno-use-cxa-atexit
-    -fcheck-new
+    -fno-check-new
     -fnew-alignment=4
-    -fkeep-static-consts
     -femit-all-decls
-    -fforce-emit-vtables
     -fno-virtual-function-elimination
+    -fstrict-vtable-pointers
     -fmerge-all-constants
     -ffreestanding
     -ffunction-sections
     -fdata-sections
+
+    -mllvm=-inline-threshold=40
+    -mllvm=-enable-gvn-hoist
 
     -nostdinc
     -nostdinc++

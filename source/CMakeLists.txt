@@ -2,7 +2,7 @@ add_executable(project "")
 
 target_compile_options(project PRIVATE
     -include System.h
-    -fstack-protector-all
+    -fstack-protector-strong
 )
 
 target_link_options(project PRIVATE
