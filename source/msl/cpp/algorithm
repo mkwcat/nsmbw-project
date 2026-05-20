@@ -124,4 +124,19 @@ constexpr OutputIt copy(
     return d_first;
 }
 
+template <class ForwardIt, class T, class Compare>
+ForwardIt lower_bound(
+    ForwardIt first, ForwardIt last, const T& value, Compare comp
+) {
+    while (first != last) {
+        auto mid = first + (last - first) / 2;
+        if (comp(*mid, value)) {
+            first = mid + 1;
+        } else {
+            last = mid;
+        }
+    }
+    return first;
+}
+
 } // namespace std

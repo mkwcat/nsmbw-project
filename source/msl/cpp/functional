@@ -21,4 +21,21 @@ template <> struct equal_to<void> {
     }
 };
 
+template <class T = void> struct less {
+    constexpr bool operator()(
+        const T& lhs, const T& rhs
+    ) const {
+        return lhs < rhs;
+    }
+};
+
+template <> struct less<void> {
+    template <class T, class U>
+    constexpr auto operator()(
+        T&& lhs, U&& rhs
+    ) const -> decltype(std::forward<T>(lhs) == std::forward<U>(rhs)) {
+        return std::forward<T>(lhs) < std::forward<U>(rhs);
+    }
+};
+
 } // namespace std

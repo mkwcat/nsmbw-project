@@ -8,72 +8,67 @@
 #include <memory>
 #include <type_traits>
 
-namespace std
-{
+namespace std {
 
-template <class T, class Allocator = std::allocator<T>>
-class vector
-{
+template <class T, class Allocator = allocator<T>> class vector {
     static_assert(
-      std::is_copy_assignable_v<T> && std::is_copy_constructible_v<T>,
-      "std::vector requires T to be copyable"
+        is_copy_assignable_v<T> && is_copy_constructible_v<T>, "vector requires T to be copyable"
     );
 
 public:
     // Type Aliases
     // ^^^^^^
 
-    using value_type = T;
-    using allocator_type = Allocator;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using reference = T&;
+    using value_type      = T;
+    using allocator_type  = Allocator;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+    using reference       = T&;
     using const_reference = const T&;
-    using pointer = typename std::allocator_traits<Allocator>::pointer;
-    using const_pointer = typename std::allocator_traits<Allocator>::const_pointer;
+    using pointer         = typename allocator_traits<Allocator>::pointer;
+    using const_pointer   = typename allocator_traits<Allocator>::const_pointer;
 
     // Use pointers as iterators for now
-    using iterator = pointer;
-    using const_iterator = const_pointer;
+    using iterator        = pointer;
+    using const_iterator  = const_pointer;
 
 private:
     // Instance Variables
     // ^^^^^^
 
-    pointer m_memory = nullptr, m_data = nullptr;
-    std::size_t m_size = 0, m_capacity = 0;
+    pointer        m_memory = nullptr, m_data = nullptr;
+    size_t         m_size = 0, m_capacity = 0;
     allocator_type m_allocator;
 
-    difference_type get_start() const noexcept
-    {
-        return m_data - m_memory;
-    }
+    difference_type get_start() const noexcept { return m_data - m_memory; }
 
 public:
     // Structors
     // ^^^^^^
 
-    constexpr vector() noexcept(noexcept(allocator_type()))
-      : vector(allocator_type())
-    {
-    }
+    constexpr vector() noexcept(
+        noexcept(allocator_type())
+    )
+        : vector(allocator_type()) {}
 
-    explicit constexpr vector(const allocator_type& alloc) noexcept
-      : m_allocator(alloc)
-    {
-    }
+    explicit constexpr vector(
+        const allocator_type& alloc
+    ) noexcept
+        : m_allocator(alloc) {}
 
-    vector(size_type count, const value_type& value, const allocator_type& alloc = allocator_type())
-      : m_allocator(alloc)
-    {
+    vector(
+        size_type count, const value_type& value, const allocator_type& alloc = allocator_type()
+    )
+        : m_allocator(alloc) {
         resize(count, value);
     }
 
     template <class InputIt>
-    constexpr vector(InputIt first, InputIt last, const Allocator& alloc = Allocator())
-      : m_allocator(alloc)
-    {
-        reserve(std::distance(first, last));
+    constexpr vector(
+        InputIt first, InputIt last, const Allocator& alloc = Allocator()
+    )
+        : m_allocator(alloc) {
+        reserve(distance(first, last));
         for (; first != last; ++first) {
             push_back(*first);
         }
@@ -83,104 +78,75 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    constexpr allocator_type get_allocator() const noexcept
-    {
-        return m_allocator;
-    }
+    constexpr allocator_type get_allocator() const noexcept { return m_allocator; }
 
-    constexpr reference at(size_type pos)
-    {
+    constexpr reference at(
+        size_type pos
+    ) {
         assert(pos < m_size);
         return m_data[pos];
     }
 
-    constexpr const_reference at(size_type pos) const
-    {
+    constexpr const_reference at(
+        size_type pos
+    ) const {
         assert(pos < m_size);
         return m_data[pos];
     }
 
-    constexpr reference operator[](size_type pos)
-    {
+    constexpr reference operator[](
+        size_type pos
+    ) {
         return at(pos);
     }
 
-    constexpr const_reference operator[](size_type pos) const
-    {
+    constexpr const_reference operator[](
+        size_type pos
+    ) const {
         return at(pos);
     }
 
-    constexpr reference front()
-    {
+    constexpr reference front() {
         assert(m_size > 0);
         return m_data[0];
     }
 
-    constexpr const_reference front() const
-    {
+    constexpr const_reference front() const {
         assert(m_size > 0);
         return m_data[0];
     }
 
-    constexpr reference back()
-    {
+    constexpr reference back() {
         assert(m_size > 0);
         return m_data[m_size - 1];
     }
 
-    constexpr const_reference back() const
-    {
+    constexpr const_reference back() const {
         assert(m_size > 0);
         return m_data[m_size - 1];
     }
 
-    constexpr pointer begin() noexcept
-    {
-        return m_data;
-    }
+    constexpr pointer begin() noexcept { return m_data; }
 
-    constexpr const_pointer begin() const noexcept
-    {
-        return m_data;
-    }
+    constexpr const_pointer begin() const noexcept { return m_data; }
 
-    constexpr pointer end() noexcept
-    {
-        return m_data + m_size;
-    }
+    constexpr pointer end() noexcept { return m_data + m_size; }
 
-    constexpr const_pointer end() const noexcept
-    {
-        return m_data + m_size;
-    }
+    constexpr const_pointer end() const noexcept { return m_data + m_size; }
 
-    constexpr pointer data() noexcept
-    {
-        return m_data;
-    }
+    constexpr pointer data() noexcept { return m_data; }
 
-    constexpr const_pointer data() const noexcept
-    {
-        return m_data;
-    }
+    constexpr const_pointer data() const noexcept { return m_data; }
 
-    constexpr bool empty() const noexcept
-    {
-        return m_size == 0;
-    }
+    constexpr bool empty() const noexcept { return m_size == 0; }
 
-    constexpr size_type size() const noexcept
-    {
-        return m_size;
-    }
+    constexpr size_type size() const noexcept { return m_size; }
 
-    constexpr size_type max_size() const noexcept
-    {
-        return std::numeric_limits<difference_type>::max();
-    }
+    constexpr size_type max_size() const noexcept { return numeric_limits<difference_type>::max(); }
 
-    constexpr void reserve(size_type new_cap)
-    {
+    constexpr void reserve(
+        size_type new_cap
+    ) {
         if (new_cap <= capacity()) {
             return;
         }
@@ -188,71 +154,70 @@ public:
         if (new_cap <= m_capacity) {
             // We have enough capacity but need to move data to the front
             for (size_type i = 0; i < m_size; i++) {
-                std::allocator_traits<allocator_type>::construct(
-                  m_allocator, m_memory + i, std::move_if_noexcept(m_data[i])
+                allocator_traits<allocator_type>::construct(
+                    m_allocator, m_memory + i, move_if_noexcept(m_data[i])
                 );
-                std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
+                allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
             }
             m_data = m_memory;
             return;
         }
 
-        pointer new_memory = std::allocator_traits<allocator_type>::allocate(m_allocator, new_cap);
+        pointer new_memory = allocator_traits<allocator_type>::allocate(m_allocator, new_cap);
         for (size_type i = 0; i < m_size; i++) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, new_memory + i, std::move_if_noexcept(m_data[i])
+            allocator_traits<allocator_type>::construct(
+                m_allocator, new_memory + i, move_if_noexcept(m_data[i])
             );
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
         }
         if (m_memory) {
-            std::allocator_traits<allocator_type>::deallocate(m_allocator, m_memory, m_capacity);
+            allocator_traits<allocator_type>::deallocate(m_allocator, m_memory, m_capacity);
         }
         m_data = m_memory = new_memory;
-        m_capacity = new_cap;
+        m_capacity        = new_cap;
     }
 
-    constexpr size_type capacity() const noexcept
-    {
-        return m_capacity - get_start();
-    }
+    constexpr size_type capacity() const noexcept { return m_capacity - get_start(); }
 
-    constexpr void push_back(const value_type& value)
-    {
+    constexpr void push_back(
+        const value_type& value
+    ) {
         if (m_size == capacity()) {
             reserve(capacity() > 0 ? capacity() * 2 : 1);
         }
-        std::allocator_traits<allocator_type>::construct(m_allocator, m_data + m_size, value);
+        allocator_traits<allocator_type>::construct(m_allocator, m_data + m_size, value);
         m_size++;
     }
 
     template <class... Args>
-    constexpr reference emplace_back(Args&&... args)
-    {
+    constexpr reference emplace_back(
+        Args&&... args
+    ) {
         if (m_size == capacity()) {
             reserve(capacity() > 0 ? capacity() * 2 : 1);
         }
-        std::allocator_traits<allocator_type>::construct(
-          m_allocator, m_data + m_size, std::forward<Args>(args)...
+        allocator_traits<allocator_type>::construct(
+            m_allocator, m_data + m_size, forward<Args>(args)...
         );
         m_size++;
         return m_data[m_size - 1];
     }
 
-    constexpr void pop_back()
-    {
+    constexpr void pop_back() {
         if (m_size == 0) {
             return;
         }
         m_size--;
-        std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + m_size);
+        allocator_traits<allocator_type>::destroy(m_allocator, m_data + m_size);
     }
 
-    iterator erase(const_iterator pos)
-    {
+    iterator erase(
+        const_iterator pos
+    ) {
         assert(pos >= begin() && pos < end());
 
         if (pos == m_data) {
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data);
             m_size--;
             m_data++;
             return begin();
@@ -264,42 +229,43 @@ public:
         }
 
         size_type index = pos - begin();
-        std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + index);
+        allocator_traits<allocator_type>::destroy(m_allocator, m_data + index);
         for (size_type i = index; i < m_size - 1; i++) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + i, std::move_if_noexcept(m_data[i + 1])
+            allocator_traits<allocator_type>::construct(
+                m_allocator, m_data + i, move_if_noexcept(m_data[i + 1])
             );
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i + 1);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i + 1);
         }
         m_size--;
         return m_data + index;
     }
 
-    constexpr void resize(size_type count, const value_type& value)
-    {
+    constexpr void resize(
+        size_type count, const value_type& value
+    ) {
         if (count > capacity()) {
             reserve(count);
         }
         for (size_type i = m_size; i < count; i++) {
-            std::allocator_traits<allocator_type>::construct(m_allocator, m_data + i, value);
+            allocator_traits<allocator_type>::construct(m_allocator, m_data + i, value);
         }
         for (size_type i = count; i < m_size; i++) {
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
         }
         m_size = count;
     }
 
-    constexpr void clear() noexcept
-    {
+    constexpr void clear() noexcept {
         for (size_type i = 0; i < m_size; i++) {
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i);
         }
         m_data = m_memory;
         m_size = 0;
     }
 
-    iterator insert(const_iterator pos, const T& value)
-    {
+    iterator insert(
+        const_iterator pos, const T& value
+    ) {
         assert(pos >= begin() && pos <= end());
 
         if (pos == end()) {
@@ -312,22 +278,23 @@ public:
             reserve(capacity() > 0 ? capacity() * 2 : 1);
         }
         for (size_type i = m_size; i > index; i--) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - 1])
+            allocator_traits<allocator_type>::construct(
+                m_allocator, m_data + i, move_if_noexcept(m_data[i - 1])
             );
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - 1);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - 1);
         }
-        std::allocator_traits<allocator_type>::construct(m_allocator, m_data + index, value);
+        allocator_traits<allocator_type>::construct(m_allocator, m_data + index, value);
         m_size++;
         return m_data + index;
     }
 
-    constexpr iterator insert(const_iterator pos, T&& value)
-    {
+    constexpr iterator insert(
+        const_iterator pos, T&& value
+    ) {
         assert(pos >= begin() && pos <= end());
 
         if (pos == end()) {
-            push_back(std::move(value));
+            push_back(move(value));
             return end() - 1;
         }
 
@@ -336,20 +303,19 @@ public:
             reserve(capacity() > 0 ? capacity() * 2 : 1);
         }
         for (size_type i = m_size; i > index; i--) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - 1])
+            allocator_traits<allocator_type>::construct(
+                m_allocator, m_data + i, move_if_noexcept(m_data[i - 1])
             );
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - 1);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - 1);
         }
-        std::allocator_traits<allocator_type>::construct(
-          m_allocator, m_data + index, std::move(value)
-        );
+        allocator_traits<allocator_type>::construct(m_allocator, m_data + index, move(value));
         m_size++;
         return m_data + index;
     }
 
-    constexpr iterator insert(const_iterator pos, size_type count, const T& value)
-    {
+    constexpr iterator insert(
+        const_iterator pos, size_type count, const T& value
+    ) {
         assert(pos >= begin() && pos <= end());
 
         if (count == 0) {
@@ -358,46 +324,45 @@ public:
 
         size_type index = pos - begin();
         if (m_size + count > capacity()) {
-            reserve(std::max(capacity() > 0 ? capacity() * 2 : 1, m_size + count));
+            reserve(max(capacity() > 0 ? capacity() * 2 : 1, m_size + count));
         }
         for (size_type i = m_size + count - 1; i >= index + count; i--) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - count])
+            allocator_traits<allocator_type>::construct(
+                m_allocator, m_data + i, move_if_noexcept(m_data[i - count])
             );
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - count);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - count);
         }
         for (size_type i = 0; i < count; i++) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + index + i, value
-            );
+            allocator_traits<allocator_type>::construct(m_allocator, m_data + index + i, value);
         }
         m_size += count;
         return m_data + index;
     }
 
     template <class InputIt>
-    iterator insert(const_iterator pos, InputIt first, InputIt last)
-    {
+    iterator insert(
+        const_iterator pos, InputIt first, InputIt last
+    ) {
         assert(pos >= begin() && pos <= end());
 
-        size_type count = std::distance(first, last);
+        size_type count = distance(first, last);
         if (count == 0) {
             return const_cast<iterator>(pos);
         }
 
         size_type index = pos - begin();
         if (m_size + count > capacity()) {
-            reserve(std::max(capacity() > 0 ? capacity() * 2 : 1, m_size + count));
+            reserve(max(capacity() > 0 ? capacity() * 2 : 1, m_size + count));
         }
         for (size_type i = m_size + count - 1; i >= index + count; i--) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + i, std::move_if_noexcept(m_data[i - count])
+            allocator_traits<allocator_type>::construct(
+                m_allocator, m_data + i, move_if_noexcept(m_data[i - count])
             );
-            std::allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - count);
+            allocator_traits<allocator_type>::destroy(m_allocator, m_data + i - count);
         }
         for (size_type i = 0; i < count; i++) {
-            std::allocator_traits<allocator_type>::construct(
-              m_allocator, m_data + index + i, *std::next(first, i)
+            allocator_traits<allocator_type>::construct(
+                m_allocator, m_data + index + i, *next(first, i)
             );
         }
         m_size += count;
@@ -406,15 +371,14 @@ public:
 };
 
 template <class T, class Alloc>
-constexpr bool operator==(const std::vector<T, Alloc>& lhs, const std::vector<T, Alloc>& rhs)
-{
-    return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
+constexpr bool operator==(
+    const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs
+) {
+    return lhs.size() == rhs.size() && equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
-template <>
-class vector<bool>
-{
-    vector(...) = delete ("Please do not use std::vector<bool> because it sucks (read the standard "
+template <> class vector<bool> {
+    vector(...) = delete ("Please do not use vector<bool> because it sucks (read the standard "
                           "for more information)");
 };
 

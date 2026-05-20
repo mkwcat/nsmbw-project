@@ -1,0 +1,225 @@
+#pragma once
+
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
+#include <functional>
+#include <initializer_list>
+#include <memory>
+#include <utility>
+#include <vector>
+
+namespace std {
+
+template <
+    class Key, class T, class Compare = less<Key>, class Allocator = allocator<pair<const Key, T>>>
+class map {
+public:
+    // Type Aliases
+    // ^^^^^^
+
+    using key_type        = Key;
+    using mapped_type     = T;
+    using value_type      = pair<const key_type, T>;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+    using key_compare     = Compare;
+    using allocator_type  = Allocator;
+    using reference       = value_type&;
+    using const_reference = const value_type&;
+    using pointer         = allocator_traits<allocator_type>::pointer;
+    using const_pointer   = allocator_traits<allocator_type>::const_pointer;
+    using iterator        = value_type*;
+    using const_iterator  = const value_type*;
+
+private:
+    using internal_pair = pair<key_type, T>;
+
+private:
+    // Instance Variables
+    // ^^^^^^
+
+    vector<internal_pair, allocator_type> m_vector;
+    key_compare                           m_compare;
+
+public:
+    // Structors
+    // ^^^^^^
+
+    constexpr map() {}
+
+    explicit constexpr map(
+        const key_compare& comp, const allocator_type& alloc = allocator_type()
+    )
+        : m_vector(alloc)
+        , m_compare(comp) {}
+
+    constexpr explicit map(
+        const allocator_type& alloc
+    )
+        : m_vector(alloc) {}
+
+    template <class InputIt>
+    constexpr map(
+        InputIt first, InputIt last, const key_compare& comp = key_compare(),
+        const allocator_type& alloc = allocator_type()
+    )
+        : m_vector(alloc)
+        , m_compare(comp) {
+        m_vector.insert(m_vector.end(), first, last);
+        sort();
+    }
+
+    template <class InputIt>
+    constexpr map(
+        InputIt first, InputIt last, const allocator_type& alloc
+    )
+        : map(first, last, key_compare(), alloc) {}
+
+    constexpr map(const map& other) = default;
+
+    constexpr map(
+        const map& other, const allocator_type& alloc
+    )
+        : m_vector(alloc)
+        , m_compare(other.m_compare) {
+        m_vector.insert(m_vector.end(), other.m_vector.begin(), other.m_vector.end());
+    }
+
+    constexpr map(map&& other) = default;
+
+    constexpr map(
+        map&& other, const allocator_type& alloc
+    )
+        : m_vector(alloc)
+        , m_compare(other.m_compare) {
+        m_vector.insert(m_vector.end(), other.m_vector.begin(), other.m_vector.end());
+    }
+
+    constexpr map(
+        std::initializer_list<value_type> init, const Compare& comp = Compare(),
+        const Allocator& alloc = Allocator()
+    )
+        : m_vector(alloc)
+        , m_compare(comp) {
+        m_vector.insert(m_vector.end(), init.begin(), init.end());
+        sort();
+    }
+
+    constexpr map(
+        std::initializer_list<value_type> init, const Allocator& alloc
+    )
+        : map(init, Compare(), alloc) {}
+
+public:
+    // Instance Methods
+    // ^^^^^^
+
+    constexpr allocator_type get_allocator() const { return m_vector.get_allocator(); }
+
+    constexpr void clear() { m_vector.clear(); }
+
+    constexpr size_type size() const { return m_vector.size(); }
+
+    constexpr bool empty() const { return m_vector.empty(); }
+
+    constexpr iterator begin() { return m_vector.begin(); }
+
+    constexpr iterator end() { return m_vector.end(); }
+
+    constexpr const_iterator begin() const { return m_vector.begin(); }
+
+    constexpr const_iterator end() const { return m_vector.end(); }
+
+    constexpr const_iterator cbegin() const { return m_vector.cbegin(); }
+
+    constexpr const_iterator cend() const { return m_vector.cend(); }
+
+    constexpr const_iterator find(
+        const key_type& key
+    ) const {
+        return key_lower_bound(key);
+    }
+
+    constexpr iterator find(
+        const key_type& key
+    ) {
+        return const_cast<iterator>(equal_or_end(key_lower_bound(key), key));
+    }
+
+    constexpr mapped_type& at(
+        const key_type& key
+    ) {
+        return const_cast<mapped_type&>(as_const(*this).at(key));
+    }
+
+    constexpr const mapped_type& at(
+        const key_type& key
+    ) const {
+        const_iterator i = find(key);
+        assert(i != end());
+        return i->second;
+    }
+
+    constexpr mapped_type& operator[](
+        const key_type& key
+    ) {
+        return at(key);
+    }
+
+    constexpr const mapped_type& operator[](
+        const key_type& key
+    ) const {
+        return at(key);
+    }
+
+    constexpr pair<iterator, bool> insert(
+        const value_type& value
+    ) {
+        const_iterator i = key_lower_bound(value.first);
+        if (i != end() && !m_compare(value.first, i->first)) {
+            return pair<iterator, bool>(const_cast<iterator>(i), false);
+        }
+        return pair<iterator, bool>(reinterpret_cast<iterator>(m_vector.insert(i, reinterpret_cast<const internal_pair&>(value))), true);
+    }
+
+private:
+    // Private Instance Methods
+    // ^^^^^^
+
+    constexpr bool compare(
+        const internal_pair& l, const internal_pair& r
+    ) const {
+        return m_compare(l.first, r.first);
+    }
+
+    constexpr bool compare_key(
+        const internal_pair& l, const_reference r
+    ) const {
+        return m_compare(l.first, r);
+    }
+
+    constexpr bool compare_equal(
+        const internal_pair& l, const internal_pair& r
+    ) const {
+        return !m_compare(l.first, r.first) && !m_compare(r.first, l.first);
+    }
+
+    constexpr const_iterator equal_or_end(
+        const_iterator l, const key_type& key
+    ) const {
+        return compare_equal(*l, key) ? l : m_vector.end();
+    }
+
+    constexpr const_iterator key_lower_bound(
+        const key_type& key
+    ) const {
+        return reinterpret_cast<const_iterator>(
+            lower_bound(m_vector.begin(), m_vector.end(), key, &map::compare)
+        );
+    }
+
+    constexpr void sort() { sort(m_vector.begin(), m_vector.end(), &compare); }
+};
+
+} // namespace std

@@ -1,0 +1,40 @@
+#pragma once
+
+#include <cstddef>
+
+namespace std {
+
+template <class T> class initializer_list {
+public:
+    // Type Aliases
+    // ^^^^^^
+
+    using value_type      = T;
+    using reference       = const value_type&;
+    using const_reference = const value_type&;
+    using size_type       = size_t;
+    using iterator        = const value_type*;
+    using const_iterator  = const value_type*;
+
+private:
+    // Instance Variables
+    // ^^^^^^
+
+    const value_type* m_data;
+    size_t            m_size;
+
+public:
+    // Structors
+    // ^^^^^^
+
+    constexpr initializer_list() noexcept {}
+
+public:
+    constexpr size_type size() const noexcept { return m_size; }
+
+    constexpr const value_type* begin() const noexcept { return m_data; }
+
+    constexpr const value_type* end() const noexcept { return m_data + m_size; }
+};
+
+} // namespace std
