@@ -55,7 +55,7 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80779650 - 0x8077A750
   # d_CourseClear.cpp
 # NSMBW   d_bases.text:  0x8077A750 - 0x8077BB00
-  # d_CourseSelectMenu.cpp
+    d_CourseSelectMenu.cpp
 # NSMBW   d_bases.text:  0x8077BB00 - 0x8077CAE0
   # d_CourseTimeUp.cpp
 # NSMBW   d_bases.text:  0x8077CAE0 - 0x8077E590

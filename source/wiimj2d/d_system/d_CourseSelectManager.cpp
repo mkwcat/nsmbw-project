@@ -18,8 +18,7 @@
 dCourseSelectManager_c* dCourseSelectManager_c::m_instance;
 
 [[nsmbw(0x8092F020)]]
-dCourseSelectManager_c* dCourseSelectManager_c_classInit()
-{
+dCourseSelectManager_c* dCourseSelectManager_c_classInit() {
     return new dCourseSelectManager_c();
 }
 
@@ -31,8 +30,7 @@ dCourseSelectManager_c::dCourseSelectManager_c();
  * pre method for the execute operation.
  */
 [[nsmbw(0x8092F3D0)]]
-fBase_c::PACK_RESULT_e dCourseSelectManager_c::preExecute()
-{
+fBase_c::PACK_RESULT_e dCourseSelectManager_c::preExecute() {
     if (dBase_c::preExecute() == PACK_RESULT_e::NOT_READY) {
         return PACK_RESULT_e::NOT_READY;
     }
@@ -55,8 +53,7 @@ fBase_c::PACK_RESULT_e dCourseSelectManager_c::preExecute()
 }
 
 [[nsmbw(0x8092F770)]]
-void dCourseSelectManager_c::executeState_ContinueCheck()
-{
+void dCourseSelectManager_c::executeState_ContinueCheck() {
     for (int rest : daPyMng_c::mRest) {
         // Original function is flawed like in dGameCom::chkContinue()
         if (rest == 0) {
@@ -70,16 +67,15 @@ void dCourseSelectManager_c::executeState_ContinueCheck()
 }
 
 [[nsmbw(0x8092F830)]]
-void dCourseSelectManager_c::executeState_ContinueEndWait()
-{
+void dCourseSelectManager_c::executeState_ContinueEndWait() {
     if (mpContinue->mDoExit) {
-        mpContinue->mVisible = false;
-        mpContinue->mIsOpen = false;
+        mpContinue->mVisible    = false;
+        mpContinue->mIsOpen     = false;
         mpContinue->mIsGameOver = false;
 
         mpContinue->mLayout.ReverseAnimeStartSetup(0, false);
         for (int i = 0; i < PLAYER_COUNT; i++) {
-            int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
+            int player  = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
             int newRest = mpContinue->mRestNum[i];
             daPyMng_c::mRest[daPyMng_c::mPlayerType[player]] = newRest;
         }
@@ -251,8 +247,7 @@ UNDEF_8092fb68:;
 );
 
 [[nsmbw(0x8092FDF0)]]
-void dCourseSelectManager_c::executeState_StockItemSelectWait()
-{
+void dCourseSelectManager_c::executeState_StockItemSelectWait() {
     if (mpStockItem->m0x8DD != 0) {
         return;
     }
@@ -266,22 +261,45 @@ void dCourseSelectManager_c::executeState_StockItemSelectWait()
     mStateMgr.changeState(StateID_KeyWait);
 }
 
+[[nsmbw(0x8092FFF0)]]
+void dCourseSelectManager_c::initializeState_SaveWindowOpen();
+
+[[nsmbw(0x80930030)]]
+void dCourseSelectManager_c::executeState_SaveWindowOpen();
+
+[[nsmbw(0x80930060)]]
+void dCourseSelectManager_c::finalizeState_SaveWindowOpen();
+
+[[nsmbw(0x80930430)]]
+void dCourseSelectManager_c::initializeState_InterruptSaveWindowOpen() {
+    return dCourseSelectManager_c::initializeState_SaveWindowOpen();
+}
+
+[[nsmbw(0x80930480)]]
+void dCourseSelectManager_c::executeState_InterruptSaveWindowOpen() {
+    return dCourseSelectManager_c::executeState_SaveWindowOpen();
+}
+
+[[nsmbw(0x809304B0)]]
+void dCourseSelectManager_c::finalizeState_InterruptSaveWindowOpen() {
+    return dCourseSelectManager_c::finalizeState_SaveWindowOpen();
+}
+
 [[nsmbw(0x80930960)]]
-void dCourseSelectManager_c::initializeState_EasyPairingWait()
-{
+void dCourseSelectManager_c::initializeState_EasyPairingWait() {
     mpNumPyChg->setEasyPairingWait(true);
     mpEasyPairing->m0x279 = true;
 }
 
 [[nsmbw(0x80930A10)]]
-void dCourseSelectManager_c::finalizeState_EasyPairingWait()
-{
+void dCourseSelectManager_c::finalizeState_EasyPairingWait() {
     mpNumPyChg->setEasyPairingWait(false);
 }
 
 [[nsmbw(0x809311E0)]]
-PLAYER_MODE_e dCourseSelectManager_c::getPlayerPowerup(int playerIndex)
-{
+PLAYER_MODE_e dCourseSelectManager_c::getPlayerPowerup(
+    int playerIndex
+) {
     int plrType = static_cast<int>(daPyMng_c::mPlayerType[playerIndex]);
 
     if (plrType >= std::size(mpa2DPlayer) || mpa2DPlayer[plrType] == nullptr) {
