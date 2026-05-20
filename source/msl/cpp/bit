@@ -2,15 +2,15 @@
 
 #include <concepts>
 
-namespace std
-{
+namespace std {
 
 template <std::unsigned_integral T>
-constexpr T rotl(T x, int s) noexcept
-{
+constexpr T rotl(
+    T x, int s
+) noexcept {
     static_assert(
-      sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8,
-      "Unsupported type for rotl"
+        sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8,
+        "Unsupported type for rotl"
     );
 
     if constexpr (sizeof(T) == 1) {
@@ -25,11 +25,12 @@ constexpr T rotl(T x, int s) noexcept
 }
 
 template <std::unsigned_integral T>
-constexpr T rotr(T x, int s) noexcept
-{
+constexpr T rotr(
+    T x, int s
+) noexcept {
     static_assert(
-      sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8,
-      "Unsupported type for rotr"
+        sizeof(T) == 1 || sizeof(T) == 2 || sizeof(T) == 4 || sizeof(T) == 8,
+        "Unsupported type for rotr"
     );
 
     if constexpr (sizeof(T) == 1) {
@@ -44,54 +45,181 @@ constexpr T rotr(T x, int s) noexcept
 }
 
 template <std::unsigned_integral T>
-constexpr int popcount(T x) noexcept
-{
+constexpr int popcount(
+    T x
+) noexcept {
     return __builtin_popcountg(x);
 }
 
 template <std::unsigned_integral T>
-constexpr int countr_zero(T x)
-{
-    int count = 0;
-    while (!(x & 1)) {
-        ++count;
-        x >>= 1;
+constexpr int countr_zero(
+    T x
+) {
+#if 0
+    return __builtin_ctzg(x, static_cast<int>(sizeof(T) * 8));
+#else
+    int           count          = 0;
+    constexpr int bitsizeof_long = sizeof(long) * 8;
+    constexpr int bitsizeof_x    = sizeof(T) > sizeof(long) ? bitsizeof_long : sizeof(T) * 8;
+
+    if constexpr (sizeof(T) > sizeof(long)) {
+        count = countr_zero(static_cast<unsigned long>(x));
+        if (count < bitsizeof_long) {
+            return count;
+        }
+        x >>= bitsizeof_long;
+    }
+
+    long v = static_cast<long>(rotr(static_cast<unsigned long>(x), 1));
+    if constexpr (bitsizeof_x < bitsizeof_long) {
+        v |= 1l << (bitsizeof_x - 1);
+    }
+
+    while (v >= 0) {
+        count++;
+        v = static_cast<long>(rotr(static_cast<unsigned long>(v), 1));
+        if constexpr (bitsizeof_x >= bitsizeof_long) {
+            constexpr long mask = 1l << (bitsizeof_long - 2);
+            v |= mask;
+        }
+    }
+    return count;
+#endif
+}
+
+static_assert(countr_zero<__UINT8_TYPE__>(0b00000000) == 8);
+static_assert(countr_zero<__UINT8_TYPE__>(0b00000001) == 0);
+static_assert(countr_zero<__UINT8_TYPE__>(0b11111111) == 0);
+static_assert(countr_zero<__UINT8_TYPE__>(0b10000000) == 7);
+static_assert(countr_zero<__UINT16_TYPE__>(0) == 16);
+static_assert(countr_zero<__UINT32_TYPE__>(0) == 32);
+static_assert(countr_zero<__UINT64_TYPE__>(0) == 64);
+static_assert(countr_zero<__UINT64_TYPE__>(1ll << 54) == 54);
+static_assert(countr_zero<__UINT64_TYPE__>(1ll << 22) == 22);
+
+template <std::unsigned_integral T>
+constexpr int countr_one(
+    T x
+) {
+    int           count          = 0;
+    constexpr int bitsizeof_long = sizeof(long) * 8;
+
+    if constexpr (sizeof(T) > sizeof(long)) {
+        count = countr_one(static_cast<unsigned long>(x));
+        if (count < bitsizeof_long) {
+            return count;
+        }
+        x >>= bitsizeof_long;
+    }
+
+    constexpr unsigned long mask = ~(1l << (bitsizeof_long - 2));
+
+    for (long v = static_cast<long>(rotr(static_cast<unsigned long>(x), 1)); v < 0;
+         v      = static_cast<long>(rotr(static_cast<unsigned long>(v), 1) & mask)) {
+        count++;
     }
     return count;
 }
 
+static_assert(countr_one<__UINT8_TYPE__>(0b00000000) == 0);
+static_assert(countr_one<__UINT8_TYPE__>(0b00000001) == 1);
+static_assert(countr_one<__UINT8_TYPE__>(0b11111111) == 8);
+static_assert(countr_one<__UINT8_TYPE__>(0b10000000) == 0);
+static_assert(countr_one<__UINT16_TYPE__>(~0) == 16);
+static_assert(countr_one<__UINT32_TYPE__>(~0) == 32);
+static_assert(countr_one<__UINT64_TYPE__>(~0) == 64);
+static_assert(countr_one<__UINT64_TYPE__>(~(1ll << 54)) == 54);
+static_assert(countr_one<__UINT64_TYPE__>(~(1ll << 22)) == 22);
+
 template <std::unsigned_integral T>
-constexpr int countr_one(T x)
-{
-    int count = 0;
-    while (x & 1) {
-        ++count;
-        x >>= 1;
+constexpr int countl_zero(
+    T x
+) {
+#if 0
+    return __builtin_clzg(x, static_cast<int>(sizeof(T) * 8));
+#else
+    int           count          = 0;
+    constexpr int bitsizeof_long = sizeof(long) * 8;
+    constexpr int bitsizeof_x    = sizeof(T) > sizeof(long) ? bitsizeof_long : sizeof(T) * 8;
+
+    if constexpr (sizeof(T) > sizeof(long)) {
+        count = countl_zero(static_cast<unsigned long>(x >> bitsizeof_long));
+        if (count < bitsizeof_long) {
+            return count;
+        }
+    }
+
+    constexpr int shift_to_long = bitsizeof_long - bitsizeof_x;
+    long          v = static_cast<long>(rotl(static_cast<unsigned long>(x), shift_to_long));
+    if constexpr (bitsizeof_x < bitsizeof_long) {
+        constexpr long break_bit = 1l << (shift_to_long - 1);
+        v |= break_bit;
+    }
+
+    while (v >= 0) {
+        count++;
+        v <<= 1;
+        if constexpr (bitsizeof_x >= bitsizeof_long) {
+            v |= 1l;
+        }
+    }
+    return count;
+#endif
+}
+
+static_assert(countl_zero<__UINT8_TYPE__>(0b00000000) == 8);
+static_assert(countl_zero<__UINT8_TYPE__>(0b00000001) == 7);
+static_assert(countl_zero<__UINT8_TYPE__>(0b11111111) == 0);
+static_assert(countl_zero<__UINT8_TYPE__>(0b10000000) == 0);
+static_assert(countl_zero<__UINT16_TYPE__>(0) == 16);
+static_assert(countl_zero<__UINT32_TYPE__>(0) == 32);
+static_assert(countl_zero<__UINT64_TYPE__>(0) == 64);
+static_assert(countl_zero<__UINT64_TYPE__>(1ll << 54) == 63 - 54);
+static_assert(countl_zero<__UINT64_TYPE__>(1ll << 22) == 63 - 22);
+
+template <std::unsigned_integral T>
+constexpr int bit_width(
+    T x
+) noexcept {
+    return sizeof(T) * 8 - countl_zero(x);
+}
+
+template <std::unsigned_integral T>
+constexpr int countl_one(
+    T x
+) {
+    int           count          = 0;
+    constexpr int bitsizeof_long = sizeof(long) * 8;
+    constexpr int bitsizeof_x    = sizeof(T) > sizeof(long) ? bitsizeof_long : sizeof(T) * 8;
+    constexpr int shift_to_long  = bitsizeof_long - bitsizeof_x;
+
+    if constexpr (sizeof(T) > sizeof(long)) {
+        count = countl_one(static_cast<unsigned long>(x >> bitsizeof_long));
+        if (count < bitsizeof_long) {
+            return count;
+        }
+    }
+
+    for (long v = static_cast<long>(x) << shift_to_long; v < 0; v <<= 1) {
+        count++;
     }
     return count;
 }
 
-template <std::unsigned_integral T>
-constexpr int countl_zero(T x)
-{
-    return __builtin_clzg(x);
-}
-
-template <std::unsigned_integral T>
-constexpr int countl_one(T x)
-{
-    int count = 0;
-    T mask = T(1) << (sizeof(T) * 8 - 1);
-    while (x & mask) {
-        ++count;
-        mask >>= 1;
-    }
-    return count;
-}
+static_assert(countl_one<__UINT8_TYPE__>(0b00000000) == 0);
+static_assert(countl_one<__UINT8_TYPE__>(0b11100001) == 3);
+static_assert(countl_one<__UINT8_TYPE__>(0b11111111) == 8);
+static_assert(countl_one<__UINT8_TYPE__>(0b10000000) == 1);
+static_assert(countl_one<__UINT16_TYPE__>(~0) == 16);
+static_assert(countl_one<__UINT32_TYPE__>(~0) == 32);
+static_assert(countl_one<__UINT64_TYPE__>(~0) == 64);
+static_assert(countl_one<__UINT64_TYPE__>(~(1ll << 54)) == 63 - 54);
+static_assert(countl_one<__UINT64_TYPE__>(~(1ll << 22)) == 63 - 22);
 
 template <class To, class From>
-constexpr To bit_cast(const From& from) noexcept
-{
+constexpr To bit_cast(
+    const From& from
+) noexcept {
     return __builtin_bit_cast(To, from);
 }
 
