@@ -5,25 +5,21 @@
 #include "d_system/d_wm_lib.h"
 #include "d_system/d_wm_player_base.h"
 
-class daWmSubPlayer_c : public dWmPlayerBase_c
-{
+class daWmSubPlayer_c : public dWmPlayerBase_c {
 public:
     // Constants and Types
     // ^^^^^^
 
     /* @unofficial */
-    class NodeTrailBase_c
-    {
+    class NodeTrailBase_c {
         SIZE_ASSERT(0xC);
 
         /* 0x0 VTABLE 0x80985C3C */
 
     public:
         NodeTrailBase_c()
-          : mAllocCount(0)
-          , mpNodes(nullptr)
-        {
-        }
+            : mAllocCount(0)
+            , mpNodes(nullptr) {}
 
         /* VT+0x08 0x808EB060 */
         virtual ~NodeTrailBase_c();
@@ -52,24 +48,21 @@ public:
          */
         virtual void VT_0x18();
 
-        /* 0x4 */ u32 mAllocCount;
+        /* 0x4 */ u32     mAllocCount;
         /* 0x8 */ Node_s* mpNodes;
     };
 
     /* @unofficial */
-    class NodeTrail_c : public NodeTrailBase_c
-    {
+    class NodeTrail_c : public NodeTrailBase_c {
         SIZE_ASSERT(0x14);
 
         /* 0x00 VTABLE 0x80985C20 */
 
     public:
         NodeTrail_c()
-          : NodeTrailBase_c()
-          , mUsedCount(0)
-          , mFirstNode(0)
-        {
-        }
+            : NodeTrailBase_c()
+            , mUsedCount(0)
+            , mFirstNode(0) {}
 
         /* VT+0x8 0x808EB060 */
         virtual ~NodeTrail_c();
@@ -80,8 +73,7 @@ public:
         /* 0x808EF6D0 */
         Node_s* popFirst();
 
-        Node_s* peekFirst() const
-        {
+        Node_s* peekFirst() const {
             if (mUsedCount < 1) {
                 return nullptr;
             }
@@ -143,7 +135,7 @@ public:
     s32 getPlayerOrderTableIndex(int playerOrder);
 
     /* 0x808EEF00 */
-    bool isWrongDirection(dWmLib::MovementDir_e dir1, dWmLib::MovementDir_e dir2);
+    bool isWrongDirection(dWmLib::Dir_e dir1, dWmLib::Dir_e dir2);
 
     /* 0x808EEF70 */
     bool isSubPlayerStopPoint();
@@ -172,13 +164,13 @@ public:
     /* 0x1F4 */ int mFromNode;
     /* 0x1F8 */ int mToNode;
     FILL(0x1FC, 0x200);
-    /* 0x200 */ dWmLib::MovementDir_e mMoveDir;
+    /* 0x200 */ dWmLib::Dir_e mMoveDir;
     FILL(0x204, 0x208);
     /* 0x208 */ int mSubPlayerNo;
 
     FILL(0x20C, 0x214);
 
-    /* 0x214 */ NodeTrail_c mNodeTrail;
+    /* 0x214 */ NodeTrail_c             mNodeTrail;
     /* 0x228 */ NodeTrailBase_c::Node_s maNodes[8];
 
     FILL(0x268, 0x294);

@@ -31,8 +31,9 @@ dInfo_c::dInfo_c();
 [[nsmbw(0x800BB130)]]
 dInfo_c::~dInfo_c();
 
-dInfo_c::dInfo_c(dInfo_c* old)
-{
+dInfo_c::dInfo_c(
+    dInfo_c* old
+) {
     u8 dInfoOld[dInfo_c::ORIGINAL_SIZE];
     std::memcpy(dInfoOld, static_cast<void*>(old), dInfo_c::ORIGINAL_SIZE);
     operator delete(old);
@@ -42,8 +43,7 @@ dInfo_c::dInfo_c(dInfo_c* old)
 EXTERN_SYMBOL(0x80315EA0, "__vt__7dInfo_c");
 
 [[nsmbw(0x800BB180)]]
-void dInfo_c::PlayerStateInit()
-{
+void dInfo_c::PlayerStateInit() {
     for (s32 i = 0; i < PLAYER_COUNT; i++) {
         daPyMng_c::mPlayerType[i] = dMj2dGame_c::scDefaultPlayerTypes[i];
 
@@ -55,22 +55,25 @@ void dInfo_c::PlayerStateInit()
 void dInfo_c::CourseSelectInit();
 
 [[nsmbw(0x800BB330)]]
-void dInfo_c::addStockItem(int item)
-{
+void dInfo_c::addStockItem(
+    int item
+) {
     auto* save = dSaveMng_c::m_instance->getSaveGame(-1);
     save->setStockItem(item, save->getStockItem(item) + 1);
 }
 
 [[nsmbw(0x800BB380)]]
-void dInfo_c::subStockItem(int item)
-{
+void dInfo_c::subStockItem(
+    int item
+) {
     auto* save = dSaveMng_c::m_instance->getSaveGame(-1);
     save->setStockItem(item, save->getStockItem(item) - 1);
 }
 
 [[nsmbw(0x800BB3D0)]]
-u8 dInfo_c::getStockItem(int item) const
-{
+u8 dInfo_c::getStockItem(
+    int item
+) const {
     return dSaveMng_c::m_instance->getSaveGame(-1)->getStockItem(item);
 }
 
@@ -80,14 +83,14 @@ void dInfo_c::clsStockItem(int item);
 EXTERN_SYMBOL(0x800BB450, "initGame__7dInfo_cFv");
 
 [[nsmbw(0x800BB5B0)]]
-void dInfo_c::initMultiMode()
-{
+void dInfo_c::initMultiMode() {
     // Reset win counts
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        if (i < 4)
+        if (i < 4) {
             mCoinBattleWin[i] = 0;
-        else
+        } else {
             mExCoinBattleWin[i - 4] = 0;
+        }
     }
 
     // Reset clear states
@@ -100,12 +103,12 @@ void dInfo_c::initMultiMode()
 
     // Reset favorited slots
     for (int i = 0; i < 10; i++) {
-        mCoinFavorite[i].mWorld = 10;
-        mCoinFavorite[i].mLevel = 42;
+        mCoinFavorite[i].mWorld      = 10;
+        mCoinFavorite[i].mLevel      = 42;
         mCoinFavorite[i].mClearState = MultiClearState_e::NONE;
 
-        mFreeFavorite[i].mWorld = 10;
-        mFreeFavorite[i].mLevel = 42;
+        mFreeFavorite[i].mWorld      = 10;
+        mFreeFavorite[i].mLevel      = 42;
         mFreeFavorite[i].mClearState = MultiClearState_e::NONE;
     }
 }
@@ -118,41 +121,40 @@ void dInfo_c::startGame(const StartGameInfo_s& startGameInfo);
 EXTERN_SYMBOL(0x800BB8D0, "startStaffCredit__7dInfo_cFv");
 
 [[nsmbw(0x800BB940)]]
-void dInfo_c::initStage()
-{
-    m_startInfo.mCyuukan.mState = mCyuukan.mState;
-    m_startInfo.mCyuukan.mPlayerSetPos = mCyuukan.mPlayerSetPos;
-    m_startInfo.mCyuukan.m0x14 = mCyuukan.m0x14;
-    m_startInfo.mCyuukan.mWorld = mCyuukan.mWorld;
-    m_startInfo.mCyuukan.mStage = mCyuukan.mStage;
-    m_startInfo.mCyuukan.mCourse = mCyuukan.mCourse;
-    m_startInfo.mCyuukan.mGoto = mCyuukan.mGoto;
+void dInfo_c::initStage() {
+    m_startInfo.mCyuukan.mState             = mCyuukan.mState;
+    m_startInfo.mCyuukan.mPlayerSetPos      = mCyuukan.mPlayerSetPos;
+    m_startInfo.mCyuukan.m0x14              = mCyuukan.m0x14;
+    m_startInfo.mCyuukan.mWorld             = mCyuukan.mWorld;
+    m_startInfo.mCyuukan.mStage             = mCyuukan.mStage;
+    m_startInfo.mCyuukan.mCourse            = mCyuukan.mCourse;
+    m_startInfo.mCyuukan.mGoto              = mCyuukan.mGoto;
     m_startInfo.mCyuukan.mIsKinopioInChukan = mCyuukan.mIsKinopioInChukan;
     for (int i = 0; i < COLLECTION_COIN_COUNT; i++) {
         m_startInfo.mCyuukan.mCollectionCoin[i] = mCyuukan.mCollectionCoin[i];
     }
     m_startInfo.mCyuukan.m0x2C[0] = mCyuukan.m0x2C[0];
     m_startInfo.mCyuukan.m0x2C[1] = mCyuukan.m0x2C[1];
-    m_startInfo.mSwitchOn = mSwitchOn;
+    m_startInfo.mSwitchOn         = mSwitchOn;
 
     for (int ply = 0; ply < PLAYER_COUNT; ply++) {
-        PLAYER_TYPE_e type = daPyMng_c::mPlayerType[ply];
+        PLAYER_TYPE_e type             = daPyMng_c::mPlayerType[ply];
         m_startInfo.mPlayerIndex[type] = ply;
-        m_startInfo.mPlayerMode[type] = static_cast<PLAYER_MODE_e>(daPyMng_c::mPlayerMode[type]);
-        m_startInfo.mIsEntry[type] = daPyMng_c::mPlayerEntry[ply] != 0;
-        m_startInfo.mCoin[type] = daPyMng_c::mCoin[type];
-        m_startInfo.mRest[type] = daPyMng_c::mRest[type];
-        m_startInfo.mCreateItem[type] = daPyMng_c::mCreateItem[type];
+        m_startInfo.mPlayerMode[type]  = static_cast<PLAYER_MODE_e>(daPyMng_c::mPlayerMode[type]);
+        m_startInfo.mIsEntry[type]     = daPyMng_c::mPlayerEntry[ply] != 0;
+        m_startInfo.mCoin[type]        = daPyMng_c::mCoin[type];
+        m_startInfo.mRest[type]        = daPyMng_c::mRest[type];
+        m_startInfo.mCreateItem[type]  = daPyMng_c::mCreateItem[type];
     }
 
     m_startInfo.mScore = daPyMng_c::mScore;
 
     if (m_startGameInfo.stage1.stage != STAGE_e::STAFFROLL) {
-        m0x060 = 0;
+        mLastClearStageType = 0;
     }
-    m_zoromeTime = 0;
-    m0x068 = 0;
-    m0x06C = 0;
+    m_zoromeTime           = 0;
+    m_fireworksKind        = 0;
+    m_isKinopioInChukan    = false;
 
     dScStage_c::m_goalType = 0;
 

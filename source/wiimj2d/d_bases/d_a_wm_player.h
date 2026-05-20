@@ -8,16 +8,14 @@
 #include "d_system/d_wm_player_base.h"
 #include "machine/m_vec.h"
 
-class daWmPlayer_c_0x29C
-{
+class daWmPlayer_c_0x29C {
 public:
     u32 m_0x0;
 
     virtual ~daWmPlayer_c_0x29C();
 };
 
-class daWmPlayer_c : public dWmPlayerBase_c
-{
+class daWmPlayer_c : public dWmPlayerBase_c {
     SIZE_ASSERT(0x30C);
 
     /* 0x060 VTABLE 0x809893F8 */
@@ -144,7 +142,7 @@ public:
     bool isRouteClosedByGate2(int node);
 
     /* 0x80907A60 */
-    dWmLib::MovementDir_e getMovementDirection();
+    dWmLib::Dir_e getMovementDirection();
 
     /* 0x809087A0 */
     bool UNDEF_809087A0();
@@ -209,7 +207,7 @@ public:
 
     FILL(0x290, 0x298);
 
-    /* 0x298 */ float m0x298;
+    /* 0x298 */ float               m0x298;
     /* 0x29C */ daWmPlayer_c_0x29C* mp0x29C;
 
     FILL(0x2A0, 0x2E0);
@@ -226,7 +224,7 @@ public:
 
     FILL(0x304, 0x30C);
 
-    /* 0x8042A480 */ static daWmPlayer_c* ms_instance;
+    /* 0x8042A480 */ static daWmPlayer_c*              ms_instance;
 
     /* 0x809A0DB8 */ static dInfo_c::PlyConnectStage_e ms_plyConnectStage[SUBPLAYER_COUNT];
 };

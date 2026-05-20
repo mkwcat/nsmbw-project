@@ -97,6 +97,10 @@ public:
             return stage >= STAGE_e::STAGE_1 && stage <= STAGE_e::STAGE_19;
         }
 
+        constexpr bool isEnemy() const {
+            return stage >= STAGE_e::ENEMY && stage <= STAGE_e::ENEMY_3;
+        }
+
         constexpr u8 getWorldSceneNo() const {
             if (world != WORLD_e::WORLD_3) {
                 return 0u;
@@ -284,17 +288,20 @@ public:
 
     /* 0x008 */ dCyuukan_c mCyuukan;
 
-    /* 0x03C */ WORLD_e    mWorld;
+    /* 0x03C */ int        mWmMapNo;
     /* 0x040 */ int        mWmSceneNo;
     /* 0x044 */ int        mWmNode;
-    /* 0x048 */ s32        m0x048;
+    /* 0x048 */ int        mWmCourseNode;
+    /* 0x04C */ int        m0x04C; // @unused
+    /* 0x050 */ int        mCurrentWorldNo;
+    /* 0x054 */ int        mCurrentStageNo;
+    /* 0x058 */ int        mEnemyClearStageNo;
+    /* 0x05C */ int        mStartKinokoKind;
+    /* 0x060 */ int        mLastClearStageType;
 
-    FILL(0x04C, 0x060);
-
-    /* 0x060 */ s32 m0x060;
-    /* 0x064 */ int m_zoromeTime;
-    /* 0x068 */ s32 m0x068;
-    /* 0x06C */ u8  m0x06C;
+    /* 0x064 */ int        m_zoromeTime;
+    /* 0x068 */ int        m_fireworksKind;
+    /* 0x06C */ bool       m_isKinopioInChukan;
 
     FILL(0x06D, 0x380);
 

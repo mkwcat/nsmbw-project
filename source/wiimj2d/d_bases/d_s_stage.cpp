@@ -152,10 +152,10 @@ void dScStage_c::exitRestore() {
     extern u8 UNDEF_8042a458, UNDEF_8042a459;
     extern u8 UNDEF_8042a460, UNDEF_8042a461;
 
-    UNDEF_8042a458 = UNDEF_8042a459;
-    UNDEF_8042a460 = UNDEF_8042a461;
+    UNDEF_8042a458            = UNDEF_8042a459;
+    UNDEF_8042a460            = UNDEF_8042a461;
 
-    info->m0x06C   = 0;
+    info->m_isKinopioInChukan = 0;
 }
 
 [[nsmbw(0x809255B0)]]

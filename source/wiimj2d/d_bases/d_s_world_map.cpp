@@ -86,11 +86,13 @@ bool dScWMap_c::createLayoutPhase() {
 [[nsmbw(0x809271C0)]]
 bool dScWMap_c::createActorsPhase() {
     dWmActor_c::construct(dProf::WM_MAP, this, 0, nullptr, nullptr);
+
+    daWmMap_c* wmMap = daWmMap_c::m_instance;
+    wmMap->setNodeRndizer();
+
     dWmActor_c::construct(dProf::WM_CS_SEQ_MNG, this, 0, nullptr, nullptr);
     dWmActor_c::construct(dProf::WM_PLAYER, this, 0, nullptr, nullptr);
     dWmActor_c::construct(dProf::WORLD_CAMERA, this, 0, nullptr, nullptr);
-
-    daWmMap_c* wmMap = daWmMap_c::m_instance;
 
     wmMap->createMapActors();
     wmMap->createEnemyActors();

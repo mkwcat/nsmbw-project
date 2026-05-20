@@ -2,6 +2,7 @@
 
 #include "d_system/d_game_key_core.h"
 #include "d_system/d_mj2d_game.h"
+#include "framework/f_profile.h"
 #include "machine/m_3d_bmdl.h"
 #include "machine/m_vec.h"
 
@@ -11,66 +12,64 @@ class fBase_c;
 class dWmMapModel_c;
 class dCsvData_c;
 
-namespace dWmLib
-{
+namespace dWmLib {
 
 /* @unofficial */
-enum class MovementDir_e {
-    UP = 0,
-    DOWN = 1,
+enum class Dir_e {
+    UP    = 0,
+    DOWN  = 1,
     SOUTH = 2,
     NORTH = 3,
-    EAST = 4,
-    WEST = 5,
+    WEST  = 4,
+    EAST  = 5,
+    COUNT = 6,
 };
+
+constexpr int DIR_COUNT = static_cast<int>(Dir_e::COUNT);
 
 /* @unofficial */
 enum class StageType_e {
-    NORMAL = 0,
-    GHOST = 1,
-    TOWER = 2,
-    CASTLE = 3,
-    TOAD = 4,
-    ENEMY = 5,
-    WARP = 6,
+    NORMAL   = 0,
+    GHOST    = 1,
+    TOWER    = 2,
+    CASTLE   = 3,
+    TOAD     = 4,
+    ENEMY    = 5,
+    WARP     = 6,
     STAGE_37 = 7, // @unused
     DOOMSHIP = 8,
-    HOME = 9,
-    PEACH = 10,
-    INVALID = 11,
+    HOME     = 9,
+    PEACH    = 10,
+    INVALID  = 11,
 };
 
 /* @unofficial */
 enum class PointType_e {
     INTERSECTION = 0, // F...
-    PATH = 1, // K...
-    START_NODE = 2, // W.S.
-    STAGE = 3, // W...
-    OTHER = 4,
+    PATH         = 1, // K...
+    START_NODE   = 2, // W.S.
+    STAGE        = 3, // W...
+    OTHER        = 4,
 };
 
 /* @unofficial */
-enum class RouteType_e {
-};
+enum class RouteType_e {};
+
+enum class SttsOpen_e {};
 
 /* @unofficial */
-enum class OpenStatus_e {
-};
+enum class ClearStatus_e {};
 
 /* @unofficial */
-enum class ClearStatus_e {
-};
+enum class PlayResultStatus_e {};
 
 /* @unofficial */
-enum class PlayResultStatus_e {
-};
+enum class StartPointType_e {};
 
-/* @unofficial */
-enum class StartPointType_e {
-};
-
-using WorldNo = int;
-using CourseNo = int;
+using WorldNo                      = int;
+using CourseNo                     = int;
+using PointNo                      = int;
+using DirNo                        = int;
 using StartPointKinokoHouseKindNum = u8;
 
 /* 0x800F9380 */
@@ -102,6 +101,9 @@ bool IsCourseTypeStageFromCourseNo(CourseNo);
 
 /* 0x800F9A80 */
 PointType_e GetPointTypeFromPointName(const char*);
+
+/* +++ */
+int GetNodeNoFromPointName(const char*);
 
 /* 0x800F9B00 */
 dWmActor_c* __searchMapObjFromName(u16, int);
@@ -153,13 +155,13 @@ bool CheckOnCenterLineY(const mVec3_c&);
 s32 UNDEF_0x800FA360(...);
 
 /* 0x800FA440 */
-OpenStatus_e GetOpenStatus(WorldNo, CourseNo);
+SttsOpen_e GetOpenStatus(WorldNo, CourseNo);
 
 /* 0x800FA460 */
-OpenStatus_e GetOpenStatusCore(WorldNo, CourseNo, const dCsvData_c&);
+SttsOpen_e GetOpenStatusCore(WorldNo, CourseNo, const dCsvData_c&);
 
 /* 0x800FA6F0 */
-OpenStatus_e UNDEF_0x800FA6F0(OpenStatus_e, int);
+SttsOpen_e OpenStatOverWrite(SttsOpen_e, SttsOpen_e);
 
 /* 0x800FA740 */
 s32 UNDEF_0x800FA740(...);
@@ -182,8 +184,8 @@ PlayResultStatus_e GetCurrentPlayResultStatus();
 /* 0x800FAE20 */
 bool IsCourseOpened(WorldNo, CourseNo);
 
-/* 0x800FAE50 @unofficial */
-bool CheckCourseOpenedResult(int);
+/* 0x800FAE50 */
+bool IsCourseOpened(SttsOpen_e);
 
 /* 0x800FAE70 */
 bool IsCourseOmoteClear(WorldNo, CourseNo);
@@ -236,7 +238,7 @@ void clearZoromeTime();
 /* 0x800FB460 */
 StartPointKinokoHouseKindNum getStartPointKinokoHouseKindNum();
 
-/* 0x800FB490 @renamed */
+/* 0x800FB490 */
 void setStartPointKinokoHouseKindNum(StartPointKinokoHouseKindNum);
 
 /* 0x800FB4D0 */
@@ -306,10 +308,10 @@ int getEnemyRevivalCount(WorldNo world, int enemy);
 void setEnemyRevivalCount(WorldNo world, int enemy, int count);
 
 /* 0x800FC300 */
-MovementDir_e getPointDir(const mVec3_c&, const mVec3_c&);
+Dir_e getPointDir(const mVec3_c&, const mVec3_c&);
 
 /* 0x800FC3E0 @unofficial */
-mVec3_c getDirVector(MovementDir_e direction);
+mVec3_c getDirVector(Dir_e direction);
 
 /* 0x800FC480 */
 bool isSpecialWorld();
@@ -317,14 +319,14 @@ bool isSpecialWorld();
 /* 0x800FC4A0 */
 int getMaxCollectionCoinNum(WorldNo world);
 
-/* 0x800FC510 @unofficial */
-int getRestCollectionCoinNum(WorldNo world);
+/* 0x800FC510 */
+int isCollectionCoinPerfect(WorldNo world);
 
 /* 0x800FC580 */
 bool isSpecialWorldCourseOpen(WorldNo world);
 
 /* 0x800FC590 */
-void UNDEF_0x800FC590(float, mVec3_c*, const mVec3_c&, MovementDir_e);
+void UNDEF_0x800FC590(float, mVec3_c*, const mVec3_c&, Dir_e);
 
 /* 0x800FC600 */
 bool getModelNodePos(const m3d::bmdl_c*, const char*);
@@ -346,7 +348,7 @@ bool IsBubbleWorld();
 
 /* 0x800FC960 @unofficial */
 PLAYER_MODE_e GetPlayerModeForStockItem(
-  STOCK_ITEM_e item, PLAYER_MODE_e currentMode, PLAYER_CREATE_ITEM_e& outCreateItem
+    STOCK_ITEM_e item, PLAYER_MODE_e currentMode, PLAYER_CREATE_ITEM_e& outCreateItem
 );
 
 /* 0x800FCA50 @unofficial */
@@ -365,7 +367,7 @@ bool IsStartKinopioHelpDemo();
 void InitKinopioCourse();
 
 /* 0x800FCB30 @unofficial */
-bool IsRescueCourseCleared(WorldNo world);
+bool IsKinopioCourseCleared(WorldNo world);
 
 /* 0x800FCB60 */
 bool IsKinopioHelpStart();
@@ -411,14 +413,14 @@ void RestoreKinopioHelpGameInfo();
 
 /* 0x800FD230 @unofficial */
 bool getWorldStageFromCourseNum(
-  WorldNo world, CourseNo course, WORLD_e& outWorld, STAGE_e& outStage
+    WorldNo world, CourseNo course, WORLD_e& outWorld, STAGE_e& outStage
 );
 
 /* 0x800FD240 */
 int getSpecialWorldMessageId(int);
 
 /* 0x800FD290 */
-void getWorldBossProfID(int);
+fProfName getWorldBossProfID(WorldNo);
 
 /* 0x800FD300 */
 void savePlayerPosInfo();

@@ -2,10 +2,10 @@
 // NSMBW .text: 0x800F9380 - 0x800FD6A0
 
 #include "d_wm_lib.h"
+
 #include "d_system/d_game_key.h"
 
-namespace dWmLib
-{
+namespace dWmLib {
 
 [[nsmbw_data(0x8031D6B4)]]
 float sc_0x8031D6B4;
@@ -39,6 +39,11 @@ bool IsCourseTypeStageFromCourseNo(CourseNo);
 
 [[nsmbw(0x800F9A80)]]
 PointType_e GetPointTypeFromPointName(const char*);
+
+int GetNodeNoFromPointName(
+    const char*
+) {
+}
 
 [[nsmbw(0x800F9B00)]]
 dWmActor_c* __searchMapObjFromName(u16, int);
@@ -90,13 +95,13 @@ bool CheckOnCenterLineY(const mVec3_c&);
 s32 UNDEF_0x800FA360(...);
 
 [[nsmbw(0x800FA440)]]
-OpenStatus_e GetOpenStatus(WorldNo, CourseNo);
+SttsOpen_e GetOpenStatus(WorldNo, CourseNo);
 
 [[nsmbw(0x800FA460)]]
-OpenStatus_e GetOpenStatusCore(WorldNo, CourseNo, const dCsvData_c&);
+SttsOpen_e GetOpenStatusCore(WorldNo, CourseNo, const dCsvData_c&);
 
 [[nsmbw(0x800FA6F0)]]
-OpenStatus_e UNDEF_0x800FA6F0(OpenStatus_e, int);
+SttsOpen_e OpenStatOverWrite(SttsOpen_e, SttsOpen_e);
 
 [[nsmbw(0x800FA740)]]
 s32 UNDEF_0x800FA740(...);
@@ -120,7 +125,7 @@ PlayResultStatus_e GetCurrentPlayResultStatus();
 bool IsCourseOpened(WorldNo, CourseNo);
 
 [[nsmbw(0x800FAE50)]]
-bool CheckCourseOpenedResult(int);
+bool IsCourseOpened(SttsOpen_e);
 
 [[nsmbw(0x800FAE70)]]
 bool IsCourseOmoteClear(WorldNo, CourseNo);
@@ -243,10 +248,10 @@ int getEnemyRevivalCount(WorldNo world, int enemy);
 void setEnemyRevivalCount(WorldNo world, int enemy, int count);
 
 [[nsmbw(0x800FC300)]]
-MovementDir_e getPointDir(const mVec3_c&, const mVec3_c&);
+Dir_e getPointDir(const mVec3_c&, const mVec3_c&);
 
 [[nsmbw(0x800FC3E0)]]
-mVec3_c getDirVector(MovementDir_e direction);
+mVec3_c getDirVector(Dir_e direction);
 
 [[nsmbw(0x800FC480)]]
 bool isSpecialWorld();
@@ -261,7 +266,7 @@ int getRestCollectionCoinNum(WorldNo world);
 bool isSpecialWorldCourseOpen(WorldNo world);
 
 [[nsmbw(0x800FC590)]]
-void UNDEF_0x800FC590(float, mVec3_c*, const mVec3_c&, MovementDir_e);
+void UNDEF_0x800FC590(float, mVec3_c*, const mVec3_c&, Dir_e);
 
 [[nsmbw(0x800FC600)]]
 bool getModelNodePos(const m3d::bmdl_c*, const char*);
@@ -283,7 +288,7 @@ bool IsBubbleWorld();
 
 [[nsmbw(0x800FC960)]]
 PLAYER_MODE_e GetPlayerModeForStockItem(
-  STOCK_ITEM_e item, PLAYER_MODE_e currentMode, PLAYER_CREATE_ITEM_e& outCreateItem
+    STOCK_ITEM_e item, PLAYER_MODE_e currentMode, PLAYER_CREATE_ITEM_e& outCreateItem
 );
 
 [[nsmbw(0x800FCA50)]]
@@ -348,14 +353,14 @@ void RestoreKinopioHelpGameInfo();
 
 [[nsmbw(0x800FD230)]]
 bool getWorldStageFromCourseNum(
-  WorldNo world, CourseNo course, WORLD_e& outWorld, STAGE_e& outStage
+    WorldNo world, CourseNo course, WORLD_e& outWorld, STAGE_e& outStage
 );
 
 [[nsmbw(0x800FD240)]]
 int getSpecialWorldMessageId(int);
 
 [[nsmbw(0x800FD290)]]
-void getWorldBossProfID(int);
+fProfName getWorldBossProfID(WorldNo);
 
 [[nsmbw(0x800FD300)]]
 void savePlayerPosInfo();
@@ -367,8 +372,9 @@ void IsAllComplete();
 void IsKoopaJrEvent(int, int);
 
 [[nsmbw(0x800FD4A0)]]
-dGameKeyCore_c::Type_e isYokoCon(int controllerNo)
-{
+dGameKeyCore_c::Type_e isYokoCon(
+    int controllerNo
+) {
     // Originally, this function returned true
     // Only if the controller type was sideways Wii Remote
     // Since we need to add Classic + GC support for the only caller of isYokoCon

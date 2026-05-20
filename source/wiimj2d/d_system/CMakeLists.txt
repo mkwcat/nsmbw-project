@@ -429,7 +429,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800F2820 - 0x800F2C00
     d_wm_actor.cpp
 # NSMBW          .text:  0x800F2C00 - 0x800F3570
-  # d_wm_connect.cpp
+    d_wm_connect.cpp
 # NSMBW          .text:  0x800F3570 - 0x800F60E0
     d_wm_csvdata.cpp
 # NSMBW          .text:  0x800F60E0 - 0x800F7050

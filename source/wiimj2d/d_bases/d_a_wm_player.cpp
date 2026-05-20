@@ -24,26 +24,24 @@ dInfo_c::PlyConnectStage_e daWmPlayer_c::ms_plyConnectStage[SUBPLAYER_COUNT];
 
 [[nsmbw(0x809027C0)]]
 daWmPlayer_c::daWmPlayer_c()
-  : dWmPlayerBase_c()
-  , mModelManager(dPyMdlMng_c::ModelType_e::MODEL_NONE)
-  , m0x1F0(mVec3_c::Zero)
-  , m0x23C(6)
-  , m0x240(6)
-  , m0x25A(0)
-  , m0x25B(0)
-  , m0x27C(0)
-  , m0x298(1.0)
-  , m0x2E0(2)
-  , m0x2FC(0)
-{
+    : dWmPlayerBase_c()
+    , mModelManager(dPyMdlMng_c::ModelType_e::MODEL_NONE)
+    , m0x1F0(mVec3_c::Zero)
+    , m0x23C(6)
+    , m0x240(6)
+    , m0x25A(0)
+    , m0x25B(0)
+    , m0x27C(0)
+    , m0x298(1.0)
+    , m0x2E0(2)
+    , m0x2FC(0) {
     ms_instance = this;
-    mp0x29C = nullptr;
+    mp0x29C     = nullptr;
 }
 
 [[nsmbw(0x80902890)]]
-daWmPlayer_c::~daWmPlayer_c()
-{
-    ms_instance = nullptr;
+daWmPlayer_c::~daWmPlayer_c() {
+    ms_instance          = nullptr;
 
     // This object doesn't belong to this class, so null it so it doesn't get deleted
     mModelManager.mModel = nullptr;
@@ -58,8 +56,7 @@ daWmPlayer_c::~daWmPlayer_c()
  * do method for the create operation.
  */
 [[nsmbw(0x80902960)]]
-fBase_c::PACK_RESULT_e daWmPlayer_c::create()
-{
+fBase_c::PACK_RESULT_e daWmPlayer_c::create() {
     mAngle.y = 0;
 
     mPad::setCurrentChannel(mPad::CH_e::CHAN_0);
@@ -109,19 +106,18 @@ fBase_c::PACK_RESULT_e daWmPlayer_c::draw();
 fBase_c::PACK_RESULT_e daWmPlayer_c::doDelete();
 
 [[nsmbw(0x80902BD0)]]
-void daWmPlayer_c::createSubPlayers()
-{
-    mPrevPlayer = nullptr;
+void daWmPlayer_c::createSubPlayers() {
+    mPrevPlayer                 = nullptr;
     dWmPlayerBase_c* prevPlayer = this;
 
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
         daWmSubPlayer_c* player =
-          reinterpret_cast<daWmSubPlayer_c*>(dWmActor_c::construct(dProf::WM_SUBPLAYER, this, i));
+            reinterpret_cast<daWmSubPlayer_c*>(dWmActor_c::construct(dProf::WM_SUBPLAYER, this, i));
 
         prevPlayer->mNextPlayer = player;
-        player->mPrevPlayer = prevPlayer;
+        player->mPrevPlayer     = prevPlayer;
 
-        prevPlayer = player;
+        prevPlayer              = player;
 
         // Set player 1's model if this is player 1's character
         PLAYER_TYPE_e character = dMj2dGame_c::scDefaultPlayerTypes[i % PLAYER_COUNT];
@@ -134,8 +130,7 @@ void daWmPlayer_c::createSubPlayers()
 }
 
 [[nsmbw(0x80902CA0)]]
-void daWmPlayer_c::updateActivePlayers()
-{
+void daWmPlayer_c::updateActivePlayers() {
     bool singleEntry = dWmLib::IsSingleEntry();
 
     for (u32 i = 0; i < PLAYER_COUNT; i++) {
@@ -144,15 +139,15 @@ void daWmPlayer_c::updateActivePlayers()
     }
 
     daPyMng_c::mPlayerEntry[0] = 1;
-    dInfo_c* info = dInfo_c::m_instance;
+    dInfo_c* info              = dInfo_c::m_instance;
 
     for (u32 i = 0; i < PLAYER_COUNT; i++) {
         bool active = info->getPlyConnectStage(i) == dInfo_c::PlyConnectStage_e::ENTER;
         if (active) {
-            std::size_t index = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
+            std::size_t index          = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
             daPyMng_c::mPlayerEntry[i] = 1;
             setPlayerActive(
-              index, i != 0, ms_plyConnectStage[index] != dInfo_c::PlyConnectStage_e::ENTER
+                index, i != 0, ms_plyConnectStage[index] != dInfo_c::PlyConnectStage_e::ENTER
             );
         }
     }
@@ -168,11 +163,11 @@ void daWmPlayer_c::updateActivePlayers()
 
     for (u32 i = 0; i < PLAYER_COUNT; i++) {
         ms_plyConnectStage[static_cast<std::size_t>(daPyMng_c::mPlayerType[i])] =
-          info->getPlyConnectStage(i);
+            info->getPlyConnectStage(i);
     }
 
     for (daWmSubPlayer_c* player = static_cast<daWmSubPlayer_c*>(mNextPlayer); player != nullptr;
-         player = static_cast<daWmSubPlayer_c*>(player->mNextPlayer)) {
+         player                  = static_cast<daWmSubPlayer_c*>(player->mNextPlayer)) {
         player->mp0x294 = &dWmLib::sc_0x8031D6B4;
     }
 }
@@ -181,8 +176,8 @@ void daWmPlayer_c::updateActivePlayers()
 void daWmPlayer_c::setPlayerActive(u32 id, bool param2, bool param3);
 
 [[nsmbw(0x80902ED0)]]
-void daWmPlayer_c::
-  UNDEF_80902ED0(PLAYER_TYPE_e param_1, int param_2, PLAYER_CREATE_ITEM_e param_3) ASM_METHOD(
+void daWmPlayer_c::UNDEF_80902ED0(PLAYER_TYPE_e param_1, int param_2, PLAYER_CREATE_ITEM_e param_3)
+    ASM_METHOD(
     // clang-format off
 /* 80902ED0 9421FFE0 */  stwu     r1, -32(r1);
 /* 80902ED4 7C0802A6 */  mflr     r0;
@@ -250,27 +245,25 @@ UNDEF_80902f78:;
   );
 
 [[nsmbw(0x80902FA0)]]
-void daWmPlayer_c::setSubPlayerPower()
-{
+void daWmPlayer_c::setSubPlayerPower() {
     dInfo_c* info = dInfo_c::m_instance;
 
     for (u32 i = 0; i < PLAYER_COUNT; i++) {
         dInfo_c::PlyConnectStage_e flag = info->getPlyConnectStage(i);
         if (flag == dInfo_c::PlyConnectStage_e::ENTER) {
             PLAYER_TYPE_e plrType = daPyMng_c::mPlayerType[i];
-            int subPowerup =
-              static_cast<int>(dCourseSelectManager_c::m_instance->getPlayerPowerup(i));
+            int           subPowerup =
+                static_cast<int>(dCourseSelectManager_c::m_instance->getPlayerPowerup(i));
             UNDEF_80902ED0(
-              plrType, subPowerup,
-              daPyMng_c::mCreateItem[plrType] & PLAYER_CREATE_ITEM_e::STAR_POWER
+                plrType, subPowerup,
+                daPyMng_c::mCreateItem[plrType] & PLAYER_CREATE_ITEM_e::STAR_POWER
             );
         }
     }
 }
 
 [[nsmbw(0x80904120)]]
-u32 daWmPlayer_c::UNDEF_80904120()
-{
+u32 daWmPlayer_c::UNDEF_80904120() {
     if (!UNDEF_809087A0()) {
         return 0;
     }
@@ -278,14 +271,14 @@ u32 daWmPlayer_c::UNDEF_80904120()
     if (dCsSeqMng_c::ms_instance->UNDEF_80915630() == 0 &&
         !dCsSeqMng_c::ms_instance->UNDEF_80915600()) {
         dGameKeyCore_c::Type_e contType = dWmLib::isYokoCon(0);
-        bool openWorldView;
+        bool                   openWorldView;
         switch (contType) {
         case dGameKeyCore_c::Type_e::FREESTYLE:
             openWorldView = mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_FS_C);
             break;
         case dGameKeyCore_c::Type_e::CLASSIC:
             openWorldView =
-              mPad::g_currentCore->getClassicController()->mTrig & EGG::cCLASSIC_BUTTON_Y;
+                mPad::g_currentCore->getClassicController()->mTrig & EGG::cCLASSIC_BUTTON_Y;
             break;
         case dGameKeyCore_c::Type_e::DOLPHIN:
             openWorldView = mPad::g_currentCore->getGCController()->mTrig & EGG::cDOLPHIN_BUTTON_Y;
@@ -303,7 +296,7 @@ u32 daWmPlayer_c::UNDEF_80904120()
             daWmKinoBalloon_c::UNDEF_808D8720();
             // SMC_DEMO_VIEW_WORLD
             return dCsSeqMng_c::ms_instance->addScriptToQueue(
-              0x1E, this, dWCamera_c::m_instance, 0x80
+                0x1E, this, dWCamera_c::m_instance, 0x80
             );
         }
         // Omitting some unused dWmLib::isYokoCon calls here...
@@ -334,14 +327,14 @@ u32 daWmPlayer_c::UNDEF_80904120()
     }
 
     u32 uVar6 = m0x288;
-    m0x28C = 4;
-    m0x288 = 4;
+    m0x28C    = 4;
+    m0x288    = 4;
     u32 uVar5 = UNDEF_80908DA0();
     u32 uVar3 = UNDEF_80904370(uVar5);
     if ((m0x259 & 0x10) == 0) {
         if (m0x288 != 4) {
             m0x300 = 0;
-            uVar3 = UNDEF_80904810();
+            uVar3  = UNDEF_80904810();
         }
     } else {
         uVar3 = UNDEF_80904440();
@@ -364,8 +357,9 @@ u32 daWmPlayer_c::UNDEF_80904810();
 EXTERN_REPL(0x80907D10, bool daWmPlayer_c::isRouteClosedByGate2(int node));
 
 [[nsmbw(0x80907D10)]]
-bool daWmPlayer_c::isRouteClosedByGate(int node)
-{
+bool daWmPlayer_c::isRouteClosedByGate(
+    int node
+) {
     if (fFeat::all_paths_available) {
         return false;
     }
@@ -373,7 +367,7 @@ bool daWmPlayer_c::isRouteClosedByGate(int node)
 }
 
 [[nsmbw(0x80907A60)]]
-dWmLib::MovementDir_e daWmPlayer_c::getMovementDirection();
+dWmLib::Dir_e daWmPlayer_c::getMovementDirection();
 
 [[nsmbw(0x809087A0)]]
 bool daWmPlayer_c::UNDEF_809087A0();
@@ -386,8 +380,7 @@ u32 daWmPlayer_c::UNDEF_80908DA0();
 void daWmPlayer_c::VT_0x60();
 
 [[nsmbw(0x809093D0)]]
-void daWmPlayer_c::initActiveCharaFlags()
-{
+void daWmPlayer_c::initActiveCharaFlags() {
     dInfo_c* info = dInfo_c::m_instance;
 
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {

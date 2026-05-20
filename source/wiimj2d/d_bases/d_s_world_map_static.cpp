@@ -3,6 +3,7 @@
 
 #include "d_s_world_map.h"
 
+#include "d_bases/d_a_wm_Map.h"
 #include "d_bases/d_s_stage.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
@@ -29,9 +30,10 @@ bool dScWMap_c::m_GameOver;
 void dScWMap_c::setNextWorldScene(u8 world, u8 node, u8);
 
 void dScWMap_c::returnToWorldScene() {
-    if (dScStage_c::m_exitMode == dScStage_c::Exit_e::CLEAR) {
-        m_PrevWorldNo = dInfo_c::m_startGameInfo.stage1.world;
-        m_PrevSceneNo = dInfo_c::m_startGameInfo.stage1.getWorldSceneNo();
+    if (dScStage_c::m_exitMode == dScStage_c::Exit_e::CLEAR && dInfo_c::isPipeRandomizer()) {
+        m_PrevWorldNo                = dInfo_c::m_startGameInfo.stage1.world;
+        m_PrevSceneNo                = dInfo_c::m_startGameInfo.stage1.getWorldSceneNo();
+        daWmMap_c::m_setStageRndizer = dInfo_c::m_startGameInfo.stage1.stage;
     }
 
     return setNextWorldScene(static_cast<u8>(m_PrevWorldNo), m_PrevSceneNo);
@@ -39,23 +41,23 @@ void dScWMap_c::returnToWorldScene() {
 
 /* @unofficial */
 [[nsmbw(0x80102B70)]]
-u32 dScWMap_c::AssembleBootParam(WORLD_e, u32, int);
+u32 dScWMap_c::AssembleBootParam(u8 world, u8 scene, int);
 
 [[nsmbw(0x80102B50)]]
 u32 dScWMap_c::CreateBootParam() {
     dInfo_c* info = dInfo_c::m_instance;
-    return AssembleBootParam(info->mWorld, info->mWmSceneNo, 5);
+    return AssembleBootParam(info->mWmMapNo, info->mWmSceneNo, 5);
 }
 
 [[nsmbw(0x80102B90)]]
 void dScWMap_c::initLoadGame() {
-    dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame(-1);
-    dInfo_c*     info = dInfo_c::m_instance;
+    dMj2dGame_c* save   = dSaveMng_c::m_instance->getSaveGame(-1);
+    dInfo_c*     info   = dInfo_c::m_instance;
 
-    info->mWorld      = static_cast<WORLD_e>(save->mCurrentWorld);
-    info->mWmSceneNo  = save->mCurrentSubWorld;
-    info->mWmNode     = save->mCurrentPathNode;
-    info->m0x048      = -1;
+    info->mWmMapNo      = save->mCurrentWorld;
+    info->mWmSceneNo    = save->mCurrentSubWorld;
+    info->mWmNode       = save->mCurrentPathNode;
+    info->mWmCourseNode = -1;
     info->SetIbaraNow(4, static_cast<dInfo_c::IbaraMode_e>(save->getIbaraNow()));
     info->SetIbaraOld(4, static_cast<dInfo_c::IbaraMode_e>(save->getIbaraNow()));
     info->mSwitchOn = save->mSwitchOn;
