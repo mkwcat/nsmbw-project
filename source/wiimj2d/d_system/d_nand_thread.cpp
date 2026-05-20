@@ -88,7 +88,6 @@ extern "C" NANDResult nandConvertErrorCode(s32 isfsError);
 int dNandThread_c::save() {
     const char* tmpPath         = "/tmp/mkwcat-nsmbw.json";
     char        tmpPathData[64] = {};
-    bool        rename          = false;
     NANDResult  result          = NANDCreate(tmpPath, 0x3C, 0);
     if (result == NAND_RESULT_INVALID) {
         // Might fail on console if /tmp is not redirected, due to the 12 character filename limit.
@@ -101,7 +100,6 @@ int dNandThread_c::save() {
         std::strcat(tmpPathData, "/mkwcat-nsmbw-tmp.json");
         result  = NANDCreate(tmpPathData, 0x3C, 0);
         tmpPath = tmpPathData;
-        rename  = true;
     }
     setNandError(result);
     if (isError()) {
@@ -139,20 +137,17 @@ int dNandThread_c::save() {
         return 1;
     }
     char oldPath[64];
-    if (rename) {
-        std::strcpy(oldPath, newPath);
-    }
+    std::strcpy(oldPath, newPath);
     std::strcat(newPath, "/mkwcat-nsmbw.json");
-    if (rename) {
-        // Rename the new path out of the way in case it's there. This is only a requirement with
-        // Riivolution's proxy ISFS
-        std::strcat(oldPath, "/mkwcat-nsmbw-old.json");
-        result = nandConvertErrorCode(ISFS_Rename(newPath, oldPath));
-        if (result != NAND_RESULT_OK && result != NAND_RESULT_NOEXISTS) {
-            NANDDelete(newPath);
-        }
-        // No error checking as it might still work even if the file still exists
+
+    // Rename the new path out of the way in case it's there. This is only a requirement with
+    // Riivolution's proxy ISFS, but useful in general for backups
+    std::strcat(oldPath, "/mkwcat-nsmbw-old.json");
+    result = nandConvertErrorCode(ISFS_Rename(newPath, oldPath));
+    if (result != NAND_RESULT_OK && result != NAND_RESULT_NOEXISTS) {
+        NANDDelete(newPath);
     }
+    // No error checking as it might still work even if the file still exists
 
     setNandError(nandConvertErrorCode(ISFS_Rename(tmpPath, newPath)));
     if (isError()) {
