@@ -4,6 +4,7 @@
 #include "d_mj2d_json_handler.h"
 
 #include "component/c_json.h"
+#include "d_system/d_info.h"
 #include "d_system/d_mj2d_data.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_nand_thread.h"
@@ -143,6 +144,69 @@ static const char* encodeStageName(
         "peach_castle",
         "staff_roll"
     }[static_cast<size_t>(stage)];
+}
+
+static dInfo_c::StageNo_s decodeFullStageName(
+    const char* str, std::size_t length, u32 hash
+) {
+    std::size_t dashIndex = -1;
+    for (int i = 0; i < length; i++) {
+        if (str[i] < '0' || str[i] > '9') {
+            if (dashIndex == -1 && str[i] == '-') {
+                dashIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (dashIndex == -1) {
+        // Invalid course, ignore
+        OS_REPORT("Unknown course: %.*s", static_cast<int>(length), str);
+        return dInfo_c::StageNo_s::invalid();
+    }
+
+    char* estr      = const_cast<char*>(str);
+    estr[dashIndex] = '\0';
+    int world       = std::atoi(str);
+    estr[dashIndex] = '.';
+    if (world < 1 || world > WORLD_COUNT) {
+        return dInfo_c::StageNo_s::invalid();
+    }
+
+    return {
+        .world = static_cast<WORLD_e>(world - 1),
+        .stage = decodeStageName(
+            str + dashIndex + 1, length - dashIndex - 1,
+            strHash(str + dashIndex + 1, length - dashIndex - 1)
+        ),
+    };
+}
+
+static PLAYER_TYPE_e decodePlayerType(
+    const char* str, std::size_t length, u32 hash
+) {
+    switch (hash) {
+    case strHash("mario"):
+        return PLAYER_TYPE_e::MARIO;
+    case strHash("luigi"):
+        return PLAYER_TYPE_e::LUIGI;
+    case strHash("yellow_toad"):
+        return PLAYER_TYPE_e::YELLOW_TOAD;
+    case strHash("blue_toad"):
+        return PLAYER_TYPE_e::BLUE_TOAD;
+    case strHash("toadette"):
+        return PLAYER_TYPE_e::TOADETTE;
+    case strHash("purple_toadette"):
+        return PLAYER_TYPE_e::PURPLE_TOADETTE;
+    case strHash("orange_toad"):
+        return PLAYER_TYPE_e::ORANGE_TOAD;
+    case strHash("black_toad"):
+        return PLAYER_TYPE_e::BLACK_TOAD;
+
+    default:
+        OS_REPORT("Unknown player type: %.*s\n", static_cast<int>(length), str);
+        return PLAYER_TYPE_e::COUNT;
+    }
 }
 
 bool dMj2dJsonHandler_c::value(
@@ -394,6 +458,8 @@ bool dMj2dJsonHandler_c::string(
         } else {
             return false;
         }
+    } else if (std::holds_alternative<PLAYER_TYPE_e*>(mpValue)) {
+        *std::get<PLAYER_TYPE_e*>(mpValue)++ = decodePlayerType(str, length, hash);
     } else if (std::holds_alternative<PATH_DIRECTION_e*>(mpValue)) {
         auto&            out   = *std::get<PATH_DIRECTION_e*>(mpValue);
         PATH_DIRECTION_e value = static_cast<PATH_DIRECTION_e>(out);
@@ -430,6 +496,8 @@ bool dMj2dJsonHandler_c::string(
         out = static_cast<dMj2dGame_c::COURSE_COMPLETION_e>(value);
     } else if (std::holds_alternative<STAGE_e*>(mpValue)) {
         *std::get<STAGE_e*>(mpValue)++ = decodeStageName(str, length, hash);
+    } else if (std::holds_alternative<StageNo_s*>(mpValue)) {
+        *std::get<StageNo_s*>(mpValue)++ = decodeFullStageName(str, length, hash);
     } else if (std::holds_alternative<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>(mpValue)) {
         auto& out = *std::get<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>(mpValue);
         dMj2dGame_c::PIPE_RANDOMIZER_MODE_e value =
@@ -449,6 +517,24 @@ bool dMj2dJsonHandler_c::string(
             break;
         }
         out = static_cast<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e>(value);
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
+bool dMj2dJsonHandler_c::null() {
+    if (!expectValue()) {
+        OS_REPORT(
+            "Not expecting null() (UNKNOWN_OBJECT=%s)\n",
+            mkwcat::ToString(!!(mFlags & UNKNOWN_OBJECT))
+        );
+        return mFlags & UNKNOWN_OBJECT;
+    }
+
+    if (std::holds_alternative<PLAYER_TYPE_e*>(mpValue)) {
+        *std::get<PLAYER_TYPE_e*>(mpValue)++ = PLAYER_TYPE_e::COUNT;
     } else {
         return false;
     }
@@ -549,43 +635,12 @@ bool dMj2dJsonHandler_c::key(
 
     switch (mObject) {
     case Object_e::PLAY_COUNT_ARRAY: {
-        std::size_t dashIndex = -1;
-        for (int i = 0; i < length; i++) {
-            if (str[i] < '0' || str[i] > '9') {
-                if (dashIndex == -1 && str[i] == '-') {
-                    dashIndex = i;
-                    break;
-                }
-            }
-        }
-
-        if (dashIndex == -1) {
+        dInfo_c::StageNo_s course = decodeFullStageName(str, length, hash);
+        if (!course.isValid()) {
             // Invalid course, ignore
-            OS_REPORT("Unknown play count course: %.*s", static_cast<int>(length), str);
             mFlags |= Flag_e::UNKNOWN_OBJECT;
             return true;
         }
-
-        char* estr      = const_cast<char*>(str);
-        estr[dashIndex] = '\0';
-        int world       = std::atoi(str);
-        estr[dashIndex] = '.';
-        if (world < 1 || world > WORLD_COUNT) {
-            return false;
-        }
-        mWorld  = static_cast<WORLD_e>(world - 1);
-
-        mCourse = decodeStageName(
-            str + dashIndex + 1, length - dashIndex - 1,
-            strHash(str + dashIndex + 1, length - dashIndex - 1)
-        );
-        if (mCourse == STAGE_e::COUNT) {
-            // Invalid course, ignore
-            OS_REPORT("Unknown play count course: %.*s", static_cast<int>(length), str);
-            mFlags |= Flag_e::UNKNOWN_OBJECT;
-            return true;
-        }
-
         mValueCount = 1;
         return true;
     }
@@ -651,6 +706,12 @@ bool dMj2dJsonHandler_c::key(
             mWorld  = WORLD_e::COUNT;
             break;
 
+        case strHash("checkpoint"):
+            mValueCount = 0;
+            mFlags |= EXPECT_OBJECT_START;
+            mObject = Object_e::CHECKPOINT;
+            break;
+
         case strHash("pipe_randomizer_mode"):
             mValueCount = 1;
             mpValue     = &game.mPipeRandomizerMode;
@@ -708,38 +769,11 @@ bool dMj2dJsonHandler_c::key(
     }
 
     case Object_e::PLAYER_KEY: {
-        switch (hash) {
-        case strHash("mario"):
-            mPlayer = PLAYER_TYPE_e::MARIO;
-            break;
-        case strHash("luigi"):
-            mPlayer = PLAYER_TYPE_e::LUIGI;
-            break;
-        case strHash("yellow_toad"):
-            mPlayer = PLAYER_TYPE_e::YELLOW_TOAD;
-            break;
-        case strHash("blue_toad"):
-            mPlayer = PLAYER_TYPE_e::BLUE_TOAD;
-            break;
-        case strHash("toadette"):
-            mPlayer = PLAYER_TYPE_e::TOADETTE;
-            break;
-        case strHash("purple_toadette"):
-            mPlayer = PLAYER_TYPE_e::PURPLE_TOADETTE;
-            break;
-        case strHash("orange_toad"):
-            mPlayer = PLAYER_TYPE_e::ORANGE_TOAD;
-            break;
-        case strHash("black_toad"):
-            mPlayer = PLAYER_TYPE_e::BLACK_TOAD;
-            break;
-
-        default:
-            OS_REPORT("Unknown object\n");
+        mPlayer = decodePlayerType(str, length, hash);
+        if (mPlayer == PLAYER_TYPE_e::COUNT) {
             mFlags |= UNKNOWN_OBJECT;
             return true;
         }
-
         mFlags |= EXPECT_OBJECT_START;
         mObject = Object_e::PLAYER;
         return true;
@@ -971,6 +1005,47 @@ bool dMj2dJsonHandler_c::key(
         return true;
     }
 
+    case Object_e::CHECKPOINT: {
+        mValueCount                  = 1;
+        dMj2dGame_c::Cyuukan_s& ckpt = game.mCheckpoint;
+        switch (hash) {
+        case strHash("stage"):
+            mpValue = &ckpt.stage;
+            break;
+
+        case strHash("area"):
+            mpValue = &ckpt.area;
+            mFlags |= SUBTRACT_1;
+            break;
+
+        case strHash("entrance"):
+            mpValue = &ckpt.entrance;
+            break;
+
+        case strHash("coin"):
+            mpValue     = ckpt.coin;
+            mValueCount = STAR_COIN_COUNT;
+            mFlags |= EXPECT_ARRAY_START;
+            break;
+
+        case strHash("flag"):
+            mpValue     = ckpt.flag;
+            mValueCount = std::size(ckpt.flag);
+            mFlags |= EXPECT_ARRAY_START;
+            break;
+
+        case strHash("face_left"):
+            mpValue = &ckpt.face_left;
+            break;
+
+        case strHash("index"):
+            mpValue = &ckpt.index;
+            break;
+        }
+
+        return true;
+    }
+
     default:
         return false;
     }
@@ -1016,6 +1091,9 @@ bool dMj2dJsonHandler_c::endObject() {
         mObject = Object_e::FILE;
         return true;
     } else if (mObject == Object_e::STOCK_ITEM) {
+        mObject = Object_e::FILE;
+        return true;
+    } else if (mObject == Object_e::CHECKPOINT) {
         mObject = Object_e::FILE;
         return true;
     } else if (mObject == Object_e::ENEMY) {

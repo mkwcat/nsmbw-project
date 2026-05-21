@@ -40,11 +40,6 @@ bool IsCourseTypeStageFromCourseNo(CourseNo);
 [[nsmbw(0x800F9A80)]]
 PointType_e GetPointTypeFromPointName(const char*);
 
-int GetNodeNoFromPointName(
-    const char*
-) {
-}
-
 [[nsmbw(0x800F9B00)]]
 dWmActor_c* __searchMapObjFromName(u16, int);
 

@@ -3,8 +3,7 @@
 #include "d_system/d_mj2d_game.h"
 #include "machine/m_vec.h"
 
-class dCyuukan_c
-{
+class dCyuukan_c {
     SIZE_ASSERT(0x34);
 
 public:
@@ -27,20 +26,34 @@ public:
     /* 0x8008EEC0 */
     bool checkEntry();
 
+    /* 0x8008F000 @renamed */
+    bool isCyuukanStart(int index, WORLD_e world, STAGE_e stage);
+
+    /* 0x8008F070 */
+    s8 getPlrNo(int index) const;
+
 public:
     // Instance Variables
     // ^^^^^^
 
     FILL(0x00, 0x04);
 
-    /* 0x04 */ int mState;
-    /* 0x08 */ mVec3_c mPlayerSetPos;
-    /* 0x14 */ s32 m0x14;
-    /* 0x18 */ WORLD_e mWorld;
-    /* 0x19 */ STAGE_e mStage;
-    /* 0x1A */ u8 mCourse; // A.k.a. Area
-    /* 0x1B */ u8 mGoto;
-    /* 0x1C */ bool mIsKinopioInChukan;
+    /* 0x04 */ int           mIndex;
+    /* 0x08 */ mVec3_c       mPlayerSetPos;
+    /* 0x14 */ u32           mFlags;
+    /* 0x18 */ WORLD_e       mWorld;
+    /* 0x19 */ STAGE_e       mStage;
+    /* 0x1A */ u8            mCourse; // A.k.a. Area
+    /* 0x1B */ u8            mNextGoto;
+    /* 0x1C */ bool          mIsKinopioInChukan;
     /* 0x20 */ PLAYER_TYPE_e mCollectionCoin[3];
-    /* 0x2C */ PLAYER_TYPE_e m0x2C[2];
+    /* 0x2C */ PLAYER_TYPE_e mOwner[2];
+
+public:
+    // Constants
+    // ^^^^^^
+
+    enum : u32 {
+        FLAG_FACE_LEFT = 0_bit,
+    };
 };

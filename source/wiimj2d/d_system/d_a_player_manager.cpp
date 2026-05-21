@@ -181,7 +181,7 @@ void daPyMng_c::initStage() {
         }
     }
 
-    if (dScStage_c::getCourseIn() && dInfo_c::m_instance->mCyuukanState >= 0 && isOnePlayer() &&
+    if (dScStage_c::getCourseIn() && dInfo_c::m_instance->mCyuukanIndex >= 0 && isOnePlayer() &&
         dInfo_c::m_instance->mCyuukan.mIsKinopioInChukan) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             if (mPlayerEntry[i] == 0) {
@@ -278,13 +278,12 @@ void daPyMng_c::createCourseInit() {
     decideCtrlPlrNo();
 
     if (!dScStage_c::m_isStaffCredit) {
-        bool isAmbush;
+        bool faceLeft;
 
-        if (stage->m_isCourseIn && dInfo_c::m_instance->mCyuukanState >= 0) {
-            playerSetPos = dInfo_c::m_instance->mCyuukan.mPlayerSetPos;
-            isAmbush     = dInfo_c::m_instance->mCyuukan.m0x14 & 1;
+        if (stage->m_isCourseIn && dInfo_c::m_instance->mCyuukanIndex >= 0) {
+            faceLeft = dInfo_c::m_instance->mCyuukan.mFlags & 1;
         } else {
-            isAmbush = dCd_c::getFileP(stage->mCourse)->mpCourseInfo->mIsAmbush;
+            faceLeft = dCd_c::getFileP(stage->mCourse)->mpCourseInfo->mIsAmbush;
         }
 
         int createOrder[PLAYER_COUNT];
@@ -322,7 +321,7 @@ void daPyMng_c::createCourseInit() {
 
         f32 playerSetOffset = playerSetDist / 2 * (livePlayerCount - 1);
 
-        if (isAmbush) {
+        if (faceLeft) {
             playerSetPos.x -= playerSetOffset;
         } else {
             playerSetPos.x += playerSetOffset;
@@ -333,10 +332,10 @@ void daPyMng_c::createCourseInit() {
                 continue;
             }
 
-            bool result = create(createOrder[i], playerSetPos, entType, isAmbush);
+            bool result = create(createOrder[i], playerSetPos, entType, faceLeft);
 
             if (result && !isCreateBalloon(createOrder[i])) {
-                if (isAmbush) {
+                if (faceLeft) {
                     playerSetPos.x += playerSetDist;
                 } else {
                     playerSetPos.x -= playerSetDist;

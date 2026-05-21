@@ -122,20 +122,20 @@ EXTERN_SYMBOL(0x800BB8D0, "startStaffCredit__7dInfo_cFv");
 
 [[nsmbw(0x800BB940)]]
 void dInfo_c::initStage() {
-    m_startInfo.mCyuukan.mState             = mCyuukan.mState;
+    m_startInfo.mCyuukan.mIndex             = mCyuukan.mIndex;
     m_startInfo.mCyuukan.mPlayerSetPos      = mCyuukan.mPlayerSetPos;
-    m_startInfo.mCyuukan.m0x14              = mCyuukan.m0x14;
+    m_startInfo.mCyuukan.mFlags             = mCyuukan.mFlags;
     m_startInfo.mCyuukan.mWorld             = mCyuukan.mWorld;
     m_startInfo.mCyuukan.mStage             = mCyuukan.mStage;
     m_startInfo.mCyuukan.mCourse            = mCyuukan.mCourse;
-    m_startInfo.mCyuukan.mGoto              = mCyuukan.mGoto;
+    m_startInfo.mCyuukan.mNextGoto          = mCyuukan.mNextGoto;
     m_startInfo.mCyuukan.mIsKinopioInChukan = mCyuukan.mIsKinopioInChukan;
     for (int i = 0; i < COLLECTION_COIN_COUNT; i++) {
         m_startInfo.mCyuukan.mCollectionCoin[i] = mCyuukan.mCollectionCoin[i];
     }
-    m_startInfo.mCyuukan.m0x2C[0] = mCyuukan.m0x2C[0];
-    m_startInfo.mCyuukan.m0x2C[1] = mCyuukan.m0x2C[1];
-    m_startInfo.mSwitchOn         = mSwitchOn;
+    m_startInfo.mCyuukan.mOwner[0] = mCyuukan.mOwner[0];
+    m_startInfo.mCyuukan.mOwner[1] = mCyuukan.mOwner[1];
+    m_startInfo.mSwitchOn          = mSwitchOn;
 
     for (int ply = 0; ply < PLAYER_COUNT; ply++) {
         PLAYER_TYPE_e type             = daPyMng_c::mPlayerType[ply];
@@ -163,12 +163,12 @@ void dInfo_c::initStage() {
     if ((m_startGameInfo.stage1.stage < STAGE_e::KINOKO_HOUSE ||
          m_startGameInfo.stage1.stage > STAGE_e::KINOKO_HOUSE_4) &&
         m_startGameInfo.stage1.stage != STAGE_e::PEACH_CASTLE) {
-        mCyuukanState = mCyuukan.mState;
+        mCyuukanIndex = mCyuukan.mIndex;
     } else {
-        mCyuukanState = -1;
+        mCyuukanIndex = -1;
     }
 
-    if (mCyuukanState < 0) {
+    if (mCyuukanIndex < 0) {
         for (int i = 0; i < COLLECTION_COIN_COUNT; i++) {
             dScStage_c::setCollectionCoin(i, PLAYER_TYPE_e::COUNT);
         }

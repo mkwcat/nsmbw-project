@@ -121,19 +121,19 @@ void dScStage_c::exitRestore() {
     dCyuukan_c*   cyuukan       = &info->mCyuukan;
     dStartInfo_c& startInfo     = info->m_startInfo;
 
-    cyuukan->mState             = startInfo.mCyuukan.mState;
+    cyuukan->mIndex             = startInfo.mCyuukan.mIndex;
     cyuukan->mPlayerSetPos      = startInfo.mCyuukan.mPlayerSetPos;
-    cyuukan->m0x14              = startInfo.mCyuukan.m0x14;
+    cyuukan->mFlags             = startInfo.mCyuukan.mFlags;
     cyuukan->mWorld             = startInfo.mCyuukan.mWorld;
     cyuukan->mStage             = startInfo.mCyuukan.mStage;
     cyuukan->mCourse            = startInfo.mCyuukan.mCourse;
-    cyuukan->mGoto              = startInfo.mCyuukan.mGoto;
+    cyuukan->mNextGoto          = startInfo.mCyuukan.mNextGoto;
     cyuukan->mIsKinopioInChukan = startInfo.mCyuukan.mIsKinopioInChukan;
     cyuukan->mCollectionCoin[0] = startInfo.mCyuukan.mCollectionCoin[0];
     cyuukan->mCollectionCoin[1] = startInfo.mCyuukan.mCollectionCoin[1];
     cyuukan->mCollectionCoin[2] = startInfo.mCyuukan.mCollectionCoin[2];
-    cyuukan->m0x2C[0]           = startInfo.mCyuukan.m0x2C[0];
-    cyuukan->m0x2C[1]           = startInfo.mCyuukan.m0x2C[1];
+    cyuukan->mOwner[0]          = startInfo.mCyuukan.mOwner[0];
+    cyuukan->mOwner[1]          = startInfo.mCyuukan.mOwner[1];
     info->mSwitchOn             = startInfo.mSwitchOn;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {

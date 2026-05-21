@@ -237,6 +237,64 @@ enum PATH_DIRECTION_e : s8 {
 class dSaveMng_c;
 class dMj2dJsonHandler_c;
 class dScWMap_c;
+class dCyuukan_c;
+
+/* @unofficial? */
+struct StageNo_s {
+    WORLD_e world;
+    STAGE_e stage;
+
+    constexpr bool operator==(
+        const StageNo_s& other
+    ) const {
+        return world == other.world && stage == other.stage;
+    }
+
+    constexpr bool operator==(
+        const STAGE_e& stage
+    ) const {
+        return this->stage == stage;
+    }
+
+    constexpr bool operator==(
+        const WORLD_e& world
+    ) const {
+        return this->world == world;
+    }
+
+    constexpr operator STAGE_e() const { return stage; }
+
+    constexpr operator WORLD_e() const { return world; }
+
+    constexpr bool isInSaveGame() const { return world < WORLD_e::COUNT && stage < STAGE_e::COUNT; }
+
+    constexpr bool isTower() const { return stage == STAGE_e::TOWER || stage == STAGE_e::TOWER_2; }
+
+    constexpr bool isCastle() const {
+        return stage == STAGE_e::CASTLE || stage == STAGE_e::CASTLE_2;
+    }
+
+    constexpr bool isNumberedStage() const {
+        return stage >= STAGE_e::STAGE_1 && stage <= STAGE_e::STAGE_19;
+    }
+
+    constexpr bool isEnemy() const { return stage >= STAGE_e::ENEMY && stage <= STAGE_e::ENEMY_3; }
+
+    constexpr u8 getWorldSceneNo() const {
+        if (world != WORLD_e::WORLD_3) {
+            return 0u;
+        }
+        if ((isNumberedStage() && stage >= STAGE_e::STAGE_4) || isCastle() ||
+            stage == STAGE_e::KINOKO_HOUSE_3 || stage == STAGE_e::KINOKO_HOUSE_4) {
+            return 1u;
+        }
+        return 0;
+    }
+
+    static constexpr StageNo_s invalid() { return {WORLD_e::COUNT, STAGE_e::COUNT}; }
+
+    constexpr bool isValid() const { return world != WORLD_e::COUNT && stage != STAGE_e::COUNT; }
+};
 
 /**
  * Save slot data holder.
@@ -259,6 +317,24 @@ public:
     struct Revision_s {
         u8 mMajor;
         u8 mMinor;
+    };
+
+    enum PLAYER_TYPE_u8_e : u8 {};
+
+    enum PLAYER_MODE_u8_e : u8 {};
+
+    enum PLAYER_CREATE_ITEM_u8_e : u8 {};
+
+    struct Cyuukan_s {
+        StageNo_s     stage                 = StageNo_s::invalid();
+        u8            area                  = 0;
+        u8            entrance              = 0xFF;
+        s32           index                 = -1;
+        PLAYER_TYPE_e flag[2]               = {PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT};
+        PLAYER_TYPE_e coin[STAR_COIN_COUNT] = {
+            PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT
+        };
+        bool face_left = false;
     };
 
     /**
@@ -395,7 +471,7 @@ public:
     /**
      * Constructs the holder.
      */
-    dMj2dGame_c();
+    constexpr dMj2dGame_c()  = default;
 
     /**
      * Deletes the holder.
@@ -683,13 +759,11 @@ public:
         mPipeRandomizerSeed = seed;
     }
 
+    void getCheckpoint(dCyuukan_c* checkpoint);
+    void setCheckpoint(const dCyuukan_c* checkpoint);
+    void clearCheckpoint();
+
 private:
-    enum PLAYER_TYPE_u8_e : u8 {};
-
-    enum PLAYER_MODE_u8_e : u8 {};
-
-    enum PLAYER_CREATE_ITEM_u8_e : u8 {};
-
     /**
      * Checks that the save data version matches the current one and clears the slot if not.
      */
@@ -850,9 +924,9 @@ private:
     /* 0x968 */ u8 mDeathCountSwitch;
 
     /**
-     * Ensures space for the CRC32 checksum.
+     * The saved checkpoint data.
      */
-    // u32 mChecksumSpace;
+    Cyuukan_s mCheckpoint;
 
     /**
      * The pipe randomizer mode.
@@ -863,6 +937,11 @@ private:
      * The seed used by pipe randomizer for entrance shuffling.
      */
     s32 mPipeRandomizerSeed;
+
+    /**
+     * Ensures space for the CRC32 checksum.
+     */
+    // u32 mChecksumSpace;
 
 public:
     /**

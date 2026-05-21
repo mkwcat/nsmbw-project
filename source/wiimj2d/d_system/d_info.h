@@ -54,64 +54,8 @@ public:
         COIN_BATTLE  = 6_bit,
     };
 
-    /* @unofficial? */
-    struct StageNo_s {
-        WORLD_e world;
-        STAGE_e stage;
-
-        constexpr bool operator==(
-            const StageNo_s& other
-        ) const {
-            return world == other.world && stage == other.stage;
-        }
-
-        constexpr bool operator==(
-            const STAGE_e& stage
-        ) const {
-            return this->stage == stage;
-        }
-
-        constexpr bool operator==(
-            const WORLD_e& world
-        ) const {
-            return this->world == world;
-        }
-
-        constexpr operator STAGE_e() const { return stage; }
-
-        constexpr operator WORLD_e() const { return world; }
-
-        constexpr bool isInSaveGame() const {
-            return world < WORLD_e::COUNT && stage < STAGE_e::COUNT;
-        }
-
-        constexpr bool isTower() const {
-            return stage == STAGE_e::TOWER || stage == STAGE_e::TOWER_2;
-        }
-
-        constexpr bool isCastle() const {
-            return stage == STAGE_e::CASTLE || stage == STAGE_e::CASTLE_2;
-        }
-
-        constexpr bool isNumberedStage() const {
-            return stage >= STAGE_e::STAGE_1 && stage <= STAGE_e::STAGE_19;
-        }
-
-        constexpr bool isEnemy() const {
-            return stage >= STAGE_e::ENEMY && stage <= STAGE_e::ENEMY_3;
-        }
-
-        constexpr u8 getWorldSceneNo() const {
-            if (world != WORLD_e::WORLD_3) {
-                return 0u;
-            }
-            if ((isNumberedStage() && stage >= STAGE_e::STAGE_4) || isCastle() ||
-                stage == STAGE_e::KINOKO_HOUSE_3 || stage == STAGE_e::KINOKO_HOUSE_4) {
-                return 1u;
-            }
-            return 0;
-        }
-    };
+    // Backwards compatibility
+    using StageNo_s = ::StageNo_s;
 
     struct StartGameInfo_s {
         SIZE_ASSERT(0x10);
@@ -335,7 +279,7 @@ public:
 
     FILL(0xAE0, 0xAF4);
 
-    /* 0xAF4 */ int mCyuukanState;
+    /* 0xAF4 */ int mCyuukanIndex;
 
     FILL(0xAF8, 0xAFC);
 

@@ -174,8 +174,8 @@ int dNandThread_c::load() {
     }
 
     for (int i = 0; i < SAVE_SLOT_COUNT; i++) {
-        l_tmpSave.mSaveGames[i].setEmpty();
-        l_tmpSave.mTempGames[i].setEmpty();
+        l_tmpSave.mSaveGames[i].initialize();
+        l_tmpSave.mTempGames[i].initialize();
     }
 
     dMj2dJsonHandler_c handler;

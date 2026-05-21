@@ -6,14 +6,12 @@
 #include <cstdio>
 #include <variant>
 
-class dMj2dJsonHandler_c final : public cJsonParser_c::HandlerIf_c
-{
+class dMj2dJsonHandler_c final : public cJsonParser_c::HandlerIf_c {
 private:
     // Instance Methods
     // ^^^^^^
 
-    bool expectValue()
-    {
+    bool expectValue() {
         if (mValueCount == 0 ||
             mFlags & (UNKNOWN_OBJECT | EXPECT_ARRAY_START | EXPECT_OBJECT_START | JSON_END)) {
             return false;
@@ -24,20 +22,19 @@ private:
     }
 
 public:
-    bool null() override
-    {
-        return mFlags & UNKNOWN_OBJECT;
-    }
+    bool null() override;
 
     bool value(s64 number) override;
 
-    bool rawNumber(const char* str, std::size_t length, bool copy) override
-    {
+    bool rawNumber(
+        const char* str, std::size_t length, bool copy
+    ) override {
         return mFlags & UNKNOWN_OBJECT;
     }
 
-    bool value(double number) override
-    {
+    bool value(
+        double number
+    ) override {
         return mFlags & UNKNOWN_OBJECT;
     }
 
@@ -56,20 +53,22 @@ private:
     // ^^^^^^
 
     enum Flag_e {
-        UNKNOWN_OBJECT = 0_bit,
-        EXPECT_ARRAY_START = 1_bit,
-        EXPECT_ARRAY_END = 2_bit,
+        UNKNOWN_OBJECT      = 0_bit,
+        EXPECT_ARRAY_START  = 1_bit,
+        EXPECT_ARRAY_END    = 2_bit,
         EXPECT_OBJECT_START = 3_bit,
-        TEMP_SAVE = 4_bit,
-        BIT_FLAGS_LE = 5_bit,
-        JSON_END = 6_bit,
-        SUBTRACT_1 = 7_bit,
+        TEMP_SAVE           = 4_bit,
+        BIT_FLAGS_LE        = 5_bit,
+        JSON_END            = 6_bit,
+        SUBTRACT_1          = 7_bit,
+        EXPECT_NULL         = 8_bit,
     };
 
-    enum class Object_e {
+    enum class Object_e : u8 {
         BASE,
         FILE,
         STOCK_ITEM,
+        CHECKPOINT,
         PLAYER_KEY,
         PLAYER,
         WORLD_KEY,
@@ -83,28 +82,30 @@ private:
         PLAY_COUNT_ARRAY,
     };
 
+    using ValueVariant = std::variant<
+        s8*, u8*, u16*, u32*, s32*, bool*, dMj2dGame_c::Revision_s*,
+        dMj2dGame_c::GAME_COMPLETION_e*, dMj2dGame_c::START_KINOKO_KIND_e*,
+        dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*, dMj2dGame_c::PLAYER_MODE_u8_e*,
+        dMj2dGame_c::PLAYER_TYPE_u8_e*, PLAYER_TYPE_e*, STAGE_e*, StageNo_s*,
+        dMj2dGame_c::WORLD_COMPLETION_e*, PATH_DIRECTION_e*, dMj2dGame_c::COURSE_COMPLETION_e*,
+        cBitmask_c<HINT_MOVIE_COUNT>*, dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>;
+
 private:
     // Instance Variables
     // ^^^^^^
 
-    u8 mFlags = EXPECT_OBJECT_START;
-    Object_e mObject = Object_e::BASE;
-    std::size_t mUnknownNest = 0;
+    u16           mFlags       = EXPECT_OBJECT_START;
+    Object_e      mObject      = Object_e::BASE;
+    std::size_t   mUnknownNest = 0;
 
-    std::variant<
-      s8*, u8*, u16*, u32*, s32*, bool*, dMj2dGame_c::Revision_s*, dMj2dGame_c::GAME_COMPLETION_e*,
-      dMj2dGame_c::START_KINOKO_KIND_e*, dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*,
-      dMj2dGame_c::PLAYER_MODE_u8_e*, dMj2dGame_c::PLAYER_TYPE_u8_e*, STAGE_e*,
-      dMj2dGame_c::WORLD_COMPLETION_e*, PATH_DIRECTION_e*, dMj2dGame_c::COURSE_COMPLETION_e*,
-      cBitmask_c<HINT_MOVIE_COUNT>*, dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>
-      mpValue;
-    std::size_t mValueCount = 0;
+    ValueVariant  mpValue;
+    std::size_t   mValueCount = 0;
 
-    s8 mSaveSlot = -1;
-    PLAYER_TYPE_e mPlayer = PLAYER_TYPE_e::COUNT;
-    WORLD_e mWorld = WORLD_e::COUNT;
-    STAGE_e mCourse = STAGE_e::COUNT;
-    u8 mWmEnemy = AMBUSH_ENEMY_COUNT;
+    s8            mSaveSlot   = -1;
+    PLAYER_TYPE_e mPlayer     = PLAYER_TYPE_e::COUNT;
+    WORLD_e       mWorld      = WORLD_e::COUNT;
+    STAGE_e       mCourse     = STAGE_e::COUNT;
+    u8            mWmEnemy    = AMBUSH_ENEMY_COUNT;
 
 public:
     // Static Methods

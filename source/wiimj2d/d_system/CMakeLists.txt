@@ -240,7 +240,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800B0A20 - 0x800B0EA0
     d_fader.cpp
 # NSMBW          .text:  0x800B0EA0 - 0x800B11D0
-  # d_flag_ctrl.cpp
+    d_flag_ctrl.cpp
 # NSMBW          .text:  0x800B11D0 - 0x800B14E0
   # d_font_manager.cpp
 # NSMBW          .text:  0x800B14E0 - 0x800B2D20
