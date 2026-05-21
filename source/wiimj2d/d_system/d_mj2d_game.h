@@ -335,6 +335,15 @@ public:
             PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT
         };
         bool face_left = false;
+
+        constexpr bool operator==(
+            const Cyuukan_s& other
+        ) const {
+            return stage == other.stage && area == other.area && entrance == other.entrance &&
+                   index == other.index && flag[0] == other.flag[0] && flag[1] == other.flag[1] &&
+                   coin[0] == other.coin[0] && coin[1] == other.coin[1] &&
+                   coin[2] == other.coin[2] && face_left == other.face_left;
+        }
     };
 
     /**

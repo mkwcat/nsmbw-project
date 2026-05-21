@@ -1174,6 +1174,18 @@ bool dMj2dJsonHandler_c::endArray() {
     return true;
 }
 
+static const char* getPlayerTypeString(
+    PLAYER_TYPE_e type
+) {
+    if (type < PLAYER_TYPE_e::MARIO || type >= PLAYER_TYPE_e::COUNT) {
+        return "null";
+    }
+
+    return (const char* const[]) {"\"mario\"",       "\"luigi\"",     "\"blue_toad\"",
+                                  "\"yellow_toad\"", "\"toadette\"",  "\"purple_toadette\"",
+                                  "\"orange_toad\"", "\"black_toad\""}[static_cast<int>(type)];
+}
+
 bool dMj2dJsonHandler_c::writeJSON(
     std::FILE* f
 ) {
@@ -1302,6 +1314,27 @@ bool dMj2dJsonHandler_c::writeJSON(
             );
         }
 
+        static constexpr dMj2dGame_c::Cyuukan_s l_default_cyuukan = {};
+        if (game.mCheckpoint != l_default_cyuukan) {
+            std::fprintf(f, "\"checkpoint\":{");
+            W("index", "%ld", game.mCheckpoint.index);
+            W("stage", "\"%d-%s\"", static_cast<int>(game.mCheckpoint.stage.world) + 1,
+              encodeStageName(game.mCheckpoint.stage.stage));
+            W("area", "%u", game.mCheckpoint.area + 1);
+            W("entrance", "%u", game.mCheckpoint.entrance);
+            std::fprintf(f, "\"flag\":[%s", getPlayerTypeString(game.mCheckpoint.flag[0]));
+            if (game.mCheckpoint.flag[1] != PLAYER_TYPE_e::COUNT) {
+                std::fprintf(f, ",%s", getPlayerTypeString(game.mCheckpoint.flag[1]));
+            }
+            std::fprintf(
+                f, "],\"coin\":[%s,%s,%s],\"face_left\":%s},",
+                getPlayerTypeString(game.mCheckpoint.coin[0]),
+                getPlayerTypeString(game.mCheckpoint.coin[1]),
+                getPlayerTypeString(game.mCheckpoint.coin[2]),
+                mkwcat::ToString(game.mCheckpoint.face_left)
+            );
+        }
+
         std::fprintf(f, "\"hint_movie_bought\":[");
         int m = 0;
         for (; m < HINT_MOVIE_COUNT; m++) {
@@ -1316,7 +1349,7 @@ bool dMj2dJsonHandler_c::writeJSON(
             }
         }
         std::fprintf(f, "],\"player\":{");
-        for (int i = 0; i < PLAYER_COUNT; i++) {
+        for (int i = 0; i < CHARACTER_COUNT; i++) {
             std::fprintf(
                 f, "\"%s\":{",
                 StringArray{

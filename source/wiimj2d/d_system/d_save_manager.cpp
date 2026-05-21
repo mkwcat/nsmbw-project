@@ -166,8 +166,8 @@ void dSaveMng_c::prepareSave() {
         game->setKinopioCourseNo(static_cast<WORLD_e>(w), info->mKinopioCourseNo[w]);
     }
 
-    if (const dCyuukan_c& checkpoint = info->mCyuukan;
-        checkpoint.mIndex >= 0 && checkpoint.mIndex == info->mCyuukanIndex) {
+    game->clearCheckpoint();
+    if (const dCyuukan_c& checkpoint = info->mCyuukan; checkpoint.mIndex >= 0) {
         game->setCheckpoint(&checkpoint);
     }
 
@@ -195,7 +195,6 @@ void dSaveMng_c::initLoadGame(
 
     dInfo_c* info = dInfo_c::m_instance;
     game->getCheckpoint(&info->mCyuukan);
-    info->mCyuukanIndex = info->mCyuukan.mIndex;
 
     daPyMng_c::checkBonusNoCap();
     dScWMap_c::initLoadGame();
