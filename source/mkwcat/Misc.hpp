@@ -25,4 +25,11 @@ public:
     template <unsigned long long N> using UIntOfLimit = UIntOfBits<std::bit_width(N)>;
 };
 
+template <class T>
+std::type_identity<T>::type implicit_cast(
+    auto& value
+) {
+    return value;
+}
+
 } // namespace mkwcat

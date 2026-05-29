@@ -21,14 +21,15 @@ AlignConsecutiveShortCaseStatements:
 AllowShortFunctionsOnASingleLine: InlineOnly
 AttributeMacros:
 BasedOnStyle: LLVM
+BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: true
   AfterControlStatement: Never
   AfterEnum: false
   AfterExternBlock: false
-  AfterFunction: true
-  AfterNamespace: true
+  AfterFunction: false
+  AfterNamespace: false
   AfterObjCDeclaration: false
   AfterStruct: false
   AfterUnion: false

@@ -8,11 +8,133 @@
 #include "d_system/d_mj2d_data.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_nand_thread.h"
+#include <bitset>
 #include <cstdlib>
 #include <cstring>
 #include <mkwcat/ToString.hpp>
 #include <revolution/os/OSError.h>
+#include <string_view>
 #include <variant>
+
+namespace {
+
+template <mkwcat::Enum T> struct DataString;
+
+template <mkwcat::Enum T>
+inline constexpr const char* encode(
+    T value
+) {
+    const std::integral auto integral = static_cast<std::underlying_type_t<T>>(value);
+    if (integral < 0 || integral >= std::size(DataString<T>::mapping)) {
+        return nullptr;
+    }
+    return DataString<T>::mapping[integral];
+}
+
+template <mkwcat::Enum T>
+inline constexpr T decode(
+    const char* string
+) {
+    std::size_t i;
+    for (i = 0; i < std::size(DataString<T>::mapping); i++) {
+        if (std::strcmp(DataString<T>::mapping[i], string) == 0) {
+            break;
+        }
+    }
+    return static_cast<T>(i);
+}
+
+template <> struct DataString<PLAYER_TYPE_e> {
+    static constexpr const char* mapping[] = {
+        "mario",    "luigi",           "blue_toad",   "yellow_toad",
+        "toadette", "purple_toadette", "orange_toad", "black_toad",
+    };
+};
+
+template <> struct DataString<STAGE_e> {
+    static constexpr const char* mapping[] = {
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "coin",
+        "ghost_house",
+        "tower",
+        "tower_2nd",
+        "castle",
+        "castle_2nd",
+        "toad_house_1",
+        "toad_house_2",
+        "toad_house_3",
+        "toad_house_4",
+        "toad_house_5",
+        "toad_house_6",
+        "toad_house_7",
+        "ambush_1",
+        "ambush_2",
+        "ambush_3",
+        "cannon",
+        "37",
+        "airship",
+        "rescue",
+        "title",
+        "peach_castle",
+        "staff_roll",
+    };
+};
+
+template <> struct DataString<PLAYER_MODE_e> {
+    static constexpr const char* mapping[] = {
+        "small", "mushroom", "fire", "mini", "propeller", "penguin", "ice",
+    };
+};
+
+template <> struct DataString<STOCK_ITEM_e> {
+    static constexpr const char* mapping[] = {
+        "mushroom",      "fire_flower", "propeller_shroom", "ice_flower", "penguin_suit",
+        "mini_mushroom", "star",
+    };
+};
+
+template <> struct DataString<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e> {
+    static constexpr const char* mapping[] = {
+        "disabled",
+        "per_game",
+        "per_course",
+        "per_exit",
+    };
+};
+
+template <> struct DataString<dMj2dGame_c::START_KINOKO_KIND_e> {
+    static constexpr const char* mapping[] = {
+        "none", "yellow", "red", "green", "yellow_r", "red_r", "green_r",
+    };
+};
+
+template <> struct DataString<PATH_DIRECTION_e> {
+    static constexpr const char* mapping[] = {
+        "normal",
+        "reverse",
+        "initial",
+    };
+};
+
+} // namespace
 
 static inline constexpr u32 strHash(
     const char* str, std::size_t length
@@ -234,11 +356,11 @@ bool dMj2dJsonHandler_c::value(
     }
 
     if (mObject == Object_e::HINT_MOVIE_ARRAY) {
-        if (!std::holds_alternative<cBitmask_c<HINT_MOVIE_COUNT>*>(mpValue)) {
+        if (!std::holds_alternative<std::bitset<HINT_MOVIE_COUNT>*>(mpValue)) {
             return false;
         }
         if (value >= 0 && value < HINT_MOVIE_COUNT) {
-            std::get<cBitmask_c<HINT_MOVIE_COUNT>*>(mpValue)->setBit(value);
+            (*std::get<std::bitset<HINT_MOVIE_COUNT>*>(mpValue))[value] = true;
         }
         return true;
     } else if (mObject == Object_e::STAR_COIN_ARRAY) {
@@ -294,8 +416,11 @@ bool dMj2dJsonHandler_c::value(
 }
 
 bool dMj2dJsonHandler_c::string(
-    const char* str, std::size_t length, bool copy
+    std::string_view string
 ) {
+    const char* str    = string.data();
+    std::size_t length = string.length();
+
     if (!expectValue()) {
         OS_REPORT(
             "Not expecting string() (UNKNOWN_OBJECT=%s)\n",
@@ -535,7 +660,10 @@ bool dMj2dJsonHandler_c::null() {
 
     if (std::holds_alternative<PLAYER_TYPE_e*>(mpValue)) {
         *std::get<PLAYER_TYPE_e*>(mpValue)++ = PLAYER_TYPE_e::COUNT;
+    } else if (std::holds_alternative<STAGE_e*>(mpValue)) {
+        *std::get<STAGE_e*>(mpValue)++ = STAGE_e::COUNT;
     } else {
+        OS_REPORT("Not expecting null!!!\n");
         return false;
     }
 
@@ -543,9 +671,12 @@ bool dMj2dJsonHandler_c::null() {
 }
 
 bool dMj2dJsonHandler_c::key(
-    const char* str, std::size_t length, bool copy
+    std::string_view string
 ) {
-    u32 hash = strHash(str, length);
+    const char* str    = string.data();
+    std::size_t length = string.length();
+
+    u32         hash   = strHash(str, length);
 
     if (length == 0 || mValueCount != 0 ||
         mFlags & (EXPECT_ARRAY_START | EXPECT_ARRAY_END | EXPECT_OBJECT_START)) {
@@ -1174,323 +1305,345 @@ bool dMj2dJsonHandler_c::endArray() {
     return true;
 }
 
-static const char* getPlayerTypeString(
-    PLAYER_TYPE_e type
-) {
-    if (type < PLAYER_TYPE_e::MARIO || type >= PLAYER_TYPE_e::COUNT) {
-        return "null";
-    }
-
-    return (const char* const[]) {"\"mario\"",       "\"luigi\"",     "\"blue_toad\"",
-                                  "\"yellow_toad\"", "\"toadette\"",  "\"purple_toadette\"",
-                                  "\"orange_toad\"", "\"black_toad\""}[static_cast<int>(type)];
-}
-
 bool dMj2dJsonHandler_c::writeJSON(
     std::FILE* f
 ) {
-    dMj2dData_c*   data   = dNandThread_c::getSaveData();
-    dMj2dHeader_c& header = data->mHeader;
+    dMj2dData_c*    data   = dNandThread_c::getSaveData();
+    dMj2dHeader_c&  header = data->mHeader;
+    cJson::Writer_c w(f);
 
-    using StringArray     = const char* const[];
+    // clang-format off
+    bool result = w.startObject() && (
+        w.fieldFmt("version", "%d.%d", header.mRevision.mMajor, header.mRevision.mMinor) &&
+        w.field("last_selected_file", header.mLastSelectedFile) &&
+        w.key("play_count_free_mode")   && marshalPlayCounts(w, header.mPlayCountFreeMode) &&
+        w.key("play_count_coin_battle") && marshalPlayCounts(w, header.mPlayCountCoinBattle) &&
+        w.key("available_worlds")       && w.startArray() &&
+            marshalAvailableWorlds(w, header)
+        && w.endArray() &&
+        marshalFileData(w, data)
+    ) && w.endObject();
+    // clang-format on
 
-#define W(field, fmt, ...) std::fprintf(f, #field ":" fmt ",", __VA_ARGS__)
-    std::fprintf(f, "{");
-    W("version", "\"%d.%d\"", header.mRevision.mMajor, header.mRevision.mMinor);
-    W("last_selected_file", "%d", header.mLastSelectedFile);
-    std::fprintf(f, "\"play_count_free_mode\":{");
-    bool comma = false;
-    for (int w = 0; w < WORLD_COUNT; w++) {
-        for (int s = 0; s < STAGE_COUNT; s++) {
-            u16 v = header.mPlayCountFreeMode[w][s];
+    if (!result) {
+        OS_REPORT("Error during saving at position %lu\n", w.getTotalSize());
+    }
+    return result;
+}
+
+bool dMj2dJsonHandler_c::marshalPlayCounts(
+    cJson::Writer_c& w, const u16 (&counts)[WORLD_COUNT][STAGE_COUNT]
+) {
+    if (!w.startObject()) {
+        return false;
+    }
+    for (int world = 0; world < WORLD_COUNT; world++) {
+        for (int stage = 0; stage < STAGE_COUNT; stage++) {
+            u16 v = counts[world][stage];
             if (v == 0) {
                 continue;
             }
-            std::fprintf(
-                f, "%s\"%d-%s\":%u", comma ? "," : "", w + 1,
-                encodeStageName(static_cast<STAGE_e>(s)), v
-            );
-            comma = true;
-        }
-    }
-    std::fprintf(f, "},\"play_count_coin_battle\":{");
-    comma = false;
-    for (int w = 0; w < WORLD_COUNT; w++) {
-        for (int s = 0; s < STAGE_COUNT; s++) {
-            u16 v = header.mPlayCountCoinBattle[w][s];
-            if (v == 0) {
-                continue;
+
+            if (!w.keyFmt("%d-%s", world + 1, encodeStageName(static_cast<STAGE_e>(stage))) ||
+                !w.value(static_cast<s64>(v))) {
+                return false;
             }
-            std::fprintf(
-                f, "%s\"%d-%s\":%u", comma ? "," : "", w + 1,
-                encodeStageName(static_cast<STAGE_e>(s)), v
-            );
-            comma = true;
         }
     }
-    std::fprintf(f, "},\"available_worlds\":[");
-    int w = 0;
-    for (; w < WORLD_COUNT; w++) {
-        if (header.mMultiWorldOpenFlag & (1 << w)) {
-            std::fprintf(f, "%d", w + 1);
+    return w.endObject();
+}
+
+bool dMj2dJsonHandler_c::marshalAvailableWorlds(
+    cJson::Writer_c& w, const dMj2dHeader_c& header
+) {
+    int world = 0;
+    for (; world < WORLD_COUNT; world++) {
+        if (header.mMultiWorldOpenFlag & (1 << world)) {
+            if (!w.value(static_cast<s64>(world + 1))) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool dMj2dJsonHandler_c::marshalFileData(
+    cJson::Writer_c& w, const dMj2dData_c* data
+) {
+    dMj2dGame_c default_game{};
+    default_game.initialize();
+
+    bool result = true;
+    for (int slot = 0; slot < SAVE_SLOT_COUNT * 2 && result; slot++) {
+        const dMj2dGame_c& g      = slot < SAVE_SLOT_COUNT ? data->mSaveGames[slot]
+                                                           : data->mTempGames[slot - SAVE_SLOT_COUNT];
+        const char*        format = slot < SAVE_SLOT_COUNT ? "file%d" : "temp%d";
+
+        using enum dMj2dGame_c::GAME_COMPLETION_e;
+        using enum STOCK_ITEM_e;
+
+        if (std::memcmp(&g, &default_game, sizeof(dMj2dGame_c)) == 0) {
+            continue;
+        }
+
+        // clang-format off
+        result &= w.keyFmt(format, slot + 1) && w.startObject() && (
+            w.fieldFmt("version", "%d.%d", g.mRevision.mMajor, g.mRevision.mMinor) &&
+            w.key("completion") && w.startArray() && (
+                (g.isFlag(SAVE_EMPTY)             || w.string("created"))           &&
+                (!g.isFlag(FINAL_BOSS_BEATEN)     || w.string("final_boss_beaten")) &&
+                (!g.isFlag(GOAL_ALL)              || w.string("all_goals"))         &&
+                (!g.isFlag(COIN_ALL)              || w.string("all_star_coins"))    &&
+                (!g.isFlag(COIN_ALL_SPECIAL)      || w.string("all_star_coins_w9")) &&
+                (!g.isFlag(GAME_COMPLETED)        || w.string("completed"))         &&
+                (!g.isFlag(SUPER_GUIDE_TRIGGERED) || w.string("super_gude_triggered"))
+            ) && w.endArray() &&
+            w.field("score",                 g.mScore)              &&
+            w.field("staff_roll_high_score", g.mStaffRollHighScore) &&
+            w.field("current_world",         g.mCurrentWorld + 1)   &&
+            w.field("current_sub_world",     g.mCurrentSubWorld)    &&
+            w.field("path_node",             g.mCurrentPathNode)    &&
+            (g.mPipeRandomizerMode == dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED || (
+                w.field("pipe_randomizer_mode", encode(g.mPipeRandomizerMode)) &&
+                w.field("pipe_randomizer_seed", static_cast<s32>(g.mPipeRandomizerSeed)))
+            ) &&
+            w.key("stock_item") && w.startObject() && (
+                marshalStockItem(w, g)
+            ) && w.endObject() &&
+            (g.mCheckpoint.index < 0 || (w.key("checkpoint") && w.startObject() && (
+                w.field("index",    g.mCheckpoint.index)                  &&
+                w.field("stage",    encodeStageName(g.mCheckpoint.stage)) &&
+                w.field("area",     g.mCheckpoint.area + 1)               &&
+                w.field("entrance", g.mCheckpoint.entrance)               &&
+                w.key("flag") && w.startArray() && (
+                    marshalPlayerType(w, g.mCheckpoint.flag[0]) &&
+                    marshalPlayerType(w, g.mCheckpoint.flag[1], false)
+                ) && w.endArray() &&
+                w.key("coin") && w.startArray() && (
+                    marshalPlayerType(w, g.mCheckpoint.coin[0]) &&
+                    marshalPlayerType(w, g.mCheckpoint.coin[1]) &&
+                    marshalPlayerType(w, g.mCheckpoint.coin[2])
+                )) && w.endObject())) &&
+            w.key("hint_movie_bought") && w.startArray() &&
+                marshalBitIndices(w, g.mOtehonMenuOpen)
+            && w.endArray() &&
+            w.key("player") && w.startObject() &&
+                marshalPlayerData(w, g)
+            && w.endObject() &&
+            w.key("world") && w.startObject() &&
+                marshalWorldData(w, g)
+            && w.endObject()
+        ) && w.endObject();
+        // clang-format on
+    }
+    return result;
+}
+
+bool dMj2dJsonHandler_c::marshalStockItem(
+    cJson::Writer_c& w, const dMj2dGame_c& g
+) {
+    const char*                          name = nullptr;
+    std::underlying_type_t<STOCK_ITEM_e> i    = 0;
+    while ((name = encode(static_cast<STOCK_ITEM_e>(i++))) != nullptr) {
+        if (auto value = g.mStockItemCount[i]; value != 0) {
+            if (!w.field(name, value)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool dMj2dJsonHandler_c::marshalPlayerData(
+    cJson::Writer_c& w, const dMj2dGame_c& g
+) {
+    for (std::size_t i = 0; i < std::size(dMj2dGame_c::scDefaultPlayerTypes); i++) {
+        if (!marshalPlayerData(w, g, dMj2dGame_c::scDefaultPlayerTypes[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool dMj2dJsonHandler_c::marshalPlayerData(
+    cJson::Writer_c& w, const dMj2dGame_c& g, PLAYER_TYPE_e player
+) {
+    if (player < PLAYER_TYPE_e::MARIO || player >= PLAYER_TYPE_e::COUNT) {
+        return false;
+    }
+
+    const int index         = static_cast<int>(player);
+
+    int       player_number = PLAYER_COUNT;
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+        if (static_cast<PLAYER_TYPE_e>(g.mPlayerCharacter[i]) == player) {
+            player_number = i;
             break;
         }
     }
-    for (w++; w < WORLD_COUNT; w++) {
-        if (header.mMultiWorldOpenFlag & (1 << w)) {
-            std::fprintf(f, ",%d", w + 1);
+
+    using enum PLAYER_CREATE_ITEM_e;
+    const PLAYER_CREATE_ITEM_e equip =
+        static_cast<PLAYER_CREATE_ITEM_e>(g.mPlayerCreateItem[index]);
+
+    // clang-format off
+    return w.key(encode(player)) && w.startObject() && (
+        w.field("lives",     g.mPlayerLife[index])     &&
+        w.field("coins",     g.mPlayerCoin[index])     &&
+        w.field("continues", g.mPlayerContinue[index]) &&
+        w.key("equip") && w.startArray() && (
+            (!(equip & STAR_POWER) || w.string("star_power"))
+        ) && w.endArray() &&
+        w.field("powerup",   encode(static_cast<PLAYER_MODE_e>(g.mPlayerPowerup[index]))) &&
+        w.field("player", player_number)
+    ) && w.endObject();
+    // clang-format on
+}
+
+bool dMj2dJsonHandler_c::marshalWorldData(
+    cJson::Writer_c& w, const dMj2dGame_c& g
+) {
+    bool result = true;
+    for (int world = 0; world < WORLD_COUNT && result; world++) {
+        // clang-format off
+        const bool open = !!(g.mWorldCompletion[world] & dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED);
+        result = w.keyFmt("%d", world + 1) && w.startObject() && (
+            w.field("open", open) &&
+            w.field("toad_rescue_course",  encode(g.mKinopioCourseNo[world])) &&
+            w.field("start_minigame_type", encode(g.mStartKinokoType[world])) &&
+            w.key("ambush_enemy") && w.startObject() &&
+                marshalWorldAmbushEnemyData(w, g, world)
+            && w.endObject() &&
+            w.key("course") && w.startObject() &&
+                marshalWorldCourseData(w, g, world)
+            && w.endObject()
+        ) && w.endObject();
+        // clang-format on
+    }
+    return result;
+}
+
+bool dMj2dJsonHandler_c::marshalWorldAmbushEnemyData(
+    cJson::Writer_c& w, const dMj2dGame_c& g, int world
+) {
+    bool result = true;
+    for (int enemy = 0; enemy < AMBUSH_ENEMY_COUNT && result; enemy++) {
+        struct AmbushEnemy_s {
+            constexpr bool operator==(const AmbushEnemy_s&) const = default;
+
+            u8               revival_count                        = 0;
+            u8               sub_world                            = 0;
+            s8               path_node                            = -1;
+            PATH_DIRECTION_e walk_direction                       = PATH_DIRECTION_e::INITIAL;
+        };
+
+        AmbushEnemy_s entry = {
+            .revival_count  = g.mEnemyRevivalCount[world][enemy],
+            .sub_world      = g.mEnemySceneNo[world][enemy],
+            .path_node      = g.mEnemyPosIndex[world][enemy],
+            .walk_direction = g.mEnemyWalkDir[world][enemy],
+        };
+
+        if (entry == AmbushEnemy_s{}) {
+            continue;
+        }
+
+        // clang-format off
+        result &= w.keyFmt("%d", enemy) && w.startObject() && (
+            w.field("revival_count",  entry.revival_count) &&
+            w.field("sub_world",      entry.sub_world)     &&
+            w.field("path_node",      entry.path_node)     &&
+            w.field("walk_direction", encode(entry.walk_direction))
+        ) && w.endObject();
+        // clang-format on
+    }
+    return result;
+}
+
+bool dMj2dJsonHandler_c::marshalWorldCourseData(
+    cJson::Writer_c& w, const dMj2dGame_c& g, int world
+) {
+    bool result = true;
+    for (int stage = 0; stage < STAGE_COUNT && result; stage++) {
+        struct StageData_s {
+            constexpr bool operator==(const StageData_s&) const = default;
+
+            bool goal_normal                                    = false;
+            bool goal_secret                                    = false;
+            bool goal_super_guide_normal                        = false;
+            bool goal_super_guide_secret                        = false;
+            bool star_coin[3]                                   = {false, false, false};
+            u8   deaths                                         = 0;
+            u8   deaths_switch                                  = 0;
+        };
+
+        using enum dMj2dGame_c::COURSE_COMPLETION_e;
+        auto        completion      = g.mCourseCompletion[world][stage];
+        bool        is_switch_stage = world == +WORLD_e::WORLD_3 && stage == +STAGE_e::STAGE_4;
+
+        StageData_s entry{
+            .goal_normal             = !!(completion & GOAL_NORMAL),
+            .goal_secret             = !!(completion & GOAL_SECRET),
+            .goal_super_guide_normal = !!(completion & SUPER_GUIDE_GOAL_NORMAL),
+            .goal_super_guide_secret = !!(completion & SUPER_GUIDE_GOAL_SECRET),
+            .star_coin =
+                {
+                    !!(completion & COIN1_COLLECTED),
+                    !!(completion & COIN2_COLLECTED),
+                    !!(completion & COIN3_COLLECTED),
+                },
+            .deaths        = g.mDeathCount[world][stage],
+            .deaths_switch = is_switch_stage ? g.mDeathCountSwitch : static_cast<u8>(0),
+        };
+
+        StageData_s stage_default = {};
+        if (stage == +STAGE_e::RESCUE) {
+            stage_default.goal_normal = true;
+            stage_default.goal_secret = true;
+        }
+
+        if (entry == stage_default) {
+            continue;
+        }
+
+        // clang-format off
+        result &= w.key(encode(static_cast<STAGE_e>(stage))) && w.startObject() && (
+            w.key("goal") && w.startArray() && (
+                (!entry.goal_normal             || w.string("normal"))            &&
+                (!entry.goal_secret             || w.string("secret"))            &&
+                (!entry.goal_super_guide_normal || w.string("super_guide_normal")) &&
+                (!entry.goal_super_guide_secret || w.string("super_guide_secret"))
+            ) && w.endArray() &&
+            w.key("star_coin") && w.startArray() && (
+                (!entry.star_coin[0] || w.value(1ll)) &&
+                (!entry.star_coin[1] || w.value(2ll)) &&
+                (!entry.star_coin[2] || w.value(3ll))
+            ) && w.endArray() &&
+            w.field("deaths", entry.deaths) &&
+            (!is_switch_stage || w.field("deaths_switch", entry.deaths_switch))
+        ) && w.endObject();
+        // clang-format on
+    }
+    return result;
+}
+
+bool dMj2dJsonHandler_c::marshalPlayerType(
+    cJson::Writer_c& w, PLAYER_TYPE_e type, bool null
+) {
+    if (type < PLAYER_TYPE_e::MARIO || type >= PLAYER_TYPE_e::COUNT) {
+        return !null || w.null();
+    }
+    return w.string(encode(type));
+}
+
+template <std::size_t N>
+bool dMj2dJsonHandler_c::marshalBitIndices(
+    cJson::Writer_c& w, const std::bitset<N>& bits
+) {
+    for (std::size_t i = 0; i < N; i++) {
+        if (bits[i] && !w.value(static_cast<s64>(i))) {
+            return false;
         }
     }
-    std::fprintf(f, "],");
-
-    bool firstSlot = true;
-    for (int i = 0; i < SAVE_SLOT_COUNT * 2; i++) {
-        dMj2dGame_c& game =
-            i < SAVE_SLOT_COUNT ? data->mSaveGames[i] : data->mTempGames[i - SAVE_SLOT_COUNT];
-
-        std::fprintf(
-            f, "%s\"%s%d\":{", !firstSlot ? "," : "", i < SAVE_SLOT_COUNT ? "file" : "temp",
-            (i % SAVE_SLOT_COUNT) + 1
-        );
-        firstSlot = false;
-        W("version", "\"%d.%d\"", game.mRevision.mMajor, game.mRevision.mMinor);
-        std::fprintf(f, "\"completion\":[");
-        bool comma = false;
-        if (!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::SAVE_EMPTY)) {
-            std::fprintf(f, "\"created\"");
-            comma = true;
-        }
-        if (!!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::FINAL_BOSS_BEATEN)) {
-            std::fprintf(f, "%s\"final_boss_beaten\"", comma ? "," : "");
-            comma = true;
-        }
-        if (!!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::GOAL_ALL)) {
-            std::fprintf(f, "%s\"all_goals\"", comma ? "," : "");
-            comma = true;
-        }
-        if (!!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::COIN_ALL)) {
-            std::fprintf(f, "%s\"all_star_coins\"", comma ? "," : "");
-            comma = true;
-        }
-        if (!!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::COIN_ALL_SPECIAL)) {
-            std::fprintf(f, "%s\"all_star_coins_w9\"", comma ? "," : "");
-            comma = true;
-        }
-        if (!!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::GAME_COMPLETED)) {
-            std::fprintf(f, "%s\"completed\"", comma ? "," : "");
-            comma = true;
-        }
-        if (!!(game.mGameCompletion & dMj2dGame_c::GAME_COMPLETION_e::SUPER_GUIDE_TRIGGERED)) {
-            std::fprintf(f, "%s\"super_guide_triggered\"", comma ? "," : "");
-            comma = true;
-        }
-        std::fprintf(f, "],");
-
-        W("score", "%lu", game.mScore);
-        W("staff_roll_high_score", "%u", game.mStaffRollHighScore);
-        W("current_world", "%u", game.mCurrentWorld + 1);
-        W("current_sub_world", "%u", game.mCurrentSubWorld);
-        W("path_node", "%u", game.mCurrentPathNode);
-
-        if (game.mPipeRandomizerMode != dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED) {
-            W("pipe_randomizer_mode", "\"%s\"",
-              StringArray{
-                  "disabled", "per_game", "per_course", "per_exit"
-              }[static_cast<int>(game.mPipeRandomizerMode)]);
-        }
-        if (game.mPipeRandomizerSeed != 0) {
-            W("pipe_randomizer_seed", "%ld", game.mPipeRandomizerSeed);
-        }
-
-        std::fprintf(f, "\"stock_item\":{");
-        for (int i = 0; i < STOCK_ITEM_COUNT; i++) {
-            std::fprintf(
-                f, "\"%s\":%u%s",
-                StringArray{
-                    "mushroom", "fire_flower", "propeller_shroom", "ice_flower", "penguin_suit",
-                    "mini_mushroom", "star"
-                }[i],
-                game.mStockItemCount[i], i + 1 < STOCK_ITEM_COUNT ? "," : "},"
-            );
-        }
-
-        static constexpr dMj2dGame_c::Cyuukan_s l_default_cyuukan = {};
-        if (game.mCheckpoint != l_default_cyuukan) {
-            std::fprintf(f, "\"checkpoint\":{");
-            W("index", "%ld", game.mCheckpoint.index);
-            W("stage", "\"%d-%s\"", static_cast<int>(game.mCheckpoint.stage.world) + 1,
-              encodeStageName(game.mCheckpoint.stage.stage));
-            W("area", "%u", game.mCheckpoint.area + 1);
-            W("entrance", "%u", game.mCheckpoint.entrance);
-            std::fprintf(f, "\"flag\":[%s", getPlayerTypeString(game.mCheckpoint.flag[0]));
-            if (game.mCheckpoint.flag[1] != PLAYER_TYPE_e::COUNT) {
-                std::fprintf(f, ",%s", getPlayerTypeString(game.mCheckpoint.flag[1]));
-            }
-            std::fprintf(
-                f, "],\"coin\":[%s,%s,%s],\"face_left\":%s},",
-                getPlayerTypeString(game.mCheckpoint.coin[0]),
-                getPlayerTypeString(game.mCheckpoint.coin[1]),
-                getPlayerTypeString(game.mCheckpoint.coin[2]),
-                mkwcat::ToString(game.mCheckpoint.face_left)
-            );
-        }
-
-        std::fprintf(f, "\"hint_movie_bought\":[");
-        int m = 0;
-        for (; m < HINT_MOVIE_COUNT; m++) {
-            if (game.mOtehonMenuOpen[m]) {
-                std::fprintf(f, "%d", m);
-                break;
-            }
-        }
-        for (m++; m < HINT_MOVIE_COUNT; m++) {
-            if (game.mOtehonMenuOpen[m]) {
-                std::fprintf(f, ",%d", m);
-            }
-        }
-        std::fprintf(f, "],\"player\":{");
-        for (int i = 0; i < CHARACTER_COUNT; i++) {
-            std::fprintf(
-                f, "\"%s\":{",
-                StringArray{
-                    "mario", "luigi", "yellow_toad", "blue_toad", "toadette", "purple_toadette",
-                    "orange_toad", "black_toad"
-                }[i]
-            );
-
-            int index = static_cast<int>(game.scDefaultPlayerTypes[i]);
-            W("lives", "%d", game.mPlayerLife[index]);
-            W("coins", "%d", game.mPlayerCoin[index]);
-            W("continues", "%d", game.mPlayerContinue[index]);
-            W("equip", "[%s]",
-              !!(static_cast<PLAYER_CREATE_ITEM_e>(game.mPlayerCreateItem[index]) &
-                 PLAYER_CREATE_ITEM_e::STAR_POWER)
-                  ? "\"star_power\""
-                  : "");
-            u32 v = u32(game.mPlayerPowerup[index]);
-            if (v >= PLAYER_MODE_COUNT) {
-                OS_REPORT("SAVE WARNING!! Invalid player powerup for %d: %ld\n", index, v);
-                v = 0;
-            }
-            W("powerup", "\"%s\"",
-              StringArray{"small", "mushroom", "fire", "mini", "propeller", "penguin", "ice"}[v]);
-            int player = PLAYER_COUNT;
-            for (int j = 0; j < PLAYER_COUNT; j++) {
-                if (static_cast<PLAYER_TYPE_e>(game.mPlayerCharacter[j]) ==
-                    game.scDefaultPlayerTypes[i]) {
-                    player = j;
-                    break;
-                }
-            }
-            std::fprintf(
-                f, "\"player\":%d}%s", player, i + 1 < PLAYER_COUNT ? "," : "},\"world\":{"
-            );
-        }
-
-        for (int i = 0; i < WORLD_COUNT; i++) {
-            std::fprintf(f, "\"%d\":{", i + 1);
-            W("open", "%s",
-              !!(game.mWorldCompletion[i] & dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED)
-                  ? "true"
-                  : "false");
-            W("toad_rescue_course", "\"%s\"", encodeStageName(game.mKinopioCourseNo[i]));
-            u32 kinokoType = static_cast<u32>(game.mStartKinokoType[i]);
-            if (kinokoType >= static_cast<u32>(dMj2dGame_c::START_KINOKO_KIND_e::COUNT)) {
-                OS_REPORT(
-                    "SAVE WARNING!! Invalid start toad house type for w%d: %ld\n", i, kinokoType
-                );
-                kinokoType = 0;
-            }
-            W("start_minigame_type", "\"%s\"",
-              StringArray{
-                  "none", "yellow", "red", "green", "yellow_r", "red_r", "green_r"
-              }[kinokoType]);
-
-            std::fprintf(f, "\"ambush_enemy\":{");
-            for (int e = 0; e < AMBUSH_ENEMY_COUNT; e++) {
-                std::fprintf(f, "\"%d\":{", e);
-                W("revival_count", "%u", game.mEnemyRevivalCount[i][e]);
-                W("sub_world", "%d", game.mEnemySceneNo[i][e]);
-                W("path_node", "%d", game.mEnemyPosIndex[i][e]);
-                u32 walkDir = static_cast<u32>(game.mEnemyWalkDir[i][e]);
-                if (walkDir >= 3) {
-                    OS_REPORT(
-                        "SAVE WARNING!! Invalid enemy walk direction for w%de%d: %ld\n", i, e,
-                        walkDir
-                    );
-                    walkDir = 2;
-                }
-                std::fprintf(
-                    f, "\"walk_direction\":\"%s\"}%s",
-                    StringArray{"normal", "reverse", "initial"}[walkDir],
-                    e + 1 < AMBUSH_ENEMY_COUNT ? "," : "},\"course\":{"
-                );
-            }
-
-            bool comma = false;
-            for (int c = 0; c < STAGE_COUNT; c++) {
-                if (!game.mCourseCompletion[i][c] && game.mDeathCount[i][c] == 0 &&
-                    ((i != 2 && c != 3) || game.mDeathCountSwitch == 0)) {
-                    continue;
-                }
-
-                std::fprintf(
-                    f, "%s\"%s\":{\"goal\":[", comma ? "," : "",
-                    encodeStageName(static_cast<STAGE_e>(c))
-                );
-
-                comma          = true;
-                bool goalcomma = false;
-
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::GOAL_NORMAL)) {
-                    std::fprintf(f, "\"normal\"");
-                    goalcomma = true;
-                }
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::GOAL_SECRET)) {
-                    std::fprintf(f, "%s\"secret\"", goalcomma ? "," : "");
-                    goalcomma = true;
-                }
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::SUPER_GUIDE_GOAL_NORMAL)) {
-                    std::fprintf(f, "%s\"super_guide_normal\"", goalcomma ? "," : "");
-                    goalcomma = true;
-                }
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::SUPER_GUIDE_GOAL_SECRET)) {
-                    std::fprintf(f, "%s\"super_guide_secret\"", goalcomma ? "," : "");
-                }
-
-                std::fprintf(f, "],\"star_coin\":[");
-                goalcomma = false;
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::COIN1_COLLECTED)) {
-                    std::fprintf(f, "1");
-                    goalcomma = true;
-                }
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::COIN2_COLLECTED)) {
-                    std::fprintf(f, "%s2", goalcomma ? "," : "");
-                    goalcomma = true;
-                }
-                if (!!(game.mCourseCompletion[i][c] &
-                       dMj2dGame_c::COURSE_COMPLETION_e::COIN3_COLLECTED)) {
-                    std::fprintf(f, "%s3", goalcomma ? "," : "");
-                }
-                std::fprintf(f, "],\"deaths\":%d", game.mDeathCount[i][c]);
-
-                if (i == 2 && c == 3) {
-                    std::fprintf(f, ",\"deaths_switch\":%d", game.mDeathCountSwitch);
-                }
-
-                std::fprintf(f, "}");
-            }
-
-            std::fprintf(f, "}}%s", i + 1 < WORLD_COUNT ? "," : "}}");
-        }
-    }
-    std::fprintf(f, "}");
-
     return true;
 }

@@ -39,4 +39,9 @@ namespace mkwcat {
         return !static_cast<__underlying_type(X_TYPE)>(a);                                         \
     }
 
+#define ENUM_ALLOW_PROMOTION(X_TYPE)                                                               \
+    constexpr __underlying_type(X_TYPE) operator+(X_TYPE a) {                                      \
+        return static_cast<__underlying_type(X_TYPE)>(a);                                          \
+    }
+
 } // namespace mkwcat

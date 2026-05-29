@@ -5,8 +5,6 @@
 
 #include "d_system/d_cyuukan.h"
 #include "framework/f_feature.h"
-#include <cstring>
-#include <memory>
 
 const PLAYER_TYPE_e dMj2dGame_c::scDefaultPlayerTypes[PLAYER_COUNT] = {
     PLAYER_TYPE_e::MARIO,       PLAYER_TYPE_e::LUIGI,     PLAYER_TYPE_e::YELLOW_TOAD,
@@ -47,11 +45,11 @@ void dMj2dGame_c::initialize() {
 
 [[nsmbw(0x800CE110)]]
 void dMj2dGame_c::versionUpdate() {
-    if (mRevision.mMajor != SAVE_REVISION_MAJOR) {
+    if (mRevision.mMajor < SAVE_REVISION_MAJOR) {
         initialize();
     }
 
-    mRevision.mMajor = SAVE_REVISION_MAJOR;
+    mRevision = {SAVE_REVISION_MAJOR, SAVE_REVISION_MINOR};
 }
 
 [[nsmbw(0x800CE150)]]
@@ -158,7 +156,7 @@ int dMj2dGame_c::getStaffCreditHighScore() {
 void dMj2dGame_c::onOtehonMenuOpenFlag(
     int movie
 ) {
-    mOtehonMenuOpen.setBit(movie);
+    mOtehonMenuOpen[movie] = true;
 }
 
 [[nsmbw(0x800CE250)]]

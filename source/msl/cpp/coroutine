@@ -1,0 +1,171 @@
+#pragma once
+
+#include <compare>
+#include <type_traits>
+
+namespace std {
+
+template <class R, class... ArgTypes> struct coroutine_traits {};
+
+template <class Promise = void> struct coroutine_handle;
+
+template <> struct coroutine_handle<void> {
+    constexpr coroutine_handle() noexcept = default;
+
+    constexpr coroutine_handle(
+        nullptr_t
+    ) noexcept {}
+
+    coroutine_handle& operator=(
+        nullptr_t
+    ) noexcept {
+        m_ptr = nullptr;
+        return *this;
+    }
+
+    constexpr void* address() const noexcept { return m_ptr; }
+
+    static constexpr coroutine_handle from_address(
+        void* addr
+    ) {
+        coroutine_handle result;
+        result.m_ptr = addr;
+        return result;
+    }
+
+    constexpr explicit operator bool() const noexcept { return !!m_ptr; }
+
+    bool done() const { return __builtin_coro_done(m_ptr); }
+
+    void operator()() const { return resume(); }
+
+    void resume() const { __builtin_coro_resume(m_ptr); }
+
+    void destroy() const { __builtin_coro_destroy(m_ptr); }
+
+private:
+    void* m_ptr;
+};
+
+template <class Promise> struct coroutine_handle {
+    constexpr coroutine_handle() noexcept = default;
+
+    constexpr coroutine_handle(
+        nullptr_t
+    ) noexcept {}
+
+    static coroutine_handle from_promise(
+        Promise& promise
+    ) {
+        return from_address(
+            __builtin_coro_promise(__builtin_addressof(promise, alignof(Promise), true))
+        );
+    }
+
+    coroutine_handle& operator=(
+        nullptr_t
+    ) noexcept {
+        m_ptr = nullptr;
+        return *this;
+    }
+
+    constexpr void* address() const noexcept { return m_ptr; }
+
+    static constexpr coroutine_handle from_address(
+        void* addr
+    ) {
+        coroutine_handle result;
+        result.m_ptr = addr;
+        return result;
+    }
+
+    constexpr operator coroutine_handle<>() const noexcept {
+        return coroutine_handle<>::from_address(address());
+    }
+
+    constexpr explicit operator bool() const noexcept { return !!m_ptr; }
+
+    bool done() const { return __builtin_coro_done(m_ptr); }
+
+    void operator()() const { return resume(); }
+
+    void resume() const { __builtin_coro_resume(m_ptr); }
+
+    void destroy() const { __builtin_coro_destroy(m_ptr); }
+
+    Promise& promise() const {
+        return *static_cast<Promise*>(__builtin_coro_promise(m_ptr, alignof(Promise), false));
+    }
+
+private:
+    void* m_ptr;
+};
+
+constexpr bool operator==(
+    coroutine_handle<> x, coroutine_handle<> y
+) noexcept {
+    return x.address() == y.address();
+}
+
+constexpr strong_ordering operator<=>(
+    coroutine_handle<> x, coroutine_handle<> y
+) noexcept {
+    return x.address() <=> y.address();
+}
+
+struct noop_coroutine_promise {};
+
+using noop_coroutine_handle = coroutine_handle<noop_coroutine_promise>;
+
+template <> struct coroutine_handle<noop_coroutine_promise> {
+    friend noop_coroutine_handle noop_coroutine() noexcept;
+
+private:
+    coroutine_handle() noexcept { m_ptr = __builtin_coro_noop(); }
+
+public:
+    constexpr void* address() const noexcept { return m_ptr; }
+
+    constexpr operator coroutine_handle<>() const noexcept {
+        return coroutine_handle<>::from_address(address());
+    }
+
+    constexpr explicit operator bool() const noexcept { return true; }
+
+    constexpr bool done() const { return false; }
+
+    constexpr void operator()() const {}
+
+    constexpr void resume() const {}
+
+    constexpr void destroy() const {}
+
+private:
+    void* m_ptr;
+};
+
+inline noop_coroutine_handle noop_coroutine() noexcept {
+    return noop_coroutine_handle();
+}
+
+struct suspend_never {
+    constexpr bool await_ready() const noexcept { return true; }
+
+    constexpr void await_suspend(
+        coroutine_handle<>
+    ) const noexcept {}
+
+    constexpr void await_resume() const noexcept {}
+};
+
+struct suspend_always {
+    constexpr bool await_ready() const noexcept { return false; }
+
+    constexpr void await_suspend(
+        coroutine_handle<>
+    ) const noexcept {}
+
+    constexpr void await_resume() const noexcept {}
+};
+
+} // namespace std

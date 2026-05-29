@@ -1,12 +1,14 @@
 #pragma once
 
 #include "component/c_json.h"
+#include "d_mj2d_data.h"
 #include "d_mj2d_game.h"
 #include "d_mj2d_header.h"
 #include <cstdio>
 #include <variant>
 
-class dMj2dJsonHandler_c final : public cJsonParser_c::HandlerIf_c {
+class dMj2dJsonHandler_c final : public cJson::HandlerIf_c
+{
 private:
     // Instance Methods
     // ^^^^^^
@@ -27,7 +29,7 @@ public:
     bool value(s64 number) override;
 
     bool rawNumber(
-        const char* str, std::size_t length, bool copy
+        std::string_view str
     ) override {
         return mFlags & UNKNOWN_OBJECT;
     }
@@ -38,9 +40,9 @@ public:
         return mFlags & UNKNOWN_OBJECT;
     }
 
-    bool string(const char* str, std::size_t length, bool copy) override;
+    bool string(std::string_view str) override;
 
-    bool key(const char* str, std::size_t length, bool copy) override;
+    bool key(std::string_view str) override;
 
     bool startObject() override;
     bool endObject() override;
@@ -88,7 +90,7 @@ private:
         dMj2dGame_c::PLAYER_CREATE_ITEM_u8_e*, dMj2dGame_c::PLAYER_MODE_u8_e*,
         dMj2dGame_c::PLAYER_TYPE_u8_e*, PLAYER_TYPE_e*, STAGE_e*, StageNo_s*,
         dMj2dGame_c::WORLD_COMPLETION_e*, PATH_DIRECTION_e*, dMj2dGame_c::COURSE_COMPLETION_e*,
-        cBitmask_c<HINT_MOVIE_COUNT>*, dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>;
+        std::bitset<HINT_MOVIE_COUNT>*, dMj2dGame_c::PIPE_RANDOMIZER_MODE_e*>;
 
 private:
     // Instance Variables
@@ -112,4 +114,21 @@ public:
     // ^^^^^^
 
     static bool writeJSON(std::FILE* f);
+
+private:
+    static const char* getPlayerTypeString(PLAYER_TYPE_e type);
+    static bool marshalPlayerType(cJson::Writer_c& w, PLAYER_TYPE_e type, bool null = true);
+    static bool marshalStockItem(cJson::Writer_c& w, const dMj2dGame_c& g);
+    static bool
+    marshalPlayCounts(cJson::Writer_c& w, const u16 (&counts)[WORLD_COUNT][STAGE_COUNT]);
+    static bool marshalAvailableWorlds(cJson::Writer_c& w, const dMj2dHeader_c& header);
+    static bool marshalFileData(cJson::Writer_c& w, const dMj2dData_c* data);
+    static bool marshalPlayerData(cJson::Writer_c& w, const dMj2dGame_c& g, PLAYER_TYPE_e player);
+    static bool marshalPlayerData(cJson::Writer_c& w, const dMj2dGame_c& g);
+    static bool marshalWorldData(cJson::Writer_c& w, const dMj2dGame_c& g);
+    static bool marshalWorldAmbushEnemyData(cJson::Writer_c& w, const dMj2dGame_c& g, int world);
+    static bool marshalWorldCourseData(cJson::Writer_c& w, const dMj2dGame_c& g, int world);
+
+    template <std::size_t N>
+    static bool marshalBitIndices(cJson::Writer_c& w, const std::bitset<N>& bits);
 };

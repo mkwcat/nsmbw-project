@@ -1,20 +1,111 @@
 #pragma once
 
-#include <type_traits>
+namespace std {
 
-namespace std
-{
-
-template <class T, class U>
-concept same_as = std::is_same_v<T, U>;
-
-template <class T>
-concept integral = std::is_integral_v<T>;
-
-template <class T>
-concept unsigned_integral = std::integral<T> && !std::is_signed_v<T>;
+// Language-related concepts
+// ^^^^^^
 
 template <class T, class U>
-concept convertible_to = std::is_convertible_v<T, U>;
+concept same_as = __is_same(T, U);
+
+template <class Derived, class Base>
+concept derived_from = __is_base_of(Base, Derived);
+
+template <class From, class To>
+concept convertible_to = __is_convertible(From, To);
+
+// common_reference_with
+// common_with
+
+// Arithmetic concepts
+// ^^^^^^
+
+template <class T>
+concept integral = __is_integral(T);
+template <class T>
+concept signed_integral = integral<T> && __is_signed(T);
+template <class T>
+concept unsigned_integral = integral<T> && !__is_signed(T);
+template <class T>
+concept floating_point = __is_floating_point(T);
+
+template <class LHS, class RHS>
+concept assignable_from = __is_assignable(LHS, RHS);
+
+// ranges::swap
+// swappable
+// swappable_with
+
+template <class T>
+concept destructible = __is_nothrow_destructible(T);
+
+template <class T, class... Args>
+concept constructible_from = destructible<T> && __is_constructible(T, Args...);
+
+template <class T>
+concept default_initializable = constructible_from<T> && requires {
+    T{};
+    ::new T;
+};
+
+template <class T>
+concept move_constructible = constructible_from<T, T> && convertible_to<T, T>;
+
+template <class T>
+concept copy_constructible =
+    move_constructible<T> && constructible_from<T, T&> && convertible_to<T&, T> &&
+    constructible_from<T, const T&> && convertible_to<const T&, T> &&
+    constructible_from<T, const T> && convertible_to<const T, T>;
+
+// Comparison concepts
+// ^^^^^^
+
+namespace __ {
+template <class T>
+concept boolean_testable_impl = convertible_to<T, bool>;
+
+template <class T>
+concept boolean_testable = boolean_testable_impl<T> && requires(T&& t) {
+    { !static_cast<T&&>(t) } -> boolean_testable_impl;
+};
+
+template <class T, class U>
+concept weakly_equality_comparable_with =
+    requires(const __remove_reference_t(T)& t, const __remove_reference_t(U)& u) {
+        { t == u } -> boolean_testable;
+        { t != u } -> boolean_testable;
+        { u == t } -> boolean_testable;
+        { u != t } -> boolean_testable;
+    };
+
+} // namespace __
+
+template <class T>
+concept equality_comparable = __::weakly_equality_comparable_with<T, T>;
+
+// Note: not entirely standard compliant
+template <class T, class U>
+concept equality_comparable_with = __::weakly_equality_comparable_with<T, U>;
+
+// totally_ordered
+// totally_ordered_with
+
+// Object concepts
+// ^^^^^^
+
+// movable
+// copyable
+// semiregular
+// regular
+
+// Callable concepts
+// ^^^^^^
+
+// invocable
+// regular_invocable
+// predicate
+// relation
+// equivalence_relation
+// strict_weak_order
 
 } // namespace std

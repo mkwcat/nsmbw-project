@@ -13,7 +13,8 @@ target_sources(project PRIVATE
 
 # NSMBW          .text:  0x802DE824 - 0x802DE904
     buffer_io.c
-
+# NSMBW          .text:  0x802DE904 - 0x802DEC0C
+    direct_io.c
 # NSMBW          .text:  0x802DEC0C - 0x802DEDFC
     file_io.c
 

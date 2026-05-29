@@ -179,7 +179,7 @@ int dNandThread_c::load() {
     }
 
     dMj2dJsonHandler_c handler;
-    bool               success = cJsonParser_c::parse(
+    bool               success = cJson::Parser_c::parse(
         &handler, reinterpret_cast<char*>(l_nandBuf), sizeof(l_nandBuf),
         [](void* buffer, std::size_t size, void* userData) -> int {
             NANDResult result = NANDRead(&l_fileInfo, reinterpret_cast<u8*>(buffer), size);
@@ -194,6 +194,7 @@ int dNandThread_c::load() {
 
     setNandError(NANDClose(&l_fileInfo));
     if (!success) {
+        OS_REPORT("Failed to load JSON save data\n");
         std::memset(static_cast<void*>(&l_tmpSave), 0, sizeof(l_tmpSave));
         return 1;
     }

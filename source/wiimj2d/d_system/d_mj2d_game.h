@@ -1,5 +1,6 @@
 #pragma once
 
+#include <bitset>
 #include <component/c_bitmask.h>
 #include <mkwcat/Enum.h>
 
@@ -61,6 +62,7 @@ enum class PLAYER_TYPE_e {
 #define CHARACTER_COUNT 8
 #define PLAYER_COUNT 8 // Same as CHARACTER_COUNT
 #define ORIGINAL_PLAYER_COUNT 4
+ENUM_ALLOW_PROMOTION(PLAYER_TYPE_e);
 
 /**
  * Various flags applied to the player on occasion.
@@ -90,6 +92,8 @@ enum class PLAYER_CREATE_ITEM_e {
     RESCUE_TOAD = 3_bit,
 };
 
+ENUM_ALLOW_BITWISE(PLAYER_CREATE_ITEM_e);
+
 /**
  * The identifiers for each powerup.
  * @unofficial
@@ -106,6 +110,7 @@ enum class PLAYER_MODE_e {
 };
 
 #define PLAYER_MODE_COUNT 7
+ENUM_ALLOW_PROMOTION(PLAYER_MODE_e);
 
 /**
  * Stock item identifiers.
@@ -123,6 +128,7 @@ enum class STOCK_ITEM_e : u8 {
 };
 
 #define STOCK_ITEM_COUNT 7
+ENUM_ALLOW_PROMOTION(STOCK_ITEM_e);
 
 enum class ITEM_e : u8 {
     MUSHROOM         = 0,
@@ -136,6 +142,8 @@ enum class ITEM_e : u8 {
     PENGUIN_SUIT     = 14,
     COIN2            = 16,
 };
+
+ENUM_ALLOW_PROMOTION(ITEM_e);
 
 /**
  * The numbers corresponding to each level type.
@@ -193,6 +201,7 @@ enum class STAGE_e : u8 {
 };
 
 #define STAGE_COUNT 42
+ENUM_ALLOW_PROMOTION(STAGE_e);
 
 /**
  * The numbers corresponding to each world.
@@ -218,6 +227,7 @@ enum class WORLD_e : u8 {
 
 #define WORLD_COUNT 10
 #define ORIGINAL_WORLD_COUNT 10
+ENUM_ALLOW_PROMOTION(WORLD_e);
 
 #define COLLECTION_COIN_COUNT 3
 
@@ -226,7 +236,7 @@ enum class WORLD_e : u8 {
 #define MAX_SCORE 999999999
 
 #define SAVE_REVISION_MAJOR 14
-#define SAVE_REVISION_MINOR 0
+#define SAVE_REVISION_MINOR 1
 
 enum PATH_DIRECTION_e : s8 {
     NORMAL  = 0,
@@ -303,7 +313,8 @@ struct StageNo_s {
  */
 class alignas(
     32
-) dMj2dGame_c {
+) dMj2dGame_c
+{
     /* ORIGINAL SIZE: 0x980 */
 
     friend class dSaveMng_c;
@@ -486,6 +497,7 @@ public:
      * Deletes the holder.
      */
     constexpr ~dMj2dGame_c() = default;
+
     /**
      * 0x800CDFC0
      * Initializes the slot data.
@@ -748,6 +760,12 @@ public:
      */
     u8 getIbaraNow() const;
 
+    bool isFlag(
+        GAME_COMPLETION_e flag
+    ) const {
+        return !!(static_cast<u8>(mGameCompletion) & static_cast<u8>(flag));
+    }
+
     bool isEmpty() const { return u8(mGameCompletion) & u8(GAME_COMPLETION_e::SAVE_EMPTY); }
 
     void setEmpty() { mGameCompletion = GAME_COMPLETION_e::SAVE_EMPTY; }
@@ -898,7 +916,7 @@ private:
     /**
      * The hint movie bought status for each movie.
      */
-    cBitmask_c<HINT_MOVIE_COUNT> mOtehonMenuOpen;
+    std::bitset<HINT_MOVIE_COUNT> mOtehonMenuOpen;
     /* 0x6FC */ // bool mOtehonMenuOpen[HINT_MOVIE_COUNT];
 
     /**
@@ -962,7 +980,6 @@ public:
     friend class dSaveMng_c;
 };
 
-ENUM_ALLOW_BITWISE(PLAYER_CREATE_ITEM_e);
 ENUM_ALLOW_BITWISE(dMj2dGame_c::COURSE_COMPLETION_e);
 ENUM_ALLOW_BITWISE(dMj2dGame_c::WORLD_COMPLETION_e);
 ENUM_ALLOW_BITWISE(dMj2dGame_c::GAME_COMPLETION_e);
