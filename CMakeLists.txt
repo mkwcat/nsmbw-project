@@ -188,7 +188,8 @@ add_custom_command(
     OUTPUT "${OUTPUT_ARCHIVE}"
     DEPENDS ${DST_DVD_FILES}
     COMMENT "Packing archive mkwcat-nsmbw.arc"
-    COMMAND python ${WUJ5} encode "${BUILD_ARCHIVE}" "--output=${OUTPUT_ARCHIVE}"
+    COMMAND python ${WUJ5} encode "${BUILD_ARCHIVE}" "--output=${OUTPUT_ARCHIVE}" --retained ${DST_DVD_FILES}
+    VERBATIM
 )
 
 add_custom_target(mkwcat_nsmbw_arc
