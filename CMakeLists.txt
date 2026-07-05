@@ -114,6 +114,7 @@ set(GENSMAP "${CMAKE_SOURCE_DIR}/tools/generate_symbol_map.py")
 set(INSERTXML "${CMAKE_SOURCE_DIR}/tools/process_xml.py")
 
 set(BUILD_ARCHIVE "${CMAKE_BINARY_DIR}/mkwcat-nsmbw.arc.d")
+set(OUTPUT_ARCHIVE "${CMAKE_BINARY_DIR}/riivolution/mkwcat-nsmbw.arc")
 
 set(imp_outputs)
 set(imp_args)
@@ -183,9 +184,14 @@ endforeach()
 
 add_subdirectory(riivolution)
 
-add_custom_target(mkwcat-nsmbw.arc
-    ALL
+add_custom_command(
+    OUTPUT "${OUTPUT_ARCHIVE}"
     DEPENDS ${DST_DVD_FILES}
     COMMENT "Packing archive mkwcat-nsmbw.arc"
-    COMMAND python ${WUJ5} encode "${BUILD_ARCHIVE}" "--output=${CMAKE_BINARY_DIR}/riivolution/mkwcat-nsmbw.arc"
+    COMMAND python ${WUJ5} encode "${BUILD_ARCHIVE}" "--output=${OUTPUT_ARCHIVE}"
+)
+
+add_custom_target(mkwcat_nsmbw_arc
+    ALL
+    DEPENDS "${OUTPUT_ARCHIVE}"
 )
