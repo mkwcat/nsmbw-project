@@ -35,6 +35,7 @@ using WriteMethod = bool (*)(const void* buffer, std::size_t size, void* userDat
 
 class Parser_c
 {
+public:
     constexpr Parser_c(
         char* buffer, std::size_t bufferSize, ReadMethod read, void* userData
     )
@@ -43,7 +44,6 @@ class Parser_c
         , mRead(read)
         , mUserData(userData) {}
 
-public:
     static bool parse(
         HandlerIf_c* handler, char* buffer, std::size_t bufferSize, ReadMethod read, void* userData
     );
@@ -101,29 +101,34 @@ public:
 
     token_s next();
 
-private:
+protected:
     int take();
     int peekRaw();
     int peek();
     int consume();
     bool error();
 
+private:
     char* const       mBuffer;
     const std::size_t mBufferSize;
     std::size_t       mBufferAmount = 0;
     std::size_t       mTotalSize    = 0;
     std::size_t       mBufferPos    = 0;
-    bool              mError        = false;
-    bool              mEof          = false;
-    bool              mNeedComma    = false;
-    int               mPeekChar     = -1;
-    int               mRawPeekChar  = -1;
-    const ReadMethod  mRead;
-    void* const       mUserData;
-    char              mTempStringBuffer[512];
+
+protected:
+    bool mError = false;
+    bool mEof   = false;
+
+private:
+    bool             mNeedComma   = false;
+    int              mPeekChar    = -1;
+    int              mRawPeekChar = -1;
+    const ReadMethod mRead;
+    void* const      mUserData;
+    char             mTempStringBuffer[512];
 };
 
-class Writer_c final : public HandlerIf_c
+class Writer_c : public HandlerIf_c
 {
 public:
     constexpr Writer_c(
@@ -132,19 +137,19 @@ public:
         : mWrite(write)
         , mUserData(userData) {}
 
-    Writer_c(std::FILE* file);
+    explicit Writer_c(std::FILE* file);
 
-    bool null() override;
-    bool value(bool number) override;
-    bool value(s64 number) override;
-    bool value(double number) override;
-    bool rawNumber(std::string_view str) override;
-    bool string(std::string_view str) override;
-    bool key(std::string_view str) override;
-    bool startObject() override;
-    bool endObject() override;
-    bool startArray() override;
-    bool endArray() override;
+    bool null() final;
+    bool value(bool number) final;
+    bool value(s64 number) final;
+    bool value(double number) final;
+    bool rawNumber(std::string_view str) final;
+    bool string(std::string_view str) final;
+    bool key(std::string_view str) final;
+    bool startObject() final;
+    bool endObject() final;
+    bool startArray() final;
+    bool endArray() final;
 
     template <std::integral T>
     bool field(
@@ -231,7 +236,7 @@ public:
     token_s endArray() { return consume(token_type_e::array_end); }
 
     [[gnu::noinline]]
-    token_s value() {
+    token_s anyNumber() {
         if (!mToken) {
             mToken = next();
         }
@@ -243,7 +248,29 @@ public:
         return token;
     }
 
+    [[gnu::noinline]]
+    token_s anyValue() {
+        if (!mToken) {
+            mToken = next();
+        }
+        if (!mToken.is_key() && !mToken.is_object_start() && !mToken.is_object_end() &&
+            !mToken.is_array_start() && !mToken.is_array_end()) {
+            return {};
+        }
+        token_s token = mToken;
+        mToken        = {};
+        return token;
+    }
+
+    bool end() {
+        if (mEof) {
+            return !mToken;
+        }
+        return peek() < 0;
+    }
+
 private:
+    [[gnu::noinline]]
     token_s consume(
         token_type_e type
     ) {

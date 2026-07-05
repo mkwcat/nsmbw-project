@@ -69,6 +69,23 @@ std::FILE* mPipe_c::open(
     return *pipe;
 }
 
+int mPipe_c::readProc(
+    ::__file_handle file, u8* buff, std::size_t* count, ::__idle_proc idle_proc
+) {
+    if (file == 0 || buff == nullptr || count == nullptr || *count == 0) {
+        return -1;
+    }
+
+    mPipe_c* pipe   = reinterpret_cast<mPipe_c*>(file);
+    s32      length = pipe->mEggFile->readData(buff, *count, -1);
+    if (length < 0) {
+        *count = 0;
+        return -1;
+    }
+    *count = length;
+    return 0;
+}
+
 int mPipe_c::writeProc(
     ::__file_handle file, u8* buff, std::size_t* count, ::__idle_proc idle_proc
 ) {
@@ -83,7 +100,6 @@ int mPipe_c::writeProc(
         return -1;
     }
     *count = length;
-
     return 0;
 }
 

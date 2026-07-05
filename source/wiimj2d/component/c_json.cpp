@@ -10,6 +10,15 @@
 
 namespace cJson {
 
+namespace {
+bool writeToFile(
+    const void* buffer, std::size_t length, void* userData
+) {
+    std::FILE* const file = static_cast<std::FILE*>(userData);
+    return std::fwrite(buffer, sizeof(char), length, file) == length;
+}
+} // namespace
+
 [[gnu::noinline]]
 int Parser_c::take() {
     if (mRawPeekChar >= 0) {
@@ -368,15 +377,6 @@ Parser_c::token_s Parser_c::next() {
 
     return t;
 }
-
-namespace {
-bool writeToFile(
-    const void* buffer, std::size_t length, void* userData
-) {
-    std::FILE* const file = static_cast<std::FILE*>(userData);
-    return std::fwrite(buffer, sizeof(char), length, file) == length;
-}
-} // namespace
 
 Writer_c::Writer_c(
     std::FILE* file

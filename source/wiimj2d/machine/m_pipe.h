@@ -49,6 +49,8 @@ private:
     // ^^^^^^
 
     static int
+    readProc(::__file_handle file, u8* buff, std::size_t* count, ::__idle_proc idle_proc);
+    static int
     writeProc(::__file_handle file, u8* buff, std::size_t* count, ::__idle_proc idle_proc);
     static int closeProc(::__file_handle file);
 
