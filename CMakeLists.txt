@@ -111,7 +111,7 @@ set(MAKEREL "${CMAKE_SOURCE_DIR}/tools/make_rel.py")
 set(WUJ5 "${CMAKE_SOURCE_DIR}/tools/wuj5/wuj5.py")
 set(YAZ "${CMAKE_SOURCE_DIR}/tools/wuj5/yaz.py")
 set(GENSMAP "${CMAKE_SOURCE_DIR}/tools/generate_symbol_map.py")
-set(INSERTXML "${CMAKE_SOURCE_DIR}/tools/insert-xml.py")
+set(INSERTXML "${CMAKE_SOURCE_DIR}/tools/process_xml.py")
 
 set(BUILD_ARCHIVE "${CMAKE_BINARY_DIR}/mkwcat-nsmbw.arc.d")
 

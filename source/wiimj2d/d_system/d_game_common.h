@@ -63,7 +63,7 @@ void ScalePosForLayoutEffect(const mVec3_c&, bool);
 short CalculateTilt(int, float, float);
 
 bool CalculateTiltShoulder(
-    short* target_var, short target_value, short increment, s8 playerNo, short max
+    short* target_var, short target_value, short increment, int playerNo, short max
 );
 
 /* 0x800B3600 */
