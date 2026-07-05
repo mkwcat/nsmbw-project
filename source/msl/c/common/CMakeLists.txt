@@ -18,6 +18,9 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x802DEC0C - 0x802DEDFC
     file_io.c
 
+# NSMBW          .data:  0x80350FC0 - 0x803511B8
+    locale.c
+
 # NSMBW          .text:  0x802DF06C - 0x802DF264
     mbstring.c
 # NSMBW          .text:  0x802DF264 - 0x802DF3D4
