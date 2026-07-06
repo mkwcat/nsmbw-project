@@ -3,6 +3,9 @@
 # NSMBW          .text:  0x801A9E80 - 0x801B8B70
 #
 target_sources(project PRIVATE
+# NSMBW          .text:  0x801A9E80 - 0x801AB3C0
+    OS.c
+
 # NSMBW          .text:  0x801AC560 - 0x801ACC10
     OSCache.c
 
@@ -20,6 +23,8 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x801B2F60 - 0x801B3380
     OSMutex.c
 
+# NSMBW          .text:  0x801B3410 - 0x801B3E20
+    OSReset.c
 # NSMBW          .text:  0x801B3E20 - 0x801B48D0
     OSRtc.c
 

@@ -744,6 +744,7 @@ private:
 
     /* 0x010 */ TBuffer<GCController*>   mControllers;
     /* 0x01C */ std::array<PADStatus, 4> mPadStatus;
+    bool mEnabled;
 
 public:
     // Instance Methods

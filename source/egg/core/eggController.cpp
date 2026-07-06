@@ -375,8 +375,7 @@ void GCController::beginFrame(
     }
 }
 
-void GCController::endFrame() {
-}
+void GCController::endFrame() {}
 
 EGG_SINGLETON_IMPL(GCControllerMgr);
 
@@ -387,15 +386,26 @@ GCController* GCControllerMgr::getNthController(
 }
 
 GCControllerMgr::GCControllerMgr() {
+    bool enabled = true;
+    if (!::PADInit()) {
+        OS_REPORT("PAD initialization failed!! GameCube controllers will not be used\n");
+        enabled = false;
+    }
     mControllers.allocate(4);
     GCController* gcCtrl = new GCController[4]{0, 1, 2, 3};
     for (int i = 0; i < mControllers.mSize; i++) {
         mControllers(i) = gcCtrl + i;
     }
+    mEnabled = enabled;
 }
 
 void GCControllerMgr::beginFrame() {
     std::memset(mPadStatus.data(), 0, sizeof(mPadStatus));
+
+    if (!mEnabled) {
+        return;
+    }
+
     ::PADRead(mPadStatus.data());
 
     // OEM controllers have imperfections in their analog values
@@ -408,6 +418,10 @@ void GCControllerMgr::beginFrame() {
 }
 
 void GCControllerMgr::endFrame() {
+    if (!mEnabled) {
+        return;
+    }
+
     u32 mask = 0;
 
     for (int i = 0; i < mControllers.mSize; i++) {
@@ -458,8 +472,7 @@ void ClassicController::beginFrame(
     }
 }
 
-void ClassicController::endFrame() {
-}
+void ClassicController::endFrame() {}
 
 [[nsmbw(0x802BDFF0)]]
 ControllerRumbleMgr::ControllerRumbleMgr();
