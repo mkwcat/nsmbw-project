@@ -4,11 +4,9 @@
 #include <nw4r/ut/List.h>
 #include <revolution/dvd.h>
 
-namespace EGG
-{
+namespace EGG {
 
-class DvdFile : public File
-{
+class DvdFile : public File {
     SIZE_ASSERT(0xF4);
 
     /* 0x00 VTABLE 0x8034FF20 */
@@ -19,6 +17,14 @@ public:
 
     /* 0x802B7C40 */
     DvdFile();
+
+    /* +++ */
+    DvdFile(
+        const char* path
+    )
+        : DvdFile() {
+        open(path);
+    }
 
     /* VT+0x08 0x802B7C90 */
     virtual ~DvdFile();
@@ -62,7 +68,7 @@ public:
     FILL(0x08, 0x3C);
 
     /* 0x3C */ DVDFileInfo mFileInfo;
-    /* 0x78 */ DvdFile* mDvdFile; // Pointer to itself?
+    /* 0x78 */ DvdFile*    mDvdFile; // Pointer to itself?
 
     FILL(0x7C, 0xF4);
 

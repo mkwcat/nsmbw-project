@@ -4,12 +4,13 @@
 #include <concepts>
 #include <cstdio>
 #include <cstring>
+#include <egg/core/eggDvdFile.h>
+#include <span>
 #include <string_view>
 
 namespace cJson {
 
-class HandlerIf_c
-{
+class HandlerIf_c {
 public:
     virtual bool null() = 0;
 
@@ -33,8 +34,7 @@ public:
 using ReadMethod  = int (*)(void* buffer, std::size_t size, void* userData);
 using WriteMethod = bool (*)(const void* buffer, std::size_t size, void* userData);
 
-class Parser_c
-{
+class Parser_c {
 public:
     constexpr Parser_c(
         char* buffer, std::size_t bufferSize, ReadMethod read, void* userData
@@ -43,6 +43,8 @@ public:
         , mBufferSize(bufferSize)
         , mRead(read)
         , mUserData(userData) {}
+
+    ~Parser_c() {}
 
     static bool parse(
         HandlerIf_c* handler, char* buffer, std::size_t bufferSize, ReadMethod read, void* userData
@@ -128,8 +130,7 @@ private:
     char             mTempStringBuffer[512];
 };
 
-class Writer_c : public HandlerIf_c
-{
+class Writer_c : public HandlerIf_c {
 public:
     constexpr Writer_c(
         WriteMethod write, void* userData
@@ -210,9 +211,15 @@ private:
     std::size_t       mTotalSize   = 0;
 };
 
-class Reader_c : public Parser_c
-{
+class Reader_c : public Parser_c {
 public:
+    constexpr Reader_c(
+        char* buffer, std::size_t bufferSize, ReadMethod read, void* userData
+    )
+        : Parser_c(buffer, bufferSize, read, userData) {}
+
+    ~Reader_c() {}
+
     token_s key() { return consume(token_type_e::key); }
 
     token_s null() { return consume(token_type_e::null); }
@@ -286,6 +293,44 @@ private:
     }
 
     token_s mToken;
+};
+
+class DvdReader_c : public Reader_c {
+public:
+    DvdReader_c(
+        const char* path, std::span<char> buffer
+    )
+        : Reader_c(buffer.data(), buffer.size(), readCallback, this)
+        , mFile(path) {}
+
+    DvdReader_c(
+        const char* path
+    )
+        : DvdReader_c(path, {mBuffer, std::size(mBuffer)}) {}
+
+    ~DvdReader_c() {
+#ifndef __has_macintosh_dt_fix
+        mFile.~DvdFile();
+#endif
+    }
+
+private:
+    static int readCallback(
+        void* buffer, std::size_t size, void* userData
+    ) {
+        DvdReader_c* self   = static_cast<DvdReader_c*>(userData);
+
+        s32          result = self->mFile.readData(
+            buffer, std::min<s32>(size, self->mFile.getFileSize() - self->mFileOffset),
+            self->mFileOffset
+        );
+        self->mFileOffset += result;
+        return result;
+    }
+
+    EGG::DvdFile mFile;
+    s32          mFileOffset = 0;
+    alignas(32) char mBuffer[128];
 };
 
 } // namespace cJson

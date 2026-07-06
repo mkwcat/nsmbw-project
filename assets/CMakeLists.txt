@@ -9,7 +9,9 @@ set(DVD_FILES
     rels/d_project_K1.imp.szs
     rels/d_project_W1.imp.szs
     rels/d_project.SMAP
-    
+
+    Info/Version.json
+
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/blyt/characterChangeSelectContents_05.brlyt
     Layout/charaChangeSelectContents/charaChangeSelectContents.arc/arc/timg/Im_plofileMario_00.tpl
     Layout/continue/continue.arc/arc/anim/continue_05_colorRecover.brlan

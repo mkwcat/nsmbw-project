@@ -33,7 +33,7 @@ with open(args.elf_file_path, 'rb') as elf_file_stream:
             st_value = int(section_name[10:], 0)
         else:
             # where the module block happens to be allocated
-            st_value += 0x80B8E3B0
+            st_value += 0x80B8E3C0
             length = symbol.entry['st_size']
 
         symbol_name = symbol.name

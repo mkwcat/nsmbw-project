@@ -8,36 +8,32 @@
 #include <revolution/os.h>
 #include <wiimj2d/d_system/d_system.h>
 
-EXTERN_C_START
-
 // External init
 int main();
 int preinit(s32, void*);
 
 // Rel init
-void _prolog(s32, void*);
-void _epilog();
-void _unresolved();
+extern "C" void _prolog(s32, void*);
+extern "C" void _epilog();
+extern "C" void _unresolved();
 
 // Runtime init
-void __stack_chk_init(std::uintptr_t value);
-
-constexpr u32 THIS_MODULE_ID = 0x50414C41; // 'PALA'
+extern "C" void __stack_chk_init(std::uintptr_t value);
 
 using VoidFunction = void (*)();
-extern VoidFunction _ctors[];
-extern VoidFunction _ctors_end[];
+extern "C" VoidFunction               _ctors[];
+extern "C" VoidFunction               _ctors_end[];
 
-extern mkwcat::Attribute::Entry _MRel_replace_array[];
-extern mkwcat::Attribute::Entry _MRel_replace_array_end[];
+extern "C" mkwcat::Attribute::Entry   _MRel_replace_array[];
+extern "C" mkwcat::Attribute::Entry   _MRel_replace_array_end[];
 
-extern mkwcat::Attribute::Entry _MRel_extern_array[];
-extern mkwcat::Attribute::Entry _MRel_extern_array_end[];
+extern "C" mkwcat::Attribute::Entry   _MRel_extern_array[];
+extern "C" mkwcat::Attribute::Entry   _MRel_extern_array_end[];
 
-extern mkwcat::Relocate::Entry<1> _MRel_patch_references_array[];
-extern mkwcat::Relocate::Entry<1> _MRel_patch_references_array_end[];
+extern "C" mkwcat::Relocate::Entry<1> _MRel_patch_references_array[];
+extern "C" mkwcat::Relocate::Entry<1> _MRel_patch_references_array_end[];
 
-#define HID0 1008
+#define HID0      1008
 #define HID0_ICFI (1 << 31 >> 20)
 #define HID0_DCFA (1 << 31 >> 25)
 static void __flush_entire_cache(bool interrupts = OSDisableInterrupts()) ASM_METHOD(
@@ -73,19 +69,20 @@ static void __flush_entire_cache(bool interrupts = OSDisableInterrupts()) ASM_ME
 );
 
 [[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
-void _prolog(s32 param1, void* param2)
-{
+void _prolog(
+    s32 param1, void* param2
+) {
     __stack_chk_init(OSGetTick());
 
-    auto codeRegion = dSys_c::findCodeRegion();
+    auto codeRegion                                                     = dSys_c::findCodeRegion();
     *const_cast<volatile dSys_c::CODE_REGION_e*>(&dSys_c::m_codeRegion) = codeRegion;
 
-    int interrupt = OSDisableInterrupts();
+    int interrupt                                                       = OSDisableInterrupts();
 
     // Reference patches
     for (auto repl = _MRel_patch_references_array; repl != _MRel_patch_references_array_end;) {
         for (u32 i = 0; i < repl->count; i++) {
-            u32 offset = reinterpret_cast<u32>(repl->dest.addr) + repl->references[i].addend;
+            u32 offset        = reinterpret_cast<u32>(repl->dest.addr) + repl->references[i].addend;
             volatile u16* ptr = static_cast<volatile u16*>(repl->references[i].address);
             if (ptr == nullptr) {
                 continue;
@@ -99,8 +96,8 @@ void _prolog(s32 param1, void* param2)
                 offset = (offset + 0x8000) >> 16;
             } else {
                 OSPanic(
-                  __FILE_NAME__, __LINE__, "Unsupported relocation type %d",
-                  repl->references[i].type
+                    __FILE_NAME__, __LINE__, "Unsupported relocation type %d",
+                    repl->references[i].type
                 );
             }
 
@@ -128,8 +125,8 @@ void _prolog(s32 param1, void* param2)
          repl != _MRel_replace_array_end; ++repl) {
         if (repl->addr == nullptr) {
             OS_REPORT(
-              "WARNING: Skipping replace patch #%ld with null address (prev %p)\n",
-              static_cast<s32>(repl - _MRel_replace_array), static_cast<void*>((repl - 1)->addr)
+                "WARNING: Skipping replace patch #%ld with null address (prev %p)\n",
+                static_cast<s32>(repl - _MRel_replace_array), static_cast<void*>((repl - 1)->addr)
             );
             continue;
         }
@@ -158,16 +155,11 @@ void _prolog(s32 param1, void* param2)
 }
 
 [[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
-void _epilog()
-{
-}
+void _epilog() {}
 
 [[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
-void _unresolved()
-{
+void _unresolved() {
     // Infinite loop
     while (true) {
     }
 }
-
-EXTERN_C_END

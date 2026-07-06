@@ -5,6 +5,7 @@ target_sources(project PRIVATE
     d_base_dump.cpp
     d_exception.cpp
     d_nextgoto_list.cpp
+    d_project.cpp
 )
 
 set_property(SOURCE d_base_dump.cpp

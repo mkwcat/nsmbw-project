@@ -5,8 +5,7 @@
 #include <nw4r/ut/Color.h>
 #include <revolution/arc.h>
 
-class dSys_c
-{
+class dSys_c {
 public:
     // Constants and Types
     // ^^^^^^
@@ -23,9 +22,6 @@ public:
     /* 0x800E4920 */
     static void setFrameRate(u8 rate);
 
-    static void preCModuleInit(s32 arcEntryNum, ARCHandle* arcHandle);
-    static void initCModule();
-
     static CODE_REGION_e findCodeRegion();
 
 public:
@@ -36,7 +32,7 @@ public:
     static EGG::ExpHeap* ms_RootHeapMem1;
 
     /* 0x8042A374 */
-    static EGG::ExpHeap* ms_RootHeapMem2;
+    static EGG::ExpHeap*       ms_RootHeapMem2;
 
     static const CODE_REGION_e m_codeRegion;
 };

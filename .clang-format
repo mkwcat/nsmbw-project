@@ -14,22 +14,27 @@ AlignConsecutiveDeclarations:
   AcrossEmptyLines: true
   AcrossComments: false
   AlignFunctionDeclarations: false
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: true
   AcrossComments: true
-AllowShortFunctionsOnASingleLine: InlineOnly
+AlignEscapedNewlines: DontAlign
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortLambdasOnASingleLine: None
 AttributeMacros:
 BasedOnStyle: LLVM
-BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: true
   AfterControlStatement: Never
   AfterEnum: false
   AfterExternBlock: false
-  AfterFunction: false
-  AfterNamespace: false
+  AfterFunction: true
+  AfterNamespace: true
   AfterObjCDeclaration: false
   AfterStruct: false
   AfterUnion: false
@@ -41,9 +46,10 @@ BraceWrapping:
   SplitEmptyFunction: false
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
-BreakAfterAttributes: Always
+BreakAfterAttributes: Leave
 BreakConstructorInitializers: BeforeComma
 BreakFunctionDefinitionParameters: true
+BreakTemplateDeclarations: Yes
 ColumnLimit: 100
 CommentPragmas: ''
 EnumTrailingComma: Insert

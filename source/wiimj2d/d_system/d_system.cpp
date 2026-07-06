@@ -3,16 +3,6 @@
 
 #include "d_system.h"
 
-#include "d_player/d_s_boot.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_info.h"
-#include "d_system/d_nand_thread.h"
-#include "d_system/d_remocon_mng.h"
-#include "d_system/d_save_manager.h"
-#include "machine/m_dvd.h"
-#include "machine/m_heap.h"
-#include "machine/m_pad.h"
-#include "sound/SndAudioMgr.h"
 #include <egg/core/eggController.h>
 #include <revolution/dvd.h>
 #include <revolution/pad.h>
@@ -21,7 +11,7 @@
 EGG::ExpHeap* dSys_c::ms_RootHeapMem1;
 
 [[nsmbw_data(0x8042A374)]]
-EGG::ExpHeap* dSys_c::ms_RootHeapMem2;
+EGG::ExpHeap*               dSys_c::ms_RootHeapMem2;
 
 const dSys_c::CODE_REGION_e dSys_c::m_codeRegion = findCodeRegion();
 
@@ -54,8 +44,8 @@ EXTERN_SYMBOL(0x800E49C0, "create__6dSys_cFv");
 EXTERN_SYMBOL(0x800E4C40, "setPosParam__Q23EGG14CoreControllerFff");
 
 EXTERN_SYMBOL(
-  0x800E4C50, "initialize__Q33EGG126TSystem<Q23EGG5Video,Q23EGG12AsyncDisplay,Q23EGG10XfbManager,"
-              "Q23EGG14SimpleAudioMgr,Q23EGG12SceneManager,Q23EGG12ProcessMeter>13ConfigurationFv"
+    0x800E4C50, "initialize__Q33EGG126TSystem<Q23EGG5Video,Q23EGG12AsyncDisplay,Q23EGG10XfbManager,"
+                "Q23EGG14SimpleAudioMgr,Q23EGG12SceneManager,Q23EGG12ProcessMeter>13ConfigurationFv"
 );
 
 EXTERN_SYMBOL(0x800E4EC0, "myDylinkInitPhase_0__22@unnamed@d_system_cpp@FPv");
@@ -66,8 +56,7 @@ EXTERN_SYMBOL(0x800E4F20, "myDylinkInitPhase_4__22@unnamed@d_system_cpp@FPv");
 
 EXTERN_SYMBOL(0x800E4F50, "execute__6dSys_cFv");
 
-namespace dSystem
-{
+namespace dSystem {
 
 EXTERN_SYMBOL(0x800E50C0, "createEffectManagerPhase1__7dSystemFPv");
 
@@ -85,8 +74,7 @@ EXTERN_SYMBOL(0x800E53E0, "fixHeaps__7dSystemFv");
 
 } // namespace dSystem
 
-dSys_c::CODE_REGION_e dSys_c::findCodeRegion()
-{
+dSys_c::CODE_REGION_e dSys_c::findCodeRegion() {
     switch (*reinterpret_cast<volatile u8*>(0x8000423A)) {
     case 0xFF:
         // PAL (P)
@@ -127,62 +115,6 @@ dSys_c::CODE_REGION_e dSys_c::findCodeRegion()
     }
 
     return CODE_REGION_e::Error;
-}
-
-void dSys_c::preCModuleInit(s32 arcEntryNum, ARCHandle* arcHandle)
-{
-    // Unlock root heaps
-    ms_RootHeapMem1->mFlags.resetBit(0);
-    ms_RootHeapMem2->mFlags.resetBit(0);
-
-    __DVDEXInit(arcEntryNum, arcHandle);
-}
-
-static constexpr auto l_asd_info = std::to_array<mDvd::UncompressInfo_c*>({
-  &mDvd::s_UncompressInfoSZS,
-  &mDvd::s_UncompressInfoLZ,
-});
-
-void dSys_c::initCModule()
-{
-    mHeap::ScopeHeap_c scope{0};
-
-    EGG::GCControllerMgr::createInstance();
-    EGG::CoreControllerMgr::instance()->initClassic();
-
-    mPad::create();
-
-    mDvd::initAutoStreamDecompInfo(l_asd_info.begin(), l_asd_info.end());
-
-    dRemoconMng_c::m_instance = new dRemoconMng_c(dRemoconMng_c::m_instance);
-
-    dNandThread_c::reinitialize();
-    dSaveMng_c::m_instance->refresh();
-
-    dInfo_c::m_instance = new dInfo_c(dInfo_c::m_instance);
-
-    daPyMng_c::initGame();
-
-    SndAudioMgr::sInstance->loadKinopicoSound();
-
-    ms_RootHeapMem1->mFlags.setBit(0);
-    ms_RootHeapMem2->mFlags.setBit(0);
-
-    dScBoot_c::m_instance->mLoadedSceneSnd = true;
-}
-
-extern "C" int preinit(s32 param1, void* param2)
-{
-    dSys_c::preCModuleInit(param1, reinterpret_cast<ARCHandle*>(param2));
-
-    return 0;
-}
-
-extern "C" int main()
-{
-    dSys_c::initCModule();
-
-    return 0;
 }
 
 EXTERN_SYMBOL(0x800E5440, "__sinit_\\d_system_cpp");
