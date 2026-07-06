@@ -7,8 +7,7 @@
 
 EXTERN_C_START
 
-[[nsmbw_data(0xCD006400)]]
-/* static */ volatile u32 __SIRegs[0x100];
+#define __SIRegs ((volatile u32*) 0xCD006400)
 
 [[nsmbw_data(0x803402D0)]]
 /* static */ SIControl Si{};
@@ -50,8 +49,8 @@ u32 SIGetStatus(
     s32 chan
 ) {
     BOOL enabled;
-    u32 sr;
-    int chanShift;
+    u32  sr;
+    int  chanShift;
 
     enabled   = OSDisableInterrupts();
     sr        = __SIRegs[SI_STATUS_IDX];
@@ -94,7 +93,7 @@ u32 SIEnablePolling(
     u32 poll
 ) {
     BOOL enabled;
-    u32 en;
+    u32  en;
 
     ASSERTMSG((poll & 0x0FFFFFFF) == 0, "SIEnablePolling(): invalid chan bit(s).");
     if (poll == 0) {
@@ -179,7 +178,7 @@ u32 SIGetTypeAsync(
     s32 chan, SITypeCallback callback
 ) {
     BOOL enabled;
-    u32 type;
+    u32  type;
 
     enabled = OSDisableInterrupts();
     type    = SIGetType(chan);
