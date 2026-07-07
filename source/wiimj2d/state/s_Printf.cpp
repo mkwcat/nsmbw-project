@@ -65,15 +65,14 @@ void OSPanic(
         );
     }
 
-    bool first = true;
-    for (void** stack = dException_c::checkStackAddr(__builtin_frame_address(0)); stack != nullptr;
-         stack        = dException_c::checkStackAddr(stack[0])) {
-        if (first) {
+    int count = 0;
+    for (void** stack = dException_c::checkStackAddr(__builtin_frame_address(0));
+         stack != nullptr && count < 20; stack = dException_c::checkStackAddr(stack[0]), count++) {
+        if (count == 0) {
             n += std::snprintf(
                 report + n, sizeof(report) - n, "0x%08x: 0x%08x  ----------\n",
                 reinterpret_cast<unsigned>(stack), reinterpret_cast<unsigned>(stack[0])
             );
-            first = false;
         } else {
             n += std::snprintf(
                 report + n, sizeof(report) - n, "0x%08x: 0x%08x  0x%08x\n",

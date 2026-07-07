@@ -10,6 +10,8 @@
 #include "nw4r/db/db_console.h"
 #include "nw4r/db/db_exception.h"
 #include "revolution/os/OSThread.h"
+#include <algorithm>
+#include <array>
 #include <cstdio>
 #include <egg/util/eggException.h>
 #include <iterator>
@@ -281,22 +283,27 @@ void dException_c::printTrace(
 ) {
     std::fprintf(file, "Address:     Back Chain  LR Save\r\n");
 
-    bool first = true;
-    for (void** stack = checkStackAddr(stackPtr); stack != nullptr;
-         stack        = checkStackAddr(stack[0])) {
-        if (first) {
+    std::array<void**, 64> trace;
+    std::size_t            entry = 0;
+    void**                 stack = checkStackAddr(stackPtr);
+    do {
+        if (std::find(trace.begin(), trace.begin() + entry, stack) != trace.begin() + entry) {
+            // Break due to repeating stack trace
+            break;
+        }
+        trace[entry] = stack;
+        if (entry == 0) {
             std::fprintf(
                 file, "0x%08X:  0x%08X  ----------\r\n", reinterpret_cast<unsigned>(stack),
                 reinterpret_cast<unsigned>(stack[0])
             );
-            first = false;
         } else {
             std::fprintf(
                 file, "0x%08X:  0x%08X  0x%08X\r\n", reinterpret_cast<unsigned>(stack),
                 reinterpret_cast<unsigned>(stack[0]), reinterpret_cast<unsigned>(stack[1])
             );
         }
-    }
+    } while (++entry < trace.size() && (stack = checkStackAddr(stack[0])));
 }
 
 void** dException_c::checkStackAddr(
