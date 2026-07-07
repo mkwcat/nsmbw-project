@@ -65,7 +65,9 @@ template <class Iterator>
 constexpr inline void sort(
     Iterator begin, Iterator end
 ) {
-    sort(begin, end, [](auto l, auto r) { return l < r; });
+    sort(begin, end, [](auto l, auto r) {
+        return l < r;
+    });
 }
 
 template <class InputIt, class T>
@@ -102,6 +104,19 @@ constexpr InputIt find(
             return first;
         }
     }
+    return last;
+}
+
+template <class InputIt, class UnaryPred>
+constexpr InputIt find_if(
+    InputIt first, InputIt last, UnaryPred p
+) {
+    for (; first != last; first++) {
+        if (p(*first)) {
+            return first;
+        }
+    }
+
     return last;
 }
 

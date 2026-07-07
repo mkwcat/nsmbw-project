@@ -53,6 +53,7 @@ inline u8   autoboot_course                     = 0;
 inline u8   autoboot_next_goto                  = 1 + 0;
 inline u8   autoboot_player_count               = 0;
 inline u8   autoboot_player_index               = 0;
+inline u8   autoboot_player_type_order[8]       = {0, 1, 3, 2, 4, 5, 6, 7};
 inline u8   autoboot_powerup                    = 0;
 inline bool autoboot_in_star                    = false;
 inline bool autoboot_on_yoshi                   = false;
@@ -67,6 +68,6 @@ inline u8   autoboot_hint_movie_demo            = 0;
 inline bool one_player_special_hip_attack_quake = false;
 
 inline bool print_base_creation                 = false;
-inline bool print_state_changes                 = true;
+inline bool print_state_changes                 = false;
 
 } // namespace fFeat
