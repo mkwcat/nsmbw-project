@@ -21,8 +21,7 @@
 #include <revolution/os/OSTime.h>
 #include <variant>
 
-[[gnu::constructor]]
-static void initCallback() {
+void dException_c::initCallback() {
     nw4r::db::Exception_SetUserCallback(dException_c::callback, nullptr);
 }
 

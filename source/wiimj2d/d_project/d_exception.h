@@ -12,6 +12,7 @@ public:
         int         line;
     };
 
+    static void initCallback();
     static bool callback(nw4r::db::ConsoleHandle console, void* userdata);
     static void dumpFile(std::variant<nw4r::db::ConsoleHandle, AssertInfo_s> info);
     static void** checkStackAddr(void* stackPtr);

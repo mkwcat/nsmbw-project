@@ -5,6 +5,7 @@
 
 #include "component/c_json.h"
 #include "d_player/d_s_boot.h"
+#include "d_project/d_exception.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_info.h"
 #include "d_system/d_nand_thread.h"
@@ -21,6 +22,8 @@
 void dProject_c::preCModuleInit(
     s32 arcEntryNum, ARCHandle* arcHandle
 ) {
+    dException_c::initCallback();
+
     // Unlock root heaps
     dSys_c::ms_RootHeapMem1->mFlags.resetBit(0);
     dSys_c::ms_RootHeapMem2->mFlags.resetBit(0);
