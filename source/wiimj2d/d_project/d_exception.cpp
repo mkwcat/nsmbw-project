@@ -4,6 +4,7 @@
 #include "d_exception.h"
 
 #include "d_base_dump.h"
+#include "d_project/d_project.h"
 #include "d_system/d_system.h"
 #include "machine/m_nandfile.h"
 #include "machine/m_pipe.h"
@@ -56,6 +57,12 @@ void dException_c::dumpFile(
     OSCalendarTime calendar;
     OSTicksToCalendarTime(time, &calendar);
 
+    const char *name = nullptr, *version = nullptr;
+    if (dProject_c::initialized()) {
+        name    = dProject_c::instance().getName();
+        version = dProject_c::instance().getVersion();
+    }
+
     char fileName[64];
     if (int len = std::snprintf(
             fileName, std::size(fileName), "%s/crash-%04ld-%02ld-%02ld_%02ld.%02ld.%02ld.txt",
@@ -90,10 +97,10 @@ void dException_c::dumpFile(
         "or create a new issue if a relevant entry does not already exist.\r\n"
         "\r\n"
         "---Version Info---\r\n"
-        "%s\r\n" // nsmbw-project version
-        "%s\r\n" // Game revision string
+        "%s %s\r\n" // nsmbw-project version
+        "%s\r\n"    // Game revision string
         "\r\n",
-        c_projectName, c_issueUrl, getProjectVersion(), getRegionInfo()
+        c_projectName, c_issueUrl, name, version, getRegionInfo()
     );
 
     if (std::holds_alternative<nw4r::db::ConsoleHandle>(info)) {
@@ -271,10 +278,6 @@ const char* dException_c::getRegionInfo() {
     case mkwcat::Region::C:
         return "CHN";
     }
-}
-
-const char* dException_c::getProjectVersion() {
-    return "nsmbw-project unreported version";
 }
 
 [[gnu::noinline]]

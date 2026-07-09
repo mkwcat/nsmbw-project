@@ -16,7 +16,6 @@ public:
     static void dumpFile(std::variant<nw4r::db::ConsoleHandle, AssertInfo_s> info);
     static void** checkStackAddr(void* stackPtr);
     static void printTrace(std::FILE* file, void* stackPtr);
-    static const char* getProjectVersion();
     static const char* getRegionInfo();
 
     static constexpr char c_projectName[] = "nsmbw-project";

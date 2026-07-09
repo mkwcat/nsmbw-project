@@ -37,6 +37,8 @@ public:
     // Public Methods
     // ======
 
+    static bool initialized() { return m_instance; }
+
     static const dProject_c& instance() { return *m_instance; };
 
     const char* getName() const { return m_name; }
