@@ -5,13 +5,12 @@
  * denotes a null state. Null states do not have any corresponding behaviour. They can be used, for
  * example, if a state holder needs to be initialized but the initial state ID is not known yet.
  */
-class sStateIDIf_c
-{
+class sStateIDIf_c {
 public:
+    constexpr sStateIDIf_c() {}
+
     /* VT+0x08 */
-    virtual ~sStateIDIf_c()
-    {
-    }
+    virtual ~sStateIDIf_c() {}
 
     /**
      * VT+0x0C
@@ -60,13 +59,12 @@ public:
  * The interface for a state holder.
  * A state holder is linked to a state ID and can execute its corresponding behaviour.
  */
-class sStateIf_c
-{
+class sStateIf_c {
 public:
+    constexpr sStateIf_c() {}
+
     /* VT+0x08 */
-    virtual ~sStateIf_c()
-    {
-    }
+    virtual ~sStateIf_c() {}
 
     /**
      * VT+0x0C
@@ -91,13 +89,12 @@ public:
  * The interface for state factories.
  * A state factory produces a state holder from a given state ID.
  */
-class sStateFctIf_c
-{
+class sStateFctIf_c {
 public:
+    constexpr sStateFctIf_c() {}
+
     /* VT+0x08 */
-    virtual ~sStateFctIf_c()
-    {
-    }
+    virtual ~sStateFctIf_c() {}
 
     /**
      * VT+0x0C
@@ -116,13 +113,12 @@ public:
  * The interface for state ID checkers. This class is not really used, but it seems to be intended
  * for testing if a state is "normal", most likely a debug leftover.
  */
-class sStateIDChkIf_c
-{
+class sStateIDChkIf_c {
 public:
+    constexpr sStateIDChkIf_c() {}
+
     /* VT+0x08 */
-    virtual ~sStateIDChkIf_c()
-    {
-    }
+    virtual ~sStateIDChkIf_c() {}
 
     /**
      * VT+0x0C
@@ -135,15 +131,17 @@ public:
  * A default implementation of a state ID checker.
  * ::isNormalID always returns true.
  */
-class sStateIDChk_c : public sStateIDChkIf_c
-{
+class sStateIDChk_c : public sStateIDChkIf_c {
 public:
+    constexpr sStateIDChk_c() {}
+
     /**
      * VT+0x0C
      * Returns whether a state ID is normal. Always returns true.
      */
-    virtual bool isNormalID(const sStateIDIf_c&) const override
-    {
+    virtual bool isNormalID(
+        const sStateIDIf_c&
+    ) const override {
         return true;
     }
 };
@@ -152,13 +150,12 @@ public:
  * The interface for state managers.
  * A state manager handles execution of and transitioning between state IDs.
  */
-class sStateMgrIf_c
-{
+class sStateMgrIf_c {
 public:
+    constexpr sStateMgrIf_c() {}
+
     /* VT+0x08 */
-    virtual ~sStateMgrIf_c()
-    {
-    }
+    virtual ~sStateMgrIf_c() {}
 
     /**
      * VT+0x0C
@@ -218,13 +215,12 @@ public:
 /**
  * An interface for two state managers.
  */
-class sStateStateMgrIf_c : public sStateMgrIf_c
-{
+class sStateStateMgrIf_c : public sStateMgrIf_c {
 public:
+    constexpr sStateStateMgrIf_c() {}
+
     /* VT+0x08 */
-    virtual ~sStateStateMgrIf_c()
-    {
-    }
+    virtual ~sStateStateMgrIf_c() {}
 
     /**
      * VT+0x30
