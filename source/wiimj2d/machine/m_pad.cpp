@@ -84,6 +84,9 @@ void create() {
     g_padMg = EGG::CoreControllerMgr::instance();
     initWPADInfo();
     beginPad();
+    for (std::size_t c = 0; c < g_core_order.size(); c++) {
+        g_core_order[c] = g_core[c];
+    }
     endPad();
 }
 
@@ -96,8 +99,8 @@ void beginPad() {
     gcPadMg->beginFrame();
 
     for (int i = CH_e::CHAN_0; i <= CH_e::CHAN_LAST; i++) {
-        EGG::CoreController* core        = g_padMg->getNthController(i);
-        g_core_order[g_playerChannel[i]] = g_core[i] = core;
+        EGG::CoreController* core = g_padMg->getNthController(i);
+        g_core[i]                 = core;
 
         if (!core->connected()) {
             if (!g_IsConnected[i]) {
@@ -130,8 +133,9 @@ void beginPad() {
     }
 
     for (int i = CH_e::CHAN_CL_0; i <= CH_e::CHAN_CL_LAST; i++) {
-        EGG::ClassicController* classic  = g_padMg->getNthClassic(i - CH_e::CHAN_CL_0);
-        g_core_order[g_playerChannel[i]] = g_core[i] = classic;
+        EGG::ClassicController* classic = g_padMg->getNthClassic(i - CH_e::CHAN_CL_0);
+        g_core[i]                       = classic;
+
         g_IsConnected[i] =
             g_IsConnected[i - (CH_e::CHAN_CL_0 - CH_e::CHAN_0)] && classic->connected();
         if (!g_IsConnected[i]) {
@@ -158,9 +162,10 @@ void beginPad() {
     }
 
     for (int i = CH_e::CHAN_GC_0; i <= CH_e::CHAN_GC_LAST; i++) {
-        EGG::GCController* core          = gcPadMg->getNthController(i - CH_e::CHAN_GC_0);
-        g_core_order[g_playerChannel[i]] = g_core[i] = core;
-        g_IsConnected[i]                             = core->connected();
+        EGG::GCController* core = gcPadMg->getNthController(i - CH_e::CHAN_GC_0);
+        g_core[i]               = core;
+
+        g_IsConnected[i]        = core->connected();
         if (!g_IsConnected[i]) {
             continue;
         }
