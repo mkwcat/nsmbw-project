@@ -8,7 +8,6 @@
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actorcreate_mng.h"
 #include "d_system/d_yoshi_model.h"
-#include <algorithm>
 
 [[nsmbw(0x80021AB0)]]
 bool daEnBlockMain_c::isYossyColor(
@@ -101,7 +100,6 @@ void daEnBlockMain_c::item_sound_set(mVec3_c& pos, int item, s8 player, u8, u8);
 
 [[nsmbw(0x80022810)]]
 void daEnBlockMain_c::FUN_80022810() ASM_METHOD(
-  // clang-format off
 /* 80022810 9421FFC0 */  stwu     r1, -64(r1);
 /* 80022814 7C0802A6 */  mflr     r0;
 /* 80022818 90010044 */  stw      r0, 68(r1);
@@ -269,7 +267,7 @@ UNDEF_80022a3c:;
 /* 80022A64          */  oris     r0, r0, 0x4000;
 /* 80022A68 2C050000 */  cmpwi    r5, 0;
                          // Proper direction bitfield
-/* 80022A6C          */  slwi     r4, r4, 29;
+/* 80022A6C          */  slwi     r4, r4, 14;
 /* 80022A70 7C600378 */  or       r0, r3, r0;
 /* 80022A74 7C830378 */  or       r3, r4, r0;
 /* 80022A78 41820020 */  beq-     UNDEF_80022a98;
@@ -314,5 +312,4 @@ UNDEF_80022af8:;
 /* 80022B04 7C0803A6 */  mtlr     r0;
 /* 80022B08 38210040 */  addi     r1, r1, 64;
 /* 80022B0C 4E800020 */  blr;
-  // clang-format on
 );
