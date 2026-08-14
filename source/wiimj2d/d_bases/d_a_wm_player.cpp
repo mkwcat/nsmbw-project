@@ -8,13 +8,13 @@
 #include "d_bases/d_cs_seq_mng.h"
 #include "d_bases/d_world_camera.h"
 #include "d_profile/d_profile.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_CourseSelectManager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_game_key_core.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_wm_lib.h"
-#include "framework/f_feature.h"
 #include "machine/m_pad.h"
 #include <egg/core/eggController.h>
 #include <revolution/os.h>
@@ -360,7 +360,7 @@ EXTERN_REPL(0x80907D10, bool daWmPlayer_c::isRouteClosedByGate2(int node));
 bool daWmPlayer_c::isRouteClosedByGate(
     int node
 ) {
-    if (fFeat::all_paths_available) {
+    if (dGameRule_s::current.all_paths_available) {
         return false;
     }
     return isRouteClosedByGate2(node);

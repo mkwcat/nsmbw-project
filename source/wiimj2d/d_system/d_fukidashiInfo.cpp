@@ -3,124 +3,124 @@
 
 #include "d_fukidashiInfo.h"
 
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_pause_manager.h"
-#include "framework/f_feature.h"
 #include <nw4r/lyt/Material.h>
 #include <nw4r/ut/Color.h>
 
 [[nsmbw(0x800B1990)]]
-void dfukidashiInfo_c::draw()
-{
+void dfukidashiInfo_c::draw() {
     if (!mDisplayed) {
         return;
     }
-    switch (fFeat::fukidashi_mode) {
-    case fFeat::FUKIDASHI_MODE_e::ALWAYS_SHOW:
+    switch (dGameRule_s::current.fukidashi_mode) {
+    case dGameRule_s::FUKIDASHI_MODE_e::ALWAYS_SHOW:
         return mLayout.entry();
-    case fFeat::FUKIDASHI_MODE_e::HIDE_IF_5_TO_8_PLAYER:
+    case dGameRule_s::FUKIDASHI_MODE_e::HIDE_IF_5_TO_8_PLAYER:
         if (daPyMng_c::getNumInGame() < 5) {
             return mLayout.entry();
         }
         break;
-    case fFeat::FUKIDASHI_MODE_e::ALWAYS_HIDE:
+    case dGameRule_s::FUKIDASHI_MODE_e::ALWAYS_HIDE:
         return;
     }
 }
 
 [[nsmbw(0x800B1A50)]]
-void dfukidashiInfo_c::SetPosOffset(int playerType, int powerupType)
-{
+void dfukidashiInfo_c::SetPosOffset(
+    int playerType, int powerupType
+) {
     float s_FUKIDASHI_Y_OFFSET[PLAYER_COUNT][PLAYER_MODE_COUNT] = {
-      // Mario
-      {
-        20.0, // Small
-        32.0, // Mushroom
-        32.0, // Fire Flower
-        12.0, // Mini Mushroom
-        38.0, // Propeller Shroom
-        33.0, // Penguin Suit
-        32.0, // Ice Flower
-      },
+        // Mario
+        {
+            20.0, // Small
+            32.0, // Mushroom
+            32.0, // Fire Flower
+            12.0, // Mini Mushroom
+            38.0, // Propeller Shroom
+            33.0, // Penguin Suit
+            32.0, // Ice Flower
+        },
 
-      // Luigi
-      {
-        20.0, // Small
-        34.0, // Mushroom
-        34.0, // Fire Flower
-        12.0, // Mini Mushroom
-        39.0, // Propeller Shroom
-        35.0, // Penguin Suit
-        34.0, // Ice Flower
-      },
+        // Luigi
+        {
+            20.0, // Small
+            34.0, // Mushroom
+            34.0, // Fire Flower
+            12.0, // Mini Mushroom
+            39.0, // Propeller Shroom
+            35.0, // Penguin Suit
+            34.0, // Ice Flower
+        },
 
-      // Blue Toad
-      {
-        20.0, // Small
-        29.0, // Mushroom
-        29.0, // Fire Flower
-        11.0, // Mini Mushroom
-        34.0, // Propeller Shroom
-        29.0, // Penguin Suit
-        29.0, // Ice Flower
-      },
+        // Blue Toad
+        {
+            20.0, // Small
+            29.0, // Mushroom
+            29.0, // Fire Flower
+            11.0, // Mini Mushroom
+            34.0, // Propeller Shroom
+            29.0, // Penguin Suit
+            29.0, // Ice Flower
+        },
 
-      // Yellow Toad
-      {
-        20.0, // Small
-        29.0, // Mushroom
-        29.0, // Fire Flower
-        11.0, // Mini Mushroom
-        34.0, // Propeller Shroom
-        29.0, // Penguin Suit
-        29.0, // Ice Flower
-      },
+        // Yellow Toad
+        {
+            20.0, // Small
+            29.0, // Mushroom
+            29.0, // Fire Flower
+            11.0, // Mini Mushroom
+            34.0, // Propeller Shroom
+            29.0, // Penguin Suit
+            29.0, // Ice Flower
+        },
 
-      // Toadette
-      {
-        20.0, // Small
-        29.0, // Mushroom
-        29.0, // Fire Flower
-        11.0, // Mini Mushroom
-        34.0, // Propeller Shroom
-        29.0, // Penguin Suit
-        29.0, // Ice Flower
-      },
+        // Toadette
+        {
+            20.0, // Small
+            29.0, // Mushroom
+            29.0, // Fire Flower
+            11.0, // Mini Mushroom
+            34.0, // Propeller Shroom
+            29.0, // Penguin Suit
+            29.0, // Ice Flower
+        },
 
-      // Purple Toadette
-      {
-        20.0, // Small
-        29.0, // Mushroom
-        29.0, // Fire Flower
-        11.0, // Mini Mushroom
-        34.0, // Propeller Shroom
-        29.0, // Penguin Suit
-        29.0, // Ice Flower
-      },
+        // Purple Toadette
+        {
+            20.0, // Small
+            29.0, // Mushroom
+            29.0, // Fire Flower
+            11.0, // Mini Mushroom
+            34.0, // Propeller Shroom
+            29.0, // Penguin Suit
+            29.0, // Ice Flower
+        },
 
-      // Orange Toad
-      {
-        20.0, // Small
-        29.0, // Mushroom
-        29.0, // Fire Flower
-        11.0, // Mini Mushroom
-        34.0, // Propeller Shroom
-        29.0, // Penguin Suit
-        29.0, // Ice Flower
-      },
+        // Orange Toad
+        {
+            20.0, // Small
+            29.0, // Mushroom
+            29.0, // Fire Flower
+            11.0, // Mini Mushroom
+            34.0, // Propeller Shroom
+            29.0, // Penguin Suit
+            29.0, // Ice Flower
+        },
 
-      // Black Toad
-      {
-        20.0, // Small
-        29.0, // Mushroom
-        29.0, // Fire Flower
-        11.0, // Mini Mushroom
-        34.0, // Propeller Shroom
-        29.0, // Penguin Suit
-        29.0, // Ice Flower
-      },
+        // Black Toad
+        {
+            20.0, // Small
+            29.0, // Mushroom
+            29.0, // Fire Flower
+            11.0, // Mini Mushroom
+            34.0, // Propeller Shroom
+            29.0, // Penguin Suit
+            29.0, // Ice Flower
+        },
     };
 
     mPosOffset.x = 0.0;
@@ -129,39 +129,38 @@ void dfukidashiInfo_c::SetPosOffset(int playerType, int powerupType)
 }
 
 [[nsmbw(0x800B1BD0)]]
-void dfukidashiInfo_c::ColorSet()
-{
+void dfukidashiInfo_c::ColorSet() {
     static constinit nw4r::ut::Color l_PLAYER_COLOR_1[PLAYER_COUNT] = {
-      "#FAE6E6", // Mario
-      "#F0FFF0", // Luigi,
-      "#F0FAFA", // Blue Toad
-      "#FAFAE6", // Yellow Toad
-      "#FAE1EC", // Toadette
-      "#E3D5EB", // Purple Toadette
-      "#F6E7D9", // Orange Toad
-      "#86798B", // Black Toad
+        "#FAE6E6", // Mario
+        "#F0FFF0", // Luigi,
+        "#F0FAFA", // Blue Toad
+        "#FAFAE6", // Yellow Toad
+        "#FAE1EC", // Toadette
+        "#E3D5EB", // Purple Toadette
+        "#F6E7D9", // Orange Toad
+        "#86798B", // Black Toad
     };
 
     static constinit nw4r::ut::Color l_PLAYER_COLOR_2[PLAYER_COUNT] = {
-      "#F06E6E", // Mario
-      "#64C864", // Luigi
-      "#648CDC", // Blue Toad
-      "#FFDC50", // Yellow Toad
-      "#FF8DB7", // Toadette
-      "#DA89FA", // Purple Toadette
-      "#EA7F4F", // Orange Toad
-      "#2D2A2E", // Black Toad
+        "#F06E6E", // Mario
+        "#64C864", // Luigi
+        "#648CDC", // Blue Toad
+        "#FFDC50", // Yellow Toad
+        "#FF8DB7", // Toadette
+        "#DA89FA", // Purple Toadette
+        "#EA7F4F", // Orange Toad
+        "#2D2A2E", // Black Toad
     };
 
     static constinit nw4r::ut::Color l_PLAYER_COLOR_3[PLAYER_COUNT] = {
-      "#FFB4B4", // Mario
-      "#64FF64", // Luigi
-      "#8CFAFF", // Blue Toad
-      "#FFF06E", // Yellow Toad
-      "#FFB2D6", // Toadette
-      "#E6C2FB", // Purple Toadette
-      "#F3C489", // Orange Toad
-      "#5C5560", // Black Toad
+        "#FFB4B4", // Mario
+        "#64FF64", // Luigi
+        "#8CFAFF", // Blue Toad
+        "#FFF06E", // Yellow Toad
+        "#FFB2D6", // Toadette
+        "#E6C2FB", // Purple Toadette
+        "#F3C489", // Orange Toad
+        "#5C5560", // Black Toad
     };
 
     PLAYER_TYPE_e playerType = daPyMng_c::mPlayerType[mPlayerID];
@@ -169,13 +168,13 @@ void dfukidashiInfo_c::ColorSet()
         playerType = PLAYER_TYPE_e::MARIO;
     }
 
-    int playerIndex = daPyMng_c::getPlayerColorType(playerType);
+    int             playerIndex     = daPyMng_c::getPlayerColorType(playerType);
 
-    nw4r::ut::Color color1 = l_PLAYER_COLOR_1[playerIndex];
-    nw4r::ut::Color color2 = l_PLAYER_COLOR_2[playerIndex];
-    nw4r::ut::Color color3 = l_PLAYER_COLOR_3[playerIndex];
+    nw4r::ut::Color color1          = l_PLAYER_COLOR_1[playerIndex];
+    nw4r::ut::Color color2          = l_PLAYER_COLOR_2[playerIndex];
+    nw4r::ut::Color color3          = l_PLAYER_COLOR_3[playerIndex];
 
-    auto setPictureColor = [&](nw4r::lyt::Picture* picture) {
+    auto            setPictureColor = [&](nw4r::lyt::Picture* picture) {
         for (int i = 0; i < 2; i++) {
             picture->SetVtxColor(i, color1);
         }
@@ -283,17 +282,16 @@ UNDEF_800b2330:;
 );
 
 [[nsmbw(0x800B2370)]]
-void dfukidashiInfo_c::finalizeState_Move()
-{
+void dfukidashiInfo_c::finalizeState_Move() {
     mLayout.AnimeEndSetup(m0x22C);
 
     if (m0x23A == false) {
         return;
     }
 
-    dInfo_c* dInfo = dInfo_c::m_instance;
+    dInfo_c* dInfo    = dInfo_c::m_instance;
 
-    u8* afeValue = mPlayerID < 4 ? dInfo->m0xAFE[mPlayerID] : dInfo->mEx0xAFE[mPlayerID - 4];
+    u8*      afeValue = mPlayerID < 4 ? dInfo->m0xAFE[mPlayerID] : dInfo->mEx0xAFE[mPlayerID - 4];
 
     if (!(dInfo_c::m_startGameInfo.stage1.world == WORLD_e::WORLD_1 &&
           dInfo_c::m_startGameInfo.stage1.stage == STAGE_e::STAGE_1)) {
@@ -315,8 +313,7 @@ void dfukidashiInfo_c::finalizeState_Move()
 }
 
 [[nsmbw(0x800B24B0)]]
-void dfukidashiInfo_c::finalizeState_Exit()
-{
+void dfukidashiInfo_c::finalizeState_Exit() {
     u8* b56Value = mPlayerID < 4 ? &dInfo_c::m_instance->m0xB56[mPlayerID]
                                  : &dInfo_c::m_instance->mEx0xB56[mPlayerID - 4];
 
@@ -326,7 +323,7 @@ void dfukidashiInfo_c::finalizeState_Exit()
         *b56Value = 0;
     }
 
-    m0x234 = 0;
+    m0x234     = 0;
     mDisplayed = false;
     mLayout.AllAnimeEndSetup();
     mpPane->SetVisible(false);

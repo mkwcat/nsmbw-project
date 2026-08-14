@@ -5,12 +5,12 @@
 
 #include "d_enemies/d_a_en_item.h"
 #include "d_player/d_a_player.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_actor_mng.h"
 #include "d_system/d_audio.h"
 #include "d_system/d_balloon_mng.h"
 #include "d_system/d_quake.h"
 #include "d_system/d_resource_mng.h"
-#include "framework/f_feature.h"
 #include "framework/f_param.h"
 #include "machine/m_3d_fanm.h"
 #include "machine/m_heap.h"
@@ -21,10 +21,9 @@
 void daEnHatenaBalloon_c::PlYsHitCheck(dActor_c* actor, daEnHatenaBalloon_c* balloon);
 
 [[nsmbw(0x80111990)]]
-void daEnHatenaBalloon_c::model_set()
-{
+void daEnHatenaBalloon_c::model_set() {
     mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 32);
-    mResFile = dResMng_c::m_instance->mRes.getRes("balloon", "g3d/balloon.brres");
+    mResFile                 = dResMng_c::m_instance->mRes.getRes("balloon", "g3d/balloon.brres");
 
     nw4r::g3d::ResMdl resMdl = mResFile.GetResMdl("balloon");
     mModel.create(resMdl, &mAllocator, 32, 1, nullptr);
@@ -73,11 +72,11 @@ void daEnHatenaBalloon_c::model_set()
     mAnmTexPatBack.setRate(0.0f, 0);
 
     if (mHasItem) {
-        const char* itemModelName = "I_kinoko";
-        const char* itemModelResName = "g3d/I_kinoko.brres";
+        const char*        itemModelName    = "I_kinoko";
+        const char*        itemModelResName = "g3d/I_kinoko.brres";
 
         nw4r::g3d::ResFile itemResFile =
-          dResMng_c::m_instance->mRes.getRes(itemModelName, itemModelResName);
+            dResMng_c::m_instance->mRes.getRes(itemModelName, itemModelResName);
         nw4r::g3d::ResMdl itemResMdl = itemResFile.GetResMdl(itemModelName);
         mItemModel.create(itemResMdl, &mAllocator, 32, 1, nullptr);
         dActor_c::setSoftLight_Item(mItemModel);
@@ -90,7 +89,7 @@ void daEnHatenaBalloon_c::model_set()
 
         if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
             nw4r::g3d::ResAnmTexPat itemResAnmTexPat =
-              itemResFile.GetResAnmTexPat("I_kinoko_switch");
+                itemResFile.GetResAnmTexPat("I_kinoko_switch");
             mItemAnmTexPat.create(itemResMdl, itemResAnmTexPat, &mAllocator, nullptr, 1);
             mItemAnmTexPat.setAnm(mItemModel, itemResAnmTexPat, 0, m3d::PLAY_MODE_1);
             mItemModel.setAnm(mItemAnmTexPat);
@@ -106,27 +105,26 @@ void daEnHatenaBalloon_c::model_set()
 void daEnHatenaBalloon_c::anm_set(int);
 
 [[nsmbw(0x80112110)]]
-void daEnHatenaBalloon_c::createItem()
-{
+void daEnHatenaBalloon_c::createItem() {
     u32 type = 8; // Mushroom
     if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
         type = 7; // 1-Up
     }
 
     if (dActor_c* item = dActor_c::construct(
-          dProf::EN_ITEM, fParam_c<daEnItem_c>({.create_type = 7, .type = type}),
-          (const mVec3_c[1]) {{mPos.x, mPos.y + 8.0f, 600.0f}}, nullptr, 0
+            dProf::EN_ITEM, fParam_c<daEnItem_c>({.create_type = 7, .type = type}),
+            (const mVec3_c[1]) {{mPos.x, mPos.y + 8.0f, 600.0f}}, nullptr, 0
         )) {
         dBalloonMng_c::m_instance->setItemId(item->mUniqueID);
     }
     dBalloonMng_c::m_instance->mCreateTimer = 0;
 
     dAudio::g_pSndObjMap->startSound(
-      SndID::SE_OBJ_CMN_BALLOON_BREAK, dAudio::cvtSndObjctPos(mPos), 0
+        SndID::SE_OBJ_CMN_BALLOON_BREAK, dAudio::cvtSndObjctPos(mPos), 0
     );
 
-    if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon && fFeat::bubble_swarm_mode &&
-        dBalloonMng_c::mNoCloneTimer == 0) {
+    if (fParam_c<daEnHatenaBalloon_c>(mParam).green_demon &&
+        dGameRule_s::current.bubble_swarm_mode && dBalloonMng_c::mNoCloneTimer == 0) {
         dBalloonMng_c::m_instance->mSwarmTimer = 1;
         dBalloonMng_c::m_instance->createSwarmBalloon();
         dBalloonMng_c::m_instance->createSwarmBalloon();
@@ -140,8 +138,7 @@ void daEnHatenaBalloon_c::remocon_speed_set();
 void daEnHatenaBalloon_c::remocon_times_check();
 
 [[nsmbw(0x801134F0)]]
-void daEnHatenaBalloon_c::remocon_shake_check()
-{
+void daEnHatenaBalloon_c::remocon_shake_check() {
     if (mHasItem && !fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
         return;
     }
@@ -153,7 +150,7 @@ void daEnHatenaBalloon_c::remocon_shake_check()
 
     if (mHasItem && fParam_c<daEnHatenaBalloon_c>(mParam).green_demon) {
         m_shake_check_timer = 30;
-        m_countdown_anm = 31;
+        m_countdown_anm     = 31;
         anm_set(1);
         remocon_speed_set();
         return;
@@ -165,10 +162,10 @@ void daEnHatenaBalloon_c::remocon_shake_check()
     }
 
     m_shake_check_timer = 30;
-    m_countdown_anm = 31;
+    m_countdown_anm     = 31;
     remocon_times_check();
     dQuake_c::m_instance->shockMotor(
-      mPlayerNo, dQuake_c::TYPE_SHOCK_e::PLAYER_BUBBLE_SHAKE, 0, false
+        mPlayerNo, dQuake_c::TYPE_SHOCK_e::PLAYER_BUBBLE_SHAKE, 0, false
     );
     player->setBalloonHelpVoice();
     anm_set(1);

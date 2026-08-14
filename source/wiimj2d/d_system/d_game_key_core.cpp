@@ -4,8 +4,8 @@
 #include "d_game_key_core.h"
 
 #include "d_bases/d_s_stage.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_remocon_mng.h"
-#include "framework/f_feature.h"
 #include "machine/m_pad.h"
 #include "machine/m_vec.h"
 #include "state/s_Lib.h"
@@ -192,7 +192,7 @@ u32 dGameKeyCore_c::setConfigKey(
     default:
     case Type_e::CORE:
         processed = input;
-        if (fFeat::shake_with_button && (input & EGG::cCORE_BUTTON_B)) {
+        if (dGameRule_s::current.shake_with_button && (input & EGG::cCORE_BUTTON_B)) {
             processed |= SHAKE;
         }
         break;
@@ -218,7 +218,7 @@ u32 dGameKeyCore_c::setConfigKey(
             processed |= LEFT;
         }
 
-        if (fFeat::shake_with_button) {
+        if (dGameRule_s::current.shake_with_button) {
             // C is replaced with shake
             if (input & EGG::cCORE_BUTTON_FS_C) {
                 processed |= SHAKE;

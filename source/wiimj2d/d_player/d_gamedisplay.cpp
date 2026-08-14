@@ -5,6 +5,7 @@
 
 #include "d_bases/d_s_stage.h"
 #include "d_player/d_a_player.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actorcreate_mng.h"
 #include "d_system/d_game_common.h"
@@ -15,7 +16,6 @@
 #include "d_system/d_pause_manager.h"
 #include "d_system/d_save_manager.h"
 #include "d_system/d_stage_timer.h"
-#include "framework/f_feature.h"
 #include "machine/m_ef.h"
 #include "machine/m_vec.h"
 #include "sound/SndAudioMgr.h"
@@ -29,91 +29,89 @@
 dGameDisplay_c* dGameDisplay_c::m_instance;
 
 [[nsmbw(0x80157820)]]
-dGameDisplay_c* dGameDisplay_c_classInit()
-{
+dGameDisplay_c* dGameDisplay_c_classInit() {
     return new dGameDisplay_c();
 }
 
 #define X (*reinterpret_cast<dGameDisplay_c*>(0x1))
 
 const long dGameDisplay_c::cPlayerPaneIndex[] = {
-  std::distance(X.mpaPanes, &X.mpPane_MarioIcon),
-  std::distance(X.mpaPanes, &X.mpPane_LuigiIcon),
-  std::distance(X.mpaPanes, &X.mpPane_KinoBIcon),
-  std::distance(X.mpaPanes, &X.mpPane_KinoYIcon),
-  std::distance(X.mpaPanes, &X.mpPane_KinopicoIcon),
-  std::distance(X.mpaPanes, &X.mpPane_Player05Icon),
-  std::distance(X.mpaPanes, &X.mpPane_Player06Icon),
-  std::distance(X.mpaPanes, &X.mpPane_Player07Icon),
+    std::distance(X.mpaPanes, &X.mpPane_MarioIcon),
+    std::distance(X.mpaPanes, &X.mpPane_LuigiIcon),
+    std::distance(X.mpaPanes, &X.mpPane_KinoBIcon),
+    std::distance(X.mpaPanes, &X.mpPane_KinoYIcon),
+    std::distance(X.mpaPanes, &X.mpPane_KinopicoIcon),
+    std::distance(X.mpaPanes, &X.mpPane_Player05Icon),
+    std::distance(X.mpaPanes, &X.mpPane_Player06Icon),
+    std::distance(X.mpaPanes, &X.mpPane_Player07Icon),
 };
 
 const long dGameDisplay_c::cPlayerPictureIndex[] = {
-  std::distance(X.mpaPictures, &X.mpPicture_MarioIcon),
-  std::distance(X.mpaPictures, &X.mpPicture_LuigiIcon),
-  std::distance(X.mpaPictures, &X.mpPicture_KinoBIcon),
-  std::distance(X.mpaPictures, &X.mpPicture_KinoYIcon),
-  std::distance(X.mpaPictures, &X.mpPicture_KinopicoIcon),
-  std::distance(X.mpaPictures, &X.mpPicture_Player05Icon),
-  std::distance(X.mpaPictures, &X.mpPicture_Player06Icon),
-  std::distance(X.mpaPictures, &X.mpPicture_Player07Icon),
+    std::distance(X.mpaPictures, &X.mpPicture_MarioIcon),
+    std::distance(X.mpaPictures, &X.mpPicture_LuigiIcon),
+    std::distance(X.mpaPictures, &X.mpPicture_KinoBIcon),
+    std::distance(X.mpaPictures, &X.mpPicture_KinoYIcon),
+    std::distance(X.mpaPictures, &X.mpPicture_KinopicoIcon),
+    std::distance(X.mpaPictures, &X.mpPicture_Player05Icon),
+    std::distance(X.mpaPictures, &X.mpPicture_Player06Icon),
+    std::distance(X.mpaPictures, &X.mpPicture_Player07Icon),
 };
 
 const long dGameDisplay_c::cPlayerTextboxIndex[] = {
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left00),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left01),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left02),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left03),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left04),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left05),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left06),
-  std::distance(X.mpaTextBoxes, &X.mpTextBox_Left07),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left00),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left01),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left02),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left03),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left04),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left05),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left06),
+    std::distance(X.mpaTextBoxes, &X.mpTextBox_Left07),
 };
 
 const long dGameDisplay_c::cPlayerBothTextboxIndex[][2] = {
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left00),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X01)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left01),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X02)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left02),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X03)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left03),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X04)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left04),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X05)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left05),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X06)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left06),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X07)},
-  {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left07),
-   std::distance(X.mpaTextBoxes, &X.mpTextBox_X08)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left00),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X01)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left01),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X02)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left02),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X03)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left03),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X04)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left04),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X05)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left05),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X06)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left06),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X07)},
+    {std::distance(X.mpaTextBoxes, &X.mpTextBox_Left07),
+     std::distance(X.mpaTextBoxes, &X.mpTextBox_X08)},
 };
 
 const long dGameDisplay_c::cPictureCollectionIndex[STAR_COIN_COUNT] = {
-  std::distance(X.mpaPictures, &X.mpPicture_Collection00),
-  std::distance(X.mpaPictures, &X.mpPicture_Collection01),
-  std::distance(X.mpaPictures, &X.mpPicture_Collection02),
+    std::distance(X.mpaPictures, &X.mpPicture_Collection00),
+    std::distance(X.mpaPictures, &X.mpPicture_Collection01),
+    std::distance(X.mpaPictures, &X.mpPicture_Collection02),
 };
 
 const long dGameDisplay_c::cPictureCollectOffIndex[STAR_COIN_COUNT] = {
-  std::distance(X.mpaPictures, &X.mpPicture_CollectOff00),
-  std::distance(X.mpaPictures, &X.mpPicture_CollectOff01),
-  std::distance(X.mpaPictures, &X.mpPicture_CollectOff02),
+    std::distance(X.mpaPictures, &X.mpPicture_CollectOff00),
+    std::distance(X.mpaPictures, &X.mpPicture_CollectOff01),
+    std::distance(X.mpaPictures, &X.mpPicture_CollectOff02),
 };
 
 const long dGameDisplay_c::cAreaPaneIndex[cAreaCheckCount] = {
-  std::distance(X.mpaPanes, &X.mpPane_AreaZanki),
-  std::distance(X.mpaPanes, &X.mpPane_AreaCoin),
-  std::distance(X.mpaPanes, &X.mpPane_AreaScore),
+    std::distance(X.mpaPanes, &X.mpPane_AreaZanki),
+    std::distance(X.mpaPanes, &X.mpPane_AreaCoin),
+    std::distance(X.mpaPanes, &X.mpPane_AreaScore),
 };
 
 #undef X
 
 [[nsmbw(0x80157850)]]
 dGameDisplay_c::dGameDisplay_c()
-  : mStateMgr(*this, StateID_ProcMainGame)
-  , mLayoutLoaded(false)
-  , m0x452(true)
-{
+    : mStateMgr(*this, StateID_ProcMainGame)
+    , mLayoutLoaded(false)
+    , m0x452(true) {
     for (std::size_t i = 0; i < std::size(mPlayNum); i++) {
         mPlayNum[i] = -1;
     }
@@ -123,8 +121,7 @@ dGameDisplay_c::dGameDisplay_c()
 
 /* VT+0x08 */
 [[nsmbw(0x80157AA0)]]
-dGameDisplay_c::~dGameDisplay_c()
-{
+dGameDisplay_c::~dGameDisplay_c() {
     dGameDisplay_c::m_instance = nullptr;
 #ifndef __has_macintosh_dt_fix
     mEffect.~levelEffect_c();
@@ -191,10 +188,9 @@ UNDEF_801581b0:;
 );
 
 [[nsmbw(0x801581E0)]]
-fBase_c::PACK_RESULT_e dGameDisplay_c::draw()
-{
+fBase_c::PACK_RESULT_e dGameDisplay_c::draw() {
     if (m0x452 && mLayoutLoaded) {
-        if (fFeat::death_messages != fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
+        if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
             mDeathMsgMgr.entry();
         }
         mLayout.entry();
@@ -213,8 +209,7 @@ void dGameDisplay_c::OtehonPosChange();
 void dGameDisplay_c::AreaSetup(int area, int paneIndex);
 
 [[nsmbw(0x801585C0)]]
-void dGameDisplay_c::AreaSetupAll()
-{
+void dGameDisplay_c::AreaSetupAll() {
     for (int area = 0; area < cAreaCheckCount; area++) {
         AreaSetup(area, cAreaPaneIndex[area]);
     }
@@ -226,8 +221,7 @@ void dGameDisplay_c::AreaSetupAll()
 }
 
 [[nsmbw(0x80158830)]]
-bool dGameDisplay_c::createLayout()
-{
+bool dGameDisplay_c::createLayout() {
     if (!mLayout.ReadResource("gameScene/gameScene.arc", false)) {
         return false;
     }
@@ -236,7 +230,7 @@ bool dGameDisplay_c::createLayout()
     mDeathMsgMgr.build(mLayout.getResAccessor(), mLayout.getDrawInfo());
 
     mLayout.AnimeResRegister({
-      "gameScene_37_inMarioCoin.brlan",
+        "gameScene_37_inMarioCoin.brlan",
     });
 
     mLayout.GroupRegister({{"C00_inMarioCoin", 0}});
@@ -244,50 +238,50 @@ bool dGameDisplay_c::createLayout()
     mpRootPane = mLayout.getRootPane();
 
     mLayout.NPaneRegister(
-      &mpPane_OtasukeInfo, //
-      {
-        "N_otasukeInfo_00", "N_otasukeChu_00", "N_left_00",      "N_coin_00",
-        "N_collection_00",  "N_score_00",      "N_areaZanki_00", "N_areaCoin_00",
-        "N_areaScore_00",   "N_marioIcon_00",  "N_luigiIcon_00", "N_kinoB_00",
-        "N_kinoY_00",       "N_coin_01",       "N_time_00",      "N_proportionL_00",
-        "N_proportionR_00", "N_coin1st_00",    "N_coin2nd_00",   "N_coin3rd_00",
-      }
+        &mpPane_OtasukeInfo, //
+        {
+            "N_otasukeInfo_00", "N_otasukeChu_00", "N_left_00",      "N_coin_00",
+            "N_collection_00",  "N_score_00",      "N_areaZanki_00", "N_areaCoin_00",
+            "N_areaScore_00",   "N_marioIcon_00",  "N_luigiIcon_00", "N_kinoB_00",
+            "N_kinoY_00",       "N_coin_01",       "N_time_00",      "N_proportionL_00",
+            "N_proportionR_00", "N_coin1st_00",    "N_coin2nd_00",   "N_coin3rd_00",
+        }
     );
 
     mLayout.NPaneRegister(
-      mpaExPanes, //
-      {
-        "N_kinopico_00",
-        "N_player_05",
-        "N_player_06",
-        "N_player_07",
-      }
+        mpaExPanes, //
+        {
+            "N_kinopico_00",
+            "N_player_05",
+            "N_player_06",
+            "N_player_07",
+        }
     );
 
     mLayout.PPaneRegister(
-      &mpPicture_CollectOff00, //
-      {
-        "P_collectOff_00",
-        "P_collection_00",
-        "P_collectOff_01",
-        "P_collection_01",
-        "P_collectOff_02",
-        "P_collection_02",
-        "P_marioIcon_00",
-        "P_luijiIcon_00",
-        "P_kinoB_00",
-        "P_kinoY_00",
-      }
+        &mpPicture_CollectOff00, //
+        {
+            "P_collectOff_00",
+            "P_collection_00",
+            "P_collectOff_01",
+            "P_collection_01",
+            "P_collectOff_02",
+            "P_collection_02",
+            "P_marioIcon_00",
+            "P_luijiIcon_00",
+            "P_kinoB_00",
+            "P_kinoY_00",
+        }
     );
 
     mLayout.PPaneRegister(
-      mpaExPictures, //
-      {
-        "P_kinopico_00",
-        "P_player_05",
-        "P_player_06",
-        "P_player_07",
-      }
+        mpaExPictures, //
+        {
+            "P_kinopico_00",
+            "P_player_05",
+            "P_player_06",
+            "P_player_07",
+        }
     );
 
     mpPicture_Collection00->SetVisible(false);
@@ -300,57 +294,56 @@ bool dGameDisplay_c::createLayout()
     mpPicture_MarioIcon->SetVisible(false);
 
     mLayout.TPaneRegister(
-      &mpTextBox_Left00, //
-      {
-        "T_left_00",
-        "T_x_01",
-        "T_left_01",
-        "T_x_02",
-        "T_left_02",
-        "T_x_03",
-        "T_left_03",
-        "T_x_04",
-        "T_coin_00",
-        "T_time_00",
-        "T_score_00",
-      }
+        &mpTextBox_Left00, //
+        {
+            "T_left_00",
+            "T_x_01",
+            "T_left_01",
+            "T_x_02",
+            "T_left_02",
+            "T_x_03",
+            "T_left_03",
+            "T_x_04",
+            "T_coin_00",
+            "T_time_00",
+            "T_score_00",
+        }
     );
 
     mLayout.TPaneRegister(
-      mpaExTextBoxes, //
-      {
-        "T_left_04",
-        "T_x_05",
-        "T_left_05",
-        "T_x_06",
-        "T_left_06",
-        "T_x_07",
-        "T_left_07",
-        "T_x_08",
-      }
+        mpaExTextBoxes, //
+        {
+            "T_left_04",
+            "T_x_05",
+            "T_left_05",
+            "T_x_06",
+            "T_left_06",
+            "T_x_07",
+            "T_left_07",
+            "T_x_08",
+        }
     );
 
     mLayout.TPaneNameRegister(
-      1, //
-      {
-        {"T_otaChuS_00", 20},
-        {"T_otaChu_01", 20},
-        {"T_InfoS_00", 19},
-        {"T_Info_00", 19},
-      }
+        1, //
+        {
+            {"T_otaChuS_00", 20},
+            {"T_otaChu_01", 20},
+            {"T_InfoS_00", 19},
+            {"T_Info_00", 19},
+        }
     );
 
     for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
-        mpaTexMap[i] = *mpaPictures[cPlayerPictureIndex[i]]->GetMaterial()->GetTexturePtr(0);
-        maIconSize[i] = mpaPictures[cPlayerPictureIndex[i]]->GetSize();
+        mpaTexMap[i]   = *mpaPictures[cPlayerPictureIndex[i]]->GetMaterial()->GetTexturePtr(0);
+        maIconSize[i]  = mpaPictures[cPlayerPictureIndex[i]]->GetSize();
         maIconScale[i] = mpaPictures[cPlayerPictureIndex[i]]->GetScale();
     }
 
     return true;
 }
 
-void dGameDisplay_c::DecEffectTimers()
-{
+void dGameDisplay_c::DecEffectTimers() {
     for (std::size_t i = 0; i < std::size(mEffectTimer); i++) {
         if (mEffectTimer[i] != 0) {
             mEffectTimer[i]--;
@@ -359,8 +352,7 @@ void dGameDisplay_c::DecEffectTimers()
 }
 
 [[nsmbw(0x801586C0)]]
-void dGameDisplay_c::RestDispSetup()
-{
+void dGameDisplay_c::RestDispSetup() {
     nw4r::math::VEC3 position[4 + EXTRA_PLAYER_COUNT];
 
     for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
@@ -381,12 +373,12 @@ void dGameDisplay_c::RestDispSetup()
         mpaPictures[cPlayerPictureIndex[player]]->SetVisible(true);
         mpaPictures[cPlayerPictureIndex[player]]->SetTranslate(position[count++]);
 
-        m0x414 = cPlayerPictureIndex[player];
+        m0x414         = cPlayerPictureIndex[player];
 
         int charaIndex = daPyMng_c::getPlayerColorType(static_cast<PLAYER_TYPE_e>(player));
 
         mpaPictures[cPlayerPictureIndex[player]]->GetMaterial()->SetTexture(
-          0, mpaTexMap[charaIndex]
+            0, mpaTexMap[charaIndex]
         );
 
         nw4r::lyt::Size size = maIconSize[charaIndex];
@@ -398,8 +390,7 @@ void dGameDisplay_c::RestDispSetup()
 }
 
 [[nsmbw(0x801589D0)]]
-void dGameDisplay_c::RestCoinAnimeCheck()
-{
+void dGameDisplay_c::RestCoinAnimeCheck() {
     if (m0x44A || !m0x449) {
         m0x449 = false;
         return;
@@ -414,8 +405,7 @@ void dGameDisplay_c::RestCoinAnimeCheck()
 }
 
 [[nsmbw(0x80158A50)]]
-void dGameDisplay_c::AreaCheck()
-{
+void dGameDisplay_c::AreaCheck() {
     if (!mpRootPane->IsVisible()) {
         return;
     }
@@ -442,26 +432,25 @@ void dGameDisplay_c::AreaCheck()
 }
 
 [[nsmbw(0x80158BD0)]]
-void dGameDisplay_c::AlphaEnterAndExit()
-{
+void dGameDisplay_c::AlphaEnterAndExit() {
     if (!mpRootPane->IsVisible()) {
         return;
     }
 
     constexpr int cLowAlpha = 71, cHighAlpha = 255, cAlphaChange = 12;
 
-    int unchanged = 0;
+    int           unchanged = 0;
     for (int area = 0; area < cAreaCheckCount; area++) {
-        nw4r::lyt::Pane* pane = mpaPanes[cAreaPaneIndex[area]];
-        int alpha = pane->GetAlpha();
+        nw4r::lyt::Pane* pane  = mpaPanes[cAreaPaneIndex[area]];
+        int              alpha = pane->GetAlpha();
         if ((mAreaCrossed[area] && alpha < cLowAlpha) ||
             (!mAreaCrossed[area] && alpha >= cHighAlpha)) {
             unchanged++;
         }
 
         mAreaAlpha[area] = std::clamp(
-          mAreaAlpha[area] + (mAreaCrossed[area] ? -cAlphaChange : cAlphaChange), cLowAlpha,
-          cHighAlpha
+            mAreaAlpha[area] + (mAreaCrossed[area] ? -cAlphaChange : cAlphaChange), cLowAlpha,
+            cHighAlpha
         );
         pane->SetAlpha(mAreaAlpha[area]);
         mAreaCrossed[area] = false;
@@ -470,15 +459,14 @@ void dGameDisplay_c::AlphaEnterAndExit()
 }
 
 [[nsmbw(0x80158D90)]]
-bool dGameDisplay_c::NormalSettle()
-{
+bool dGameDisplay_c::NormalSettle() {
     short timer = dStageTimer_c::m_instance->getTimer();
     if (timer <= 0) {
         return true;
     }
 
     int subTime = std::min(+timer, mSettleTimePerFrame);
-    int score = mSettleScorePerSecond * subTime;
+    int score   = mSettleScorePerSecond * subTime;
     dStageTimer_c::m_instance->setTimer(timer - subTime);
 
     if (!dInfo_c::isGameFlag(dInfo_c::GameFlag_e::COIN_BATTLE)) {
@@ -490,9 +478,8 @@ bool dGameDisplay_c::NormalSettle()
 }
 
 [[nsmbw(0x80158E40)]]
-bool dGameDisplay_c::OtasukeSettle()
-{
-    int score = daPyMng_c::mScore;
+bool dGameDisplay_c::OtasukeSettle() {
+    int   score = daPyMng_c::mScore;
     short timer = dStageTimer_c::m_instance->getTimer();
     if (timer == 0 && score == 0 && mCoinNum == 0) {
         return true;
@@ -511,15 +498,13 @@ bool dGameDisplay_c::OtasukeSettle()
 }
 
 [[nsmbw(0x80158F50)]]
-void dGameDisplay_c::initializeState_ProcMainGame()
-{
+void dGameDisplay_c::initializeState_ProcMainGame() {
     m0x43C = 0;
     m0x453 = m0x451 = false;
 }
 
 [[nsmbw(0x80158F70)]]
-void dGameDisplay_c::executeState_ProcMainGame()
-{
+void dGameDisplay_c::executeState_ProcMainGame() {
     if (m0x438 == 1) {
         m0x440 = 0;
         return mStateMgr.changeState(StateID_ProcMainPause);
@@ -530,40 +515,35 @@ void dGameDisplay_c::executeState_ProcMainGame()
 }
 
 [[nsmbw(0x80158FE0)]]
-void dGameDisplay_c::finalizeState_ProcMainGame()
-{
+void dGameDisplay_c::finalizeState_ProcMainGame() {
     m0x451 = true;
 }
 
 [[nsmbw(0x80158FF0)]]
-void dGameDisplay_c::initializeState_ProcMainPause()
-{
+void dGameDisplay_c::initializeState_ProcMainPause() {
     m0x43C = 1;
     m0x438 = 0;
 }
 
 [[nsmbw(0x80159010)]]
-void dGameDisplay_c::executeState_ProcMainPause()
-{
+void dGameDisplay_c::executeState_ProcMainPause() {
     if (m0x440 == 1) {
         return mStateMgr.changeState(StateID_ProcMainGame);
     }
 }
 
 [[nsmbw(0x80159040)]]
-void dGameDisplay_c::finalizeState_ProcMainPause()
-{
+void dGameDisplay_c::finalizeState_ProcMainPause() {
     m0x440 = 0;
 }
 
 [[nsmbw(0x80159050)]]
-void dGameDisplay_c::initializeState_ProcGoalSettleUp()
-{
-    m0x400 = 1;
-    mSettleTimePerFrame = 10;
-    mSettleScorePerSecond = 50;
-    m0x444 = 1;
-    m0x453 = true;
+void dGameDisplay_c::initializeState_ProcGoalSettleUp() {
+    m0x400                              = 1;
+    mSettleTimePerFrame                 = 10;
+    mSettleScorePerSecond               = 50;
+    m0x444                              = 1;
+    m0x453                              = true;
 
     dMultiMng_c::mspInstance->mGoalTime = dStageTimer_c::m_instance->getTimer();
     if (PauseManager_c::m_OtasukeAfter) {
@@ -572,8 +552,7 @@ void dGameDisplay_c::initializeState_ProcGoalSettleUp()
 }
 
 [[nsmbw(0x801590B0)]]
-void dGameDisplay_c::executeState_ProcGoalSettleUp()
-{
+void dGameDisplay_c::executeState_ProcGoalSettleUp() {
     if (m0x400 < m0x404) {
         m0x400++;
         return;
@@ -605,8 +584,7 @@ void dGameDisplay_c::finalizeState_ProcGoalSettleUp();
 void dGameDisplay_c::initializeState_ProcGoalEnd();
 
 [[nsmbw(0x801591B0)]]
-void dGameDisplay_c::executeState_ProcGoalEnd()
-{
+void dGameDisplay_c::executeState_ProcGoalEnd() {
     if (m0x400 < m0x408) {
         m0x400++;
         return;
@@ -999,13 +977,15 @@ void dGameDisplay_c::EffectCollectionCoinClear();
 void dGameDisplay_c::EffectCollectionCoinGet(int coin);
 
 [[nsmbw(0x801599C0)]]
-void dGameDisplay_c::setPlayNum(int* playNum)
-{
+void dGameDisplay_c::setPlayNum(
+    int* playNum
+) {
     // Stubbed
 }
 
-void dGameDisplay_c::updatePlayNum(int* playNum)
-{
+void dGameDisplay_c::updatePlayNum(
+    int* playNum
+) {
     for (std::size_t i = 0; i < 4 + EXTRA_PLAYER_COUNT; i++) {
         int oldPlayNum = mPlayNum[i];
         int newPlayNum = playNum[i];
@@ -1020,16 +1000,16 @@ void dGameDisplay_c::updatePlayNum(int* playNum)
             mEffectTimer[i] = Effect1Up(cPlayerPaneIndex[i]) ? 15 : 0;
         }
 
-        if (!fFeat::infinite_lives && newPlayNum == 0 && !mPlayerGray[i]) {
+        if (!dGameRule_s::current.infinite_lives && newPlayNum == 0 && !mPlayerGray[i]) {
             GrayColorSet(int(i));
             mPlayerGray[i] = 1;
-        } else if ((newPlayNum != 0 || fFeat::infinite_lives) && mPlayerGray[i]) {
+        } else if ((newPlayNum != 0 || dGameRule_s::current.infinite_lives) && mPlayerGray[i]) {
             ReturnGrayColorSet(int(i));
             mPlayerGray[i] = 0;
         }
 
         int maxChars = 2;
-        if (fFeat::infinite_lives) {
+        if (dGameRule_s::current.infinite_lives) {
             if (newPlayNum > 99) {
                 maxChars = 4;
             }
@@ -1042,8 +1022,9 @@ void dGameDisplay_c::updatePlayNum(int* playNum)
 void dGameDisplay_c::setCoinNum(int coinNum);
 
 [[nsmbw(0x80159C00)]]
-void dGameDisplay_c::setTime(int time)
-{
+void dGameDisplay_c::setTime(
+    int time
+) {
     if (mTime == time) {
         return;
     }
@@ -1051,13 +1032,12 @@ void dGameDisplay_c::setTime(int time)
 }
 
 [[nsmbw(0x80159C30)]]
-void dGameDisplay_c::setCollect()
-{
+void dGameDisplay_c::setCollect() {
     if (m0x453) {
         return;
     }
 
-    dScStage_c* const stage = dScStage_c::m_instance;
+    dScStage_c* const        stage   = dScStage_c::m_instance;
     const dInfo_c::StageNo_s stageNo = {stage->mWorld, stage->mStage};
     if (!stageNo.isInSaveGame()) {
         return;
@@ -1092,8 +1072,9 @@ void dGameDisplay_c::setCollect()
 }
 
 [[nsmbw(0x80159DF0)]]
-void dGameDisplay_c::setScore(int score)
-{
+void dGameDisplay_c::setScore(
+    int score
+) {
     if (mScore == score || mScore >= cMaxDispScore) {
         return;
     }
@@ -1106,8 +1087,7 @@ void dGameDisplay_c::setScore(int score)
 }
 
 [[nsmbw(0x80159E60)]]
-void dGameDisplay_c::RestCoinAnimeSetup()
-{
+void dGameDisplay_c::RestCoinAnimeSetup() {
     if (PauseManager_c::m_OtasukeAfter) {
         m0x449 = true;
     }

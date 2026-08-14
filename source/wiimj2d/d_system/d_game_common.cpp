@@ -7,6 +7,7 @@
 #include "d_bases/d_StaffCreditScore.h"
 #include "d_bases/d_s_stage.h"
 #include "d_player/d_SmallScoreManager.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_game_key.h"
 #include "d_system/d_game_key_core.h"
@@ -15,7 +16,6 @@
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_save_manager.h"
 #include "d_system/d_scene.h"
-#include "framework/f_feature.h"
 #include "machine/m_vec.h"
 #include "state/s_Lib.h"
 #include <algorithm>
@@ -400,7 +400,7 @@ void MiniGameMessageClose();
 
 [[nsmbw(0x800B4E30)]]
 bool isNowCourseClear() {
-    if (fFeat::always_can_exit_course) {
+    if (dGameRule_s::current.always_can_exit_course) {
         return true;
     }
 

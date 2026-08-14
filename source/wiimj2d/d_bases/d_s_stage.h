@@ -1,11 +1,11 @@
 #pragma once
 
 #include "d_profile/d_profile.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_base.h"
 #include "d_system/d_fader.h"
 #include "d_system/d_mj2d_game.h"
-#include "framework/f_feature.h"
 #include "machine/m_vec.h"
 
 class dGameDisplay_c;
@@ -115,10 +115,9 @@ public:
     }
 
     static inline bool isGameStopAllowed() {
-        if (!fFeat::disable_mode_change_pause) {
+        if (!dGameRule_s::current.disable_mode_change_pause) {
             return true;
         }
-
         return daPyMng_c::isOnePlayerInGame() || isNowReplay();
     }
 

@@ -7,9 +7,9 @@
 #include "d_player/d_a_yoshi.h"
 #include "d_player/d_gamedisplay.h"
 #include "d_profile/d_profile.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_game_common.h"
-#include "framework/f_feature.h"
 #include "framework/f_manager.h"
 #include <cstdio>
 #include <iterator>
@@ -39,8 +39,7 @@ void daPlBase_c::changeDemoState(const sStateIDIf_c& state, int param);
 bool daPlBase_c::isDispOutCheckOn();
 
 [[nsmbw(0x800510F0)]]
-void daPlBase_c::stopGoalOther()
-{
+void daPlBase_c::stopGoalOther() {
     if (!isPlayerGameStop()) {
         return;
     }
@@ -66,8 +65,7 @@ void daPlBase_c::stopGoalOther()
 }
 
 [[nsmbw(0x800511A0)]]
-void daPlBase_c::playGoalOther()
-{
+void daPlBase_c::playGoalOther() {
     dActor_c::mExecStopReq &= ~0xF;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -139,39 +137,41 @@ void daPlBase_c::calcHeadAttentionAngle();
 // Static array works here as we have a limited number of players
 static fBaseID_e s_lastHitEnemy[PLAYER_COUNT] = {};
 
-void daPlBase_c::addDeathMessage(dActor_c* source, DamageType_e type, bool death)
-{
+void daPlBase_c::addDeathMessage(
+    dActor_c* source, DamageType_e type, bool death
+) {
     // TODO: Use BMG for messages
-    if (fFeat::death_messages == fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages == dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
         return;
     }
-    if (fFeat::death_messages == fFeat::DEATH_MESSAGES_MODE_e::DEATH_ONLY && !death) {
+    if (dGameRule_s::current.death_messages == dGameRule_s::DEATH_MESSAGES_MODE_e::DEATH_ONLY &&
+        !death) {
         return;
     }
 
-    fBaseID_e lastHit = s_lastHitEnemy[mPlrNo];
+    fBaseID_e lastHit      = s_lastHitEnemy[mPlrNo];
     s_lastHitEnemy[mPlrNo] = source ? source->mUniqueID : fBaseID_e::NONE;
 
-    bool repeat = source ? source->mUniqueID == lastHit : false;
+    bool        repeat     = source ? source->mUniqueID == lastHit : false;
 
-    const char* selfName = dProf::getFormattedName(this);
+    const char* selfName   = dProf::getFormattedName(this);
     if (selfName == nullptr) {
         selfName = "Someone";
     }
 
-    const char* enemyName = dProf::getFormattedName(source);
-    dProfName enemy = source ? source->mProfName : dProf::LASTACTOR;
+    const char* enemyName     = dProf::getFormattedName(source);
+    dProfName   enemy         = source ? source->mProfName : dProf::LASTACTOR;
 
-    fBase_c* lastEnemy = fManager_c::searchBaseByID(lastHit);
+    fBase_c*    lastEnemy     = fManager_c::searchBaseByID(lastHit);
     const char* lastEnemyName = nullptr;
     if (lastEnemy != nullptr) {
         lastEnemyName = dProf::getFormattedName(static_cast<dBase_c*>(lastEnemy));
     }
 
     const char* messages[128] = {};
-    int messageCount = 0;
+    int         messageCount  = 0;
 
-    auto msg = [&](const char* const m) {
+    auto        msg           = [&](const char* const m) {
         if (messageCount < 128) {
             messages[messageCount++] = m;
         }
@@ -452,8 +452,8 @@ void daPlBase_c::addDeathMessage(dActor_c* source, DamageType_e type, bool death
     if (message[0] == '~') {
         // Swap order of names
         const char* temp = selfName;
-        selfName = enemyName;
-        enemyName = temp;
+        selfName         = enemyName;
+        enemyName        = temp;
         if (source) {
             if (auto player2 = source->DynamicCast<daPlBase_c>()) {
                 player = player2;
@@ -468,6 +468,6 @@ void daPlBase_c::addDeathMessage(dActor_c* source, DamageType_e type, bool death
     std::mbstowcs(wideMessage, formattedMessage, std::size(wideMessage));
 
     dGameDisplay_c::m_instance->newDeathMessage(
-      wideMessage, daPyMng_c::mPlayerType[player->getPlrNo()]
+        wideMessage, daPyMng_c::mPlayerType[player->getPlrNo()]
     );
 }

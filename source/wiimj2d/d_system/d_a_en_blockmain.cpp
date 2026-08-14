@@ -4,10 +4,10 @@
 #include "d_a_en_blockmain.h"
 
 #include "d_player/d_a_yoshi.h"
+#include "d_project//d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_actorcreate_mng.h"
 #include "d_system/d_yoshi_model.h"
-#include "framework/f_feature.h"
 #include <algorithm>
 
 [[nsmbw(0x80021AB0)]]
@@ -31,7 +31,7 @@ bool daEnBlockMain_c::isYossyColor(
 [[nsmbw(0x80021B30)]]
 s16 daEnBlockMain_c::yossy_color_search() {
     s16 yoshiColor;
-    switch (fFeat::yoshi_color_mode) {
+    switch (dGameRule_s::current.yoshi_color_mode) {
     default:
         yoshiColor = dActorCreateMng_c::m_instance->m0xBC8;
 
@@ -44,7 +44,7 @@ s16 daEnBlockMain_c::yossy_color_search() {
             yoshiColor++;
         }
         return -1;
-    case fFeat::YOSHI_COLOR_MODE_e::ALL_GREEN:
+    case dGameRule_s::YOSHI_COLOR_MODE_e::ALL_GREEN:
         return 0;
     }
 }

@@ -2,10 +2,12 @@
 // NSMBW .text: 0x80126650 - 0x8014A830
 
 #include "d_a_player.h"
+
 #include "d_bases/d_s_stage.h"
 #include "d_player/d_a_yoshi.h"
 #include "d_player/d_bg_gm.h"
 #include "d_profile/d_profile.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_audio.h"
@@ -15,7 +17,6 @@
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_quake.h"
 #include "framework/f_base.h"
-#include "framework/f_feature.h"
 #include "framework/f_manager.h"
 
 [[nsmbw(0x801275B0)]]
@@ -31,14 +32,13 @@ mVec3_c dAcPy_c::getCarryPos();
 void dAcPy_c::clearSpinLiftUpReserve();
 
 [[nsmbw(0x8012E330)]]
-void dAcPy_c::setSpinLiftUpReserve()
-{
+void dAcPy_c::setSpinLiftUpReserve() {
     if (!isStatus(0x7A) && !isDemo() && !isCarry() && !isStatus(0x04) && !isStatus(0x06) &&
         !isStatus(0x08)) {
         dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
         if (actor != nullptr && actor->isSpinLiftUpEnable()) {
             mCarryActorID = actor->mUniqueID;
-            m0x27E0 = 0;
+            m0x27E0       = 0;
             mPyMdlMng.mModel->mVisibilityFlags |= 4;
             if (dAcPy_c* player = actor->castToPlayer()) {
                 mPyMdlMng.mModel->mpSpinLiftParentMdl = player->getModel();
@@ -46,22 +46,23 @@ void dAcPy_c::setSpinLiftUpReserve()
             changeState(StateID_LiftUp, 0);
             dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
             actor->setSpinLiftUpActor(this);
-        } else if (fFeat::liftable_tiles && mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
+        } else if (dGameRule_s::current.liftable_tiles && mAttCc1.mCcData.mAttack == 18 &&
+                   mKey.buttonOne()) {
             // No actor found to lift
             // Get foot sensor position
             float footY = getFootBgPointData()->mOffsetY / 4096.0;
-            u16 bgX = static_cast<u16>(mPos.x) & 0xFFF0;
-            u16 bgY = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
+            u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
+            u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
             if (u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(bgX, bgY, mLayer, nullptr, false);
                 *tileBelow > 0) {
                 // We're standing on a tile, clone it
                 dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
-                mCarryActorID = liftBg->mUniqueID;
-                m0x27E0 = 0;
+                mCarryActorID    = liftBg->mUniqueID;
+                m0x27E0          = 0;
                 mPyMdlMng.mModel->mVisibilityFlags |= 4;
                 changeState(StateID_LiftUp, 0);
                 dQuake_c::m_instance->shockMotor(
-                  mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
+                    mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
                 );
                 liftBg->setSpinLiftUpActor(this);
 
@@ -92,21 +93,24 @@ void dAcPy_c::setBalloonHelpVoice();
 bool dAcPy_c::setBalloonInDamage();
 
 [[nsmbw(0x80139330)]]
-bool dAcPy_c::setBalloonInDispOutByYoshi(int param)
-{
+bool dAcPy_c::setBalloonInDispOutByYoshi(
+    int param
+) {
     return setBalloonInDispOutBase(param, 1, false);
 }
 
 /* VT+0x11C */
 [[nsmbw(0x80139340)]]
-bool dAcPy_c::setBalloonInDispOut(int param)
-{
+bool dAcPy_c::setBalloonInDispOut(
+    int param
+) {
     return setBalloonInDispOutBase(param, 0, false);
 }
 
 [[nsmbw(0x80139350)]]
-bool dAcPy_c::setBalloonInDispOutBase(int type, bool yoshi, bool noDeathMsg)
-{
+bool dAcPy_c::setBalloonInDispOutBase(
+    int type, bool yoshi, bool noDeathMsg
+) {
     if (!isDispOutCheckOn()) {
         return false;
     }
@@ -147,7 +151,8 @@ bool dAcPy_c::setBalloonInDispOutBase(int type, bool yoshi, bool noDeathMsg)
         damageType = DamageType_e::SCROLL_OUT;
     }
 
-    if (fFeat::death_messages != fFeat::DEATH_MESSAGES_MODE_e::DISABLED && !noDeathMsg) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED &&
+        !noDeathMsg) {
         if (carryPlr) {
             carryPlr->addDeathMessage(this, damageType, true);
         } else {
@@ -171,8 +176,7 @@ daYoshi_c* dAcPy_c::getRideYoshi();
 void dAcPy_c::setRideOnYoshi(daYoshi_c* yoshi);
 
 [[nsmbw(0x8013D7B0)]]
-void dAcPy_c::checkRest()
-{
+void dAcPy_c::checkRest() {
     if (isItemKinopio()) {
         deleteRequest();
         return;
@@ -198,14 +202,13 @@ void dAcPy_c::checkRest()
     }
 
     dScStage_c::setNextScene(
-      gameOver ? dProf::GAMEOVER : dProf::WORLD_MAP, 0, dScStage_c::Exit_e(1),
-      dFader_c::fader_type_e::BOWSER
+        gameOver ? dProf::GAMEOVER : dProf::WORLD_MAP, 0, dScStage_c::Exit_e(1),
+        dFader_c::fader_type_e::BOWSER
     );
 }
 
 [[nsmbw(0x8013DA30)]]
-void dAcPy_c::stopOtherDownDemo()
-{
+void dAcPy_c::stopOtherDownDemo() {
     if (isItemKinopio()) {
         return;
     }
@@ -238,8 +241,7 @@ void dAcPy_c::stopOtherDownDemo()
 }
 
 [[nsmbw(0x8013DB30)]]
-void dAcPy_c::playOtherDownDemo()
-{
+void dAcPy_c::playOtherDownDemo() {
     if (!dScStage_c::isGameStopAllowed()) {
         return;
     }
@@ -261,29 +263,27 @@ void dAcPy_c::playOtherDownDemo()
 
 /* VT+0x278 */
 [[nsmbw(0x8013DF10)]]
-void dAcPy_c::setFallDownDemo()
-{
+void dAcPy_c::setFallDownDemo() {
     if (!isDispOutCheckOn()) {
         return;
     }
 
-    if (fFeat::death_messages != fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
         addDeathMessage(nullptr, DamageType_e::FALL_DOWN, true);
     }
 
     setFallDownDemoNoMsg();
 }
 
-void dAcPy_c::setFallDownDemoNoMsg()
-{
+void dAcPy_c::setFallDownDemoNoMsg() {
     if (!isDispOutCheckOn()) {
         return;
     }
 
-    mAccelY = 0.0f;
-    mSpeedF = 0.0f;
-    m0x10C4 = {};
-    m0x10D0 = 0.0f;
+    mAccelY  = 0.0f;
+    mSpeedF  = 0.0f;
+    m0x10C4  = {};
+    m0x10D0  = 0.0f;
     mSpeed.y = 0.0f;
     changeDemoState(StateID_DemoFallDown, 0);
 }
@@ -555,8 +555,7 @@ UNDEF_80140420:;
 );
 
 [[nsmbw(0x80141020)]]
-void dAcPy_c::initChangeInit()
-{
+void dAcPy_c::initChangeInit() {
     if (dScStage_c::isGameStopAllowed()) {
         if (isStatus(101)) {
             playGoalOther();
@@ -569,8 +568,7 @@ void dAcPy_c::initChangeInit()
 }
 
 [[nsmbw(0x80141080)]]
-bool dAcPy_c::executeChangeInit()
-{
+bool dAcPy_c::executeChangeInit() {
     if (mPlayerMode == mNextMode) {
         return false;
     }
@@ -600,8 +598,7 @@ bool dAcPy_c::executeChangeInit()
 void dAcPy_c::setChange(int param);
 
 [[nsmbw(0x80144C60)]]
-void dAcPy_c::setSceneChangeInfo()
-{
+void dAcPy_c::setSceneChangeInfo() {
     if (isItemKinopio()) {
         if (dScStage_c::getExitMode() == dScStage_c::Exit_e::CARRY_OVER ||
             dScStage_c::getExitMode() == dScStage_c::Exit_e::CARRY_OVER_RNDIZER) {
@@ -615,7 +612,7 @@ void dAcPy_c::setSceneChangeInfo()
     }
 
     PLAYER_CREATE_ITEM_e createItem = PLAYER_CREATE_ITEM_e::NONE;
-    PLAYER_MODE_e powerup = mPlayerMode;
+    PLAYER_MODE_e        powerup    = mPlayerMode;
 
     switch (dScStage_c::getExitMode()) {
     case dScStage_c::Exit_e::CARRY_OVER:
@@ -624,7 +621,7 @@ void dAcPy_c::setSceneChangeInfo()
             if (isStatus(83)) {
                 createItem = PLAYER_CREATE_ITEM_e::BUBBLE;
             } else if (isStatus(4)) {
-                powerup = PLAYER_MODE_e::NONE;
+                powerup    = PLAYER_MODE_e::NONE;
                 createItem = PLAYER_CREATE_ITEM_e::BUBBLE;
             }
         }
@@ -632,14 +629,14 @@ void dAcPy_c::setSceneChangeInfo()
         if (daYoshi_c* yoshi = getRideYoshi(); yoshi != nullptr) {
             createItem = PLAYER_CREATE_ITEM_e::YOSHI;
             daPyMng_c::setCarryOverYoshiInfo(
-              mPlrNo, static_cast<dYoshiMdl_c*>(yoshi->getModel())->mColor, yoshi->m_eatCount
+                mPlrNo, static_cast<dYoshiMdl_c*>(yoshi->getModel())->mColor, yoshi->m_eatCount
             );
             onStatus(197);
         }
         break;
     }
     case dScStage_c::Exit_e::RESTORE_INFO:
-        powerup = daPyMng_c::mPlayerMode[daPyMng_c::mPlayerType[mPlrNo]];
+        powerup    = daPyMng_c::mPlayerMode[daPyMng_c::mPlayerType[mPlrNo]];
         createItem = daPyMng_c::mCreateItem[daPyMng_c::mPlayerType[mPlrNo]];
         break;
     case dScStage_c::Exit_e::DOWN:
@@ -650,10 +647,10 @@ void dAcPy_c::setSceneChangeInfo()
     }
 
     daPyMng_c::mPlayerEntry[mPlrNo] = 1;
-    PLAYER_TYPE_e type = daPyMng_c::mPlayerType[mPlrNo];
-    daPyMng_c::mPlayerMode[type] = powerup;
-    daPyMng_c::mCreateItem[type] = createItem;
-    daPyMng_c::m_star_time[mPlrNo] = m_starTime;
+    PLAYER_TYPE_e type              = daPyMng_c::mPlayerType[mPlrNo];
+    daPyMng_c::mPlayerMode[type]    = powerup;
+    daPyMng_c::mCreateItem[type]    = createItem;
+    daPyMng_c::m_star_time[mPlrNo]  = m_starTime;
     daPyMng_c::m_star_count[mPlrNo] = m_starCount;
 }
 
@@ -847,8 +844,9 @@ bool dAcPy_c::switchMode(PLAYER_MODE_e mode);
 
 /* VT+0x3F4  */
 [[nsmbw(0x80146230)]]
-bool dAcPy_c::setDamage(dActor_c* source, DamageType_e type)
-{
+bool dAcPy_c::setDamage(
+    dActor_c* source, DamageType_e type
+) {
     if (mPlayerMode != mNextMode || isChange()) {
         return false;
     }
@@ -863,7 +861,7 @@ bool dAcPy_c::setDamage(dActor_c* source, DamageType_e type)
 
     dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
-    if (fFeat::death_messages != fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
         addDeathMessage(source, type, isStatus(Status_e::DEAD));
     }
 
@@ -872,8 +870,9 @@ bool dAcPy_c::setDamage(dActor_c* source, DamageType_e type)
 
 /* VT+0x3F8 */
 [[nsmbw(0x80146310)]]
-bool dAcPy_c::setForcedDamage(dActor_c* source, DamageType_e type)
-{
+bool dAcPy_c::setForcedDamage(
+    dActor_c* source, DamageType_e type
+) {
     if (isDemo() || mPlayerMode != mNextMode || isChange()) {
         return false;
     }
@@ -884,7 +883,7 @@ bool dAcPy_c::setForcedDamage(dActor_c* source, DamageType_e type)
 
     dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
-    if (fFeat::death_messages != fFeat::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
         addDeathMessage(source, type, isStatus(Status_e::DEAD));
     }
 

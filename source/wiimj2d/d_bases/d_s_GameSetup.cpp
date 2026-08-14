@@ -33,29 +33,28 @@
 bool dScGameSetup_c::Phase_LinkProfiles();
 
 [[nsmbw(0x80917C80)]]
-bool dScGameSetup_c::Phase_CreateLayoutManagers()
-{
-#define NEW(_TYPE, _PROFILE, _PARAM)                                                               \
+bool dScGameSetup_c::Phase_CreateLayoutManagers() {
+#define NEW(_TYPE, _PROFILE, _PARAM) \
     static_cast<_TYPE>(fBase_c::createChild(dProf::_PROFILE, this, _PARAM, 0))
 
     mpNumPyChg = NEW(dNumberOfPeopleChange_c*, NUMBER_OF_PEOPLE_CHANGE, 0);
 
     for (std::size_t cc = 0; cc < mpNumPyChg->mCcCount; cc++) {
         mpNumPyChg->mpCcSelBase[cc] =
-          NEW(dCharacterChangeSelectBase_c*, CHARACTER_CHANGE_SELECT_BASE, cc);
+            NEW(dCharacterChangeSelectBase_c*, CHARACTER_CHANGE_SELECT_BASE, cc);
         mpNumPyChg->mpCcSelContents[cc] =
-          NEW(dCharacterChangeSelectContents_c*, CHARACTER_CHANGE_SELECT_CONTENTS, cc);
+            NEW(dCharacterChangeSelectContents_c*, CHARACTER_CHANGE_SELECT_CONTENTS, cc);
         mpNumPyChg->mpCcSelArrow[cc] =
-          NEW(dCharacterChangeSelectArrow_c*, CHARACTER_CHANGE_SELECT_ARROW, cc);
+            NEW(dCharacterChangeSelectArrow_c*, CHARACTER_CHANGE_SELECT_ARROW, cc);
         mpNumPyChg->mpCcIndicator[cc] =
-          NEW(dCharacterChangeIndicator_c*, CHARACTER_CHANGE_INDICATOR, cc);
+            NEW(dCharacterChangeIndicator_c*, CHARACTER_CHANGE_INDICATOR, cc);
     }
 
     mpSelectPlayer = NEW(dSelectPlayer_c*, SELECT_PLAYER, 0);
-    mpEasyPairing = NEW(dEasyPairing_c*, EASY_PAIRING, 0);
-    mpSequenceBG = NEW(dSequenceBG_c*, SEQUENCE_BG, 0);
+    mpEasyPairing  = NEW(dEasyPairing_c*, EASY_PAIRING, 0);
+    mpSequenceBG   = NEW(dSequenceBG_c*, SEQUENCE_BG, 0);
 
-    mpFileSelect = NEW(dFileSelect_c*, FILE_SELECT, mParam);
+    mpFileSelect   = NEW(dFileSelect_c*, FILE_SELECT, mParam);
     for (std::size_t i = 0; i < std::size(mpDateFile); i++) {
         mpFileSelect->mpDateFile[i] = mpDateFile[i] = NEW(dDateFile_c*, DATE_FILE, i);
     }
@@ -66,10 +65,9 @@ bool dScGameSetup_c::Phase_CreateLayoutManagers()
 }
 
 [[nsmbw(0x80917EB0)]]
-bool dScGameSetup_c::Phase_Create2DPlayer()
-{
+bool dScGameSetup_c::Phase_Create2DPlayer() {
     da2DPlayer_c* player = static_cast<da2DPlayer_c*>(
-      dBaseActor_c::construct(dProf::WM_2D_PLAYER, this, mPlayerCreateIdx, nullptr, nullptr)
+        dBaseActor_c::construct(dProf::WM_2D_PLAYER, this, mPlayerCreateIdx, nullptr, nullptr)
     );
     if (player == nullptr) {
         return false;
@@ -92,8 +90,7 @@ bool dScGameSetup_c::Phase_Create2DPlayer()
 bool dScGameSetup_c::executeDateFileAnimeOut();
 
 [[nsmbw(0x80918780)]]
-void dScGameSetup_c::executeState_FileSelect()
-{
+void dScGameSetup_c::executeState_FileSelect() {
     executeDateFileAnimeOut();
 
     if (!mpFileSelect->mChoiceDone) {
@@ -106,9 +103,9 @@ void dScGameSetup_c::executeState_FileSelect()
     }
 
     mpSelectPlayer->mCurrentButton = 0;
-    mInPlayerSelect = true;
+    mInPlayerSelect                = true;
 
-    int choice = mpFileSelect->mChoice;
+    int choice                     = mpFileSelect->mChoice;
     if (choice < SAVE_SLOT_COUNT) {
         if (mpFileSelect->mChoiceTempFile) {
             dSaveMng_c::m_instance->loadQuickSaveData(choice);
@@ -122,11 +119,11 @@ void dScGameSetup_c::executeState_FileSelect()
         if (choice == 3) {
             dInfo_c::mGameFlag &= ~dInfo_c::GameFlag_e::COIN_BATTLE;
             dInfo_c::mGameFlag |=
-              dInfo_c::GameFlag_e::MULTI_MODE | dInfo_c::GameFlag_e::FREE_FOR_ALL;
+                dInfo_c::GameFlag_e::MULTI_MODE | dInfo_c::GameFlag_e::FREE_FOR_ALL;
         } else {
             dInfo_c::mGameFlag &= ~dInfo_c::GameFlag_e::FREE_FOR_ALL;
             dInfo_c::mGameFlag |=
-              dInfo_c::GameFlag_e::MULTI_MODE | dInfo_c::GameFlag_e::COIN_BATTLE;
+                dInfo_c::GameFlag_e::MULTI_MODE | dInfo_c::GameFlag_e::COIN_BATTLE;
         }
         mDvd::setOverlayRes(false);
     }
@@ -135,16 +132,14 @@ void dScGameSetup_c::executeState_FileSelect()
 }
 
 [[nsmbw(0x809188E0)]]
-void dScGameSetup_c::finalizeState_FileSelect()
-{
+void dScGameSetup_c::finalizeState_FileSelect() {
     for (int i = 0; i < CHARACTER_COUNT; i++) {
         daPyMng_c::mPlayerType[i] = dMj2dGame_c::scDefaultPlayerTypes[i];
     }
 }
 
 [[nsmbw(0x80918B00)]]
-void dScGameSetup_c::executeState_StartMember()
-{
+void dScGameSetup_c::executeState_StartMember() {
     dSelectPlayer_c* selPly = mpSelectPlayer;
 
     if (selPly->m0x26B == 0) {
@@ -166,21 +161,20 @@ void dScGameSetup_c::executeState_StartMember()
 
     // Switch to dNumberOfPeopleChange_c
     dNumberOfPeopleChange_c* numPyChg = mpNumPyChg;
-    numPyChg->m0x67E = true;
-    numPyChg->mPlayerCount = selPly->mCurrentButton + 1;
+    numPyChg->m0x67E                  = true;
+    numPyChg->mPlayerCount            = selPly->mCurrentButton + 1;
 
     mStateMgr.changeState(dScGameSetup_c::StateID_ConnectionCheck);
 }
 
 [[nsmbw(0x80918C10)]]
-void dScGameSetup_c::initializeState_ConnectionCheck()
-{
+void dScGameSetup_c::initializeState_ConnectionCheck() {
     if (!!(dInfo_c::mGameFlag & dInfo_c::GameFlag_e::MULTI_MODE)) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
-            PLAYER_TYPE_e type = daPyMng_c::mPlayerType[i];
+            PLAYER_TYPE_e type           = daPyMng_c::mPlayerType[i];
             daPyMng_c::mPlayerMode[type] = PLAYER_MODE_e::NONE;
 
-            dPyMdlBase_c* mdl = mpNumPyChg->mp2DPlayer[type]->mModelMng->mModel;
+            dPyMdlBase_c* mdl            = mpNumPyChg->mp2DPlayer[type]->mModelMng->mModel;
             if ((mdl->mVisibilityFlags & 0x100) != 0) {
                 mdl->offStarAnm();
             }
@@ -197,21 +191,18 @@ void dScGameSetup_c::initializeState_ConnectionCheck()
 }
 
 [[nsmbw(0x80918DC0)]]
-void dScGameSetup_c::initializeState_EasyPairingWait()
-{
+void dScGameSetup_c::initializeState_EasyPairingWait() {
     mpNumPyChg->setEasyPairingWait(true);
     mpEasyPairing->m0x279 = true;
 }
 
 [[nsmbw(0x80918E70)]]
-void dScGameSetup_c::finalizeState_EasyPairingWait()
-{
+void dScGameSetup_c::finalizeState_EasyPairingWait() {
     mpNumPyChg->setEasyPairingWait(false);
 }
 
 [[nsmbw(0x80919190)]]
-void dScGameSetup_c::finalizeState_VoiceEndWait()
-{
+void dScGameSetup_c::finalizeState_VoiceEndWait() {
     dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame();
     if (save->isEmpty() && !fFeat::disable_opening_movie) {
         dScene_c::setNextScene(dProf::MOVIE, 0, false);

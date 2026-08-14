@@ -2,13 +2,20 @@
 // NSMBW .text: 0x800FE2E0 - 0x800FFF80
 
 #include "d_yoshi_model.h"
+
 #include "d_bases/d_s_stage.h"
 #include "d_system/d_game_common.h"
 #include "framework/f_feature.h"
 
 extern const char* const c_yoshiColorNames[dYoshiMdl_c::COLOR_COUNT] = {
-  "Y_TexGreen",   "Y_TexRed",    "Y_TexYellow", "Y_TexBlue",
-  "Y_TexCrimson", "Y_TexOrange", "Y_TexPurple", "Y_TexAzure",
+    "Y_TexGreen",   "Y_TexRed",    "Y_TexYellow", "Y_TexBlue",
+    "Y_TexCrimson", "Y_TexOrange", "Y_TexPurple", "Y_TexAzure",
+};
+
+int dYoshiMdl_c::s_yoshiColors[dYoshiMdl_c::COLOR_COUNT] = {
+    dYoshiMdl_c::COLOR_GREEN,  dYoshiMdl_c::COLOR_YELLOW,  dYoshiMdl_c::COLOR_BLUE,
+    dYoshiMdl_c::COLOR_RED,    dYoshiMdl_c::COLOR_AZURE,   dYoshiMdl_c::COLOR_ORANGE,
+    dYoshiMdl_c::COLOR_PURPLE, dYoshiMdl_c::COLOR_CRIMSON,
 };
 
 [[nsmbw(0x800FE2E0)]]
@@ -16,7 +23,6 @@ dYoshiMdl_c::dYoshiMdl_c(u8 index);
 
 [[nsmbw(0x800FE510)]]
 void dYoshiMdl_c::getPlayerObjectRes() ASM_METHOD(
-  // clang-format off
 /* 800FE510 9421FFD0 */  stwu     r1, -48(r1);
 /* 800FE514 7C0802A6 */  mflr     r0;
 /* 800FE518 90010034 */  stw      r0, 52(r1);
@@ -109,31 +115,19 @@ UNDEF_800fe640:;
 /* 800FE65C 7C0803A6 */  mtlr     r0;
 /* 800FE660 38210030 */  addi     r1, r1, 48;
 /* 800FE664 4E800020 */  blr;
-  // clang-format on
-)
+);
 
-int dYoshiMdl_c::s_yoshiColors[dYoshiMdl_c::COLOR_COUNT] = {
-    dYoshiMdl_c::COLOR_GREEN,
-    dYoshiMdl_c::COLOR_YELLOW,
-    dYoshiMdl_c::COLOR_BLUE,
-    dYoshiMdl_c::COLOR_RED,
-    dYoshiMdl_c::COLOR_AZURE,
-    dYoshiMdl_c::COLOR_ORANGE,
-    dYoshiMdl_c::COLOR_PURPLE,
-    dYoshiMdl_c::COLOR_CRIMSON,
-};
-
-void dYoshiMdl_c::setDefaultColors()
-{
-    if (!dScStage_c::isNowReplay()) {
-        if (fFeat::yoshi_color_mode == fFeat::YOSHI_COLOR_MODE_e::RANDOM) {
-            // Shuffle the s_yoshiColors array
-            for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
-                int j = dGameCom::rndInt(i);
-                int temp = s_yoshiColors[i];
-                s_yoshiColors[i] = s_yoshiColors[j];
-                s_yoshiColors[j] = temp;
-            }
+void dYoshiMdl_c::setDefaultColors() {
+    if (dScStage_c::isNowReplay()) {
+        return;
+    }
+    if (dGameRule_s::current.yoshi_color_mode == fFeat::YOSHI_COLOR_MODE_e::RANDOM) {
+        // Shuffle the s_yoshiColors array
+        for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
+            int j            = dGameCom::rndInt(i);
+            int temp         = s_yoshiColors[i];
+            s_yoshiColors[i] = s_yoshiColors[j];
+            s_yoshiColors[j] = temp;
         }
     }
 }

@@ -8,6 +8,7 @@
 #include "d_player/d_a_yoshi.h"
 #include "d_player/d_gamedisplay.h"
 #include "d_profile/d_profile.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_demo_manager.h"
 #include "d_system/d_audio.h"
 #include "d_system/d_balloon_mng.h"
@@ -388,7 +389,7 @@ static cArray_c<int, PLAYER_COUNT, PLAYER_TYPE_e> mDeathCount = {};
 [[nsmbw(0x8005F5C0)]]
 void daPyMng_c::update() {
     // Hack for incrementing death count
-    if (fFeat::infinite_lives) {
+    if (dGameRule_s::current.infinite_lives) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             PLAYER_TYPE_e type = mPlayerType[i];
             if (mRest[type] == 4) {
@@ -400,7 +401,7 @@ void daPyMng_c::update() {
 
     checkLastAlivePlayer();
     if (dGameDisplay_c* display = dScStage_c::getGameDisplay()) {
-        if (fFeat::infinite_lives) {
+        if (dGameRule_s::current.infinite_lives) {
             display->updatePlayNum(mDeathCount.data());
         } else {
             display->updatePlayNum(mRest.data());
@@ -796,7 +797,7 @@ void daPyMng_c::incRestAll(
 ) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerEntry[i] != 0) {
-            addRest(i, fFeat::infinite_lives ? 0 : 1, playEffect);
+            addRest(i, dGameRule_s::current.infinite_lives ? 0 : 1, playEffect);
         }
     }
 }
@@ -898,7 +899,7 @@ void daPyMng_c::setHipAttackQuake(
 
         SndAudioMgr::sInstance->startSystemSe(l_QUAKE_SOUND_LIST[std::clamp(count - 1, 0, 2)], 1);
 
-        if (fFeat::bubble_swarm_mode) {
+        if (dGameRule_s::current.bubble_swarm_mode) {
             dBalloonMng_c::m_instance->popAll();
         }
 

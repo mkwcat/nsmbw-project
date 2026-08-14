@@ -4,6 +4,7 @@ target_sources(project PRIVATE
     d_a_sample_actor.cpp
     d_base_dump.cpp
     d_exception.cpp
+    d_gamerule.cpp
     d_nextgoto_list.cpp
     d_project.cpp
 )

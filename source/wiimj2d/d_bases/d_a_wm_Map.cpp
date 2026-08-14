@@ -4,11 +4,11 @@
 #include "d_a_wm_Map.h"
 
 #include "d_bases/d_s_world_map.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_info.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_wm_connect.h"
 #include "d_system/d_wm_lib.h"
-#include "framework/f_feature.h"
 
 [[nsmbw(0x808DFE50)]]
 void daWmMap_c::createEnemyActors();
@@ -22,7 +22,7 @@ EXTERN_REPL(0x808E2250, bool daWmMap_c::IsRouteOpen2(const char* routeName));
 bool daWmMap_c::IsRouteOpen(
     const char* routeName
 ) {
-    if (fFeat::all_paths_available) {
+    if (dGameRule_s::current.all_paths_available) {
         return true;
     }
     return IsRouteOpen2(routeName);
@@ -36,10 +36,9 @@ EXTERN_REPL(
 bool daWmMap_c::IsIbaraRouteOpen(
     const char* subRoute1, const char* subRoute2
 ) {
-    if (fFeat::all_paths_available) {
+    if (dGameRule_s::current.all_paths_available) {
         return true;
     }
-
     return IsIbaraRouteOpen2(subRoute1, subRoute2);
 }
 

@@ -4,13 +4,13 @@
 #include "d_a_en_item.h"
 
 #include "d_player/d_a_player.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_audio.h"
 #include "d_system/d_enemy_manager.h"
 #include "d_system/d_game_common.h"
 #include "d_system/d_mj2d_game.h"
 #include "d_system/d_score_mng.h"
-#include "framework/f_feature.h"
 #include "sound/SndID.h"
 
 [[nsmbw(0x80A26C30)]]
@@ -580,7 +580,7 @@ bool daEnItem_c::collectItem() {
     ITEM_e item = static_cast<ITEM_e>(mItemType);
 
     if (item == ITEM_e::ONE_UP) {
-        if (fFeat::deadly_1up) {
+        if (dGameRule_s::current.deadly_1up) {
             player->set1UpKinokoEffect();
             player->setForcedDamage(this, daPlBase_c::DamageType_e::POISON_FOG);
         } else {

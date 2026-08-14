@@ -4,8 +4,8 @@
 #include "d_wm_WorldSelect.h"
 
 #include "d_bases/d_s_world_map.h"
+#include "d_project/d_gamerule.h"
 #include "d_system/d_game_key.h"
-#include "framework/f_feature.h"
 #include "sound/SndAudioMgr.h"
 #include "sound/SndID.h"
 
@@ -16,14 +16,16 @@ int dWorldSelect_c::wrapIsland(int island);
 float dWorldSelect_c::getIslandMoveAngle();
 
 [[nsmbw(0x80928F50)]]
-bool dWorldSelect_c::checkIslandMove(int island, bool isMoveRight)
-{
+bool dWorldSelect_c::checkIslandMove(
+    int island, bool isMoveRight
+) {
     m_isMoveRight = isMoveRight;
 
-    int toIsland = isMoveRight ? island + 1 : island - 1;
-    toIsland = wrapIsland(toIsland);
+    int toIsland  = isMoveRight ? island + 1 : island - 1;
+    toIsland      = wrapIsland(toIsland);
 
-    for (m_moveNum = 0; !fFeat::unlocked_all_worlds && !m_isWorldOpen[toIsland]; m_moveNum++) {
+    for (m_moveNum = 0; !dGameRule_s::current.all_worlds_available && !m_isWorldOpen[toIsland];
+         m_moveNum++) {
         toIsland = isMoveRight ? toIsland + 1 : toIsland - 1;
         toIsland = wrapIsland(toIsland);
     }
@@ -43,10 +45,9 @@ bool dWorldSelect_c::checkIslandMove(int island, bool isMoveRight)
 }
 
 [[nsmbw(0x80929990)]]
-void dWorldSelect_c::executeState_Select()
-{
+void dWorldSelect_c::executeState_Select() {
     dGameKeyCore_c& core = *dGameKey_c::getCurrentCore();
-    m_isMove = false;
+    m_isMove             = false;
 
     if (core.checkMenuConfirm()) {
         if (dScWMap_c::getWorldNo() != static_cast<WORLD_e>(m_currentIsland)) {
@@ -64,12 +65,13 @@ void dWorldSelect_c::executeState_Select()
             return;
         }
         m_toIsland = m_islandBeforeSpecialWorld;
-        m_isMove = true;
+        m_isMove   = true;
         return m_stateMgr.changeState(StateID_IsLandSizeDown);
-    } else if ((m_isWorldOpen[9 - 1] || fFeat::unlocked_all_worlds) && core.checkUp()) {
+    } else if ((m_isWorldOpen[9 - 1] || dGameRule_s::current.all_worlds_available) &&
+               core.checkUp()) {
         m_islandBeforeSpecialWorld = m_currentIsland;
-        m_toIsland = 9 - 1;
-        m_isMove = true;
+        m_toIsland                 = 9 - 1;
+        m_isMove                   = true;
         return m_stateMgr.changeState(StateID_IsLandSizeDown);
     } else if (bool left = core.checkLeft();
                (left || core.checkRight()) && checkIslandMove(m_currentIsland, !left)) {

@@ -42,7 +42,9 @@ bool bubble_swarm_mode;
 [[nsmbw_data(0x80006795)]]
 bool deadly_1up;
 [[nsmbw_data(0x80006796)]]
-bool all_paths_available;
+bool        all_paths_available;
+
+inline bool mega_bowser_in_every_course         = true;
 
 // Debugging features
 // ^^^^^^
