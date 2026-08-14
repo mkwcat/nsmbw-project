@@ -2,8 +2,7 @@
 
 #include "d_enemy.h"
 
-class dBossLifeCommon_c
-{
+class dBossLifeCommon_c {
 public:
     // Structors
     // ^^^^^^
@@ -15,8 +14,11 @@ public:
     /* 0x4 */ int mLife;
 };
 
-class dEnBoss_c : public dEn_c
-{
+class dEnBoss_c : public dEn_c {
+    SIZE_ASSERT(0x600); // Assumed
+
+    VTABLE(0x60, fBase_c, 0x80312288);
+
 public:
     // Instance Variables
     // ^^^^^^
@@ -24,4 +26,6 @@ public:
     FILL(0x524, 0x5F8);
 
     /* 0x5F8 */ dBossLifeCommon_c* mpBossLife;
+
+    FILL(0x5FC, 0x600);
 };

@@ -8,25 +8,34 @@
 #include <nw4r/g3d/g3d_calcworld.h>
 #include <nw4r/g3d/g3d_resmdl.h>
 
-namespace m3d
-{
+namespace m3d {
 
-class callback_c
-{
-public:
-    virtual ~callback_c();
-    virtual void timingA(u32, nw4r::g3d::ChrAnmResult*, nw4r::g3d::ResMdl);
-    virtual void timingB(u32, nw4r::g3d::WorldMtxManip*, nw4r::g3d::ResMdl);
-    virtual void timingC(nw4r::math::MTX34*, nw4r::g3d::ResMdl);
-};
-
-class mdl_c : public smdl_c
-{
+class mdl_c : public smdl_c {
     SIZE_ASSERT(0x40);
 
 public:
-    class mdlCallback_c : public nw4r::g3d::ICalcWorldCallback
-    {
+    class callback_c {
+    public:
+        /* VT+0x08 0x80026080 */
+        virtual ~callback_c() {}
+
+        /* VT+0x0C 0x8002A220 */
+        virtual void timingA(
+            u32, nw4r::g3d::ChrAnmResult*, nw4r::g3d::ResMdl
+        ) {}
+
+        /* VT+0x10 0x80026130, 0x80B20150 */
+        virtual void timingB(
+            u32, nw4r::g3d::WorldMtxManip*, nw4r::g3d::ResMdl
+        ) {}
+
+        /* VT+0x14 0x80026120, 0x80B20140 */
+        virtual void timingC(
+            nw4r::math::MTX34*, nw4r::g3d::ResMdl
+        ) {}
+    };
+
+    class mdlCallback_c : public nw4r::g3d::ICalcWorldCallback {
         SIZE_ASSERT(0x34);
 
     public:
@@ -46,22 +55,20 @@ public:
         void setBlendFrame(f32);
         void calcBlend();
 
-        mAllocator_c* getAllocator()
-        {
-            return mpAlloc;
-        }
+        mAllocator_c* getAllocator() { return mpAlloc; }
 
-        void setBaseCallback(callback_c* cb)
-        {
+        void setBaseCallback(
+            callback_c* cb
+        ) {
             mpBaseCallback = cb;
         }
 
     private:
-        /* 0x04 */ calcRatio_c mCalcRatio;
-        /* 0x24 */ int mNumNode;
+        /* 0x04 */ calcRatio_c              mCalcRatio;
+        /* 0x24 */ int                      mNumNode;
         /* 0x28 */ nw4r::g3d::ChrAnmResult* mpNodes;
-        /* 0x2C */ callback_c* mpBaseCallback;
-        /* 0x30 */ mAllocator_c* mpAlloc;
+        /* 0x2C */ callback_c*              mpBaseCallback;
+        /* 0x30 */ mAllocator_c*            mpAlloc;
     };
 
     mdl_c();

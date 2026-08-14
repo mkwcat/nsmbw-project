@@ -5,8 +5,7 @@
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 
-class dScCrsin_c : public dScene_c
-{
+class dScCrsin_c : public dScene_c {
 public:
     // Structors
     // ^^^^^^

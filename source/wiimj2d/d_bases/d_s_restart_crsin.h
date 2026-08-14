@@ -3,8 +3,7 @@
 #include "d_system/d_info.h"
 #include "d_system/d_scene.h"
 
-class dScRestartCrsin_c : public dScene_c
-{
+class dScRestartCrsin_c : public dScene_c {
 public:
     // Static Methods
     // ^^^^^^
