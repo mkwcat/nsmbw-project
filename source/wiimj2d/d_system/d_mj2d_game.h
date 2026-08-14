@@ -30,7 +30,7 @@
 #define SAVE_SLOT_COUNT 3
 
 /**
- * The amount of Star Coins per level.
+ * The amount of Star Coins per stage.
  */
 #define STAR_COIN_COUNT 3
 
@@ -59,8 +59,8 @@ enum class PLAYER_TYPE_e {
     COUNT,
 };
 
-#define CHARACTER_COUNT 8
-#define PLAYER_COUNT 8 // Same as CHARACTER_COUNT
+#define CHARACTER_COUNT       8
+#define PLAYER_COUNT          8 // Same as CHARACTER_COUNT
 #define ORIGINAL_PLAYER_COUNT 4
 ENUM_ALLOW_PROMOTION(PLAYER_TYPE_e);
 
@@ -146,7 +146,7 @@ enum class ITEM_e : u8 {
 ENUM_ALLOW_PROMOTION(ITEM_e);
 
 /**
- * The numbers corresponding to each level type.
+ * The numbers corresponding to each stage type.
  * @unofficial
  */
 enum class STAGE_e : u8 {
@@ -189,7 +189,7 @@ enum class STAGE_e : u8 {
     DOOMSHIP       = 37,
 
     /**
-     * When used, it loads the Toad Rescue level for the corresponding world.
+     * When used, it loads the Toad Rescue stage for the corresponding world.
      */
     RESCUE         = 38,
 
@@ -225,7 +225,7 @@ enum class WORLD_e : u8 {
     SPECIAL_WORLD_COUNT = LAST_SPECIAL_WORLD - LAST_WORLD,
 };
 
-#define WORLD_COUNT 10
+#define WORLD_COUNT          10
 #define ORIGINAL_WORLD_COUNT 10
 ENUM_ALLOW_PROMOTION(WORLD_e);
 
@@ -313,8 +313,7 @@ struct StageNo_s {
  */
 class alignas(
     32
-) dMj2dGame_c
-{
+) dMj2dGame_c {
     /* ORIGINAL SIZE: 0x980 */
 
     friend class dSaveMng_c;
@@ -358,7 +357,7 @@ public:
     };
 
     /**
-     * The completion status of each level.
+     * The completion status of each stage.
      */
     enum class COURSE_COMPLETION_e : u32 {
         /**
@@ -588,10 +587,10 @@ public:
 
     /**
      * 0x800CE270
-     * Sets the obtained Star Coin(s) for the given world/level. See COURSE_COMPLETION_e.
+     * Sets the obtained Star Coin(s) for the given world/stage. See COURSE_COMPLETION_e.
      * Other flags are discarded.
      */
-    void setCollectCoin(WORLD_e world, STAGE_e level, COURSE_COMPLETION_e coins);
+    void setCollectCoin(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e coins);
 
     /**
      * 0x800CE280
@@ -601,9 +600,9 @@ public:
 
     /**
      * 0x800CE300
-     * Checks if the given Star Coin has been obtained in the given world/level.
+     * Checks if the given Star Coin has been obtained in the given world/stage.
      */
-    u8 isCollectCoin(WORLD_e world, STAGE_e level, int coin) const;
+    u8 isCollectCoin(WORLD_e world, STAGE_e stage, int coin) const;
 
     /**
      * Sets the starting Toad House type in the given world. See START_KINOKO_KIND_e.
@@ -619,20 +618,20 @@ public:
      * 0x800CE350
      * Sets the death count in a specific stage.
      * @param world The world.
-     * @param level The level.
-     * @param isSwitchPressed If the worldmap switch was activated [only used for level 3-4].
+     * @param stage The stage.
+     * @param isSwitchPressed If the worldmap switch was activated [only used for stage 3-4].
      * @param count The death count.
      */
-    void setDeathCount(WORLD_e world, STAGE_e level, bool isSwitchPressed, u8 count);
+    void setDeathCount(WORLD_e world, STAGE_e stage, bool isSwitchPressed, u8 count);
 
     /**
      * Gets the death count in a specific stage.
      * @param world The world.
-     * @param level The level.
-     * @param isSwitchPressed If the worldmap switch was activated [only used for level 3-4].
+     * @param stage The stage.
+     * @param isSwitchPressed If the worldmap switch was activated [only used for stage 3-4].
      * @return The death count.
      */
-    int getDeathCount(WORLD_e world, STAGE_e level, bool isSwitchPressed) const;
+    int getDeathCount(WORLD_e world, STAGE_e stage, bool isSwitchPressed) const;
 
     /**
      * Sets a player 's continue count.
@@ -675,27 +674,27 @@ public:
 
     /**
      * 0x800CE4B0
-     * Checks if the completion flag for the given world/level is set.
+     * Checks if the completion flag for the given world/stage is set.
      */
-    bool isCourseDataFlag(WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag) const;
+    bool isCourseDataFlag(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag) const;
 
     /**
      * 0x800CE4E0
-     * Sets the completion flag(s) for the given world/level.
+     * Sets the completion flag(s) for the given world/stage.
      */
-    void onCourseDataFlag(WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag);
+    void onCourseDataFlag(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag);
 
     /**
      * 0x800CE500
-     * Unsets the completion flag(s) for the given world/level.
+     * Unsets the completion flag(s) for the given world/stage.
      */
-    void offCourseDataFlag(WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag);
+    void offCourseDataFlag(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag);
 
     /**
      * 0x800CE490
-     * Gets all the completion flags for the given world/level.
+     * Gets all the completion flags for the given world/stage.
      */
-    COURSE_COMPLETION_e getCourseDataFlag(WORLD_e world, STAGE_e level) const;
+    COURSE_COMPLETION_e getCourseDataFlag(WORLD_e world, STAGE_e stage) const;
 
     /**
      * Sets the revival counter for the given map enemy.
@@ -741,12 +740,12 @@ public:
     PATH_DIRECTION_e getCSEnemyWalkDir(WORLD_e world, int enemy) const;
 
     /**
-     * Sets the Toad rescue level for the given world.
+     * Sets the Toad rescue stage for the given world.
      */
-    void setKinopioCourseNo(WORLD_e world, STAGE_e level);
+    void setKinopioCourseNo(WORLD_e world, STAGE_e stage);
 
     /**
-     * Gets the Toad rescue level for the given world.
+     * Gets the Toad rescue stage for the given world.
      */
     STAGE_e getKinopioCourseNo(WORLD_e world) const;
 
@@ -834,7 +833,7 @@ private:
     /* 0x05 */ u8 mCurrentPathNode;
 
     /**
-     * The worldmap vine reshuffle counter. [Value decreases every time a level is played. If it
+     * The worldmap vine reshuffle counter. [Value decreases every time a stage is played. If it
      * reaches zero, the vines are moved].
      */
     /* 0x06 */ u8 mIbaraNow;
@@ -920,7 +919,7 @@ private:
     /* 0x6FC */ // bool mOtehonMenuOpen[HINT_MOVIE_COUNT];
 
     /**
-     * The Toad Rescue level for each world.
+     * The Toad Rescue stage for each world.
      */
     /* 0x742 */ STAGE_e mKinopioCourseNo[WORLD_COUNT];
 
@@ -940,8 +939,8 @@ private:
     /* 0x79C */ PATH_DIRECTION_e mEnemyWalkDir[WORLD_COUNT][AMBUSH_ENEMY_COUNT];
 
     /**
-     * The death count for each level. The value is cumulative, and not reset after clearing the
-     * level.
+     * The death count for each stage. The value is cumulative, and not reset after clearing the
+     * stage.
      */
     /* 0x7C4 */ u8 mDeathCount[WORLD_COUNT][STAGE_COUNT];
 

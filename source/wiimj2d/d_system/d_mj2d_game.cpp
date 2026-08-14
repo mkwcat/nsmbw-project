@@ -26,7 +26,7 @@ void dMj2dGame_c::initialize() {
     }
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        setPlrID(i, dMj2dGame_c::scDefaultPlayerTypes[i]);
+        setPlrID(i, scDefaultPlayerTypes[i]);
         setPlrMode(i, PLAYER_MODE_e::NONE);
         setRest(i, 5);
         setCreateItem(i, PLAYER_CREATE_ITEM_e::NONE);
@@ -56,28 +56,28 @@ void dMj2dGame_c::versionUpdate() {
 void dMj2dGame_c::setPlrID(
     int player, PLAYER_TYPE_e character
 ) {
-    mPlayerCharacter[player] = PLAYER_TYPE_u8_e(character);
+    mPlayerCharacter[player] = static_cast<PLAYER_TYPE_u8_e>(character);
 }
 
 [[nsmbw(0x800CE160)]]
 PLAYER_TYPE_e dMj2dGame_c::getPlrID(
     int player
 ) const {
-    return PLAYER_TYPE_e(mPlayerCharacter[player]);
+    return static_cast<PLAYER_TYPE_e>(mPlayerCharacter[player]);
 }
 
 [[nsmbw(0x800CE170)]]
 void dMj2dGame_c::setPlrMode(
     int player, PLAYER_MODE_e powerup
 ) {
-    mPlayerPowerup[player] = PLAYER_MODE_u8_e(powerup);
+    mPlayerPowerup[player] = static_cast<PLAYER_MODE_u8_e>(powerup);
 }
 
 [[nsmbw(0x800CE180)]]
 PLAYER_MODE_e dMj2dGame_c::getPlrMode(
     int player
 ) const {
-    return PLAYER_MODE_e(mPlayerPowerup[player]);
+    return static_cast<PLAYER_MODE_e>(mPlayerPowerup[player]);
 }
 
 [[nsmbw(0x800CE190)]]
@@ -106,10 +106,8 @@ void dMj2dGame_c::setCreateItem(
 PLAYER_CREATE_ITEM_e dMj2dGame_c::getCreateItem(
     int player
 ) const {
-    return static_cast<PLAYER_CREATE_ITEM_e>(
-        static_cast<PLAYER_CREATE_ITEM_e>(mPlayerCreateItem[player]) &
-        PLAYER_CREATE_ITEM_e::STAR_POWER
-    );
+    return static_cast<PLAYER_CREATE_ITEM_e>(mPlayerCreateItem[player]) &
+           PLAYER_CREATE_ITEM_e::STAR_POWER;
 }
 
 [[nsmbw(0x800CE1D0)]]
@@ -167,75 +165,72 @@ bool dMj2dGame_c::isOtehonMenuOpenFlag(
 }
 
 [[nsmbw(0x800CE270)]]
-void dMj2dGame_c::setCollectCoin(WORLD_e world, STAGE_e level, COURSE_COMPLETION_e coins);
+void dMj2dGame_c::setCollectCoin(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e coins);
 
 [[nsmbw(0x800CE280)]]
 int dMj2dGame_c::getTotalWorldCollectCoin(
     WORLD_e world
 ) {
     int coinCount = 0;
-    for (int level = 0; level < STAGE_COUNT; level++) {
+    for (int stage = 0; stage < STAGE_COUNT; stage++) {
         for (u32 coin = 0; coin < STAR_COIN_COUNT; coin++) {
-            if (isCollectCoin(world, static_cast<STAGE_e>(level), coin) & 0xFF) {
+            if (isCollectCoin(world, static_cast<STAGE_e>(stage), coin) & 0xFF) {
                 coinCount++;
             }
         }
     }
-
     return coinCount;
 }
 
 [[nsmbw(0x800CE300)]]
 u8 dMj2dGame_c::isCollectCoin(
-    WORLD_e world, STAGE_e level, int coin
+    WORLD_e world, STAGE_e stage, int coin
 ) const {
-    return 1 << coin &
-           static_cast<u32>(mCourseCompletion[static_cast<int>(world)][static_cast<int>(level)]);
+    return 1 << coin & static_cast<u32>(mCourseCompletion[+world][+stage]);
 }
 
 [[nsmbw(0x800CE330)]]
 void dMj2dGame_c::setStartKinokoKind(
     WORLD_e world, START_KINOKO_KIND_e kind
 ) {
-    mStartKinokoType[static_cast<int>(world)] = kind;
+    mStartKinokoType[+world] = kind;
 }
 
 [[nsmbw(0x800CE340)]]
 dMj2dGame_c::START_KINOKO_KIND_e dMj2dGame_c::getStartKinokoKind(
     WORLD_e world
 ) const {
-    return static_cast<START_KINOKO_KIND_e>(mStartKinokoType[static_cast<int>(world)]);
+    return static_cast<START_KINOKO_KIND_e>(mStartKinokoType[+world]);
 }
 
 [[nsmbw(0x800CE350)]]
 void dMj2dGame_c::setDeathCount(
-    WORLD_e world, STAGE_e level, bool isSwitchPressed, u8 count
+    WORLD_e world, STAGE_e stage, bool isSwitchPressed, u8 count
 ) {
     {
         if (count >= SUPER_GUIDE_DEATH_COUNT && world < WORLD_e::NORMAL_WORLD_COUNT &&
-            (level <= STAGE_e::CASTLE || level == STAGE_e::DOOMSHIP)) {
+            (stage <= STAGE_e::CASTLE || stage == STAGE_e::DOOMSHIP)) {
             mGameCompletion |= GAME_COMPLETION_e::SUPER_GUIDE_TRIGGERED;
         }
 
-        // [Hardcoded check for World 3-4]
-        if (isSwitchPressed && world == WORLD_e::WORLD_3 && level == STAGE_e::STAGE_4) {
+        // Hardcoded check for World 3-4
+        if (isSwitchPressed && world == WORLD_e::WORLD_3 && stage == STAGE_e::STAGE_4) {
             setSwitchDeathCount(count);
         } else {
-            mDeathCount[int(world)][int(level)] = count;
+            mDeathCount[+world][+stage] = count;
         }
     }
 }
 
 [[nsmbw(0x800CE3B0)]]
 int dMj2dGame_c::getDeathCount(
-    WORLD_e world, STAGE_e level, bool isSwitchPressed
+    WORLD_e world, STAGE_e stage, bool isSwitchPressed
 ) const {
     // [Hardcoded check for World 3-4]
-    if (isSwitchPressed && world == WORLD_e::WORLD_3 && level == STAGE_e::STAGE_4) {
+    if (isSwitchPressed && world == WORLD_e::WORLD_3 && stage == STAGE_e::STAGE_4) {
         return getSwitchDeathCount();
     }
-
-    return mDeathCount[int(world)][int(level)];
+    return mDeathCount[+world][int(stage)];
 }
 
 [[nsmbw(0x800CE3E0)]]
@@ -271,7 +266,6 @@ void dMj2dGame_c::setStockItem(
     if (count > MAX_STOCK_ITEM) {
         count = MAX_STOCK_ITEM;
     }
-
     mStockItemCount[item] = count;
 }
 
@@ -279,131 +273,129 @@ void dMj2dGame_c::setStockItem(
 dMj2dGame_c::WORLD_COMPLETION_e dMj2dGame_c::isWorldDataFlag(
     WORLD_e world, WORLD_COMPLETION_e flag
 ) const {
-    return flag & mWorldCompletion[static_cast<u8>(world)];
+    return flag & mWorldCompletion[+world];
 }
 
 [[nsmbw(0x800CE450)]]
 void dMj2dGame_c::onWorldDataFlag(
     WORLD_e world, WORLD_COMPLETION_e flag
 ) {
-    mWorldCompletion[int(world)] |= flag;
+    mWorldCompletion[+world] |= flag;
 }
 
 [[nsmbw(0x800CE470)]]
 void dMj2dGame_c::offWorldDataFlag(
     WORLD_e world, WORLD_COMPLETION_e flag
 ) {
-    mWorldCompletion[int(world)] &= ~flag;
+    mWorldCompletion[+world] &= ~flag;
 }
 
 [[nsmbw(0x800CE490)]]
 dMj2dGame_c::COURSE_COMPLETION_e dMj2dGame_c::getCourseDataFlag(
-    WORLD_e world, STAGE_e level
+    WORLD_e world, STAGE_e stage
 ) const {
-    u8                               worldIndex = static_cast<u8>(world);
-    u8                               levelIndex = static_cast<u8>(level);
-    dMj2dGame_c::COURSE_COMPLETION_e completion = mCourseCompletion[worldIndex][levelIndex];
+    u8                  worldIndex = +world;
+    u8                  levelIndex = +stage;
+    COURSE_COMPLETION_e completion = mCourseCompletion[worldIndex][levelIndex];
 
     if (fFeat::completed_all_levels) {
         completion |= COURSE_COMPLETION_e::GOAL_MASK;
     }
-
     return completion;
 }
 
 [[nsmbw(0x800CE4B0)]]
 bool dMj2dGame_c::isCourseDataFlag(
-    WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag
+    WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag
 ) const {
     if (fFeat::completed_all_levels) {
         return true;
     }
-
-    return !!(flag & mCourseCompletion[static_cast<u8>(world)][static_cast<u8>(level)]);
+    return !!(flag & mCourseCompletion[+world][+stage]);
 }
 
 [[nsmbw(0x800CE4E0)]]
 void dMj2dGame_c::onCourseDataFlag(
-    WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag
+    WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag
 ) {
-    mCourseCompletion[static_cast<u8>(world)][static_cast<u8>(level)] |= flag;
+    mCourseCompletion[+world][+stage] |= flag;
 }
 
 [[nsmbw(0x800CE500)]]
 void dMj2dGame_c::offCourseDataFlag(
-    WORLD_e world, STAGE_e level, COURSE_COMPLETION_e flag
+    WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag
 ) {
-    mCourseCompletion[static_cast<u8>(world)][static_cast<u8>(level)] &= ~flag;
+    mCourseCompletion[+world][+stage] &= ~flag;
 }
 
 [[nsmbw(0x800CE520)]]
 void dMj2dGame_c::setCSEnemyRevivalCnt(
     WORLD_e world, int enemy, int count
 ) {
-    mEnemyRevivalCount[int(world)][enemy] = count;
+    mEnemyRevivalCount[+world][enemy] = count;
 }
 
 [[nsmbw(0x800CE540)]]
 u8 dMj2dGame_c::getCSEnemyRevivalCnt(
     WORLD_e world, int enemy
 ) const {
-    return mEnemyRevivalCount[int(world)][enemy];
+    return mEnemyRevivalCount[+world][enemy];
 }
 
 [[nsmbw(0x800CE560)]]
 void dMj2dGame_c::setCSEnemySceneNo(
     WORLD_e world, int enemy, u8 subworld
 ) {
-    mEnemySceneNo[int(world)][enemy] = subworld;
+    mEnemySceneNo[+world][enemy] = subworld;
 }
 
 [[nsmbw(0x800CE580)]]
 u8 dMj2dGame_c::getCSEnemySceneNo(
     WORLD_e world, int enemy
 ) const {
-    return mEnemySceneNo[int(world)][enemy];
+    return mEnemySceneNo[+world][enemy];
 }
 
 [[nsmbw(0x800CE5A0)]]
 void dMj2dGame_c::setCSEnemyPosIndex(
     WORLD_e world, int enemy, u8 node
 ) {
-    mEnemyPosIndex[int(world)][enemy] = node;
+    mEnemyPosIndex[+world][enemy] = node;
 }
 
 [[nsmbw(0x800CE5C0)]]
 s8 dMj2dGame_c::getCSEnemyPosIndex(
     WORLD_e world, int enemy
 ) const {
-    return mEnemyPosIndex[int(world)][enemy];
+    return mEnemyPosIndex[+world][enemy];
 }
 
 [[nsmbw(0x800CE5E0)]]
 void dMj2dGame_c::setCSEnemyWalkDir(
     WORLD_e world, int enemy, PATH_DIRECTION_e direction
 ) {
-    mEnemyWalkDir[int(world)][enemy] = direction;
+    mEnemyWalkDir[+world][enemy] = direction;
 }
 
 [[nsmbw(0x800CE600)]]
 PATH_DIRECTION_e dMj2dGame_c::getCSEnemyWalkDir(
     WORLD_e world, int enemy
 ) const {
-    return mEnemyWalkDir[int(world)][enemy];
+    return mEnemyWalkDir[+world][enemy];
 }
 
 [[nsmbw(0x800CE620)]]
 void dMj2dGame_c::setKinopioCourseNo(
-    WORLD_e world, STAGE_e level
+    WORLD_e world, STAGE_e stage
 ) {
-    mKinopioCourseNo[int(world)] = level;
+    mKinopioCourseNo[+world] = stage;
 }
 
 [[nsmbw(0x800CE630)]]
 STAGE_e dMj2dGame_c::getKinopioCourseNo(
     WORLD_e world
 ) const {
-    return mKinopioCourseNo[int(world)];
+    return mKinopioCourseNo[+world];
 }
 
 [[nsmbw(0x800CE640)]]
@@ -455,7 +447,6 @@ void dMj2dGame_c::setCheckpoint(
             {checkpoint->mCollectionCoin[0], checkpoint->mCollectionCoin[1],
              checkpoint->mCollectionCoin[2]},
         .face_left = !!(checkpoint->mFlags & dCyuukan_c::FLAG_FACE_LEFT),
-
     };
 }
 
