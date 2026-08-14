@@ -4,8 +4,9 @@
 #include "d_a_en_jimen_pakkun_base.h"
 
 [[nsmbw(0x8002F870)]]
-void daEnJimenPakkunBase_c::Normal_VsPlHitCheck(dCc_c* main, dCc_c* other) ASM_METHOD(
-  // clang-format off
+void daEnJimenPakkunBase_c::Normal_VsPlHitCheck(
+    dCc_c* main, dCc_c* other
+) ASM_METHOD(
 /* 8002F870 9421FFE0 */  stwu     r1, -32(r1);
 /* 8002F874 7C0802A6 */  mflr     r0;
 /* 8002F878 90010024 */  stw      r0, 36(r1);
@@ -41,12 +42,12 @@ UNDEF_8002f8f4:;
 /* 8002F904 7C0803A6 */  mtlr     r0;
 /* 8002F908 38210020 */  addi     r1, r1, 32;
 /* 8002F90C 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x8002F970)]]
-int hitCallback_YoshiHipAttk(dCc_c* main, dCc_c* other) ASM_METHOD(
-  // clang-format off
+int daEnJimenPakkunBase_c::hitCallback_YoshiHipAttk(
+    dCc_c* main, dCc_c* other
+) ASM_METHOD(
 /* 8002F970 9421FFE0 */  stwu     r1, -32(r1);
 /* 8002F974 7C0802A6 */  mflr     r0;
 /* 8002F978 90010024 */  stw      r0, 36(r1);
@@ -54,6 +55,7 @@ int hitCallback_YoshiHipAttk(dCc_c* main, dCc_c* other) ASM_METHOD(
 /* 8002F980 93C10018 */  stw      r30, 24(r1);
 /* 8002F984 93A10014 */  stw      r29, 20(r1);
 /* 8002F988 7C7D1B78 */  mr       r29, r3;
+/* 8002F98C 83C50004 */  lwz      r30, 4(r5);
 
 /* 8002F994          */  mr       r4, r30;
                          bl       getCollTimer__5dEn_cCFP8dActor_c;
@@ -67,6 +69,8 @@ UNDEF_8002f9c8:;
 /* 8002F9D0          */  li       r5, 16;
                          bl       setCollTimer__5dEn_cFP8dActor_cUc;
 
+/* 8002f9E4 7FA3EB78 */  mr       r3, r29;
+/* 8002f9E8 7FC4F378 */  mr       r4, r30;
 /* 8002F9FC 819D0060 */  lwz      r12, 96(r29);
 /* 8002FA00 818C0258 */  lwz      r12, 600(r12);
 /* 8002FA04 7D8903A6 */  mtctr    r12;
@@ -89,5 +93,4 @@ UNDEF_8002fa34:;
 /* 8002FA44 7C0803A6 */  mtlr     r0;
 /* 8002FA48 38210020 */  addi     r1, r1, 32;
 /* 8002FA4C 4E800020 */  blr;
-  // clang-format on
 );
