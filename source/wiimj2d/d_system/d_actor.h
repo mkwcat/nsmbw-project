@@ -303,7 +303,7 @@ public:
     /* 0x354 */ u8 mEventNums[2];
     /* 0x358 */ u64 mEventMask;
 
-    /* 0x360 */ u32 m0x358;
+    /* 0x360 */ u32 m0x360;
     /* 0x364 */ u16 mSpriteSpawnFlags;
     /* 0x366 */ bool mBlockHit;
 

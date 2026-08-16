@@ -369,7 +369,7 @@ void daPlBase_c::executeState_DemoControl() {
         onStatus(116);
         if (isNowBgCross(BGC_FOOT)) {
             if (!isState(StateID_Walk) && !isState(StateID_Turn)) {
-                changeState(StateID_Walk, static_cast<long>(AnmBlend_e::DEFAULT));
+                changeState(StateID_Walk, static_cast<int>(AnmBlend_e::DEFAULT));
             }
         } else {
             if (!isState(StateID_Fall)) {

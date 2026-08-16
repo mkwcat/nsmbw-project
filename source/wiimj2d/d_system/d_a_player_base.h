@@ -1774,18 +1774,18 @@ public:
 
     /* 0x043C */ int m0x43C;
 
-    FILL(0x0440, 0x045C);
+    FILL(0x0440, 0x0450);
 
-    /* 0x045C */ mVec3_c mControlDemoTargetPos;
-    /* 0x0468 */ float   mControlDemoSpeedF;
-    /* 0x046C */ int     mItemKinopioDirection;
-    /* 0x0470 */ int     mItemKinopioTurnTimer;
+    /* 0x0450 */ mVec3_c mControlDemoTargetPos;
+    /* 0x045C */ float   mControlDemoSpeedF;
+    /* 0x0460 */ int     mItemKinopioDirection;
+    /* 0x0464 */ int     mItemKinopioTurnTimer;
 
-    /* 0x0474 */ int     mBossDemoLandTimer;
-    /* 0x0478 */ int     mEndingDanceKeyTimers[5];
-    /* 0x048C */ int     mEndingDanceInactivityTimer;
+    /* 0x0468 */ int     mBossDemoLandTimer;
+    /* 0x046C */ int     mEndingDanceKeyTimers[5];
+    /* 0x0480 */ int     mEndingDanceInactivityTimer;
 
-    FILL(0x0490, 0x0DE8);
+    FILL(0x0484, 0x0DE8);
 
     /* 0x0DE8 */ dPyMdlMng_c* mpModelMng;
 

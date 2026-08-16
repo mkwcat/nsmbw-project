@@ -11,8 +11,7 @@ class daYoshi_c;
 class daPlBase_c;
 class daPyDemoMng_c;
 
-class daPyMng_c
-{
+class daPyMng_c {
 public:
     // Constants
     // ^^^^^^
@@ -25,26 +24,26 @@ public:
     // ^^^^^^
 
     [[nodiscard]]
-    static bool isOnePlayer()
-    {
+    static bool isOnePlayer() {
         return getEntryNum() == 1;
     }
 
     [[nodiscard]]
-    static bool isOnePlayerInGame()
-    {
+    static bool isOnePlayerInGame() {
         return getNumInGame() == 1;
     }
 
     [[nodiscard]]
-    static bool isPlayerActive(int player)
-    {
+    static bool isPlayerActive(
+        int player
+    ) {
         return mActPlayerInfo & (1ull << player);
     }
 
     [[nodiscard]]
-    static bool isEntry(int player)
-    {
+    static bool isEntry(
+        int player
+    ) {
         return mPlayerEntry[player] != 0;
     }
 
@@ -156,6 +155,9 @@ public:
     /* 0x80060170 */
     static bool changeItemKinopioPlrNo(int* ownedPlayer);
 
+    /* 0x800601E0 */
+    static int getCourseInListPlrNo(int index);
+
     /* 0x80060200 */
     [[nodiscard]]
     static int getCoinAll();
@@ -261,7 +263,7 @@ public:
     static s32 mCtrlPlrNo;
 
     /* 0x80429F88 */
-    static u8 mOldActPlayerInfo;
+    static u8  mOldActPlayerInfo;
     static u64 mActPlayerInfo;
 
     /* 0x80429F8C */

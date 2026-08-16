@@ -405,7 +405,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800E75D0 - 0x800E78D0
     d_tencoin_mng.cpp
 # NSMBW          .text:  0x800E78D0 - 0x800E8BC0
-  # d_ut_boss_demo.cpp
+    d_util.cpp
 # NSMBW          .text:  0x800E8BC0 - 0x800E8C40
   # d_video.cpp
 # NSMBW          .text:  0x800E8C40 - 0x800EA740

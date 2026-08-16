@@ -118,7 +118,7 @@ public:
 
     /* 0xDC */ bool mLinked;
 
-    /* 0xDD */ u8 mChainlinkMode;
+    /* 0xDD */ u8 mAmiLine;
     /* 0xDE */ u8 mLayer;
 
     /* 0xE0 */ s32 mId;

@@ -34,6 +34,7 @@
 #include "sound/SndSceneMgr.h"
 #include <algorithm>
 #include <bit>
+#include <cassert>
 #include <mkwcat/Relocate.hpp>
 #include <numeric>
 #include <revolution/os.h>
@@ -728,6 +729,14 @@ int daPyMng_c::findPlayerWithType(
 [[nsmbw(0x80060170)]]
 bool daPyMng_c::changeItemKinopioPlrNo(int* ownedPlayer);
 
+[[nsmbw(0x800601E0)]]
+int daPyMng_c::getCourseInListPlrNo(
+    int index
+) {
+    assert(index < mCourseInList.size());
+    return mCourseInList[index];
+}
+
 [[nsmbw(0x80060200)]]
 int daPyMng_c::getCoinAll() {
     int totalCoins = 0;
@@ -1017,17 +1026,6 @@ PATCH_REFERENCES(
         {0x80060986, R_PPC_ADDR16_LO}, {0x80060A22, R_PPC_ADDR16_HA}, {0x80060A26, R_PPC_ADDR16_LO},
         {0x80060AD2, R_PPC_ADDR16_HA}, {0x80060AD6, R_PPC_ADDR16_LO}, {0x80060F3A, R_PPC_ADDR16_HA},
         {0x80060F46, R_PPC_ADDR16_LO}, {0x80060FFA, R_PPC_ADDR16_HA}, {0x80060FFE, R_PPC_ADDR16_LO},
-    }
-);
-
-PATCH_REFERENCES(
-    daPyMng_c::mCourseInList.data(), //
-    {
-        {0x8005D656, R_PPC_ADDR16_HA},
-        {0x8005D65E, R_PPC_ADDR16_LO},
-        {0x8005D662, R_PPC_ADDR16_LO},
-        {0x800601E2, R_PPC_ADDR16_HA},
-        {0x800601EA, R_PPC_ADDR16_LO},
     }
 );
 
