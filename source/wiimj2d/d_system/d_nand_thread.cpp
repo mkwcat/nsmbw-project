@@ -24,9 +24,8 @@ dNandThread_c* dNandThread_c::m_instance;
 
 namespace d_nand_thread_cpp {
 
-/* @unofficial */
 [[nsmbw_data(0x80359FC0)]]
-u8 l_nandBuf[0x4000];
+u8 l_safeCopyBuf[0x4000];
 
 [[nsmbw_data(0x8035DFC0)]]
 dMj2dData_c  l_tmpSave = mkwcat::NoInitialize<dMj2dData_c>();
@@ -88,6 +87,7 @@ extern "C" NANDResult nandConvertErrorCode(s32 isfsError);
 int dNandThread_c::save() {
     const char* tmpPath         = "/tmp/mkwcat-nsmbw.json";
     char        tmpPathData[64] = {};
+    bool        useShortName    = false;
     NANDResult  result          = NANDCreate(tmpPath, 0x3C, 0);
     if (result == NAND_RESULT_INVALID) {
         // Might fail on console if /tmp is not redirected, due to the 12 character filename limit.
@@ -98,8 +98,25 @@ int dNandThread_c::save() {
             return 1;
         }
         std::strcat(tmpPathData, "/mkwcat-nsmbw-tmp.json");
-        result  = NANDCreate(tmpPathData, 0x3C, 0);
-        tmpPath = tmpPathData;
+        result = NANDCreate(tmpPathData, 0x3C, 0);
+        if (result == NAND_RESULT_INVALID) {
+            // The save data is seemingly not actually redirected, so we must follow the 12
+            // character limit. This would be in the NSMBW save data so we can omit "-nsmbw" in the
+            // file name
+            useShortName = true;
+            tmpPath      = "/tmp/mkwcat.json";
+            result       = NANDCreate(tmpPath, 0x3C, 0);
+        } else {
+            tmpPath = tmpPathData;
+        }
+    }
+    if (result == NAND_RESULT_EXISTS) {
+        OS_REPORT("Deleting stale temporary file '%s' and retrying\n", tmpPath);
+        setNandError(result = NANDDelete(tmpPath));
+        if (isError()) {
+            return 1;
+        }
+        [[clang::musttail]] return save();
     }
     setNandError(result);
     if (isError()) {
@@ -113,7 +130,7 @@ int dNandThread_c::save() {
     }
 
     mNandFile_c nandFile = std::move(l_fileInfo);
-    mPipe_c     pipe(&nandFile, "w", l_nandBuf, std::size(l_nandBuf));
+    mPipe_c     pipe(&nandFile, "wb", l_safeCopyBuf, std::size(l_safeCopyBuf));
 
     bool        ok = dMj2dJsonHandler_c::writeJSON(pipe);
     std::fclose(pipe);
@@ -136,18 +153,24 @@ int dNandThread_c::save() {
         setNandError(NANDDelete(tmpPath));
         return 1;
     }
-    char oldPath[64];
-    std::strcpy(oldPath, newPath);
-    std::strcat(newPath, "/mkwcat-nsmbw.json");
 
-    // Rename the new path out of the way in case it's there. This is only a requirement with
-    // Riivolution's proxy ISFS, but useful in general for backups
-    std::strcat(oldPath, "/mkwcat-nsmbw-old.json");
-    result = nandConvertErrorCode(ISFS_Rename(newPath, oldPath));
-    if (result != NAND_RESULT_OK && result != NAND_RESULT_NOEXISTS) {
-        NANDDelete(newPath);
+    if (!useShortName) {
+        char oldPath[64];
+        std::strcpy(oldPath, newPath);
+        std::strcat(newPath, "/mkwcat-nsmbw.json");
+
+        // Rename the new path out of the way in case it's there. This is only a requirement with
+        // Riivolution's proxy ISFS, but useful in general for backups
+        std::strcat(oldPath, "/mkwcat-nsmbw-old.json");
+        result = nandConvertErrorCode(ISFS_Rename(newPath, oldPath));
+        if (result != NAND_RESULT_OK && result != NAND_RESULT_NOEXISTS) {
+            NANDDelete(newPath);
+        }
+        // No error checking as it might still work even if the file still exists
+    } else {
+        // Renaming is not possible and deletion is unnecessary
+        std::strcat(newPath, "/mkwcat.json");
     }
-    // No error checking as it might still work even if the file still exists
 
     setNandError(nandConvertErrorCode(ISFS_Rename(tmpPath, newPath)));
     if (isError()) {
@@ -165,6 +188,9 @@ int dNandThread_c::load() {
 
     NANDResult result = NANDOpen("mkwcat-nsmbw.json", &l_fileInfo, 1);
     if (result != NAND_RESULT_OK) {
+        result = NANDOpen("mkwcat.json", &l_fileInfo, 1);
+    }
+    if (result != NAND_RESULT_OK) {
         result = NANDOpen("mkwcat-nsmbw-old.json", &l_fileInfo, 1);
     }
 
@@ -180,7 +206,7 @@ int dNandThread_c::load() {
 
     dMj2dJsonHandler_c handler;
     bool               success = cJson::Parser_c::parse(
-        &handler, reinterpret_cast<char*>(l_nandBuf), sizeof(l_nandBuf),
+        &handler, reinterpret_cast<char*>(l_safeCopyBuf), sizeof(l_safeCopyBuf),
         [](void* buffer, std::size_t size, void* userData) -> int {
             NANDResult result = NANDRead(&l_fileInfo, reinterpret_cast<u8*>(buffer), size);
             if (result < NAND_RESULT_OK) {
