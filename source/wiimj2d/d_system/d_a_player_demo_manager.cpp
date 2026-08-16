@@ -24,17 +24,16 @@ daPyDemoMng_c::~daPyDemoMng_c();
 void daPyDemoMng_c::initStage();
 
 EXTERN_REPL(
-  0x8005B4A0, //
-  void daPyDemoMng_c::baseInit()
+    0x8005B4A0, //
+    void daPyDemoMng_c::baseInit()
 );
 
 [[nsmbw(0x8005B4A0)]]
-void daPyDemoMng_c::init()
-{
+void daPyDemoMng_c::init() {
     baseInit();
 
     for (int i = 4; i < PLAYER_COUNT; i++) {
-        mExPlayerIDs[i - 4] = -1;
+        mExPlayerIDs[i - 4]     = -1;
         mExCourseOutList[i - 4] = -1;
     }
 }
@@ -112,48 +111,52 @@ UNDEF_8005b760:;
 );
 
 [[gnu::const]] [[gnu::used]]
-static int get_index_daPyDemoMng_c(int index)
-{
+static int get_index_daPyDemoMng_c(
+    int index
+) {
     if (index < 4) {
         return index;
     }
 
     return (index - 4) +
            (offsetof(daPyDemoMng_c, mExPlayerIDs) - offsetof(daPyDemoMng_c, mPlayerIDs)) /
-             sizeof(int);
+               sizeof(int);
 }
 
 [[gnu::const]] [[gnu::used]]
-static int get_index_daPyDemoMng_c_mCourseInList(int index)
-{
+static int get_index_daPyDemoMng_c_mCourseInList(
+    int index
+) {
     if (index < 4) {
         return index;
     }
 
     return (index - 4) +
            (offsetof(daPyDemoMng_c, mExCourseInList) - offsetof(daPyDemoMng_c, mCourseInList)) /
-             sizeof(int);
+               sizeof(int);
 }
 
 [[gnu::const]] [[gnu::used]]
-static int get_index_daPyDemoMng_c_mCourseOutList(int index)
-{
+static int get_index_daPyDemoMng_c_mCourseOutList(
+    int index
+) {
     if (index < 4) {
         return index;
     }
 
     return (index - 4) +
            (offsetof(daPyDemoMng_c, mExCourseOutList) - offsetof(daPyDemoMng_c, mCourseOutList)) /
-             sizeof(int);
+               sizeof(int);
 }
 
-#define convIdx get_index_daPyDemoMng_c
+#define convIdx   get_index_daPyDemoMng_c
 #define convIdx60 get_index_daPyDemoMng_c_mCourseInList
 #define convIdx70 get_index_daPyDemoMng_c_mCourseOutList
 
 [[nsmbw(0x8005B780)]]
-int daPyDemoMng_c::setGoalDemoList(int param)
-{
+int daPyDemoMng_c::setGoalDemoList(
+    int param
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerIDs[convIdx(i)] == -1) {
             mPlayerIDs[convIdx(i)] = param;
@@ -165,8 +168,9 @@ int daPyDemoMng_c::setGoalDemoList(int param)
 }
 
 [[nsmbw(0x8005B840)]]
-int daPyDemoMng_c::getPoleBelowPlayer(int param)
-{
+int daPyDemoMng_c::getPoleBelowPlayer(
+    int param
+) {
     for (int i = 0; i < mPlayerCount; i++) {
         if (mPlayerIDs[convIdx(i)] == param && i > 0) {
             return mPlayerIDs[convIdx(i - 1)];
@@ -176,9 +180,9 @@ int daPyDemoMng_c::getPoleBelowPlayer(int param)
     return -1;
 }
 
-#define STACK_PLAYER_ARRAY 0x10
+#define STACK_PLAYER_ARRAY  0x10
 #define STACK_PLAYER_ARRAY2 (0x10 + PLAYER_COUNT * 4)
-#define STACK_SIZE (STACK_PLAYER_ARRAY2 + PLAYER_COUNT * 4 + 0x50)
+#define STACK_SIZE          (STACK_PLAYER_ARRAY2 + PLAYER_COUNT * 4 + 0x50)
 
 [[nsmbw(0x8005B8A0)]]
 void daPyDemoMng_c::executeGoalDemo_Pole() ASM_METHOD(
@@ -500,8 +504,7 @@ UNDEF_8005bcc4:;
 );
 
 [[nsmbw(0x8005BCF0)]]
-void daPyDemoMng_c::executeGoalDemo_PoleDown()
-{
+void daPyDemoMng_c::executeGoalDemo_PoleDown() {
     mDemoState = 2;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -517,8 +520,7 @@ void daPyDemoMng_c::executeGoalDemo_PoleDown()
 }
 
 [[nsmbw(0x8005BD60)]]
-void daPyDemoMng_c::executeGoalDemo_JumpCheck()
-{
+void daPyDemoMng_c::executeGoalDemo_JumpCheck() {
     if (!(mFlags & 0x2)) {
         return;
     }
@@ -538,10 +540,10 @@ void daPyDemoMng_c::executeGoalDemo_JumpCheck()
         }
     }
 
-    m0x54 = 0;
-    mDemoState = 3;
+    m0x54        = 0;
+    mDemoState   = 3;
     mPlayerIndex = mPlayerCount - 1;
-    m0x0C = 10;
+    m0x0C        = 10;
 }
 
 [[nsmbw(0x8005BE30)]]
@@ -611,8 +613,7 @@ UNDEF_8005bef4:;
 );
 
 [[nsmbw(0x8005BF10)]]
-void daPyDemoMng_c::executeGoalDemo_Land()
-{
+void daPyDemoMng_c::executeGoalDemo_Land() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -635,8 +636,7 @@ void daPyDemoMng_c::executeGoalDemo_Land()
 }
 
 [[nsmbw(0x8005BFD0)]]
-void daPyDemoMng_c::executeGoalDemo_KimeWait()
-{
+void daPyDemoMng_c::executeGoalDemo_KimeWait() {
     bool setFlag = false;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -665,8 +665,7 @@ void daPyDemoMng_c::executeGoalDemo_KimeWait()
 }
 
 [[nsmbw(0x8005C130)]]
-void daPyDemoMng_c::setGoalDemoKimeAll()
-{
+void daPyDemoMng_c::setGoalDemoKimeAll() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlayerIDs[convIdx(i)] == -1) {
             continue;
@@ -680,8 +679,7 @@ void daPyDemoMng_c::setGoalDemoKimeAll()
 }
 
 [[nsmbw(0x8005C1A0)]]
-void daPyDemoMng_c::setGoalDemoRunCastle()
-{
+void daPyDemoMng_c::setGoalDemoRunCastle() {
     setDemoMode(Mode_e::MODE_0, 0);
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -697,8 +695,7 @@ void daPyDemoMng_c::setGoalDemoRunCastle()
 }
 
 [[nsmbw(0x8005C210)]]
-bool daPyDemoMng_c::isAllPlayerGoalIn()
-{
+bool daPyDemoMng_c::isAllPlayerGoalIn() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -720,9 +717,8 @@ bool daPyDemoMng_c::isAllPlayerGoalIn()
 }
 
 [[nsmbw(0x8005C6D0)]]
-void daPyDemoMng_c::calcGoalCenterPos()
-{
-    int count = 0;
+void daPyDemoMng_c::calcGoalCenterPos() {
+    int     count  = 0;
     mVec3_c posSum = mVec3_c::Zero;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -748,7 +744,7 @@ void daPyDemoMng_c::calcGoalCenterPos()
     }
 
     if (mDemoMode == Mode_e::MODE_1) {
-        float factor = 1.0f / count;
+        float factor   = 1.0f / count;
         mGoalCenterPos = posSum * factor;
     } else {
         mGoalCenterPos.x = posSum.x / count;
@@ -756,8 +752,7 @@ void daPyDemoMng_c::calcGoalCenterPos()
 }
 
 [[nsmbw(0x8005C930)]]
-bool daPyDemoMng_c::startControlDemoAll()
-{
+bool daPyDemoMng_c::startControlDemoAll() {
     if (daPyMng_c::mNum == 0) {
         return false;
     }
@@ -782,8 +777,7 @@ bool daPyDemoMng_c::startControlDemoAll()
 }
 
 [[nsmbw(0x8005C9D0)]]
-bool daPyDemoMng_c::isAllPlayerControlDemo()
-{
+bool daPyDemoMng_c::isAllPlayerControlDemo() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -805,8 +799,9 @@ bool daPyDemoMng_c::isAllPlayerControlDemo()
 }
 
 [[nsmbw(0x8005CA50)]]
-void daPyDemoMng_c::endControlDemoAll(int param)
-{
+void daPyDemoMng_c::endControlDemoAll(
+    int param
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -822,8 +817,7 @@ void daPyDemoMng_c::endControlDemoAll(int param)
 }
 
 [[nsmbw(0x8005CAD0)]]
-int daPyDemoMng_c::getControlDemoPlayerNum()
-{
+int daPyDemoMng_c::getControlDemoPlayerNum() {
     int count = 0;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -845,8 +839,7 @@ int daPyDemoMng_c::getControlDemoPlayerNum()
 }
 
 [[nsmbw(0x8005CB70)]]
-void daPyDemoMng_c::onLandStopReq()
-{
+void daPyDemoMng_c::onLandStopReq() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -864,8 +857,7 @@ void daPyDemoMng_c::onLandStopReq()
 }
 
 [[nsmbw(0x8005CC00)]]
-bool daPyDemoMng_c::startControlDemoLandPlayer()
-{
+bool daPyDemoMng_c::startControlDemoLandPlayer() {
     if (daPyMng_c::mNum == 0) {
         return false;
     }
@@ -896,8 +888,7 @@ bool daPyDemoMng_c::startControlDemoLandPlayer()
 }
 
 [[nsmbw(0x8005CDD0)]]
-bool daPyDemoMng_c::isLandAll()
-{
+bool daPyDemoMng_c::isLandAll() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -917,8 +908,9 @@ bool daPyDemoMng_c::isLandAll()
 }
 
 [[nsmbw(0x8005CE50)]]
-void daPyDemoMng_c::UNDEF_8005CE50(s32 param)
-{
+void daPyDemoMng_c::UNDEF_8005CE50(
+    s32 param
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (!(daPyMng_c::mActPlayerInfo & (1 << i))) {
             continue;
@@ -934,8 +926,7 @@ void daPyDemoMng_c::UNDEF_8005CE50(s32 param)
 }
 
 [[nsmbw(0x8005CED0)]]
-void daPyDemoMng_c::executeStartToride()
-{
+void daPyDemoMng_c::executeStartToride() {
     if (mDemoState == 0) {
         m0x8C = -1;
     }
@@ -969,8 +960,9 @@ void daPyDemoMng_c::executeStartToride()
 }
 
 [[nsmbw(0x8005D050)]]
-void daPyDemoMng_c::setCourseOutList(s8 param)
-{
+void daPyDemoMng_c::setCourseOutList(
+    s8 param
+) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mCourseOutList[convIdx70(i)] == -1) {
             mCourseOutList[convIdx70(i)] = param;
@@ -980,8 +972,7 @@ void daPyDemoMng_c::setCourseOutList(s8 param)
 }
 
 [[nsmbw(0x8005D0D0)]]
-void daPyDemoMng_c::turnNextDemoNo()
-{
+void daPyDemoMng_c::turnNextDemoNo() {
     for (int i = 0; i < PLAYER_COUNT - 1; i++) {
         mCourseInList[convIdx60(i)] = mCourseInList[convIdx60(i + 1)];
     }
@@ -989,8 +980,9 @@ void daPyDemoMng_c::turnNextDemoNo()
 }
 
 [[nsmbw(0x8005D100)]]
-void daPyDemoMng_c::clearDemoNo(s8 param)
-{
+void daPyDemoMng_c::clearDemoNo(
+    s8 param
+) {
     int demoWriteCount = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         int demoNo = mCourseInList[convIdx60(i)];
@@ -1005,9 +997,8 @@ void daPyDemoMng_c::clearDemoNo(s8 param)
 }
 
 [[nsmbw(0x8005D280)]]
-void daPyDemoMng_c::genCourseInList()
-{
-    u32 playerOutMask = 0;
+void daPyDemoMng_c::genCourseInList() {
+    u32 playerOutMask  = 0;
     int playerOutCount = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         int plrNo = mCourseOutList[convIdx70(i)];
@@ -1036,9 +1027,9 @@ void daPyDemoMng_c::genCourseInList()
 
     // Random swap them
     for (int i = 0; i < randomOrderCount; i++) {
-        int randomIndex = dGameCom::rndInt(randomOrderCount);
-        int temp = randomOrder[i];
-        randomOrder[i] = randomOrder[randomIndex];
+        int randomIndex          = dGameCom::rndInt(randomOrderCount);
+        int temp                 = randomOrder[i];
+        randomOrder[i]           = randomOrder[randomIndex];
         randomOrder[randomIndex] = temp;
     }
 
@@ -1049,7 +1040,7 @@ void daPyDemoMng_c::genCourseInList()
 
     // Copy to player manager and clear course out list
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        daPyMng_c::mCourseInList[i] = mCourseInList[convIdx60(i)];
+        daPyMng_c::mCourseInList[i]  = mCourseInList[convIdx60(i)];
         mCourseOutList[convIdx70(i)] = -1;
     }
 }

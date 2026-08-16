@@ -4,14 +4,16 @@
 #include "d_a_player_base.h"
 
 #include "d_bases/d_s_stage.h"
-#include "d_system/d_course_data.h"
 #include "d_player/d_a_player.h"
 #include "d_player/d_a_yoshi.h"
 #include "d_player/d_gamedisplay.h"
 #include "d_profile/d_profile.h"
 #include "d_project/d_gamerule.h"
+#include "d_system/d_a_player_hio_ADJ.h"
 #include "d_system/d_a_player_manager.h"
+#include "d_system/d_course_data.h"
 #include "d_system/d_game_common.h"
+#include "d_system/d_mj2d_game.h"
 #include "framework/f_manager.h"
 #include <cassert>
 #include <cstdio>
@@ -40,6 +42,81 @@ void daPlBase_c::playOther();
 
 [[nsmbw(0x8004E290)]]
 void daPlBase_c::changeDemoState(const sStateIDIf_c& state, int param);
+
+[[nsmbw(0x8004E920)]]
+void daPlBase_c::getWaterDokanCenterOffset(float);
+
+[[nsmbw(0x8004E980)]]
+void daPlBase_c::initDemoInDokan();
+
+[[nsmbw(0x8004EA20)]]
+void daPlBase_c::endDemoInDokan();
+
+[[nsmbw(0x8004EA80)]]
+void daPlBase_c::executeDemoInDokan(u8 param);
+
+[[nsmbw(0x8004EDE0)]]
+void daPlBase_c::initDemoInDokanUD(
+    u8 param
+) {
+    auto& hio = dPyMdlMng_c::m_hio.mPyAnm.mAnm[0];
+    mpModelMng->mModel->setAnm(0, hio.mRate, hio.mBlendDuration, 0.0f);
+
+    const bool isYoshi = mKind == ACTOR_TYPE_e::YOSHI;
+    mGotoPos           = mPos;
+
+    if (param == 1) {
+        mGotoPos.y += m_DemoStateArg == 2 ? 16.0f : 32.0f;
+        mPos.y -= isYoshi ? 16.0f : 8.0f;
+        if (isYoshi) {
+            mAngle.y = 0;
+        }
+        return initDemoInDokan();
+    }
+
+    float f;
+    onStatus(Status_e::PROPEL_NO_ROLL);
+    if (isYoshi) {
+        if (dAcPy_c* py = static_cast<daYoshi_c*>(this)->getPlayerRideOn()) {
+            float dPyStatic_HIO_c::* value = &dPyStatic_HIO_c::mDokanUDOffsetYoshiBig;
+            if (py->mPlayerMode == PLAYER_MODE_e::NONE) {
+                value = &dPyStatic_HIO_c::mDokanUDOffsetYoshiSmall;
+            } else if (py->mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
+                value = &dPyStatic_HIO_c::mDokanUDOffsetYoshiMini;
+            }
+            f = dPyStatic_HIO_c::get(py->mPlayerType).*value;
+        } else {
+            f = 30.0f;
+        }
+    } else {
+        float dPyStatic_HIO_c::* value = &dPyStatic_HIO_c::mDokanUDAdjustBig;
+        if (mPlayerMode == PLAYER_MODE_e::NONE) {
+            value = &dPyStatic_HIO_c::mDokanUDOffsetSmall;
+            f     = 0.0f;
+        } else if (mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
+            value = &dPyStatic_HIO_c::mDokanUDOffsetMini;
+            f     = 0.0f;
+        } else if (mPlayerMode == PLAYER_MODE_e::PROPELLER_SHROOM) {
+            value = &dPyStatic_HIO_c::mDokanUDAdjustPropeller;
+            f     = mModelHeight;
+        } else {
+            value = &dPyStatic_HIO_c::mDokanUDAdjustBig;
+            f     = mModelHeight;
+        }
+        f += dPyStatic_HIO_c::get(static_cast<dAcPy_c*>(this)->mPlayerType).*value;
+    }
+
+    mGotoPos.y = -f + mPos.y;
+    mPos.y += 2.0f;
+
+    if (isYoshi) {
+        mAngle.y = 0;
+    }
+    return initDemoInDokan();
+}
+
+[[nsmbw(0x8004EFD0)]]
+void daPlBase_c::initDemoInDokanLR(u8 param);
 
 [[nsmbw(0x80050870)]]
 void daPlBase_c::initializeState_StateID_DemoRailDokan() ASM_METHOD(
@@ -152,15 +229,14 @@ AFTER_DIRECT_PIPE_END_CHECK:;
 bool daPlBase_c::isDispOutCheckOn();
 
 [[nsmbw(0x80050A00)]]
-void daPlBase_c::setExitRailDokan()
-{
-    dCdFile_c *file = dCd_c::m_instance->mFiles + dScStage_c::m_instance->mCourse;
+void daPlBase_c::setExitRailDokan() {
+    dCdFile_c* file = dCd_c::m_instance->mFiles + dScStage_c::m_instance->mCourse;
     if (file->mpAreas == nullptr) {
         file = nullptr;
     }
-    dCdFile_c::NextGoto_s *currGoto = file->getNextGotoP(mGotoDest);
-    dCdFile_c::NextGoto_s *destGoto = file->getNextGotoP(currGoto->nextNextGotoNum);
-    mLayer = destGoto->layer;
+    dCdFile_c::NextGoto_s* currGoto = file->getNextGotoP(mGotoDest);
+    dCdFile_c::NextGoto_s* destGoto = file->getNextGotoP(currGoto->nextNextGotoNum);
+    mLayer                          = destGoto->layer;
     assert(destGoto->type > 2 && destGoto->type < 7);
     if (destGoto->type == 3) {
         changeDemoState(StateID_StateID_DemoInDokanD, 1);

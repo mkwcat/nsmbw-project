@@ -6,10 +6,12 @@
 #include "d_bases/d_s_stage.h"
 #include "d_system/d_a_player_manager.h"
 
+[[nsmbw(0x8014EAF0)]]
+dAcPy_c* daYoshi_c::getPlayerRideOn() const;
+
 /* VT+0x0DC */
 [[nsmbw(0x80150E10)]]
-void daYoshi_c::executeLastAll()
-{
+void daYoshi_c::executeLastAll() {
     if (!isStatus(1)) {
         return;
     }

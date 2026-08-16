@@ -4,8 +4,9 @@
 #include "d_system/d_a_player_base.h"
 #include "d_system/d_player_model_manager.h"
 
-class daYoshi_c : public daPlBase_c, public dProf::Info<daYoshi_c, dProf::YOSHI>
-{
+class dAcPy_c;
+
+class daYoshi_c : public daPlBase_c, public dProf::Info<daYoshi_c, dProf::YOSHI> {
 public:
     // Virtual Functions
     // ^^^^^^
@@ -16,6 +17,9 @@ public:
 public:
     // Instance Methods
     // ^^^^^^
+
+    /* 0x8014EAF0 */
+    dAcPy_c* getPlayerRideOn() const;
 
     /* 0x80150420 */
     void setHitTongueReserve();

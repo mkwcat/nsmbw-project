@@ -8,16 +8,18 @@
 #include "d_mario_model.h"
 #include "d_yoshi_model.h"
 #include "machine/m_heap.h"
+#include <mkwcat/NoInitialize.hpp>
 
 [[nsmbw_data(0x803710A0)]]
-dPyMdlBase_HIO_c dPyMdlMng_c::m_hio;
+dPyMdlBase_HIO_c dPyMdlMng_c::m_hio = mkwcat::NoInitialize<dPyMdlBase_HIO_c>();
 
 [[nsmbw(0x800D6DB0)]]
 dPyMdlMng_c::dPyMdlMng_c(dPyMdlMng_c::ModelType_e modelType);
 
 [[nsmbw(0x800D6E00)]]
-void dPyMdlMng_c::construct(u8 index)
-{
+void dPyMdlMng_c::construct(
+    u8 index
+) {
     switch (static_cast<ModelType_e>(index)) {
     case ModelType_e::MODEL_MARIO:
     case ModelType_e::MODEL_LUIGI:

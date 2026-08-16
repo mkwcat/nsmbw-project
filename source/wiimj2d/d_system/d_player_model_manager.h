@@ -1,16 +1,12 @@
 #pragma once
 
+#include "d_system/d_a_player_hio_ADJ.h"
 #include "d_system/d_player_model_base.h"
 #include "machine/m_angle.h"
 #include "machine/m_mtx.h"
 #include "machine/m_vec.h"
 
-class dPyMdlBase_HIO_c
-{
-};
-
-class dPyMdlMng_c
-{
+class dPyMdlMng_c {
     SIZE_ASSERT(0xC);
 
     /* 0x0 VTABLE 0x80318D98 */
@@ -20,19 +16,19 @@ public:
     // ^^^^^^
 
     enum class ModelType_e {
-        MODEL_NONE = -1,
-        MODEL_MARIO = 0,
-        MODEL_LUIGI = 1,
-        MODEL_TOAD_BLUE = 2,
-        MODEL_TOAD_YELLOW = 3,
-        MODEL_TOAD_RED = 4,
-        MODEL_YOSHI = 5,
+        MODEL_NONE            = -1,
+        MODEL_MARIO           = 0,
+        MODEL_LUIGI           = 1,
+        MODEL_TOAD_BLUE       = 2,
+        MODEL_TOAD_YELLOW     = 3,
+        MODEL_TOAD_RED        = 4,
+        MODEL_YOSHI           = 5,
 
         // Added
-        MODEL_TOADETTE = 6,
+        MODEL_TOADETTE        = 6,
         MODEL_TOADETTE_PURPLE = 7,
-        MODEL_TOAD_BLACK = 8,
-        MODEL_TOAD_ORANGE = 9,
+        MODEL_TOAD_BLACK      = 8,
+        MODEL_TOAD_ORANGE     = 9,
 
         COUNT,
     };
@@ -84,7 +80,7 @@ public:
     // ^^^^^^
 
     /* 0x4 */ dPyMdlBase_c* mModel;
-    /* 0x8 */ u32 mDrawReady;
+    /* 0x8 */ u32           mDrawReady;
 
 public:
     // Static Variables

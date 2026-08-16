@@ -13,8 +13,9 @@
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 
-class daPlBase_c : public dActor_c, public dProf::Info<daPlBase_c, dProf::PLAYER, dProf::YOSHI>
-{
+struct sSpeedData;
+
+class daPlBase_c : public dActor_c, public dProf::Info<daPlBase_c, dProf::PLAYER, dProf::YOSHI> {
     SIZE_ASSERT(0x14D4);
 
     /* 0x0060 VTABLE 0x803087C8 */
@@ -24,44 +25,44 @@ public:
     // ^^^^^^
 
     enum class DamageType_e {
-        NORMAL = 0,
-        NORMAL2 = 1,
+        NORMAL             = 0,
+        NORMAL2            = 1,
         KNOCKBACK_AND_HURT = 2,
-        KNOCKBACK_LONG = 3, // Player does not take damage
-        KNOCKBACK_LONG2 = 4, // Player does not take damage
-        KNOCKBACK_SHORT = 5, // Player does not take damage
-        KNOCKBACK_SHORT2 = 6, // Player does not take damage
-        LAVA = 7,
-        FIRE = 8, // Looks the same as NORMAL?
-        ELEC_SHOCK = 9,
-        POISON_WATER = 10,
-        CRUSH = 11,
-        EAT_DIE = 12,
-        EAT_DIE2 = 13, // Like EAT_DIE but does not stop the music
-        UNKNOWN = 14,
-        FREEZE = 15,
-        FREEZE2 = 16,
-        BOUNCE = 17, // Makes the player do a squishy animation
-        POISON_FOG = 18,
+        KNOCKBACK_LONG     = 3, // Player does not take damage
+        KNOCKBACK_LONG2    = 4, // Player does not take damage
+        KNOCKBACK_SHORT    = 5, // Player does not take damage
+        KNOCKBACK_SHORT2   = 6, // Player does not take damage
+        LAVA               = 7,
+        FIRE               = 8, // Looks the same as NORMAL?
+        ELEC_SHOCK         = 9,
+        POISON_WATER       = 10,
+        CRUSH              = 11,
+        EAT_DIE            = 12,
+        EAT_DIE2           = 13, // Like EAT_DIE but does not stop the music
+        UNKNOWN            = 14,
+        FREEZE             = 15,
+        FREEZE2            = 16,
+        BOUNCE             = 17, // Makes the player do a squishy animation
+        POISON_FOG         = 18,
 
         // Added for death messages
 
-        FALL_DOWN = 20,
+        FALL_DOWN          = 20,
         SCROLL_OUT,
     };
 
     enum class DokanDir_e {
-        U = 0,
-        D = 1,
-        L = 2,
-        R = 3,
+        U    = 0,
+        D    = 1,
+        L    = 2,
+        R    = 3,
         ROLL = 4,
     };
 
     enum class StarSet_e {
         STAR_SET_0,
         STAR_SET_1,
-        STAR_SET_2
+        STAR_SET_2,
     };
 
     /**
@@ -71,7 +72,7 @@ public:
         /**
          * Do not blend between animations.
          */
-        NONE = 0,
+        NONE    = 0,
 
         /**
          * Use the default blend duration specified in the animation HIO.
@@ -80,33 +81,33 @@ public:
     };
 
     enum ClearType_e {
-        GOAL = 0,
-        BOSS = 1,
+        GOAL       = 0,
+        BOSS       = 1,
         FINAL_BOSS = 2,
     };
 
     /* @unofficial */
     enum class GroundType_e {
         DEFAULT = 0,
-        SNOW = 1,
-        SAND = 2,
-        ICE = 3,
-        DIRT = 4,
-        WATER = 5,
-        CLOUD = 6,
-        FUNSUI = 7,
-        MANTA = 8,
-        BEACH = 9,
-        CARPET = 10,
-        LEAF = 11,
-        WOOD = 12,
+        SNOW    = 1,
+        SAND    = 2,
+        ICE     = 3,
+        DIRT    = 4,
+        WATER   = 5,
+        CLOUD   = 6,
+        FUNSUI  = 7,
+        MANTA   = 8,
+        BEACH   = 9,
+        CARPET  = 10,
+        LEAF    = 11,
+        WOOD    = 12,
     };
 
     /* @unofficial */
     enum SlipSubstate_e {
         SLIP_ACTION_NONE,
         SLIP_ACTION_STOOP,
-        SLIP_ACTION_END
+        SLIP_ACTION_END,
     };
 
     /* @unofficial */
@@ -117,7 +118,7 @@ public:
         HIP_ACTION_GROUND,
         HIP_ACTION_STAND_NORMAL,
         HIP_ACTION_STAND_NORMAL_END,
-        HIP_ACTION_TO_STOOP
+        HIP_ACTION_TO_STOOP,
     };
 
     /* @unofficial */
@@ -135,14 +136,14 @@ public:
     /* @unofficial */
     enum FunsuiSubstate_e {
         FUNSUI_ACTION_NONE,
-        FUNSUI_ACTION_START
+        FUNSUI_ACTION_START,
     };
 
     /* @unofficial */
     enum AnimePlaySubstate_e {
         ANIME_PLAY_ACTION_0,
         ANIME_PLAY_ACTION_1,
-        ANIME_PLAY_ACTION_2
+        ANIME_PLAY_ACTION_2,
     };
 
     /* @unofficial */
@@ -153,7 +154,7 @@ public:
         DEMO_3,
         DEMO_PLAYER,
         DEMO_KINOPIO,
-        DEMO_ENDING_DANCE
+        DEMO_ENDING_DANCE,
     };
 
     /* @unofficial */
@@ -161,7 +162,7 @@ public:
         DEMO_DOKAN_NONE,
         DEMO_DOKAN_NORMAL,
         DEMO_DOKAN_RAIL,
-        DEMO_DOKAN_WATER_TANK
+        DEMO_DOKAN_WATER_TANK,
     };
 
     /**
@@ -180,7 +181,7 @@ public:
         /**
          * Landing from a crouch jump.
          */
-        CROUCH_ARG_FROM_SIT_JUMP
+        CROUCH_ARG_FROM_SIT_JUMP,
     };
 
     /**
@@ -219,7 +220,7 @@ public:
         /**
          * Falling from a cliff into water.
          */
-        CLIFF_HANG
+        CLIFF_HANG,
     };
 
     /**
@@ -250,7 +251,7 @@ public:
         /**
          * Catching the cliff from below, hang from it.
          */
-        HANG_HAND
+        HANG_HAND,
     };
 
     /**
@@ -262,7 +263,7 @@ public:
         BOSS_GLAD,
         BOSS_ATTENTION,
         BOSS_KEY_GET,
-        BOSS_GLAD_2
+        BOSS_GLAD_2,
     };
 
     /**
@@ -271,20 +272,20 @@ public:
      */
     enum class DemoWaitArg_e {
         NONE,
-        CONTROL
+        CONTROL,
     };
 
     /* @unofficial */
     enum class DemoWaitSubstate_e {
         DELAY,
-        TRANSITION
+        TRANSITION,
     };
 
     /* @unofficial */
     enum class DokanType_e {
         NORMAL,
         CONNECTED,
-        MINI
+        MINI,
     };
 
     /* @unofficial */
@@ -292,7 +293,7 @@ public:
         HIT,
         TIME_UP,
         POISON,
-        POISON_FOG
+        POISON_FOG,
     };
 
     /* @unofficial */
@@ -300,7 +301,7 @@ public:
         POLE,
         WAIT,
         KIME_POSE,
-        RUN
+        RUN,
     };
 
     /* @unofficial */
@@ -341,7 +342,7 @@ public:
         /**
          * Waiting #sc_DemoPoleWaitEnd frames before transitioning to the course clear dance.
          */
-        WAIT_END
+        WAIT_END,
     };
 
     /* @unofficial */
@@ -350,7 +351,7 @@ public:
         WITH_HAT,
         PENGUIN,
         NO_HAT,
-        PROPELLER
+        PROPELLER,
     };
 
     /* @unofficial */
@@ -370,7 +371,7 @@ public:
     enum class PowerChangeType_e {
         NORMAL,
         ICE,
-        ICE_LOW_SLIP
+        ICE_LOW_SLIP,
     };
 
     /* @unofficial */
@@ -378,7 +379,7 @@ public:
         OFF,
         INIT,
         SET_REDUCTION,
-        ANIMATION
+        ANIMATION,
     };
 
     /* @unofficial */
@@ -387,7 +388,7 @@ public:
         BG_PRESS_HEAD,
         BG_PRESS_R,
         BG_PRESS_L,
-        BG_PRESS_COUNT
+        BG_PRESS_COUNT,
     };
 
     /* @unofficial */
@@ -395,27 +396,27 @@ public:
         /**
          * Colliding with the foot sensor.
          */
-        BGC_FOOT = 0_bit,
+        BGC_FOOT                  = 0_bit,
         /**
          * Colliding with the head sensor.
          */
-        BGC_HEAD = 1_bit,
+        BGC_HEAD                  = 1_bit,
         /**
          * Colliding with the wall sensor.
          */
-        BGC_WALL = 2_bit,
-        BGC_WALL_TOUCH_L = 3_bit,
-        BGC_WALL_TOUCH_R = 4_bit,
-        BGC_WALL_TOUCH_L_2 = 5_bit,
-        BGC_WALL_TOUCH_R_2 = 6_bit,
+        BGC_WALL                  = 2_bit,
+        BGC_WALL_TOUCH_L          = 3_bit,
+        BGC_WALL_TOUCH_R          = 4_bit,
+        BGC_WALL_TOUCH_L_2        = 5_bit,
+        BGC_WALL_TOUCH_R_2        = 6_bit,
         /**
          * Touching a background object on the left.
          */
-        BGC_OBJBG_TOUCH_L = 7_bit,
+        BGC_OBJBG_TOUCH_L         = 7_bit,
         /**
          * Touching a background object on the right.
          */
-        BGC_OBJBG_TOUCH_R = 8_bit,
+        BGC_OBJBG_TOUCH_R         = 8_bit,
         /**
          * The touching background object on the left is being carried by a player.
          */
@@ -424,100 +425,100 @@ public:
          * The touching background object on the right is being carried by a player.
          */
         BGC_OBJBG_TOUCH_CARRIED_R = 10_bit,
-        BGC_11 = 11_bit,
-        BGC_12 = 12_bit,
-        BGC_13 = 13_bit,
+        BGC_11                    = 11_bit,
+        BGC_12                    = 12_bit,
+        BGC_13                    = 13_bit,
         /**
          * At least slightly inside of water (hip height or higher).
          */
-        BGC_WATER_SHALLOW = 14_bit,
+        BGC_WATER_SHALLOW         = 14_bit,
         /**
          * At least touching water.
          */
-        BGC_WATER_TOUCH = 15_bit,
+        BGC_WATER_TOUCH           = 15_bit,
         /**
          * Fully submerged in water.
          */
-        BGC_WATER_SUBMERGED = 16_bit,
+        BGC_WATER_SUBMERGED       = 16_bit,
         /**
          * On water by being mini or sliding with the penguin suit.
          */
-        BGC_ON_WATER_MOVE = 17_bit,
+        BGC_ON_WATER_MOVE         = 17_bit,
         /**
          * Inside a floating water bubble.
          */
-        BGC_WATER_BUBBLE = 18_bit,
-        BGC_SIDE_LIMIT_L = 19_bit,
-        BGC_SIDE_LIMIT_R = 20_bit,
-        BGC_ON_SNOW = 22_bit,
-        BGC_ON_ICE = 23_bit,
-        BGC_ON_ICE_LOW_SLIP = 24_bit,
-        BGC_SLOPE_AND_HEAD = 25_bit,
-        BGC_ON_SAND = 26_bit,
-        BGC_ON_SINK_SAND = 27_bit,
-        BGC_IN_SINK_SAND = 28_bit,
-        BGC_INSIDE_SINK_SAND = 29_bit,
-        BGC_ON_BELT_L = 30_bit,
-        BGC_ON_BELT_R = 31_bit
+        BGC_WATER_BUBBLE          = 18_bit,
+        BGC_SIDE_LIMIT_L          = 19_bit,
+        BGC_SIDE_LIMIT_R          = 20_bit,
+        BGC_ON_SNOW               = 22_bit,
+        BGC_ON_ICE                = 23_bit,
+        BGC_ON_ICE_LOW_SLIP       = 24_bit,
+        BGC_SLOPE_AND_HEAD        = 25_bit,
+        BGC_ON_SAND               = 26_bit,
+        BGC_ON_SINK_SAND          = 27_bit,
+        BGC_IN_SINK_SAND          = 28_bit,
+        BGC_INSIDE_SINK_SAND      = 29_bit,
+        BGC_ON_BELT_L             = 30_bit,
+        BGC_ON_BELT_R             = 31_bit,
     };
 
     /* @unofficial */
     enum BgCross2_e {
-        BGC_SEMISOLID = 0_bit,
+        BGC_SEMISOLID           = 0_bit,
         /**
          * [Figure out a better name for this].
          */
-        BGC_LIFT = 1_bit,
-        BGC_HANG_ROPE = 2_bit,
-        BGC_AUTOSLIP = 3_bit,
-        BGC_36 = 4_bit,
-        BGC_GROUNDED_MOVE_UP = 5_bit,
+        BGC_LIFT                = 1_bit,
+        BGC_HANG_ROPE           = 2_bit,
+        BGC_AUTOSLIP            = 3_bit,
+        BGC_36                  = 4_bit,
+        BGC_GROUNDED_MOVE_UP    = 5_bit,
         /**
          * Cannot wall kick or ground pound while this is set.
          */
-        BGC_37 = 6_bit,
-        BGC_SLOPE = 7_bit,
-        BGC_CLIFF = 8_bit,
-        BGC_CLIFF_ABOVE_1 = 9_bit,
-        BGC_CLIFF_ABOVE_2 = 10_bit,
-        BGC_CAN_CLIMB = 11_bit,
-        BGC_44 = 12_bit,
+        BGC_37                  = 6_bit,
+        BGC_SLOPE               = 7_bit,
+        BGC_CLIFF               = 8_bit,
+        BGC_CLIFF_ABOVE_1       = 9_bit,
+        BGC_CLIFF_ABOVE_2       = 10_bit,
+        BGC_CAN_CLIMB           = 11_bit,
+        BGC_44                  = 12_bit,
         /**
          * Fully touching a vine / mesh net / rock wall.
          */
-        BGC_VINE_TOUCH_FULL = 13_bit,
+        BGC_VINE_TOUCH_FULL     = 13_bit,
         /**
          * Touching a vine / mesh net / rock wall on the top.
          */
-        BGC_VINE_TOUCH_U = 14_bit,
+        BGC_VINE_TOUCH_U        = 14_bit,
         /**
          * Touching a vine / mesh net / rock wall on the bottom.
          */
-        BGC_VINE_TOUCH_D = 15_bit,
-        BGC_VINE_TOUCH_2 = 16_bit,
+        BGC_VINE_TOUCH_D        = 15_bit,
+        BGC_VINE_TOUCH_2        = 16_bit,
         /**
          * Touching a vine / mesh net / rock wall on any side.
          */
-        BGC_VINE_TOUCH = 17_bit,
+        BGC_VINE_TOUCH          = 17_bit,
         /**
          * Touching a vine / mesh net / rock wall on the left.
          */
-        BGC_VINE_TOUCH_L = 19_bit,
+        BGC_VINE_TOUCH_L        = 19_bit,
         /**
          * Touching a vine / mesh net / rock wall on the right.
          */
-        BGC_VINE_TOUCH_R = 20_bit,
+        BGC_VINE_TOUCH_R        = 20_bit,
         BGC_NON_BREAK_BLOCK_HIT = 21_bit,
-        BGC_54 = 22_bit,
-        BGC_PRESS_HEAD_HIT = 23_bit,
-        BGC_BLOCK_HIT = 24_bit,
-        BGC_57 = 25_bit,
-        BGC_58 = 26_bit,
-        BGC_LINE_BLOCK_HIT = 27_bit,
-        BGC_60 = 28_bit,
-        BGC_61 = 29_bit,
-        BGC_62 = 30_bit,
-        BGC_63 = 31_bit
+        BGC_54                  = 22_bit,
+        BGC_PRESS_HEAD_HIT      = 23_bit,
+        BGC_BLOCK_HIT           = 24_bit,
+        BGC_57                  = 25_bit,
+        BGC_58                  = 26_bit,
+        BGC_LINE_BLOCK_HIT      = 27_bit,
+        BGC_60                  = 28_bit,
+        BGC_61                  = 29_bit,
+        BGC_62                  = 30_bit,
+        BGC_63                  = 31_bit,
     };
 
     /**
@@ -528,247 +529,247 @@ public:
         /**
          * The player was created.
          */
-        CREATED = 0,
+        CREATED                       = 0,
         /**
          * The player can execute this frame or not.
          */
-        CAN_EXECUTE = 1,
+        CAN_EXECUTE                   = 1,
         /**
          * Don't play any animations.
          */
-        NO_ANIM = 2,
+        NO_ANIM                       = 2,
         /**
          * Disallow state changes.
          */
-        DISABLE_STATE_CHANGE = 3,
+        DISABLE_STATE_CHANGE          = 3,
         /**
          * The player is in a bubble or has died.
          */
-        OUT_OF_PLAY = 4,
+        OUT_OF_PLAY                   = 4,
         /**
          * All players have died and the screen is transitioning.
          */
-        ALL_DOWN_FADE = 5,
+        ALL_DOWN_FADE                 = 5,
         /**
          * Stunned by electric shock or ice.
          */
-        STUNNED = 6,
+        STUNNED                       = 6,
         /**
          * [Ice related]
          */
-        UNKNOWN_7 = 7,
+        UNKNOWN_7                     = 7,
         /**
          * The player was stunned by an earthquake.
          */
-        QUAKE = 8,
+        QUAKE                         = 8,
         /**
          * The player is jumping.
          */
-        JUMP = 10,
+        JUMP                          = 10,
         /**
          * If the player can start sliding as a penguin.
          */
-        CAN_PENGUIN_SLIDE = 11,
+        CAN_PENGUIN_SLIDE             = 11,
         /**
          * The player is jumping while in star mode.
          */
-        STAR_JUMP = 12,
+        STAR_JUMP                     = 12,
         /**
          * The player is doing a crab jump on a cliff.
          */
-        KANI_JUMP = 13,
+        KANI_JUMP                     = 13,
         /**
          * The player is jumping while in sinking sand.
          */
-        SINK_SAND_JUMP = 14,
+        SINK_SAND_JUMP                = 14,
         /**
          * The player is doing a sitting jump.
          */
-        SIT_JUMP = 15,
+        SIT_JUMP                      = 15,
         /**
          * The player is doing a jump to dismount Yoshi.
          */
-        YOSHI_DISMOUNT_JUMP = 16,
+        YOSHI_DISMOUNT_JUMP           = 16,
         /**
          * The player is flying out of a pipe cannon.
          */
-        CANNON_JUMP = 17,
+        CANNON_JUMP                   = 17,
         /**
          * The player is doing a small hop after being affected by a small quake.
          */
-        WAIT_JUMP = 18,
+        WAIT_JUMP                     = 18,
         /**
          * The player is sliding down a wall.
          */
-        WALL_SLIDE = 19,
+        WALL_SLIDE                    = 19,
         /**
          * The player is doing a jump on a spring or another player.
          */
-        BIG_JUMP = 20,
+        BIG_JUMP                      = 20,
         /**
          * The player is doing a jump on a springboard.
          */
-        SPRING_JUMP = 21,
+        SPRING_JUMP                   = 21,
         /**
          * The player is doing a jump on another player.
          */
-        PLAYER_JUMP = 22,
+        PLAYER_JUMP                   = 22,
         /**
          * [Dokan related]
          */
-        UNKNOWN_23 = 23,
+        UNKNOWN_23                    = 23,
         /**
          * The player is throwing something.
          */
-        THROW = 24,
+        THROW                         = 24,
         /**
          * The player is doing a crab walk on a cliff.
          */
-        KANI_WALK = 25,
+        KANI_WALK                     = 25,
         /**
          * The player is falling while ground pounding.
          */
-        HIP_ATTACK_FALL = 28,
+        HIP_ATTACK_FALL               = 28,
         /**
          * The player has landed after ground pounding. Only active on one frame.
          */
-        HIP_ATTACK_LAND = 29,
+        HIP_ATTACK_LAND               = 29,
         /**
          * The player is standing up after ground pounding. Only active on one frame.
          */
-        HIP_ATTACK_STAND_UP = 30,
+        HIP_ATTACK_STAND_UP           = 30,
         /**
          * The player is falling while doing a down spin.
          */
-        SPIN_HIP_ATTACK_FALL = 31,
-        SPIN_HIP_ATTACK_LANDED = 32,
-        SPIN_HIP_ATTACK_LANDING = 33,
+        SPIN_HIP_ATTACK_FALL          = 31,
+        SPIN_HIP_ATTACK_LANDED        = 32,
+        SPIN_HIP_ATTACK_LANDING       = 33,
         /**
          * The player is is attached to a enemy while ground pounding or doing a down spin. [Used
          * for the big goombas].
          */
-        PRESS_ATTACH = 34,
+        PRESS_ATTACH                  = 34,
         /**
          * The player was ground pounded by another player.
          */
-        HIP_ATTACK_DAMAGE_PLAYER = 35,
+        HIP_ATTACK_DAMAGE_PLAYER      = 35,
         /**
          * The player is flying with the propeller suit.
          */
-        PROPEL = 38,
+        PROPEL                        = 38,
         /**
          * The player is flying upwards with the propeller suit.
          */
-        PROPEL_UP = 39,
+        PROPEL_UP                     = 39,
         /**
          * The player will fall slowly while spinning down with the propeller suit.
          */
-        PROPEL_SLOW_FALL = 41,
+        PROPEL_SLOW_FALL              = 41,
         /**
          * Don't rotate the player because of the propeller suit.
          */
-        PROPEL_NO_ROLL = 42,
+        PROPEL_NO_ROLL                = 42,
         /**
          * The player is spinning, either from a spin jump, a propeller spin (upwards or downwards)
          * or screw spinning.
          */
-        SPIN = 43,
+        SPIN                          = 43,
         /**
          * If the player spins, stay in place. [Used for the twisting screws].
          */
-        IS_SPIN_HOLD_REQ = 44,
+        IS_SPIN_HOLD_REQ              = 44,
         /**
          * The player is twirling in midair.
          */
-        TWIRL = 45,
+        TWIRL                         = 45,
         /**
          * The player was twirling in midair the previous frame.
          */
-        WAS_TWIRL = 46,
+        WAS_TWIRL                     = 46,
         /**
          * The player is clinging to a vine / mesh net / rock wall.
          */
-        VINE = 51,
+        VINE                          = 51,
         /**
          * The player is hanging from a ceiling rope.
          */
-        HANG = 52,
+        HANG                          = 52,
         /**
          * The player is climbing a pole.
          */
-        POLE = 53,
+        POLE                          = 53,
         /**
          * The player is hanging from a cliff.
          */
-        KANI_HANG = 55,
+        KANI_HANG                     = 55,
         /**
          * The player is animating into the hanging pose on a cliff.
          */
-        KANI_HANG_ANIMATION = 56,
+        KANI_HANG_ANIMATION           = 56,
         /**
          * [Swim related]
          */
-        UNKNOWN_57 = 57,
+        UNKNOWN_57                    = 57,
         /**
          * The player is swimming.
          */
-        SWIM = 58,
+        SWIM                          = 58,
         /**
          * The player is swimming with the penguin suit.
          */
-        PENGUIN_SWIM = 59,
+        PENGUIN_SWIM                  = 59,
         /**
          * The player is sliding with the penguin suit.
          */
-        PENGUIN_SLIDE = 60,
+        PENGUIN_SLIDE                 = 60,
         /**
          * The player is doing a penguin slide jump.
          */
-        PENGUIN_SLIDE_JUMP = 61,
+        PENGUIN_SLIDE_JUMP            = 61,
         /**
          * The player is in an initial slide action. [Used in 6-6 to slide all the way down
          * automatically].
          */
-        INITIAL_SLIDE = 62,
+        INITIAL_SLIDE                 = 62,
         /**
          * The player is bouncing back after hitting an enemy that cannot be killed by a penguin
          * slide.
          */
-        PENGUIN_RECOIL = 63,
+        PENGUIN_RECOIL                = 63,
         /**
          * [Water jump?]
          */
-        UNKNOWN_64 = 64,
+        UNKNOWN_64                    = 64,
         /**
          * The player is swimming against a horizontal water jet stream.
          */
-        SWIM_AGAINST_JET_H = 65,
+        SWIM_AGAINST_JET_H            = 65,
         /**
          * The player is swimming against a vertical water jet stream.
          */
-        SWIM_AGAINST_JET_V = 66,
+        SWIM_AGAINST_JET_V            = 66,
         /**
          * The player is riding Yoshi.
          */
-        RIDE_YOSHI = 75,
+        RIDE_YOSHI                    = 75,
         /**
          * The player recently failed to perform a big jump because of a ceiling.
          */
-        JUMP_DAI_COOLDOWN = 77,
-        RIDE_NUT_2 = 88,
-        RIDE_NUT = 89,
+        JUMP_DAI_COOLDOWN             = 77,
+        RIDE_NUT_2                    = 88,
+        RIDE_NUT                      = 89,
         /**
          * The player has cleared an enemy ambush.
          */
-        ENEMY_STAGE_CLEAR = 96,
+        ENEMY_STAGE_CLEAR             = 96,
         /**
          * The player has touched the goal pole.
          */
-        GOAL_POLE_TOUCHED = 101,
+        GOAL_POLE_TOUCHED             = 101,
         /**
          * The player is waiting for the player below to slide down the goal pole.
          */
-        GOAL_POLE_WAIT_BELOW_PLAYER = 102,
+        GOAL_POLE_WAIT_BELOW_PLAYER   = 102,
         /**
          * The player has reached the bottom of the goal pole after sliding down.
          */
@@ -776,95 +777,95 @@ public:
         /**
          * The player is ready to jump off the goal pole.
          */
-        GOAL_POLE_READY_FOR_JUMP_OFF = 105,
+        GOAL_POLE_READY_FOR_JUMP_OFF  = 105,
         /**
          * The player is turning toward the screen after jumping off the goal pole.
          */
-        GOAL_POLE_TURN = 106,
+        GOAL_POLE_TURN                = 106,
         /**
          * The player did not reach the goal pole in time and mustn't move anymore.
          */
-        GOAL_POLE_NOT_GOAL_NO_MOVE = 111,
-        ENDING_DANCE_AUTO = 117,
+        GOAL_POLE_NOT_GOAL_NO_MOVE    = 111,
+        ENDING_DANCE_AUTO             = 117,
         /**
          * The player is transitioning after touching a next goto area.
          */
-        DEMO_NEXT_GOTO_BLOCK = 118,
+        DEMO_NEXT_GOTO_BLOCK          = 118,
         /**
          * Stop executing this player indefinitely.
          */
-        STOP_EXECUTE = 125,
+        STOP_EXECUTE                  = 125,
         /**
          * A big quake that stuns the player was triggered.
          */
-        QUAKE_BIG = 139,
+        QUAKE_BIG                     = 139,
         /**
          * A small quake that makes the player do a hop was triggered.
          */
-        QUAKE_SMALL = 140,
+        QUAKE_SMALL                   = 140,
         /**
          * [Cannon shot related]
          */
-        UNKNOWN_141 = 141,
+        UNKNOWN_141                   = 141,
         /**
          * [Cannon shot related]
          */
-        UNKNOWN_142 = 142,
+        UNKNOWN_142                   = 142,
         /**
          * The player can land on Yoshi or another player.
          */
-        CAN_LAND = 143,
+        CAN_LAND                      = 143,
         /**
          * [Jump moving up?]
          */
-        UNKNOWN_165 = 165,
+        UNKNOWN_165                   = 165,
         /**
          * The player is about to shoot a fireball.
          */
-        FIREBALL_PREPARE_SHOOT = 166,
+        FIREBALL_PREPARE_SHOOT        = 166,
         /**
          * Mini Goombas are attached to the player.
          */
-        FOLLOW_MAME_KURIBO = 172,
+        FOLLOW_MAME_KURIBO            = 172,
         /**
          * The player is in the penguin suit.
          */
-        IS_PENGUIN = 173,
+        IS_PENGUIN                    = 173,
         /**
          * The player is in the ground pound action and is not yet about to stand back up.
          */
-        HIP_ATTACK = 174,
-        UNKNOWN_179 = 179, // [Yoshi only?]
-        ABOUT_TO_BE_DELETED = 181,
-        ITEM_KINOPIO_DISPLAY_OUT = 182,
+        HIP_ATTACK                    = 174,
+        UNKNOWN_179                   = 179, // [Yoshi only?]
+        ABOUT_TO_BE_DELETED           = 181,
+        ITEM_KINOPIO_DISPLAY_OUT      = 182,
         /**
          * The player is outside of the screen bounds and should die as a result.
          */
-        DISPLAY_OUT_DEAD = 185,
+        DISPLAY_OUT_DEAD              = 185,
         /**
          * The player is outside of the screen bounds and should not be able to be attacked.
          */
-        DISPLAY_OUT_NO_DAMAGE = 186,
+        DISPLAY_OUT_NO_DAMAGE         = 186,
         /**
          * The player is invisible.
          */
-        INVISIBLE = 187,
+        INVISIBLE                     = 187,
         /**
          * Skip drawing the player this frame to create a blinking effect.
          */
-        INVULNERABLILITY_BLINK = 188,
+        INVULNERABLILITY_BLINK        = 188,
         /**
          * The player can walk on water because of the mini mushroom.
          */
-        CAN_WATER_WALK = 193,
+        CAN_WATER_WALK                = 193,
         /**
          * The player is on water by being mini or sliding with the penguin suit.
          */
-        ON_WATER_MOVE = 194,
+        ON_WATER_MOVE                 = 194,
         /**
          * The player can slide on water because of the penguin suit.
          */
-        CAN_WATER_SLIDE = 195,
+        CAN_WATER_SLIDE               = 195,
     };
 
     static const float sc_DirSpeed[];
@@ -904,10 +905,7 @@ public:
     virtual void executeLastAll();
 
     /* VT+0x0E0 0x80020BE0 */
-    virtual bool isItemKinopio()
-    {
-        return false;
-    }
+    virtual bool isItemKinopio() { return false; }
 
     /* VT+0x0E4 0x80056BC0 @unofficial */
     virtual void setPowerup(PLAYER_MODE_e powerup, PLAYER_MODE_e);
@@ -1539,6 +1537,24 @@ public:
     /* 0x8004E290 */
     void changeDemoState(const sStateIDIf_c& state, int param);
 
+    /* 0x8004E920 */
+    void getWaterDokanCenterOffset(float);
+
+    /* 0x8004E980 */
+    void initDemoInDokan();
+
+    /* 0x8004EA20 */
+    void endDemoInDokan();
+
+    /* 0x8004EA80 */
+    void executeDemoInDokan(u8 param);
+
+    /* 0x8004EDE0 */
+    void initDemoInDokanUD(u8 param);
+
+    /* 0x8004EFD0 */
+    void initDemoInDokanLR(u8 param);
+
     /* 0x80050D80 */
     bool isDispOutCheckOn();
 
@@ -1591,19 +1607,22 @@ public:
     [[nodiscard]]
     bool isStatus(int flag);
 
-    inline void onStatus(Status_e flag)
-    {
+    inline void onStatus(
+        Status_e flag
+    ) {
         onStatus(static_cast<int>(flag));
     }
 
-    inline void offStatus(Status_e flag)
-    {
+    inline void offStatus(
+        Status_e flag
+    ) {
         offStatus(static_cast<int>(flag));
     }
 
     [[nodiscard]]
-    inline bool isStatus(Status_e flag)
-    {
+    inline bool isStatus(
+        Status_e flag
+    ) {
         return isStatus(static_cast<int>(flag));
     }
 
@@ -1625,85 +1644,92 @@ public:
     // Inline Instance Methods
     // ^^^^^^
 
-    u32 isNowBgCross(BgCross1_e m)
-    {
+    u32 isNowBgCross(
+        BgCross1_e m
+    ) {
         return mNowBgCross1 & m;
     }
 
-    u32 isNowBgCross(BgCross2_e m)
-    {
+    u32 isNowBgCross(
+        BgCross2_e m
+    ) {
         return mNowBgCross2 & m;
     }
 
-    void onNowBgCross(BgCross1_e m)
-    {
+    void onNowBgCross(
+        BgCross1_e m
+    ) {
         mNowBgCross1 |= m;
     }
 
-    void onNowBgCross(BgCross2_e m)
-    {
+    void onNowBgCross(
+        BgCross2_e m
+    ) {
         mNowBgCross2 |= m;
     }
 
-    void offNowBgCross(BgCross1_e m)
-    {
+    void offNowBgCross(
+        BgCross1_e m
+    ) {
         mNowBgCross1 &= ~m;
     }
 
-    void offNowBgCross(BgCross2_e m)
-    {
+    void offNowBgCross(
+        BgCross2_e m
+    ) {
         mNowBgCross2 &= ~m;
     }
 
-    void clearNowBgCross()
-    {
-        mNowBgCross1 = mNowBgCross2 = 0;
-    }
+    void clearNowBgCross() { mNowBgCross1 = mNowBgCross2 = 0; }
 
-    u32 isOldBgCross(BgCross1_e m)
-    {
+    u32 isOldBgCross(
+        BgCross1_e m
+    ) {
         return mOldBgCross1 & m;
     }
 
-    u32 isOldBgCross(BgCross2_e m)
-    {
+    u32 isOldBgCross(
+        BgCross2_e m
+    ) {
         return mOldBgCross2 & m;
     }
 
-    void onOldBgCross(BgCross1_e m)
-    {
+    void onOldBgCross(
+        BgCross1_e m
+    ) {
         mOldBgCross1 |= m;
     }
 
-    void onOldBgCross(BgCross2_e m)
-    {
+    void onOldBgCross(
+        BgCross2_e m
+    ) {
         mOldBgCross2 |= m;
     }
 
-    void offOldBgCross(BgCross1_e m)
-    {
+    void offOldBgCross(
+        BgCross1_e m
+    ) {
         mOldBgCross1 &= ~m;
     }
 
-    void offOldBgCross(BgCross2_e m)
-    {
+    void offOldBgCross(
+        BgCross2_e m
+    ) {
         mOldBgCross2 &= ~m;
     }
 
-    void clearOldBgCross()
-    {
-        mOldBgCross1 = mOldBgCross2 = 0;
-    }
+    void clearOldBgCross() { mOldBgCross1 = mOldBgCross2 = 0; }
 
 public:
     // Instance Variables
     // ^^^^^^
 
     FILL(0x0392, 0x03F8);
-    
-    /* 0x03F8 */ int mGotoDest;
-    
-    FILL(0x03FC, 0x043C);
+
+    /* 0x03F8 */ int     mGotoDest;
+    /* 0x03F8 */ mVec3_c mGotoPos;
+
+    FILL(0x0408, 0x043C);
 
     /* 0x043C */ int m0x43C;
 
@@ -1715,35 +1741,63 @@ public:
 
     /* 0x0EA4 */ dAcPyKey_c mKey;
 
-    FILL(0x1008, 0x1070);
+    /* 0x1008 */ fBaseID_e  mRideActorID;
+    /* 0x100C */ fBaseID_e  mActionActorID; // Actor that is eating the player, or the door actor.
+    /* 0x1010 */ fBaseID_e  mHipAttackPlayerID;
 
-    /* 0x1070 */ int m_starTime;
-    /* 0x1074 */ int m_timer0x1070;
-    /* 0x1078 */ int m_timer0x1074;
-    /* 0x107C */ int m_timer0x1078;
+    /* 0x1014 */ u32        mStatusFlags[7];
+    /* 0x1030 */ float      mModelHeight;
+    /* 0x1034 */ u8         mPrevDirection;
+    /* 0x1035 */ u8         mAmiLayer;
+    /* 0x1036 */ u8         mPlayerLayer;
 
-    /* 0x1080 */ s8 m_treadCount;
-    /* 0x1081 */ s8 m_starCount;
-    /* 0x1082 */ s8 m_plComboCount;
+    /* 0x1038 */ mVec3_c    mLastPosDelta;
+    /* 0x1044 */ mVec3_c    mLiftRelatedPos;
+    /* 0x1050 */ float      mPrevSpeedF;
+    /* 0x1054 */ float      mPrevSpeedY;
 
-    /* 0x1084 */ u32 m0x1084;
-    /* 0x1088 */ u32 mFollowMameKuribo;
+    /**
+     * Stores the highest Y position reached, resets when landing on the ground again.
+     */
+    /* 0x1058 */ float mTopHeight;
 
-    /* 0x108C */ fBaseID_e mIceActorID;
+    /**
+     * The highest Y position since being on the ground last. Not reset when landing on the ground.
+     */
+    /* 0x105C */ float             mAirTopHeight;
 
-    /* 0x1090 */ PLAYER_MODE_e mPlayerMode;
+    /* 0x1060 */ const sSpeedData* mSpeedDataNormal;
+    /* 0x1064 */ const sSpeedData* mSpeedDataStar;
+    /* 0x1068 */ const float*      mGravityData;
 
-    /* 0x1094 */ sBcPointData mHeadBcData;
-    /* 0x10A4 */ sBcPointData mFootBcData;
-    /* 0x10B4 */ sBcPointData mWallBcData;
-    /* 0x10C4 */ mVec3_c mBgPushForce;
-    /* 0x10D0 */ float mExtraPushForceX;
+    /* 0x1076C*/ int               m_noGravityTime;
+    /* 0x1070 */ int               m_starTime;
+    /* 0x1074 */ int               m_noDamageTime;
+    /* 0x1078 */ int               m_modeChangeNoDamageTime;
+    /* 0x107C */ int               m_timer0x1078;
 
-    /* 0x10D4 */ u32 mNowBgCross1;
-    /* 0x10D8 */ u32 mNowBgCross2;
-    /* 0x10DC */ u32 mOldBgCross1;
-    /* 0x10E0 */ u32 mOldBgCross2;
-    /* 0x10E4 */ u32 mBgFootHistory[10];
+    /* 0x1080 */ s8                m_treadCount;
+    /* 0x1081 */ s8                m_starCount;
+    /* 0x1082 */ s8                m_plComboCount;
+
+    /* 0x1084 */ u32               m0x1084;
+    /* 0x1088 */ u32               mFollowMameKuribo;
+
+    /* 0x108C */ fBaseID_e         mIceActorID;
+
+    /* 0x1090 */ PLAYER_MODE_e     mPlayerMode;
+
+    /* 0x1094 */ sBcPointData      mHeadBcData;
+    /* 0x10A4 */ sBcPointData      mFootBcData;
+    /* 0x10B4 */ sBcPointData      mWallBcData;
+    /* 0x10C4 */ mVec3_c           mBgPushForce;
+    /* 0x10D0 */ float             mExtraPushForceX;
+
+    /* 0x10D4 */ u32               mNowBgCross1;
+    /* 0x10D8 */ u32               mNowBgCross2;
+    /* 0x10DC */ u32               mOldBgCross1;
+    /* 0x10E0 */ u32               mOldBgCross2;
+    /* 0x10E4 */ u32               mBgFootHistory[10];
 
     FILL(0x110C, 0x1164);
 
