@@ -49,14 +49,14 @@ inline bool mega_bowser_in_every_course         = true;
 // Debugging features
 // ^^^^^^
 
-inline u8   autoboot_world                      = 1;
-inline u8   autoboot_stage                      = 1;
-inline u8   autoboot_course                     = 2;
-inline u8   autoboot_next_goto                  = 1 + 4;
+inline u8   autoboot_world                      = 0;
+inline u8   autoboot_stage                      = 0;
+inline u8   autoboot_course                     = 0;
+inline u8   autoboot_next_goto                  = 1 + 0;
 inline u8   autoboot_player_count               = 8;
 inline u8   autoboot_player_index               = 0;
-inline u8   autoboot_player_type_order[8]       = {7, 1, 3, 2, 4, 5, 6, 0};
-inline u8   autoboot_powerup                    = 4;
+inline u8   autoboot_player_type_order[8]       = {0, 1, 3, 2, 4, 5, 6, 7};
+inline u8   autoboot_powerup                    = 0;
 inline bool autoboot_in_star                    = false;
 inline bool autoboot_on_yoshi                   = false;
 
