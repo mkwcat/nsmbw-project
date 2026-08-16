@@ -4,6 +4,22 @@ class dAcPyKey_c {
     SIZE_ASSERT(0x164);
 
 public:
+    // Constants
+    // ^^^^^^
+
+    enum BUTTONS_e {
+        DOWN  = 0_bit,
+        UP    = 1_bit,
+        RIGHT = 2_bit,
+        LEFT  = 3_bit,
+        CROSS = LEFT | RIGHT | UP | DOWN,
+        TWO   = 8_bit,
+        ONE   = 9_bit,
+        B     = 10_bit,
+        A     = 11_bit,
+    };
+
+public:
     // Instance Methods
     // ^^^^^^
 
@@ -33,6 +49,9 @@ public:
 
     /* 0x8005E930 */
     void offDemoButton(int button);
+
+    /* 0x8005E960 */
+    void onDemoTrigger(int button);
 
 public:
     // Instance Variables

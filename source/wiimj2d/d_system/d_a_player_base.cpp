@@ -15,7 +15,9 @@
 #include "d_system/d_game_common.h"
 #include "d_system/d_mj2d_game.h"
 #include "framework/f_manager.h"
+#include "state/s_Lib.h"
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <iterator>
 
@@ -119,7 +121,7 @@ void daPlBase_c::initDemoInDokanUD(
 void daPlBase_c::initDemoInDokanLR(u8 param);
 
 [[nsmbw(0x80050870)]]
-void daPlBase_c::initializeState_StateID_DemoRailDokan() ASM_METHOD(
+void daPlBase_c::initializeState_DemoRailDokan() ASM_METHOD(
   // clang-format off
 /* 80050870 9421FFD0 */  stwu     r1, -48(r1);
 /* 80050874 7C0802A6 */  mflr     r0;
@@ -239,13 +241,13 @@ void daPlBase_c::setExitRailDokan() {
     mLayer                          = destGoto->layer;
     assert(destGoto->type > 2 && destGoto->type < 7);
     if (destGoto->type == 3) {
-        changeDemoState(StateID_StateID_DemoInDokanD, 1);
+        changeDemoState(StateID_DemoInDokanD, 1);
     } else if (destGoto->type == 4) {
-        changeDemoState(StateID_StateID_DemoInDokanU, 1);
+        changeDemoState(StateID_DemoInDokanU, 1);
     } else if (destGoto->type == 5) {
-        changeDemoState(StateID_StateID_DemoInDokanR, 1);
+        changeDemoState(StateID_DemoInDokanR, 1);
     } else if (destGoto->type == 6) {
-        changeDemoState(StateID_StateID_DemoInDokanL, 1);
+        changeDemoState(StateID_DemoInDokanL, 1);
     }
 }
 
@@ -310,7 +312,25 @@ void daPlBase_c::setControlDemoDir(u8 direction);
 bool daPlBase_c::isControlDemoWait();
 
 [[nsmbw(0x80052080)]]
-void daPlBase_c::setControlDemoWalk(const f32& pos, const f32& speed);
+void daPlBase_c::setControlDemoWalk(
+    const float& pos, const float& speed
+) {
+    if (!isStatus(114)) {
+        return;
+    }
+
+    if (mDemoState != ControlDemoSubstate_e::WALK || mControlDemoTargetPos.x != pos) {
+        // Add anti-softlock failsafe to abort demo after 10 seconds
+        m_DemoSubstateTimer = 60 * 10;
+    }
+
+    mControlDemoTargetPos.x = pos;
+    mDemoState              = ControlDemoSubstate_e::WALK;
+    mControlDemoSpeedF      = std::fabs(speed);
+    if (mControlDemoSpeedF > getSpeedData()->mHighSpeed) {
+        mControlDemoSpeedF = getSpeedData()->mHighSpeed;
+    }
+}
 
 [[nsmbw(0x80052170)]]
 void daPlBase_c::setControlDemoAnm(int anim);
@@ -318,8 +338,140 @@ void daPlBase_c::setControlDemoAnm(int anim);
 [[nsmbw(0x80052290)]]
 void daPlBase_c::UNDEF_80052290(s32 param);
 
+[[nsmbw(0x80052300)]]
+void daPlBase_c::setControlDemoKinopioWalk();
+
 [[nsmbw(0x80052470)]]
 bool daPlBase_c::isBossDemoLand();
+
+[[nsmbw(0x80052500)]]
+bool daPlBase_c::isHitGroundKinopioWalk(int dir, float f, int i2);
+
+[[nsmbw(0x80052650)]]
+bool daPlBase_c::isHitWallKinopioWalk(int);
+
+[[nsmbw(0x800526C0)]]
+bool daPlBase_c::checkKinopioWaitBG(int);
+
+[[nsmbw(0x80052900)]]
+void daPlBase_c::executeState_DemoControl() {
+    offStatus(116);
+    if (isStatus(115)) {
+        if (isNowBgCross(BGC_FOOT)) {
+            offStatus(115);
+        } else {
+            mSpeedF *= 0.98f;
+        }
+    }
+
+    switch (mDemoState) {
+    case ControlDemoSubstate_e::WALK: {
+        onStatus(116);
+        if (isNowBgCross(BGC_FOOT)) {
+            if (!isState(StateID_Walk) && !isState(StateID_Turn)) {
+                changeState(StateID_Walk, static_cast<long>(AnmBlend_e::DEFAULT));
+            }
+        } else {
+            if (!isState(StateID_Fall)) {
+                changeState(StateID_Fall, false);
+            }
+        }
+        // Add failsafe timer check
+        if (m_DemoSubstateTimer == 0 ||
+            std::fabs(mPos.x - mControlDemoTargetPos.x) < mControlDemoSpeedF) {
+            mDemoState = ControlDemoSubstate_e::WAIT;
+            mSpeedF    = 0.0f;
+            mPos.x     = mControlDemoTargetPos.x;
+            break;
+        }
+        if (mPos.x < mControlDemoTargetPos.x) {
+            mKey.onDemoTrigger(dAcPyKey_c::RIGHT);
+            mSpeedF = mControlDemoSpeedF;
+            break;
+        }
+        mKey.onDemoTrigger(dAcPyKey_c::LEFT);
+        mSpeedF = -mControlDemoSpeedF;
+        break;
+    }
+    case ControlDemoSubstate_e::CONTROL_DEMO_4: {
+        if (m_DemoSubstateTimer == 0) {
+            changeDemoState(StateID_DemoNone, false);
+        }
+        break;
+    }
+    case ControlDemoSubstate_e::KINOPIO_WALK: {
+        if (!isNowBgCross(BGC_FOOT) || (!m_StateMgr.getStateID()->isEqual(StateID_Walk) &&
+                                        !m_StateMgr.getStateID()->isEqual(StateID_Turn))) {
+            mDemoState = ControlDemoSubstate_e::WAIT;
+            break;
+        }
+        onStatus(116);
+        if (isOnSinkSand() || (checkKinopioWaitBG(0) && checkKinopioWaitBG(1))) {
+            mDemoState         = ControlDemoSubstate_e::KINOPIO_SINK_SAND;
+            mControlDemoSpeedF = 0.0f;
+            mSpeedF            = 0.0f;
+            break;
+        }
+        int prevDirection = mItemKinopioDirection;
+        sLib::calcTimer(&mItemKinopioTurnTimer);
+        if (isHitWallKinopioWalk(mItemKinopioDirection) || mItemKinopioTurnTimer == 0) {
+            mItemKinopioDirection ^= 1;
+            mControlDemoTargetPos.x = mPos.x + sc_DirSpeed[mItemKinopioDirection] * 24.0f;
+        } else if (!isHitGroundKinopioWalk(mItemKinopioDirection, 4.0f, 1) &&
+                   !isHitGroundKinopioWalk(mItemKinopioDirection, 8.0f, 1)) {
+            mItemKinopioDirection ^= 1;
+            mControlDemoTargetPos.x = mPos.x + sc_DirSpeed[mItemKinopioDirection] * 24.0f;
+        }
+        float tmp = mControlDemoTargetPos.x + sc_DirSpeed[mItemKinopioDirection] * 24.0f;
+        if (mPos.x < tmp) {
+            mKey.onDemoTrigger(dAcPyKey_c::RIGHT);
+            mSpeedF               = mControlDemoSpeedF;
+            mItemKinopioDirection = 0;
+        } else {
+            mKey.onDemoTrigger(dAcPyKey_c::LEFT);
+            mItemKinopioDirection = 1;
+            mSpeedF               = -mControlDemoSpeedF;
+        }
+        if (prevDirection != mItemKinopioDirection) {
+            mItemKinopioTurnTimer = 180;
+        }
+        break;
+    }
+    case ControlDemoSubstate_e::KINOPIO_SWIM: {
+        if (!m_StateMgr.getStateID()->isEqual(StateID_Swim)) {
+            mDemoState = ControlDemoSubstate_e::WAIT;
+            break;
+        }
+        onStatus(116);
+        if (isNowBgCross(BGC_FOOT) && isHitWallKinopioWalk(mItemKinopioDirection)) {
+            mItemKinopioDirection ^= 1;
+        }
+        if (mItemKinopioDirection == 0) {
+            mKey.onDemoTrigger(dAcPyKey_c::RIGHT);
+            sLib::chase(&mSpeedF, 0.5625f, 0.1f);
+        } else {
+            mKey.onDemoTrigger(dAcPyKey_c::LEFT);
+            sLib::chase(&mSpeedF, -0.5625f, 0.1f);
+        }
+        break;
+    }
+    case ControlDemoSubstate_e::KINOPIO_SINK_SAND: {
+        if (!isNowBgCross(BGC_FOOT) || (!m_StateMgr.getStateID()->isEqual(StateID_Walk) &&
+                                        !m_StateMgr.getStateID()->isEqual(StateID_Turn))) {
+            mDemoState = ControlDemoSubstate_e::WAIT;
+            break;
+        }
+        onStatus(116);
+        onStatus(99);
+        if (!checkKinopioWaitBG(0) || !checkKinopioWaitBG(1)) {
+            setControlDemoKinopioWalk();
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
 
 [[nsmbw(0x80056370)]]
 void daPlBase_c::UNDEF_80056370(dActor_c*, int);
@@ -341,6 +493,9 @@ bool daPlBase_c::isStatus(int flag);
 
 [[nsmbw(0x80056E30)]]
 dPyMdlBase_c* daPlBase_c::getModel();
+
+[[nsmbw(0x80057650)]]
+const sSpeedData* daPlBase_c::getSpeedData();
 
 [[nsmbw(0x80057E70)]]
 void daPlBase_c::playSound(SndID::Type, long);

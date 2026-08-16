@@ -355,7 +355,7 @@ public:
     };
 
     /* @unofficial */
-    enum class ControlDemoSubstate_e {
+    enum class ControlDemoSubstate_e : s8 {
         WAIT,
         WALK,
         REGULAR_ANIM,
@@ -979,133 +979,133 @@ public:
      * executeState:    VT+0x13C 0x8004E4D0
      * finalizeState:   VT+0x140 0x8004E4C0
      */
-    sState_ExternVirtual(0x80354A6C, daPlBase_c, StateID_DemoNone);
+    sState_ExternVirtual(0x80354A6C, daPlBase_c, DemoNone);
 
     /**
      * initializeState: VT+0x144 0x8004E700
      * executeState:    VT+0x148 0x8004E710
      * finalizeState:   VT+0x14C 0x8004E7A0
      */
-    sState_ExternVirtual(0x80354AAC, daPlBase_c, StateID_DemoStartWait);
+    sState_ExternVirtual(0x80354AAC, daPlBase_c, DemoStartWait);
 
     /**
      * initializeState: VT+0x150 0x8004E7B0
      * executeState:    VT+0x154 0x8004E820
      * finalizeState:   VT+0x158 0x8004E810
      */
-    sState_ExternVirtual(0x80354AEC, daPlBase_c, StateID_DemoWait);
+    sState_ExternVirtual(0x80354AEC, daPlBase_c, DemoWait);
 
     /**
      * initializeState: VT+0x15C 0x8004F100
      * executeState:    VT+0x160 0x8004F120
      * finalizeState:   VT+0x164 0x8004F110
      */
-    sState_ExternVirtual(0x80354B2C, daPlBase_c, StateID_DemoInDokanU);
+    sState_ExternVirtual(0x80354B2C, daPlBase_c, DemoInDokanU);
 
     /**
      * initializeState: VT+0x168 0x8004F130
      * executeState:    VT+0x16C 0x8004F150
      * finalizeState:   VT+0x170 0x8004F140
      */
-    sState_ExternVirtual(0x80354B6C, daPlBase_c, StateID_DemoInDokanD);
+    sState_ExternVirtual(0x80354B6C, daPlBase_c, DemoInDokanD);
 
     /**
      * initializeState: VT+0x174 0x8004F190
      * executeState:    VT+0x178 0x8004F1B0
      * finalizeState:   VT+0x17C 0x8004F1A0
      */
-    sState_ExternVirtual(0x80354BAC, daPlBase_c, StateID_DemoInDokanR);
+    sState_ExternVirtual(0x80354BAC, daPlBase_c, DemoInDokanR);
 
     /**
      * initializeState: VT+0x180 0x8004F160
      * executeState:    VT+0x184 0x8004F180
      * finalizeState:   VT+0x188 0x8004F170
      */
-    sState_ExternVirtual(0x80354BEC, daPlBase_c, StateID_DemoInDokanL);
+    sState_ExternVirtual(0x80354BEC, daPlBase_c, DemoInDokanL);
 
     /**
      * initializeState: VT+0x18C 0x8004FE70
      * executeState:    VT+0x190 0x8004FE90
      * finalizeState:   VT+0x194 0x8004FE80
      */
-    sState_ExternVirtual(0x80354C2C, daPlBase_c, StateID_DemoOutDokanU);
+    sState_ExternVirtual(0x80354C2C, daPlBase_c, DemoOutDokanU);
 
     /**
      * initializeState: VT+0x198 0x8004FEA0
      * executeState:    VT+0x19C 0x8004FEC0
      * finalizeState:   VT+0x1A0 0x8004FEB0
      */
-    sState_ExternVirtual(0x80354C6C, daPlBase_c, StateID_DemoOutDokanD);
+    sState_ExternVirtual(0x80354C6C, daPlBase_c, DemoOutDokanD);
 
     /**
      * initializeState: VT+0x1A4 0x8004FF00
      * executeState:    VT+0x1A8 0x8004FF20
      * finalizeState:   VT+0x1AC 0x8004FF10
      */
-    sState_ExternVirtual(0x80354CAC, daPlBase_c, StateID_DemoOutDokanR);
+    sState_ExternVirtual(0x80354CAC, daPlBase_c, DemoOutDokanR);
 
     /**
      * initializeState: VT+0x1B0 0x8004FED0
      * executeState:    VT+0x1B4 0x8004FEF0
      * finalizeState:   VT+0x1B8 0x8004FEE0
      */
-    sState_ExternVirtual(0x80354CEC, daPlBase_c, StateID_DemoOutDokanL);
+    sState_ExternVirtual(0x80354CEC, daPlBase_c, DemoOutDokanL);
 
     /**
      * initializeState: VT+0x1BC 0x8004FF30
      * executeState:    VT+0x1C0 0x8004FFA0
      * finalizeState:   VT+0x1C4 0x8004FF90
      */
-    sState_ExternVirtual(0x80354D2C, daPlBase_c, StateID_DemoOutDokanRoll);
+    sState_ExternVirtual(0x80354D2C, daPlBase_c, DemoOutDokanRoll);
 
     /**
      * initializeState: VT+0x1C8 0x800502A0
      * executeState:    VT+0x1CC 0x80050380
      * finalizeState:   VT+0x1D0 0x80050370
      */
-    sState_ExternVirtual(0x80354D6C, daPlBase_c, StateID_DemoInWaterTank);
+    sState_ExternVirtual(0x80354D6C, daPlBase_c, DemoInWaterTank);
 
     /**
      * initializeState: VT+0x1D4 0x800504B0
      * executeState:    VT+0x1D8 0x80050540
      * finalizeState:   VT+0x1DC 0x80050530
      */
-    sState_ExternVirtual(0x80354DAC, daPlBase_c, StateID_DemoOutWaterTank);
+    sState_ExternVirtual(0x80354DAC, daPlBase_c, DemoOutWaterTank);
 
     /**
      * initializeState: VT+0x1E0 0x80050870
      * executeState:    VT+0x1E4 0x80050AF0
      * finalizeState:   VT+0x1E8 0x800509F0
      */
-    sState_ExternVirtual(0x80354DEC, daPlBase_c, StateID_DemoRailDokan);
+    sState_ExternVirtual(0x80354DEC, daPlBase_c, DemoRailDokan);
 
     /**
      * initializeState: VT+0x1EC 0x80050E30
      * executeState:    VT+0x1F0 0x80050E50
      * finalizeState:   VT+0x1F4 0x80050E40
      */
-    sState_ExternVirtual(0x80354E2C, daPlBase_c, StateID_DemoDown);
+    sState_ExternVirtual(0x80354E2C, daPlBase_c, DemoDown);
 
     /**
      * initializeState: VT+0x1F8 0x80052FE0
      * executeState:    VT+0x1FC 0x80053090
      * finalizeState:   VT+0x200 0x80053040
      */
-    sState_ExternVirtual(0x80354E6C, daPlBase_c, StateID_DemoNextGotoBlock);
+    sState_ExternVirtual(0x80354E6C, daPlBase_c, DemoNextGotoBlock);
 
     /**
      * initializeState: VT+0x204 0x80051400
      * executeState:    VT+0x208 0x80051AB0
      * finalizeState:   VT+0x20C 0x80051410
      */
-    sState_ExternVirtual(0x80354EAC, daPlBase_c, StateID_DemoGoal);
+    sState_ExternVirtual(0x80354EAC, daPlBase_c, DemoGoal);
 
     /**
      * initializeState: VT+0x210 0x80052730
      * executeState:    VT+0x214 0x80052900
      * finalizeState:   VT+0x218 0x80052880
      */
-    sState_ExternVirtual(0x80354EEC, daPlBase_c, StateID_DemoControl);
+    sState_ExternVirtual(0x80354EEC, daPlBase_c, DemoControl);
 
 public:
     // Virtual Functions
@@ -1213,126 +1213,126 @@ public:
      * executeState:    VT+0x29C 0x800475D0
      * finalizeState:   VT+0x2A0 0x800475C0
      */
-    sState_ExternVirtual(0x8035451C, daPlBase_c, StateID_None);
+    sState_ExternVirtual(0x8035451C, daPlBase_c, None);
 
     /**
      * initializeState: VT+0x2A4 0x80047790
      * executeState:    VT+0x2A8 0x800477B0
      * finalizeState:   VT+0x2AC 0x800477A0
      */
-    sState_ExternVirtual(0x8035455C, daPlBase_c, StateID_Walk);
+    sState_ExternVirtual(0x8035455C, daPlBase_c, Walk);
 
     /**
      * initializeState: VT+0x2B0 0x800479A0
      * executeState:    VT+0x2B4 0x80047AC0
      * finalizeState:   VT+0x2B8 0x80047A00
      */
-    sState_ExternVirtual(0x8035459C, daPlBase_c, StateID_Jump);
+    sState_ExternVirtual(0x8035459C, daPlBase_c, Jump);
 
     /**
      * initializeState: VT+0x2BC 0x80047BE0
      * executeState:    VT+0x2C0 0x80047C00
      * finalizeState:   VT+0x2C4 0x80047BF0
      */
-    sState_ExternVirtual(0x803545DC, daPlBase_c, StateID_SitJump);
+    sState_ExternVirtual(0x803545DC, daPlBase_c, SitJump);
 
     /**
      * initializeState: VT+0x2C8 0x80047C40
      * executeState:    VT+0x2CC 0x80047D60
      * finalizeState:   VT+0x2D0 0x80047D10
      */
-    sState_ExternVirtual(0x8035461C, daPlBase_c, StateID_Fall);
+    sState_ExternVirtual(0x8035461C, daPlBase_c, Fall);
 
     /**
      * initializeState: VT+0x2D4 0x80047D80
      * executeState:    VT+0x2D8 0x80047DA0
      * finalizeState:   VT+0x2DC 0x80047D90
      */
-    sState_ExternVirtual(0x8035465C, daPlBase_c, StateID_Land);
+    sState_ExternVirtual(0x8035465C, daPlBase_c, Land);
 
     /**
      * initializeState: VT+0x2E0 0x800480A0
      * executeState:    VT+0x2E4 0x800480C0
      * finalizeState:   VT+0x2E8 0x800480B0
      */
-    sState_ExternVirtual(0x8035469C, daPlBase_c, StateID_Crouch);
+    sState_ExternVirtual(0x8035469C, daPlBase_c, Crouch);
 
     /**
      * initializeState: VT+0x2EC 0x800480D0
      * executeState:    VT+0x2F0 0x800481C0
      * finalizeState:   VT+0x2F4 0x80048170
      */
-    sState_ExternVirtual(0x803546DC, daPlBase_c, StateID_Slip);
+    sState_ExternVirtual(0x803546DC, daPlBase_c, Slip);
 
     /**
      * initializeState: VT+0x2F8 0x80048C00
      * executeState:    VT+0x2FC 0x80048C20
      * finalizeState:   VT+0x300 0x80048C10
      */
-    sState_ExternVirtual(0x8035471C, daPlBase_c, StateID_Turn);
+    sState_ExternVirtual(0x8035471C, daPlBase_c, Turn);
 
     /**
      * initializeState: VT+0x304 0x800497E0
      * executeState:    VT+0x308 0x80049940
      * finalizeState:   VT+0x30C 0x80049880
      */
-    sState_ExternVirtual(0x8035475C, daPlBase_c, StateID_HipAttack);
+    sState_ExternVirtual(0x8035475C, daPlBase_c, HipAttack);
 
     /**
      * initializeState: VT+0x310 0x80049A10
      * executeState:    VT+0x314 0x80049A30
      * finalizeState:   VT+0x318 0x80049A20
      */
-    sState_ExternVirtual(0x8035479C, daPlBase_c, StateID_Swim);
+    sState_ExternVirtual(0x8035479C, daPlBase_c, Swim);
 
     /**
      * initializeState: VT+0x31C 0x80049AB0
      * executeState:    VT+0x320 0x80049BB0
      * finalizeState:   VT+0x324 0x80049B60
      */
-    sState_ExternVirtual(0x803547DC, daPlBase_c, StateID_JumpDai);
+    sState_ExternVirtual(0x803547DC, daPlBase_c, JumpDai);
 
     /**
      * initializeState: VT+0x328 0x80049E10
      * executeState:    VT+0x32C 0x80049FA0
      * finalizeState:   VT+0x330 0x80049F50
      */
-    sState_ExternVirtual(0x8035481C, daPlBase_c, StateID_PlayerJumpDai);
+    sState_ExternVirtual(0x8035481C, daPlBase_c, PlayerJumpDai);
 
     /**
      * initializeState: VT+0x334 0x8004A400
      * executeState:    VT+0x338 0x8004A510
      * finalizeState:   VT+0x33C 0x8004A4D0
      */
-    sState_ExternVirtual(0x8035485C, daPlBase_c, StateID_Funsui);
+    sState_ExternVirtual(0x8035485C, daPlBase_c, Funsui);
 
     /**
      * initializeState: VT+0x340 0x8004A670
      * executeState:    VT+0x344 0x8004A690
      * finalizeState:   VT+0x348 0x8004A680
      */
-    sState_ExternVirtual(0x8035489C, daPlBase_c, StateID_Kani);
+    sState_ExternVirtual(0x8035489C, daPlBase_c, Kani);
 
     /**
      * initializeState: VT+0x34C 0x8004A830
      * executeState:    VT+0x350 0x8004AA50
      * finalizeState:   VT+0x354 0x8004A8C0
      */
-    sState_ExternVirtual(0x803548DC, daPlBase_c, StateID_Cloud);
+    sState_ExternVirtual(0x803548DC, daPlBase_c, Cloud);
 
     /**
      * initializeState: VT+0x358 0x8004AA60
      * executeState:    VT+0x35C 0x8004AAC0
      * finalizeState:   VT+0x360 0x8004AA80
      */
-    sState_ExternVirtual(0x8035491C, daPlBase_c, StateID_AnimePlay);
+    sState_ExternVirtual(0x8035491C, daPlBase_c, AnimePlay);
 
     /**
      * initializeState: VT+0x364 0x8004AFE0
      * executeState:    VT+0x368 0x8004B0D0
      * finalizeState:   VT+0x36C 0x8004B090
      */
-    sState_ExternVirtual(0x8035495C, daPlBase_c, StateID_WaitJump);
+    sState_ExternVirtual(0x8035495C, daPlBase_c, WaitJump);
 
 public:
     // Virtual Functions
@@ -1588,8 +1588,20 @@ public:
 
     void UNDEF_80052290(s32 param);
 
+    /* 0x80052300 */
+    void setControlDemoKinopioWalk();
+
     /* 0x80052470 */
     bool isBossDemoLand();
+
+    /* 0x80052500 @unofficial */
+    bool isHitGroundKinopioWalk(int dir, float f, int i2);
+
+    /* 0x80052650 */
+    bool isHitWallKinopioWalk(int);
+
+    /* 0x800526C0 */
+    bool checkKinopioWaitBG(int);
 
     /* 0x80056370 */
     void UNDEF_80056370(dActor_c*, int);
@@ -1638,11 +1650,35 @@ public:
     /* 0x80056BD0 */
     bool isMameAction();
 
+    /* 0x80057650 */
+    const sSpeedData* getSpeedData();
+
     void addDeathMessage(dActor_c* source, DamageType_e type, bool death);
 
 public:
     // Inline Instance Methods
     // ^^^^^^
+
+    // [Needed to place getOldStateID in the correct location]
+    const sStateIDIf_c& getOldState() { return *m_StateMgr.getOldStateID(); }
+
+    bool isState(
+        const sStateIDIf_c& id
+    ) {
+        return m_StateMgr.getStateID()->isEqual(id);
+    }
+
+    bool isDemoState(
+        const sStateIDIf_c& id
+    ) {
+        return m_DemoStateMgr.getStateID()->isEqual(id);
+    }
+
+    void changeState(
+        const sStateIDIf_c& stateID, int arg
+    ) {
+        changeState(stateID, reinterpret_cast<void*>(arg));
+    }
 
     u32 isNowBgCross(
         BgCross1_e m
@@ -1720,20 +1756,36 @@ public:
 
     void clearOldBgCross() { mOldBgCross1 = mOldBgCross2 = 0; }
 
+    bool isOnSinkSand() { return isNowBgCross(BGC_ON_SINK_SAND) | isNowBgCross(BGC_IN_SINK_SAND); }
+
+    bool wasOnSinkSand() { return isOldBgCross(BGC_ON_SINK_SAND) | isOldBgCross(BGC_IN_SINK_SAND); }
+
 public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0392, 0x03F8);
+    FILL(0x0392, 0x03F4);
 
-    /* 0x03F8 */ int     mGotoDest;
-    /* 0x03F8 */ mVec3_c mGotoPos;
+    /* 0x03F4 */ ControlDemoSubstate_e mDemoState;
+    /* 0x03F8 */ int                   mGotoDest;
+    /* 0x03FC */ mVec3_c               mGotoPos;
 
     FILL(0x0408, 0x043C);
 
     /* 0x043C */ int m0x43C;
 
-    FILL(0x0440, 0x0DE8);
+    FILL(0x0440, 0x045C);
+
+    /* 0x045C */ mVec3_c mControlDemoTargetPos;
+    /* 0x0468 */ float   mControlDemoSpeedF;
+    /* 0x046C */ int     mItemKinopioDirection;
+    /* 0x0470 */ int     mItemKinopioTurnTimer;
+
+    /* 0x0474 */ int     mBossDemoLandTimer;
+    /* 0x0478 */ int     mEndingDanceKeyTimers[5];
+    /* 0x048C */ int     mEndingDanceInactivityTimer;
+
+    FILL(0x0490, 0x0DE8);
 
     /* 0x0DE8 */ dPyMdlMng_c* mpModelMng;
 
@@ -1770,7 +1822,7 @@ public:
     /* 0x1064 */ const sSpeedData* mSpeedDataStar;
     /* 0x1068 */ const float*      mGravityData;
 
-    /* 0x1076C*/ int               m_noGravityTime;
+    /* 0x106C */ int               m_noGravityTime;
     /* 0x1070 */ int               m_starTime;
     /* 0x1074 */ int               m_noDamageTime;
     /* 0x1078 */ int               m_modeChangeNoDamageTime;

@@ -190,8 +190,7 @@ bool dAcPyKey_c::triggerShakeJump() const;
 bool dAcPyKey_c::buttonWalk(int* dir) const;
 
 [[nsmbw(0x8005E590)]]
-u16 dAcPyKey_c::triggerOne() const
-{
+u16 dAcPyKey_c::triggerOne() const {
     dGameKeyCore_c* core = dGameKey_c::m_instance->mpCores[mRemoconID];
     switch (core->mType) {
     case dGameKeyCore_c::Type_e::DOLPHIN:
@@ -206,8 +205,7 @@ u16 dAcPyKey_c::triggerOne() const
 }
 
 [[nsmbw(0x8005E5D0)]]
-u16 dAcPyKey_c::buttonOne() const
-{
+u16 dAcPyKey_c::buttonOne() const {
     dGameKeyCore_c* core = dGameKey_c::m_instance->mpCores[mRemoconID];
     switch (core->mType) {
     case dGameKeyCore_c::Type_e::DOLPHIN:
@@ -260,3 +258,6 @@ void dAcPyKey_c::onDemoButton(int button);
 
 [[nsmbw(0x8005E930)]]
 void dAcPyKey_c::offDemoButton(int button);
+
+[[nsmbw(0x8005E960)]]
+void dAcPyKey_c::onDemoTrigger(int button);
