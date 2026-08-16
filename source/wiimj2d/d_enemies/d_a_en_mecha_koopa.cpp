@@ -5,7 +5,6 @@
 
 [[nsmbw(0x80A65530)]]
 void UNDEF_80A65530() ASM_METHOD(
-  // clang-format off
 /* 80A65530 9421FFE0 */  stwu     r1, -32(r1);
 /* 80A65534 7C0802A6 */  mflr     r0;
 /* 80A65538 90010024 */  stw      r0, 36(r1);
@@ -20,8 +19,8 @@ void UNDEF_80A65530() ASM_METHOD(
 /* 80A6555C 818C006C */  lwz      r12, 108(r12);
 /* 80A65560 7D8903A6 */  mtctr    r12;
 /* 80A65564 4E800421 */  bctrl;
-/* 80A65568 8BA30000 */  lbz      r4, 0(r3);
-/* 80A6556C 7FBD0774 */  extsb    r29, r4;
+/* 80A65568 8BA30000 */  lbz      r29, 0(r3);
+/* 80A6556C 7FBD0774 */  extsb    r29, r29;
 /* 80A65570          */  cmplwi   r29, PLAYER_COUNT;
 /* 80A65574 4180000C */  blt-     UNDEF_80a65580;
 /* 80A65578 38600001 */  li       r3, 1;
@@ -29,6 +28,7 @@ void UNDEF_80A65530() ASM_METHOD(
 UNDEF_80a65580:;
                          // Damage cooldown
                          mr       r3, r28;
+                         mr       r4, r29;
                          bl       getCollTimer__5dEn_cCFi;
 
 /* 80A6558C          */  cmpwi    r3, 0;
@@ -103,9 +103,12 @@ UNDEF_80a65664:;
 /* 80A65698 7FA6EB78 */  mr       r6, r29;
 /* 80A6569C 4B67CAF5 */  bl       UNDEF_800e2190;
 UNDEF_80a656a0:;
-                         // TODO: Damage cooldown
-// /* 80A656A0 38000010 */  li       r0, 16;
-// /* 80A656A4 B01F0504 */  sth      r0, 1284(r31);
+                         // Damage cooldown
+                         mr       r3, r28;
+                         mr       r4, r29;
+                         li       r5, 16;
+                         bl       setCollTimer__5dEn_cFiUc;
+
 /* 80A656A8 7F83E378 */  mr       r3, r28;
 /* 80A656AC 4BFFEF15 */  bl       UNDEF_80a645c0;
 /* 80A656B0 7F83E378 */  mr       r3, r28;
@@ -125,5 +128,4 @@ UNDEF_80a656d8:;
 /* 80A656E4 7C0803A6 */  mtlr     r0;
 /* 80A656E8 38210020 */  addi     r1, r1, 32;
 /* 80A656EC 4E800020 */  blr;
-  // clang-format on
 );
