@@ -8,8 +8,7 @@
 
 #define REMOCON_CONNECT_COUNT 12
 
-class dRemoconMng_c
-{
+class dRemoconMng_c {
 public:
     // Constants and Types
     // ^^^^^^
@@ -35,9 +34,9 @@ public:
     // ^^^^^^
 
     /* 0x04 */ dConnect_c* mpConnect[PLAYER_COUNT];
-    dConnect_c* mpConnectAll[CONNECT_COUNT];
-    dConnect_c& mDummyConnect;
-    int mFirstConnect = 0;
+    dConnect_c*            mpConnectAll[CONNECT_COUNT];
+    dConnect_c&            mDummyConnect;
+    int                    mFirstConnect = 0;
 
 public:
     // Static Methods
@@ -64,8 +63,7 @@ public:
     static dRemoconMng_c* m_instance;
 };
 
-class dRemoconMng_c::dConnect_c
-{
+class dRemoconMng_c::dConnect_c {
     SIZE_ASSERT(0x98);
 
     VTABLE(0x00, dConnect_c, 0x803191A4);
@@ -76,8 +74,7 @@ public:
     // Nested Classes
     // ^^^^^^
 
-    class dExtension_c
-    {
+    class dExtension_c {
         SIZE_ASSERT(0x48);
 
         VTABLE(0x00, dExtension_c, 0x80319240);
@@ -88,12 +85,12 @@ public:
         // Structors
         // ^^^^^^
 
-        inline dExtension_c(mPad::CH_e channel)
-          : mChannel(channel)
-          , mType(Type_e::WAIT)
-          , mStateMgr(*this, !isDolphinChannel() ? StateID_Wait : StateID_Dolphin)
-        {
-        }
+        inline dExtension_c(
+            mPad::CH_e channel
+        )
+            : mChannel(channel)
+            , mType(Type_e::WAIT)
+            , mStateMgr(*this, !isDolphinChannel() ? StateID_Wait : StateID_Dolphin) {}
 
         /* 0x800DC360 */
         virtual ~dExtension_c();
@@ -103,12 +100,12 @@ public:
         // ^^^^^^
 
         enum class Type_e {
-            NONE = 0,
+            NONE      = 0,
             FREESTYLE = 1,
-            OTHER = 2,
-            WAIT = 3,
-            CLASSIC = 4,
-            DOLPHIN = 5,
+            OTHER     = 2,
+            WAIT      = 3,
+            CLASSIC   = 4,
+            DOLPHIN   = 5,
         };
 
     public:
@@ -121,22 +118,21 @@ public:
         /* 0x800DCFF0 */
         void execute();
 
-        inline mPad::CH_e getChannel() const
-        {
-            if (mType == Type_e::CLASSIC) {
+        inline mPad::CH_e getChannel() const {
+            if (mType == Type_e::CLASSIC && !isSplitChannel()) {
                 return static_cast<mPad::CH_e>(mChannel + (mPad::CHAN_CL_0 - mPad::CHAN_0));
             }
             return mChannel;
         }
 
-        inline Type_e getType() const
-        {
-            return mType;
+        inline Type_e getType() const { return mType; }
+
+        inline bool isDolphinChannel() const {
+            return mChannel >= mPad::CHAN_GC_0 && mChannel <= mPad::CHAN_GC_LAST;
         }
 
-        inline bool isDolphinChannel() const
-        {
-            return mChannel >= mPad::CHAN_GC_0 && mChannel <= mPad::CHAN_GC_LAST;
+        inline bool isSplitChannel() const {
+            return mChannel >= mPad::CHAN_CL_0 && mChannel <= mPad::CHAN_CL_LAST;
         }
 
     private:
@@ -146,8 +142,8 @@ public:
         // Instance Variables
         // ^^^^^^
 
-        /* 0x04 */ mPad::CH_e mChannel;
-        /* 0x08 */ Type_e mType;
+        /* 0x04 */ mPad::CH_e                       mChannel;
+        /* 0x08 */ Type_e                           mType;
         /* 0x0C */ sStateMgrDefault_c<dExtension_c> mStateMgr;
 
     private:
@@ -187,43 +183,23 @@ public:
     void deregisterOrder();
     bool splitExtension();
 
-    inline int getPlayerNo() const
-    {
-        return mPlayerNo;
-    }
+    inline int getPlayerNo() const { return mPlayerNo; }
 
-    inline bool isSetup() const
-    {
-        return mStateMgr.getStateID()->isEqual(StateID_Setup);
-    }
+    inline bool isSetup() const { return mStateMgr.getStateID()->isEqual(StateID_Setup); }
 
-    inline mPad::CH_e getChannel() const
-    {
-        return mExtension.getChannel();
-    }
+    inline mPad::CH_e getChannel() const { return mExtension.getChannel(); }
 
-    inline mPad::CH_e getCoreChannel() const
-    {
-        return mPad::CH_e(mChannel);
-    }
+    inline mPad::CH_e getCoreChannel() const { return mPad::CH_e(mChannel); }
 
-    inline dExtension_c* getExtension()
-    {
-        return &mExtension;
-    }
+    inline dExtension_c* getExtension() { return &mExtension; }
 
-    inline int getBattery() const
-    {
-        return mBattery;
-    }
+    inline int getBattery() const { return mBattery; }
 
-    inline bool getAllowConnect() const
-    {
-        return mAllowConnect;
-    }
+    inline bool getAllowConnect() const { return mAllowConnect; }
 
-    inline bool setAllowConnect(bool set)
-    {
+    inline bool setAllowConnect(
+        bool set
+    ) {
         return mAllowConnect = set;
     }
 
@@ -231,13 +207,13 @@ private:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x04 @renamed */ int mPlayerNo;
-    /* 0x08 */ dExtension_c mExtension;
-    /* 0x50 */ int mBattery;
-    /* 0x54 */ bool mAllowConnect;
-    /* 0x55 */ bool mEnableMotor;
-    /* 0x56 */ s8 mChannel;
-    /* 0x58 */ int m0x58;
+    /* 0x04 @renamed */ int                   mPlayerNo;
+    /* 0x08 */ dExtension_c                   mExtension;
+    /* 0x50 */ int                            mBattery;
+    /* 0x54 */ bool                           mAllowConnect;
+    /* 0x55 */ bool                           mEnableMotor;
+    /* 0x56 */ s8                             mChannel;
+    /* 0x58 */ int                            m0x58;
     /* 0x5C */ sStateMgrDefault_c<dConnect_c> mStateMgr;
 
 public:

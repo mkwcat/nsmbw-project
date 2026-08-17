@@ -12,8 +12,6 @@
 #include <revolution/os.h>
 #include <revolution/wpad.h>
 
-static_assert(std::__is_invocable_r<bool, std::equal_to<>, char, char>);
-
 [[nsmbw_data(0x80428280)]]
 bool dRemoconMng_c::dConnect_c::m_isBoot;
 
@@ -77,8 +75,7 @@ dRemoconMng_c::dConnect_c::~dConnect_c() {
 }
 
 [[nsmbw(0x800DC360)]]
-dRemoconMng_c::dConnect_c::dExtension_c::~dExtension_c() {
-}
+dRemoconMng_c::dConnect_c::dExtension_c::~dExtension_c() {}
 
 [[nsmbw(0x800DC570)]]
 void dRemoconMng_c::execute() {
@@ -187,27 +184,13 @@ bool dRemoconMng_c::dConnect_c::splitExtension() {
         return false;
     }
 
-    int         classic       = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
+    int         classic        = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
 
-    auto*       mng           = dRemoconMng_c::m_instance;
-
-    std::size_t classicPlayer = mng->mFirstConnect;
-    for (; classicPlayer < PLAYER_COUNT; classicPlayer++) {
-        if (mng->mpConnect[classicPlayer] == &mng->mDummyConnect) {
-            break;
-        }
-    }
-    if (classicPlayer == PLAYER_COUNT) {
-        return false;
-    }
+    auto*       mng            = dRemoconMng_c::m_instance;
 
     dConnect_c* classicConnect = mng->mpConnectAll[classic];
-    classicConnect->mPlayerNo  = classicPlayer;
     classicConnect->mStateMgr.changeState(StateID_Setup);
     classicConnect->mExtension.mStateMgr.changeState(*mExtension.mStateMgr.getStateID());
-
-    mPad::setPlayerOrder(mPlayerNo, mPad::CH_e(mChannel));
-    mPad::setPlayerOrder(classicPlayer, mPad::CH_e(classic));
 
     mExtension.mStateMgr.changeState(dExtension_c::StateID_Split);
 
@@ -430,8 +413,7 @@ void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Split() {
     }
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Split() {
-}
+void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Split() {}
 
 void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Classic() {
     mType = Type_e::CLASSIC;
@@ -453,11 +435,9 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Dolphin() {
     mType = Type_e::DOLPHIN;
 }
 
-void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Dolphin() {
-}
+void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Dolphin() {}
 
-void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Dolphin() {
-}
+void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Dolphin() {}
 
 [[nsmbw(0x800DCFD0)]]
 void dRemoconMng_c::dConnect_c::dExtension_c::shutdown();
