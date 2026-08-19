@@ -8,6 +8,9 @@ public:
     /* 0x8019BB60 @unofficial */
     void setGameSetupTrack(int track);
 
+    /* 0x8019BE60 */
+    void UNDEF_8019BE60(int);
+
     /* 0x8019C010 @unofficial */
     void setMiniGameTrack(int track);
 

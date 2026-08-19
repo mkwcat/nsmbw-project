@@ -303,7 +303,7 @@ public:
     static s32 mQuakeTrigger;
 
     /* 0x80429FC4 */
-    static s32 mBgmState;
+    static u32 mBgmState;
 
     /* 0x80429FC8 */
     static int mBonusNoCap;

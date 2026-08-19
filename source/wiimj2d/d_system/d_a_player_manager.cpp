@@ -129,7 +129,7 @@ s32 daPyMng_c::mStopTimerInfoOld;
 s32 daPyMng_c::mQuakeTrigger;
 
 [[nsmbw_data(0x80429FC4)]]
-s32 daPyMng_c::mBgmState;
+u32 daPyMng_c::mBgmState;
 
 [[nsmbw_data(0x80429FC8)]]
 int daPyMng_c::mBonusNoCap;
@@ -815,15 +815,26 @@ void daPyMng_c::incRestAll(
 [[nsmbw(0x80060690)]]
 void daPyMng_c::addScore(int score, int player);
 
-// TODO (not that important)
 [[nsmbw(0x80060750)]]
-void daPyMng_c::stopStarBGM();
+void daPyMng_c::stopStarBGM() {
+    if (!(mBgmState & 1)) {
+        return;
+    }
+
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+        if (dAcPy_c* py = getPlayer(i); py && py->m_starTime > 59) {
+            return;
+        }
+    }
+
+    mBgmState &= ~1;
+    SndSceneMgr::sInstance->UNDEF_8019BE60(4);
+}
 
 // TODO (not that important)
 [[nsmbw(0x80060860)]]
 void daPyMng_c::stopYoshiBGM();
 
-/* 0x800608E0 */
 [[nsmbw(0x800608E0)]]
 void daPyMng_c::checkLastAlivePlayer();
 
