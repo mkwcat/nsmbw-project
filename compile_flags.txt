@@ -59,5 +59,6 @@ source/System.h
 -Wno-sign-compare
 -Wno-unknown-attributes
 -Wno-unnecessary-virtual-specifier
+-Wno-dollar-in-identifier-extension
 
 -DCLANGD

@@ -1,7 +1,6 @@
 #pragma once
 
-class SndSceneMgr
-{
+class SndSceneMgr {
 public:
     // Instance Methods
     // ^^^^^^
@@ -11,6 +10,9 @@ public:
 
     /* 0x8019C010 @unofficial */
     void setMiniGameTrack(int track);
+
+    /* 0x8019C390 */
+    void UNDEF_8019C390(int);
 
     /* 0x8019C610 */
     void startStaffCreditHiscore();

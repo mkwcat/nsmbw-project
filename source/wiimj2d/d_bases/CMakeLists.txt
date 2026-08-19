@@ -125,6 +125,8 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x807B40A0 - 0x807B77D0
   # d_a_bg_polygon.cpp
 
+# NSMBW   d_bases.text:  0x807C9500 - 0x807D0070
+    d_a_boss_koopa_demo.cpp
 # NSMBW   d_bases.text:  0x807D0070 - 0x807D2AC0
     d_a_boss_koopa_jr_demo.cpp
 

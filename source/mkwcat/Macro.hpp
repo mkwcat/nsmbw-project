@@ -3,6 +3,8 @@
 //  nsmbw-project
 //
 
+#pragma once
+
 namespace peli::Macro {
 
 /**
@@ -23,31 +25,31 @@ namespace peli::Macro {
 /**
  * Begin C Linkage.
  */
-#define EXTERN_C_START                                                                             \
-    extern "C" {                                                                                   \
-    PRAGMA(                                                                                        \
-        clang diagnostic push                                                                      \
-    )                                                                                              \
+#define EXTERN_C_START \
+    extern "C" { \
+    PRAGMA( \
+        clang diagnostic push \
+    ) \
     PRAGMA(clang diagnostic ignored "-Wold-style-cast")
 
 /**
  * End C Linkage.
  */
-#define EXTERN_C_END                                                                               \
-    PRAGMA(clang diagnostic pop)                                                                   \
+#define EXTERN_C_END \
+    PRAGMA(clang diagnostic pop) \
     }
 
 /**
  * Util macro for stringifying macro parameters.
  */
 #define STRINGIFY_EXPANDED(...) #__VA_ARGS__
-#define STRINGIFY(...) STRINGIFY_EXPANDED(__VA_ARGS__)
+#define STRINGIFY(...)          STRINGIFY_EXPANDED(__VA_ARGS__)
 
 /**
  * Util macro for concattening macro parameters.
  */
 #define CONCAT_EXPANDED(_ONE, _TWO) _ONE##_TWO
-#define CONCAT(_ONE, _TWO) CONCAT_EXPANDED(_ONE, _TWO)
+#define CONCAT(_ONE, _TWO)          CONCAT_EXPANDED(_ONE, _TWO)
 
 /**
  * Set the section of a definition.
@@ -58,5 +60,13 @@ namespace peli::Macro {
  * The restrict keyword from C.
  */
 #define restrict __restrict
+
+/**
+ * Prevent a symbol from being garbage collected. Also can forcibly emit weak symbols.
+ */
+#define KEEP(X_SYMBOL) \
+    [[__gnu__::__section__("rel_ignore")]] [[__gnu__::__used__]] static auto CONCAT( \
+        __RelIgnore, __COUNTER__ \
+    ) = &X_SYMBOL;
 
 } // namespace peli::Macro

@@ -81,13 +81,10 @@
 
 #define ASM(...) __asm__(#__VA_ARGS__)
 
-#define ASM_FUNCTION(_PROTOTYPE, ...)                                                              \
-    [[__gnu__::__naked__]] _PROTOTYPE                                                              \
-    {                                                                                              \
-        ASM(__VA_ARGS__);                                                                          \
+#define ASM_FUNCTION(_PROTOTYPE, ...) \
+    [[__gnu__::__naked__]] _PROTOTYPE { \
+        ASM(__VA_ARGS__); \
     }
 
-#define ASM_METHOD(...)                                                                            \
-    __attribute__((__naked__)) __attribute__((__noinline__)) {                                     \
-        ASM(__VA_ARGS__);                                                                          \
-    }
+#define ASM_METHOD(...) \
+    __attribute__((__naked__)) __attribute__((__noinline__)) { ASM(__VA_ARGS__); }

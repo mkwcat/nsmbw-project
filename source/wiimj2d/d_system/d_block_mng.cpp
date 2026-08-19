@@ -57,7 +57,7 @@ UNDEF_80087f70:;
 /* 80087FE4 3860000A */  li       r3, 10;
 /* 80087FE8 4BFD86A9 */  bl       UNDEF_80060690;
 UNDEF_80087fec:;
-/* 80087FEC 83EDA6C0 */  lwz      r31, UNDEF_8042a040@sda21;
+/* 80087FEC 83EDA6C0 */  lwz      r31, g_pSndObjMap__6dAudio@sda21;
 /* 80087FF0 38610008 */  addi     r3, r1, 8;
 /* 80087FF4 38810010 */  addi     r4, r1, 16;
 /* 80087FF8 4BFE24B9 */  bl       UNDEF_8006a4b0;

@@ -60,7 +60,7 @@ bool UNDEF_80078670() ASM_METHOD(
 /* 800786BC 3BE00001 */  li       r31, 1;
 UNDEF_800786c0:;
 /* 800786C0 7F83E378 */  mr       r3, r28;
-/* 800786C4 4BFE723D */  bl       UNDEF_8005f900;
+/* 800786C4 4BFE723D */  bl       getPlayer__9daPyMng_cFi;
 /* 800786C8 2C030000 */  cmpwi    r3, 0;
 /* 800786CC 41820074 */  beq-     UNDEF_80078740;
 /* 800786D0 57C4063E */  clrlwi   r4, r30, 24;
@@ -256,7 +256,7 @@ L_dBg_c_initScroll_LowestPlayerLoop:;
 
                          addi     r4, r4, 1;
                          bdnz+    L_dBg_c_initScroll_LowestPlayerLoop;
-                        
+
 L_dBg_c_initScroll_LowestPlayerLoopEnd:;
 /* 8007C0CC          */  stb      r4, 37(r3);
 
@@ -746,7 +746,7 @@ void UNDEF_8007ca90() ASM_METHOD(
 /* 8007CAC8 3AC00000 */  li       r22, 0;
 UNDEF_8007cacc:;
 /* 8007CACC 7F83E378 */  mr       r3, r28;
-/* 8007CAD0 4BFE2E31 */  bl       UNDEF_8005f900;
+/* 8007CAD0 4BFE2E31 */  bl       getPlayer__9daPyMng_cFi;
 /* 8007CAD4 2C030000 */  cmpwi    r3, 0;
 /* 8007CAD8 907F0000 */  stw      r3, 0(r31);
 /* 8007CADC 41820024 */  beq-     UNDEF_8007cb00;

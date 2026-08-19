@@ -319,7 +319,7 @@ UNDEF_808687b0:;
 /* 808687C8 93A10024 */  stw      r29, 36(r1);
 /* 808687CC 7C7D1B78 */  mr       r29, r3;
 /* 808687D0 7C830774 */  extsb    r3, r4;
-/* 808687D4 4B7F712D */  bl       UNDEF_8005f900;
+/* 808687D4 4B7F712D */  bl       getPlayer__9daPyMng_cFi;
 /* 808687D8 7C7F1B78 */  mr       r31, r3;
 /* 808687DC 389D00AC */  addi     r4, r29, 172;
 /* 808687E0 4B8CB041 */  bl       UNDEF_80133820;
@@ -579,7 +579,7 @@ void daMiniGameWireMesh_c::initializeState_PlayMove() ASM_METHOD(
   // clang-format off
 /* 80869050 9421FFE0 */  stwu     r1, -32(r1);
 /* 80869054 7C0802A6 */  mflr     r0;
-/* 80869058 3CA08043 */  lis      r5, UNDEF_8042a040@ha;
+/* 80869058 3CA08043 */  lis      r5, g_pSndObjMap__6dAudio@ha;
 /* 8086905C 90010024 */  stw      r0, 36(r1);
 /* 80869060 38000000 */  li       r0, 0;
 /* 80869064 93E1001C */  stw      r31, 28(r1);
@@ -595,7 +595,7 @@ void daMiniGameWireMesh_c::initializeState_PlayMove() ASM_METHOD(
                          .endr;
 
 /* 8086908C 38610008 */  addi     r3, r1, 8;
-/* 80869090 83E5A040 */  lwz      r31, UNDEF_8042a040@l(r5);
+/* 80869090 83E5A040 */  lwz      r31, g_pSndObjMap__6dAudio@l(r5);
 /* 80869094 4B80141D */  bl       UNDEF_8006a4b0;
 /* 80869098 7FE3FB78 */  mr       r3, r31;
 /* 8086909C 38A10008 */  addi     r5, r1, 8;
@@ -684,7 +684,7 @@ UNDEF_808691bc:;
 /* 808691D0 2C000000 */  cmpwi    r0, 0;
 /* 808691D4 40820034 */  bne-     UNDEF_80869208;
 /* 808691D8 7F43D378 */  mr       r3, r26;
-/* 808691DC 4B7F6725 */  bl       UNDEF_8005f900;
+/* 808691DC 4B7F6725 */  bl       getPlayer__9daPyMng_cFi;
 /* 808691E0          */  lbz      r0, OFFSET_daMiniGameWireMesh_c_mPlayerChainlinkMode(r28);
 /* 808691E4 28000001 */  cmplwi   r0, 1;
 /* 808691E8 40820010 */  bne-     UNDEF_808691f8;

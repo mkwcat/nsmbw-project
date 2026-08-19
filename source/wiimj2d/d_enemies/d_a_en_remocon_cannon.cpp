@@ -31,7 +31,7 @@ void daEnRemoconCannon_c::setupGuide(dRemoconCannonGuide_c** guide, int mPlayerN
 /* 80A950C0 93C10018 */  stw      r30, 24(r1);
 /* 80A950C4 7C7E1B78 */  mr       r30, r3;
 /* 80A950C8 7C832378 */  mr       r3, r4;
-/* 80A950CC 4B5CA835 */  bl       UNDEF_8005f900;
+/* 80A950CC 4B5CA835 */  bl       getPlayer__9daPyMng_cFi;
 /* 80A950D0 2C030000 */  cmpwi    r3, 0;
 /* 80A950D4 C3FF0028 */  lfs      f31, 40(r31);
 /* 80A950D8 41820084 */  beq-     UNDEF_80a9515c;
@@ -290,7 +290,7 @@ void daEnRemoconCannon_c::UNDEF_80a95c00() ASM_METHOD(
 /* 80A95C20 7C7D1B78 */  mr       r29, r3;
 UNDEF_80a95c24:;
 /* 80A95C24 7FC3F378 */  mr       r3, r30;
-/* 80A95C28 4B5C9CD9 */  bl       UNDEF_8005f900;
+/* 80A95C28 4B5C9CD9 */  bl       getPlayer__9daPyMng_cFi;
 /* 80A95C2C 2C030000 */  cmpwi    r3, 0;
 /* 80A95C30 41820038 */  beq-     UNDEF_80a95c68;
 /* 80A95C34 3880007D */  li       r4, 125;
@@ -366,7 +366,7 @@ void daEnRemoconCannon_c::initializeState_Fire() ASM_METHOD(
   /* 80A96C44 3861002C */ addi r3, r1, 44;
   /* 80A96C48 4BFFF5C9 */ bl UNDEF_80a96210;
   /* 80A96C4C C001002C */ lfs f0, 44(r1);
-  /* 80A96C50 3CA08043 */ lis r5, UNDEF_8042a040 @ha;
+  /* 80A96C50 3CA08043 */ lis r5, g_pSndObjMap__6dAudio @ha;
   /* 80A96C54 D01B078C */ stfs f0, 1932(r27);
   /* 80A96C58 38610010 */ addi r3, r1, 16;
   /* 80A96C5C 389B078C */ addi r4, r27, 1932;
@@ -374,7 +374,7 @@ void daEnRemoconCannon_c::initializeState_Fire() ASM_METHOD(
   /* 80A96C64 D01B0790 */ stfs f0, 1936(r27);
   /* 80A96C68 C0010034 */ lfs f0, 52(r1);
   /* 80A96C6C D01B0794 */ stfs f0, 1940(r27);
-  /* 80A96C70 8385A040 */ lwz r28, UNDEF_8042a040 @l(r5);
+  /* 80A96C70 8385A040 */ lwz r28, g_pSndObjMap__6dAudio @l(r5);
   /* 80A96C74 4B5D383D */ bl UNDEF_8006a4b0;
   /* 80A96C78 7F83E378 */ mr r3, r28;
   /* 80A96C7C 38A10010 */ addi r5, r1, 16;

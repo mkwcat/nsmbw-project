@@ -228,6 +228,13 @@ def main():
         for rela in rela_section.iter_relocations():
             symbol = symtab_section.get_symbol(rela['r_info_sym'])
             section_index = symbol['st_shndx']
+            if section_index == 'SHN_UNDEF' and '$' in symbol.name:
+                corrected = symbol.name.replace('$L', '<').replace('$R', '>').replace('$C', ',').replace('$$', '$')
+                corrected_symbol = find_symbol(symtab_section, corrected)
+                if corrected_symbol is not None:
+                    symbol = corrected_symbol
+                    section_index = symbol['st_shndx']
+
             if section_index == 'SHN_UNDEF':
                 section_index = None
                 section = None

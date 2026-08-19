@@ -247,16 +247,16 @@ void daEnRedRing_c::executeState_Wait() ASM_METHOD(
 /* 80A931A8 4E800421 */  bctrl;
 /* 80A931AC 7F7DDB78 */  mr       r29, r27;
 /* 80A931B0 3B800000 */  li       r28, 0;
-/* 80A931B4 3FC08043 */  lis      r30, UNDEF_80429f88@ha;
+/* 80A931B4 3FC08043 */  lis      r30, (mActPlayerInfo__9daPyMng_c+4)@ha;
 /* 80A931B8 3BE00001 */  li       r31, 1;
 UNDEF_80a931bc:;
 /* 80A931BC 7F83E378 */  mr       r3, r28;
-/* 80A931C0 4B5CC741 */  bl       UNDEF_8005f900;
+/* 80A931C0 4B5CC741 */  bl       getPlayer__9daPyMng_cFi;
 /* 80A931C4 2C030000 */  cmpwi    r3, 0;
 /* 80A931C8 418200BC */  beq-     UNDEF_80a93284;
-/* 80A931CC 5780063E */  clrlwi   r0, r28, 24;
-/* 80A931D0 889E9F88 */  lbz      r4, UNDEF_80429f88@l(r30);
-/* 80A931D4 7FE00030 */  slw      r0, r31, r0;
+                         // TODO: 64-bit support
+/* 80A931D0          */  lwz      r4, (mActPlayerInfo__9daPyMng_c+4)@l(r30);
+/* 80A931D4          */  slw      r0, r31, r28;
 /* 80A931D8 7C800039 */  and.     r0, r4, r0;
 /* 80A931DC 418200A8 */  beq-     UNDEF_80a93284;
 /* 80A931E0 38800004 */  li       r4, 4;

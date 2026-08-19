@@ -9,24 +9,24 @@ SECTIONS {
 	}
 
 	.data : {
-        . = ALIGN(4);
-        _MRel_replace_array = .;
-        KEEP(*(replace_array))
-        _MRel_replace_array_end = .;
+		. = ALIGN(4);
+		_MRel_replace_array = .;
+		KEEP(*(replace_array))
+		_MRel_replace_array_end = .;
 
-        . = ALIGN(4);
-        _MRel_patch_references_array = .;
-        KEEP(*(patch_references_array))
-        _MRel_patch_references_array_end = .;
+		. = ALIGN(4);
+		_MRel_patch_references_array = .;
+		KEEP(*(patch_references_array))
+		_MRel_patch_references_array_end = .;
 
-        . = ALIGN(4);
-        _MRel_extern_array = .;
-        KEEP(*(extern_array))
-        _MRel_extern_array_end = .;
+		. = ALIGN(4);
+		_MRel_extern_array = .;
+		KEEP(*(extern_array))
+		_MRel_extern_array_end = .;
 
-        *(.rodata*)
+		*(.rodata*)
 
-        . = ALIGN(4);
+		. = ALIGN(4);
 		*(.data*)
 		*(.sdata*)
 		*(.sdata2*)
@@ -43,7 +43,11 @@ SECTIONS {
 		*(.sbss*)
 	}
 
-    /DISCARD/ : {
-        *(.eh_frame*)
-    }
+	rel_ignore : {
+		KEEP(*(rel_ignore))
+	}
+
+	/DISCARD/ : {
+		*(.eh_frame*)
+	}
 }

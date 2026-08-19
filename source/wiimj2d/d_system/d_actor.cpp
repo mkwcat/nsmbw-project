@@ -390,9 +390,10 @@ dAcPy_c* dActor_c::searchCarryFukidashiPlayer(int param1) ASM_METHOD(
 /* 80065558 3BC00000 */  li       r30, 0;
 /* 8006555C 3BE00001 */  li       r31, 1;
 UNDEF_80065560:;
-/* 80065560 5780063E */  clrlwi   r0, r28, 24;
-/* 80065564 886DA608 */  lbz      r3, UNDEF_80429f88@sda21;
-/* 80065568 7FE00030 */  slw      r0, r31, r0;
+                         // TODO: 64-bit support
+                         lis      r3, (mActPlayerInfo__9daPyMng_c+4)@ha;
+/* 80065564          */  lwz      r3, (mActPlayerInfo__9daPyMng_c+4)@l(r3);
+/* 80065568          */  slw      r0, r31, r28;
 /* 8006556C 7C600039 */  and.     r0, r3, r0;
 /* 80065570 41820070 */  beq-     UNDEF_800655e0;
 /* 80065574 806DA8DC */  lwz      r3, UNDEF_8042a25c@sda21;
@@ -402,7 +403,7 @@ UNDEF_80065560:;
 /* 80065584 2C000000 */  cmpwi    r0, 0;
 /* 80065588 40820058 */  bne-     UNDEF_800655e0;
 /* 8006558C 7F83E378 */  mr       r3, r28;
-/* 80065590 4BFFA371 */  bl       UNDEF_8005f900;
+/* 80065590 4BFFA371 */  bl       getPlayer__9daPyMng_cFi;
 /* 80065594 2C030000 */  cmpwi    r3, 0;
 /* 80065598 41820048 */  beq-     UNDEF_800655e0;
 /* 8006559C C06300AC */  lfs      f3, 172(r3);

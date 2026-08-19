@@ -88,7 +88,7 @@ UNDEF_80123574:;
 /* 80123580 41820040 */  beq-     UNDEF_801235c0;
 /* 80123584 7FA3EB78 */  mr       r3, r29;
 /* 80123588 480005B9 */  bl       UNDEF_80123b40;
-/* 8012358C 83CDA6C0 */  lwz      r30, UNDEF_8042a040@sda21;
+/* 8012358C 83CDA6C0 */  lwz      r30, g_pSndObjMap__6dAudio@sda21;
 /* 80123590 38610010 */  addi     r3, r1, 16;
 /* 80123594 389D00AC */  addi     r4, r29, 172;
 /* 80123598 4BF46F19 */  bl       UNDEF_8006a4b0;

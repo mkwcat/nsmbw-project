@@ -152,7 +152,7 @@ fBase_c::PACK_RESULT_e dBgGm_c::execute() ASM_METHOD(
 /* 80155134 836DA760 */  lwz      r27, UNDEF_8042a0e0@sda21;
 /* 80155138 834DAB28 */  lwz      r26, UNDEF_8042a4a8@sda21;
 /* 8015513C 88640025 */  lbz      r3, 37(r4);
-/* 80155140 4BF0A7C1 */  bl       UNDEF_8005f900;
+/* 80155140 4BF0A7C1 */  bl       getPlayer__9daPyMng_cFi;
 /* 80155144 7C7D1B78 */  mr       r29, r3;
 /* 80155148 4BF0ABD9 */  bl       UNDEF_8005fd20;
 /* 8015514C 881A120E */  lbz      r0, 4622(r26);
@@ -784,7 +784,7 @@ UNDEF_80155a64:;
 // /* 80155A94 4BF0A1DD */  bl       getActScrollInfo__9daPyMng_cFv;
 /* 80155A98 3C7F0009 */  addis    r3, r31, 9;
 /* 80155A9C 88630025 */  lbz      r3, 37(r3);
-/* 80155AA0 4BF09E61 */  bl       UNDEF_8005f900;
+/* 80155AA0 4BF09E61 */  bl       getPlayer__9daPyMng_cFi;
 /* 80155AA4 C003152C */  lfs      f0, 5420(r3);
 /* 80155AA8 38810064 */  addi     r4, r1, 100;
 /* 80155AAC D0010064 */  stfs     f0, 100(r1);

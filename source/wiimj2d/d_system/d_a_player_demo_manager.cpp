@@ -214,9 +214,9 @@ L_ClearStackPlayerArray2_LoopStart:;
 /* 8005B8E8 3B200001 */  li       r25, 1;
 
 UNDEF_8005b8f8:;
-/* 8005B8F8 57C0063E */  clrlwi   r0, r30, 24;
-/* 8005B8FC 886DA608 */  lbz      r3, UNDEF_80429f88@sda21;
-/* 8005B900 7F200030 */  slw      r0, r25, r0;
+                         lis      r3, (mActPlayerInfo__9daPyMng_c+4)@ha;
+/* 8005B8FC          */  lwz      r3, (mActPlayerInfo__9daPyMng_c+4)@l(r3);
+/* 8005B900          */  slw      r0, r25, r30;
 /* 8005B904 7C600039 */  and.     r0, r3, r0;
 /* 8005B908 4182007C */  beq-     UNDEF_8005b984;
 /* 8005B90C 7FC3F378 */  mr       r3, r30;
@@ -477,7 +477,7 @@ UNDEF_8005bc7c:;
 /* 8005BC8C 4180FF90 */  blt+     UNDEF_8005bc1c;
 UNDEF_8005bc90:;
 /* 8005BC90 480A66A1 */  bl       UNDEF_80102330; // ReplayEnd__10dScStage_cFv
-/* 8005BC94 806DA5F4 */  lwz      r3, UNDEF_80429f74@sda21;
+/* 8005BC94 806DA5F4 */  lwz      r3, mspInstance__13daPyDemoMng_c@sda21;
 /* 8005BC98 4BFFFB79 */  bl       UNDEF_8005b810; // stopBgmGoalDemo__13daPyDemoMng_cFv
 /* 8005BC9C 38600001 */  li       r3, 1;
 /* 8005BCA0 3880000A */  li       r4, 10;
@@ -568,12 +568,12 @@ UNDEF_8005be5c:;
 /* 8005BE6C 88030040 */  lbz      r0, 64(r3);
 /* 8005BE70 2C000000 */  cmpwi    r0, 0;
 /* 8005BE74 41820014 */  beq-     UNDEF_8005be88;
-/* 8005BE78 806DAE08 */  lwz      r3, UNDEF_8042a788@sda21;
+/* 8005BE78 806DAE08 */  lwz      r3, sInstance__11SndSceneMgr@sda21;
 /* 8005BE7C 38800001 */  li       r4, 1;
 /* 8005BE80 481404A1 */  bl       UNDEF_8019c320;
 /* 8005BE84 48000010 */  b        UNDEF_8005be94;
 UNDEF_8005be88:;
-/* 8005BE88 806DAE08 */  lwz      r3, UNDEF_8042a788@sda21;
+/* 8005BE88 806DAE08 */  lwz      r3, sInstance__11SndSceneMgr@sda21;
 /* 8005BE8C 38800000 */  li       r4, 0;
 /* 8005BE90 48140491 */  bl       UNDEF_8019c320;
 UNDEF_8005be94:;

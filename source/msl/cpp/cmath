@@ -12,10 +12,10 @@ using ::sqrtf;
 
 constexpr float lerp(float a, float b, float t) noexcept
 {
-    if (t < 0.0f) {
+    if (t <= 0.0f) {
         return a;
     }
-    if (t > 1.0f) {
+    if (t >= 1.0f) {
         return b;
     }
 

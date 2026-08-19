@@ -89,6 +89,7 @@ add_compile_options(
     -Wno-overloaded-virtual
     -Wno-sign-conversion
     -Wno-sign-compare
+    -Wno-dollar-in-identifier-extension
 )
 
 add_link_options(

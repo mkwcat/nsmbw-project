@@ -91,10 +91,6 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     // dAudio::deleteNonPosSndObjPly
     {0x8006A068 + 2, 2},
 
-    // dBalloonMng_c::execute
-    {0x8006C2CC + 2, 2},
-    {0x8006C36C + 2, 2},
-
     // dBg_c::dBg_isFlyPlayer
     {0x800785AC + 2, 2},
     // dBg_c::calcAutoScroll
