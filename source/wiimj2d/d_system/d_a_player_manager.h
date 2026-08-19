@@ -174,6 +174,9 @@ public:
     /* 0x80060690 */
     static void addScore(int score, int player = -1);
 
+    /* 0x80060700 */
+    static void setCourseInStarBGM();
+
     /* 0x80060750 */
     static void stopStarBGM();
 

@@ -9,6 +9,12 @@ SndSceneMgr* SndSceneMgr::sInstance;
 [[nsmbw(0x8019BB60)]]
 void SndSceneMgr::setGameSetupTrack(int track);
 
+[[nsmbw(0x8019BD90)]]
+void SndSceneMgr::setBgmStateBit(EBgmState bit);
+
+[[nsmbw(0x8019BE60)]]
+void SndSceneMgr::clearBgmStateBit(EBgmState bit);
+
 [[nsmbw(0x8019C010)]]
 void SndSceneMgr::setMiniGameTrack(int track);
 

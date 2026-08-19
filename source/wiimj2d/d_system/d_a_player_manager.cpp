@@ -815,6 +815,16 @@ void daPyMng_c::incRestAll(
 [[nsmbw(0x80060690)]]
 void daPyMng_c::addScore(int score, int player);
 
+[[nsmbw(0x80060700)]]
+void daPyMng_c::setCourseInStarBGM() {
+    if (mBgmState & 1) {
+        SndSceneMgr::sInstance->setBgmStateBit(SndSceneMgr::EBgmState::STAR);
+    }
+    if (mBgmState & 2) {
+        SndSceneMgr::sInstance->setBgmStateBit(SndSceneMgr::EBgmState::YOSHI);
+    }
+}
+
 [[nsmbw(0x80060750)]]
 void daPyMng_c::stopStarBGM() {
     if (!(mBgmState & 1)) {
@@ -828,7 +838,7 @@ void daPyMng_c::stopStarBGM() {
     }
 
     mBgmState &= ~1;
-    SndSceneMgr::sInstance->UNDEF_8019BE60(0x4);
+    SndSceneMgr::sInstance->clearBgmStateBit(SndSceneMgr::EBgmState::STAR);
 }
 
 [[nsmbw(0x80060860)]]
@@ -844,7 +854,7 @@ void daPyMng_c::stopYoshiBGM() {
     }
 
     mBgmState &= ~2;
-    SndSceneMgr::sInstance->UNDEF_8019BE60(0x200);
+    SndSceneMgr::sInstance->clearBgmStateBit(SndSceneMgr::EBgmState::YOSHI);
 }
 
 [[nsmbw(0x800608E0)]]
