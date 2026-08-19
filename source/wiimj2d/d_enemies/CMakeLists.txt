@@ -38,4 +38,6 @@ target_sources(project PRIVATE
 
 # NSMBW d_enemies.text:  0x80AC7800 - 0x80AC8270
     d_a_en_water_stream.cpp
+# NSMBW d_enemies.text:  0x80AC8270 - 0x80ACA0F0
+    d_a_en_white_block.cpp
 )

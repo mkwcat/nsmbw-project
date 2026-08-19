@@ -71,6 +71,7 @@ public:
         /* 0x30 */ mAllocator_c*            mpAlloc;
     };
 
+    /* 0x80169E10 */
     mdl_c();
     /* VT+0x08 */ virtual ~mdl_c();
 

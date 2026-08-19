@@ -251,27 +251,6 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     // daBossKoopaDemo_c::executeState_Fall
     {0x807CC804 + 2, 2},
     {0x807CC854 + 2, 2},
-    // TODO: More work needs to be done here
-    // daBossKoopaDemo_c::initializeState_Magic
-    {0x807CCE8C + 2, 2},
-    {0x807CCF50 + 2, 2},
-    // daBossKoopaDemo_c::executeState_Magic +TODO
-    {0x807CD0B8 + 2, 2},
-    {0x807CD238 + 2, 2},
-    // daBossKoopaDemo_c::executeState_Escape
-    {0x807CDC34 + 2, 2},
-    {0x807CDD04 + 2, 2},
-    {0x807CDF80 + 2, 2},
-    {0x807CE304 + 2, 2},
-    {0x807CE3DC + 2, 2, -1},
-    // daBossKoopaDemo_c::executeState_End +TODO
-    {0x807CE868 + 2, 2},
-    {0x807CE8B8 + 2, 2},
-    {0x807CEB18 + 2, 2},
-    {0x807CED0C + 2, 2},
-    {0x807CF028 + 2, 2},
-    {0x807CF35C + 2, 2},
-    {0x807CF3E4 + 2, 2},
 
     // daBossKoopaJrDemo_c::UNDEF_807d05c0
     {0x807D0650 + 2, 2},
@@ -297,12 +276,6 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
 
     // UNDEF_807d7440
     {0x807D7488 + 2, 2},
-
-    // daCastleKokoopaDemo1st::checkBattleStDemo +TODO
-    {0x807DAD80 + 2, 2},
-    // TODO: {0x807DADC0 + 2, 2},
-
-    // TODO UNDEF_807db740
 
     // UNDEF_807db950
     {0x807DB9A0 + 2, 2},
@@ -405,10 +378,6 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
 
     // daLineTrain_c::execute
     {0x8085B224 + 2, 2},
-
-    // TODO 0x80868F00, 0x80868F90, 0x80869110 (daMiniGameWireMesh_c::executeState_PlayMove)
-    // something related to the powerup house minigame
-    // TODO 0x8086AB90, 0x8086AEA0 cursor color or something
 
     // daMiniGameWireMeshMgrObj_c::executeState_Play
     {0x8086B7AC + 2, 2},
@@ -662,11 +631,14 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
 
     // daEnWhiteBlock_c::UNDEF_80ac8ac0
     {0x80AC8B2C + 2, 2},
-
-    // TODO: 80ac8d70 daEnWhiteBlock_c::UNDEF_80ac8d70
-    // TODO: 80ac8f20 daEnWhiteBlock_c::UNDEF_80ac8f20
-    // TODO: 80ac9080 daEnWhiteBlock_c::UNDEF_80ac9080
-    // TODO: 80ac9160 daEnWhiteBlock_c::UNDEF_80ac9160
+    // daEnWhiteBlock_c::UNDEF_80ac8d70
+    {0x80AC8EF4 + 2, 2},
+    // daEnWhiteBlock_c::UNDEF_80ac8f20
+    {0x80AC9054 + 2, 2},
+    // daEnWhiteBlock_c::UNDEF_80ac9080
+    {0x80AC9138 + 2, 2},
+    // daEnWhiteBlock_c::UNDEF_80ac9160
+    {0x80AC921C + 2, 2},
 
     // TODO: 80acae60 daEnWrturn_c::UNDEF_80acae60
     // TODO: 80acafb0 daEnWrturn_c::UNDEF_80acafb0

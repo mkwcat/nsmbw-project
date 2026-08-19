@@ -1,10 +1,17 @@
 #pragma once
 
+#include "d_system/d_bg_ctr.h"
 #include "d_system/d_enemy.h"
 #include <revolution/types.h>
 
 class daEnBlockMain_c : public dEn_c {
     SIZE_ASSERT(0x698);
+
+public:
+    // Structors
+    // ^^^^^^
+
+    daEnBlockMain_c() {}
 
 public:
     // Instance Methods
@@ -37,7 +44,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x648);
+    FILL(0x524, 0x534);
+
+    /* 0x534 */ dBg_ctr_c m_bg_ctr;
+
+    FILL(0x618, 0x648);
 
     /* 0x648 */ BOOL m_item_created;
 

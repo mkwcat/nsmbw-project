@@ -13,6 +13,7 @@ class FrmHeap;
 
 class fBase_c {
     SIZE_ASSERT(0x64);
+    VTABLE(0x60, fBase_c, 0x80329758);
 
     friend class fManager_c;
 

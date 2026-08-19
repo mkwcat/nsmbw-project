@@ -3,6 +3,9 @@
 
 #include "d_allocator.h"
 
+[[nsmbw(0x80069020)]]
+dHeapAllocator_c::dHeapAllocator_c();
+
 [[nsmbw(0x800690C0)]]
 void dHeapAllocator_c::createFrmHeap(std::size_t size, EGG::Heap* heap, const char*, std::size_t);
 

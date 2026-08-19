@@ -3,8 +3,10 @@
 
 #include "m_3d_mdl.h"
 
-namespace m3d
-{
+namespace m3d {
+
+[[nsmbw(0x80169E10)]]
+mdl_c::mdl_c();
 
 [[nsmbw(0x80169ED0)]]
 bool mdl_c::create(nw4r::g3d::ResMdl, mAllocator_c*, u32, int, u32*);
