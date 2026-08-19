@@ -828,12 +828,24 @@ void daPyMng_c::stopStarBGM() {
     }
 
     mBgmState &= ~1;
-    SndSceneMgr::sInstance->UNDEF_8019BE60(4);
+    SndSceneMgr::sInstance->UNDEF_8019BE60(0x4);
 }
 
-// TODO (not that important)
 [[nsmbw(0x80060860)]]
-void daPyMng_c::stopYoshiBGM();
+void daPyMng_c::stopYoshiBGM() {
+    if (!(mBgmState & 2)) {
+        return;
+    }
+
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+        if (dAcPy_c* py = getPlayer(i); py && py->isStatus(daPlBase_c::Status_e::RIDE_YOSHI)) {
+            return;
+        }
+    }
+
+    mBgmState &= ~2;
+    SndSceneMgr::sInstance->UNDEF_8019BE60(0x200);
+}
 
 [[nsmbw(0x800608E0)]]
 void daPyMng_c::checkLastAlivePlayer();
