@@ -4,12 +4,12 @@
 #include "d_save_manager.h"
 
 #include "d_bases/d_s_world_map.h"
-#include "d_nand_thread.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
 #include "d_static/d_info.h"
-#include "d_static/d_mj2d_data.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_data.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_nand_thread.h"
 #include "machine/m_dvd.h"
 #include "machine/m_heap.h"
 #include <cstring>

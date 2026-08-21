@@ -1,7 +1,6 @@
 #pragma once
 
-class dSwitchFlagMng_c
-{
+class dSwitchFlagMng_c {
 public:
     // Instance Methods
     // ^^^^^^

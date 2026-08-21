@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_a_player_manager.h"
-#include "d_static/d_actor.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_static/d_actor/d_actor.h"
 #include "d_static/d_cc.h"
 #include <array>
 

@@ -1,7 +1,7 @@
 // d_a_en_boss_castle_iggy.cpp
 // NSMBW d_en_boss.text: 0x - 0x
 
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 
 [[nsmbw(0x80B1D450)]]
 s32 daEnBossCastleIggy_c_UNDEF_80b1d450() ASM_METHOD(

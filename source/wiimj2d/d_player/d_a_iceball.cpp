@@ -1,7 +1,7 @@
 // d_a_iceball.cpp
 // NSMBW .text: 0x801233F0 - 0x80124D40
 
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include <mkwcat/Relocate.hpp>
 
 /* 0x80375DA8 */

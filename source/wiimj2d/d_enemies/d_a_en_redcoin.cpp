@@ -4,8 +4,8 @@
 #include "d_a_en_redcoin.h"
 
 #include "d_player/d_a_player.h"
-#include "d_static/d_a_player_manager.h"
-#include "d_static/d_bg_parameter.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_static/d_bg/d_bg_parameter.h"
 #include "d_profile/d_profile.h"
 
 u32 daEnRedcoin_c_sizeof()

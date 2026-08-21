@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_static/d_base.h"
-#include "d_static/d_lytbase.h"
+#include "d_static/d_lyt/d_lytbase.h"
 #include "state/s_FStateFct.h"
 #include "state/s_StateMethodUsr_FI.h"
 #include "state/s_StateMgr.h"

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_player_model_manager.h"
-#include "d_static/d_wm_lib.h"
-#include "d_static/d_wm_player_base.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_player_model/d_player_model_manager.h"
+#include "d_static/d_wm/d_wm_lib.h"
+#include "d_static/d_wm/d_wm_player_base.h"
 
 class daWmSubPlayer_c : public dWmPlayerBase_c {
 public:

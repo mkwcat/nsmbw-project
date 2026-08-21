@@ -4,9 +4,9 @@
 #include "d_nand_thread.h"
 
 #include "component/c_json.h"
-#include "d_static/d_mj2d_data.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_mj2d_json_handler.h"
+#include "d_static/d_mj2d/d_mj2d_data.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_json_handler.h"
 #include "d_static/d_save_manager.h"
 #include "machine/m_nandfile.h"
 #include "machine/m_pipe.h"

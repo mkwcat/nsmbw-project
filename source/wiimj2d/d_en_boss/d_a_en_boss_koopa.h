@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_ef.h"
-#include "d_static/d_enemy_boss.h"
+#include "d_static/d_ef/d_ef.h"
+#include "d_static/d_enemy/d_enemy_boss.h"
 #include "machine/m_3d_anmchr.h"
 #include "machine/m_3d_anmmatclr.h"
 #include "machine/m_3d_anmtexpat.h"

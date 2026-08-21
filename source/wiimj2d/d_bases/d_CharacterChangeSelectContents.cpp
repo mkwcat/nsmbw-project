@@ -3,9 +3,9 @@
 
 #include "d_CharacterChangeSelectContents.h"
 
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include <algorithm>
 
 [[nsmbw(0x80772A50)]]

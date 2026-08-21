@@ -1,7 +1,6 @@
 #pragma once
 
-class PauseManager_c
-{
+class PauseManager_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -26,5 +25,5 @@ public:
 
     /* 0x8042A2B8 */ static PauseManager_c* m_instance;
 
-    /* 0x8042A2C2 */ static bool m_OtasukeAfter;
+    /* 0x8042A2C2 */ static bool            m_OtasukeAfter;
 };

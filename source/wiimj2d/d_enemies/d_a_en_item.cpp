@@ -5,11 +5,11 @@
 
 #include "d_player/d_a_player.h"
 #include "d_project/d_gamerule.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_audio.h"
-#include "d_static/d_enemy_manager.h"
+#include "d_static/d_enemy/d_enemy_manager.h"
 #include "d_static/d_game_common.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include "d_static/d_score_mng.h"
 #include "sound/SndID.h"
 

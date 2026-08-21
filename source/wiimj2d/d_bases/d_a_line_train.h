@@ -1,7 +1,7 @@
 #pragma once
 
 #include "component/c_bitmask.h"
-#include "d_static/d_actor.h"
+#include "d_static/d_actor/d_actor.h"
 #include "d_static/d_rc.h"
 
 class daLineTrain_c : public dActor_c

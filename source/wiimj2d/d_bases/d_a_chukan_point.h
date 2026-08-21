@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_actor_state.h"
+#include "d_static/d_actor/d_actor_state.h"
 #include "machine/m_3d_anmtexpat.h"
 #include "machine/m_3d_mdl.h"
 

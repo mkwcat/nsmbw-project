@@ -1,7 +1,6 @@
 #pragma once
 
-class dStage_c
-{
+class dStage_c {
 public:
     // Static Methods
     // ^^^^^^

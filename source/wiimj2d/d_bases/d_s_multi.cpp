@@ -3,10 +3,10 @@
 
 #include "d_bases/d_s_multi.h"
 #include "d_bases/d_MultiCourseSelect.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
 #include "d_static/d_info.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 
 [[nsmbw(0x8091AC10)]]
 void dScMulti_c::executeState_SelectCourse()

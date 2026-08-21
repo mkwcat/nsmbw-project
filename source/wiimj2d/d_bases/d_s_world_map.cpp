@@ -27,9 +27,9 @@
 #include "d_bases/d_wm_WorldSelectGuide.h"
 #include "d_player/d_SelectCursor.h"
 #include "d_profile/d_profile.h"
-#include "d_static/d_CourseSelectManager.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_wm_actor.h"
+#include "d_static/d_lyt/d_CourseSelectManager.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_wm/d_wm_actor.h"
 #include <iterator>
 
 [[nsmbw(0x80926E10)]]

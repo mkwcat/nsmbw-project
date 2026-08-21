@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_bg_ctr.h"
-#include "d_static/d_enemy_jr_clown_base.h"
+#include "d_static/d_bg/d_bg_ctr.h"
+#include "d_static/d_enemy/d_enemy_jr_clown_base.h"
 
 class daJrClownForPlayer_c : public dEnJrClownBase_c {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_base_actor.h"
+#include "d_static/d_actor/d_base_actor.h"
 
 class daWmItem_c : public dBaseActor_c
 {

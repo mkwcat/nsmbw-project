@@ -4,10 +4,10 @@
 #include "d_Continue.h"
 
 #include "d_profile/d_profile.h"
-#include "d_static/d_a_player_manager.h"
-#include "d_static/d_ef.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_static/d_ef/d_ef.h"
 #include "d_static/d_game_common.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include "d_static/d_save_manager.h"
 #include "d_static/d_scene.h"
 #include "framework/f_base.h"

@@ -4,10 +4,10 @@
 #include "d_MiniGameCannon.h"
 
 #include "d_player/d_WarningManager.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
-#include "d_static/d_message.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_lyt/d_message.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 
 [[nsmbw(0x8078BC60)]]
 dMiniGameCannon_c* dMiniGameCannon_c_classInit()

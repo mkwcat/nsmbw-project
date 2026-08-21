@@ -2,8 +2,7 @@
 
 #include <nw4r/g3d/g3d_resfile.h>
 
-class dRes_c
-{
+class dRes_c {
 public:
     // Instance Methods
     // ^^^^^^

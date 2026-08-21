@@ -5,11 +5,11 @@
 
 #include "d_PreGame.h"
 
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
 #include "d_static/d_info.h"
-#include "d_static/d_message.h"
-#include "d_static/d_msgres.h"
+#include "d_static/d_lyt/d_message.h"
+#include "d_static/d_lyt/d_msgres.h"
 #include <algorithm>
 
 [[nsmbw(0x80B6BCC0)]]

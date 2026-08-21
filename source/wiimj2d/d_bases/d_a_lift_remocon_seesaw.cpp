@@ -3,8 +3,8 @@
 
 #include "d_a_lift_remocon_seesaw.h"
 #include "d_static/d_game_common.h"
-#include "d_static/d_game_key.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_game_key/d_game_key.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include <algorithm>
 
 short sSeesawAngle[PLAYER_COUNT];

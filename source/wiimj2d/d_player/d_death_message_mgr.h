@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "machine/m_2d.h"
 #include <nw4r/lyt/ResourceAccessor.h>
 #include <nw4r/lyt/Resources.h>

@@ -2,10 +2,10 @@
 
 #include "d_bases/d_wm_seManager.h"
 #include "d_static/d_info.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_player_model_manager.h"
-#include "d_static/d_wm_lib.h"
-#include "d_static/d_wm_player_base.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_player_model/d_player_model_manager.h"
+#include "d_static/d_wm/d_wm_lib.h"
+#include "d_static/d_wm/d_wm_player_base.h"
 #include "machine/m_vec.h"
 
 class dWmPyCamBase_c;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_a_boss_demo.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_actor/d_a_boss_demo.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 
 class dAcPy_c;
 

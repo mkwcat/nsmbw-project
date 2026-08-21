@@ -3,8 +3,8 @@
 
 #include "d_bg_gm.h"
 
-#include "d_static/d_a_player_manager.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include <bit>
 
 u32 dBgGm_countr_one(

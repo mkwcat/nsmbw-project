@@ -2,12 +2,12 @@
 
 #include "d_player/d_a_yoshi.h"
 #include "d_profile/d_profile.h"
-#include "d_static/d_a_player_base.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_base.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_bc.h"
 #include "d_static/d_cc.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_player_model_manager.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_player_model/d_player_model_manager.h"
 #include "d_static/d_quake.h"
 #include "framework/f_base_id.h"
 #include "state/s_State.h"
@@ -15,8 +15,7 @@
 /**
  * The player class for Mario, Luigi and the Toads.
  */
-class dAcPy_c : public daPlBase_c, public dProf::Info<dAcPy_c, dProf::PLAYER>
-{
+class dAcPy_c : public daPlBase_c, public dProf::Info<dAcPy_c, dProf::PLAYER> {
 public:
     // Constants
     // ^^^^^^
@@ -24,77 +23,77 @@ public:
     /// @unofficial
     enum SpinHipAttackSubstate_e {
         SPIN_HIP_ATTACK_ACTION_0,
-        SPIN_HIP_ATTACK_ACTION_1
+        SPIN_HIP_ATTACK_ACTION_1,
     };
 
     /// @unofficial
     enum FallSubstate_e {
         FALL_ACTION_0,
-        FALL_ACTION_1
+        FALL_ACTION_1,
     };
 
     /// @unofficial
     enum JumpSubstate_e {
         JUMP_TAKE_OFF,
-        JUMP_AIR
+        JUMP_AIR,
     };
 
     /// @unofficial
     enum LandSubstate_e {
         LAND_ACTION_0,
-        LAND_ACTION_1
+        LAND_ACTION_1,
     };
 
     /// @unofficial
     enum SpinJumpSubstate_e {
         SPIN_JUMP_ACTION_0,
-        SPIN_JUMP_ACTION_1
+        SPIN_JUMP_ACTION_1,
     };
 
     /// @unofficial
     enum SitJumpSubstate_e {
         SIT_JUMP_ACTION_0,
-        SIT_JUMP_ACTION_1
+        SIT_JUMP_ACTION_1,
     };
 
     /// @unofficial
     enum CannonJumpSubstate_e {
         CANNON_JUMP_ACTION_0,
         CANNON_JUMP_ACTION_1,
-        CANNON_JUMP_ACTION_2
+        CANNON_JUMP_ACTION_2,
     };
 
     /// @unofficial
     enum BlockJumpSubstate_e {
         BLOCK_JUMP_ACTION_0,
-        BLOCK_JUMP_ACTION_1
+        BLOCK_JUMP_ACTION_1,
     };
 
     /// @unofficial
     enum RollSlipSubstate_e {
         ROLL_SLIP_ACTION_0,
         ROLL_SLIP_ACTION_1,
-        ROLL_SLIP_ACTION_2
+        ROLL_SLIP_ACTION_2,
     };
 
     /// @unofficial
     enum PenguinSlideSubstate_e {
         PENGUIN_SLIDE_ACTION_0,
         PENGUIN_SLIDE_ACTION_1,
-        PENGUIN_SLIDE_ACTION_2
+        PENGUIN_SLIDE_ACTION_2,
     };
 
     /// @unofficial
     enum CrouchSubstate_e {
         CROUCH_GROUND,
-        CROUCH_WATER
+        CROUCH_WATER,
     };
 
     /// @unofficial
     enum ThrowSubstate_e {
         THROW_ACTION_0,
         THROW_ACTION_1,
-        THROW_ACTION_2
+        THROW_ACTION_2,
     };
 
     /// @unofficial
@@ -102,7 +101,7 @@ public:
         SWIM_ACTION_0,
         SWIM_ACTION_1,
         SWIM_ACTION_2,
-        SWIM_ACTION_3
+        SWIM_ACTION_3,
     };
 
     /// @unofficial
@@ -110,14 +109,14 @@ public:
         VINE_ACTION_IVY,
         VINE_ACTION_NET,
         VINE_ACTION_ATTACK,
-        VINE_ACTION_ROLL
+        VINE_ACTION_ROLL,
     };
 
     /// @unofficial
     enum HangSubstate_e {
         HANG_ACTION_START,
         HANG_ACTION_WAIT,
-        HANG_ACTION_MOVE
+        HANG_ACTION_MOVE,
     };
 
     /// @unofficial
@@ -128,7 +127,7 @@ public:
         KANI_ACTION_HANG,
         KANI_ACTION_HANG_FALL,
         KANI_ACTION_HANG_UP,
-        KANI_ACTION_HANG_UP_VINE
+        KANI_ACTION_HANG_UP_VINE,
     };
 
     /// @unofficial
@@ -143,7 +142,7 @@ public:
         ROPE_SWING_7,
         ROPE_SWING_8,
         ROPE_SWING_9,
-        ROPE_SWING_10
+        ROPE_SWING_10,
     };
 
     /// @unofficial
@@ -153,11 +152,11 @@ public:
         DEMO_OUT_DOOR_MOVE_INTER,
         DEMO_OUT_DOOR_WAIT_CLOSE,
         DEMO_OUT_DOOR_WAIT_ENTER,
-        DEMO_OUT_DOOR_FINISHED
+        DEMO_OUT_DOOR_FINISHED,
     };
 
     enum QuakeMode_e {
-        QUAKE_MODE_0
+        QUAKE_MODE_0,
     };
 
 public:
@@ -179,14 +178,14 @@ public:
     /* 0x801275B0 */ float getJumpSpeed();
     void setJumpSpeed();
     void fn_80127740(
-      int jumpType, AnmBlend_e blendMode
-    ); ///< Jump animation set, some enum as first param @unofficial
+        int jumpType, AnmBlend_e blendMode
+    );                              ///< Jump animation set, some enum as first param @unofficial
     void fn_80145fd0(int jumpType); ///< Jump voice, some enum as param @unofficial
     bool checkCarryThrow();
     void jumpExeTakeOff();
     void jumpExecAir();
     void fn_801282d0(AnmBlend_e blendMode); ///< @unofficial
-    bool spinLiftUp(dActor_c*, bool); ///< @unofficial
+    bool spinLiftUp(dActor_c*, bool);       ///< @unofficial
     void setJumpCommonBase();
     /* 0x8012DD20 */ dAcPy_c* getCarryPlayer();
     bool isIceSlipAnmPlay();
@@ -397,7 +396,7 @@ public:
     void setShakeIce(float);
     mVec3_c getIceDrawPos();
 
-    void fn_801395a0(); ///< @unofficial
+    void fn_801395a0();              ///< @unofficial
     void fn_801416c0(PLAYER_MODE_e); ///< @unofficial
 
     /* 0x80139910 */ bool setRideOffYoshiJump(daPlBase_c* yoshi);
@@ -527,9 +526,9 @@ public:
     void setCcData();
     void setCcDataDirect();
 
-    void fn_80143060(sBcPointData& data1, sBcPointData& data2, bool); ///< @unofficial
-    bool fn_80143220(sBcPointData& data1, sBcPointData& data2); ///< @unofficial
-    void reviseBcDataCarryPlayer(sBcPointData& data1, sBcPointData& data2); ///< @unofficial
+    void fn_80143060(sBcPointData& data1, sBcPointData& data2, bool);          ///< @unofficial
+    bool fn_80143220(sBcPointData& data1, sBcPointData& data2);                ///< @unofficial
+    void reviseBcDataCarryPlayer(sBcPointData& data1, sBcPointData& data2);    ///< @unofficial
     void reviseBcDataCarryHardBlock(sBcPointData& data1, sBcPointData& data2); ///< @unofficial
 
     void setStarBase(StarSet_e, int);
@@ -554,8 +553,7 @@ public:
     static void ccCallBack(dCc_c* self, dCc_c* other);
     static void atCcCallBack(dCc_c* self, dCc_c* other);
 
-    mMtx_c getCarryMtx()
-    {
+    mMtx_c getCarryMtx() {
         mMtx_c mtx;
         mtx.trans(getCarryPos());
         mtx.concat(getModel()->getMtx());
@@ -591,22 +589,13 @@ public:
     virtual void executeLastAll() override;
     virtual bool isItemKinopio() override;
     virtual void setPowerup(PLAYER_MODE_e, PLAYER_MODE_e) override;
-    virtual u8 getTallType(s8) override;
+    virtual u8   getTallType(s8) override;
 
-    virtual const sBcPointData* getHeadBgPointData() override
-    {
-        return &getBgPointData()->mHead;
-    }
+    virtual const sBcPointData* getHeadBgPointData() override { return &getBgPointData()->mHead; }
 
-    virtual const sBcPointData* getWallBgPointData() override
-    {
-        return &getBgPointData()->mWall;
-    }
+    virtual const sBcPointData* getWallBgPointData() override { return &getBgPointData()->mWall; }
 
-    virtual const sBcPointData* getFootBgPointData() override
-    {
-        return &getBgPointData()->mFoot;
-    }
+    virtual const sBcPointData* getFootBgPointData() override { return &getBgPointData()->mFoot; }
 
     virtual float getStandHeadBgPointY() override;
     virtual void checkBgCrossSub() override;
@@ -775,10 +764,7 @@ public:
     virtual const mVec3_c* getHeadTopPosP() override;
     virtual const float* getGravityData() override;
 
-    virtual bool isCarry() const override
-    {
-        return mCarryActorID != fBaseID_e::NONE;
-    }
+    virtual bool isCarry() const override { return mCarryActorID != fBaseID_e::NONE; }
 
     virtual bool isLiftUp() override;
     virtual bool isLiftUpExceptMame() override;
@@ -1098,15 +1084,15 @@ public:
     FILL(0x1558, 0x27D4);
 
     /* 0x27D4 */ fBaseID_e m0x27D4;
-    /* 0x27D8 */ float m0x27D8;
-    /* 0x27DC */ float m0x27DC;
-    /* 0x27E0 */ int m0x27E0;
+    /* 0x27D8 */ float     m0x27D8;
+    /* 0x27DC */ float     m0x27DC;
+    /* 0x27E0 */ int       m0x27E0;
 
     FILL(0x27E4, 0x2A60);
 
     /* 0x2A60 */ dPyMdlMng_c mPyMdlMng;
-    /* 0x2A6C */ float m0x2A6C;
-    /* 0x2A70 */ float m0x2A70;
-    /* 0x2A74 */ u32 m0x2A74;
-    /* 0x2A78 */ fBaseID_e mCarryActorID;
+    /* 0x2A6C */ float       m0x2A6C;
+    /* 0x2A70 */ float       m0x2A70;
+    /* 0x2A74 */ u32         m0x2A74;
+    /* 0x2A78 */ fBaseID_e   mCarryActorID;
 };

@@ -5,9 +5,9 @@
 
 #include "d_bases/d_a_wm_Map.h"
 #include "d_bases/d_a_wm_player.h"
-#include "d_static/d_a_player_manager.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_wm_player_base.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_wm/d_wm_player_base.h"
 #include "machine/m_angle.h"
 #include "machine/m_heap.h"
 #include <mkwcat/NoConsteval.hpp>

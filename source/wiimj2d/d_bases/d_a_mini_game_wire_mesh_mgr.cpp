@@ -4,10 +4,10 @@
 #include "d_a_mini_game_wire_mesh_mgr.h"
 
 #include "d_player/d_a_player.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_player_model_base.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_player_model/d_player_model_base.h"
 #include "d_static/d_save_manager.h"
 #include "egg/util/eggEffect.h"
 #include "machine/m_mtx.h"

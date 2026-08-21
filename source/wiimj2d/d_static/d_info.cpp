@@ -7,9 +7,9 @@
 #include "d_info.h"
 
 #include "d_bases/d_s_stage.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_cyuukan.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include "d_static/d_save_manager.h"
 #include <cstring>
 

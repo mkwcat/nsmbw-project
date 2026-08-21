@@ -1,16 +1,14 @@
 #pragma once
 
-#include "d_mj2d_data.h"
+#include "d_static/d_mj2d/d_mj2d_data.h"
 
-namespace EGG
-{
+namespace EGG {
 class Heap;
 }
 
 class dMj2dGame_c;
 
-class dSaveMng_c
-{
+class dSaveMng_c {
 public:
     // Structors
     // ^^^^^^
@@ -62,7 +60,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    bool mSaving;
+    bool        mSaving;
     dMj2dData_c mData;
 
 public:

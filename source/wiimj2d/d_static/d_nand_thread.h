@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_mj2d_data.h"
+#include "d_static/d_mj2d/d_mj2d_data.h"
 #include <cstdio>
 #include <revolution/os/OSMutex.h>
 #include <revolution/os/OSThread.h>

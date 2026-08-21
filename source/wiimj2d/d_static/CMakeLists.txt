@@ -11,129 +11,129 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8000D740 - 0x8000FC30
   # d_3d_disp.cpp
 # NSMBW          .text:  0x8000FC30 - 0x80014330
-    d_CourseSelectGuide.cpp
+    d_lyt/d_CourseSelectGuide.cpp
 # NSMBW          .text:  0x80014330 - 0x800145B0
   # d_GXStateSave.cpp
 # NSMBW          .text:  0x800145B0 - 0x80014820
-    d_PanelObjList.cpp
+    d_Panel/d_PanelObjList.cpp
 # NSMBW          .text:  0x80014820 - 0x80014970
-    d_PanelObjMgr.cpp
+    d_Panel/d_PanelObjMgr.cpp
 # NSMBW          .text:  0x80014970 - 0x80014B30
   # d_SimpleCapture.cpp
 # NSMBW          .text:  0x80014B30 - 0x80014F10
   # d_SimpleCaptureDraw.cpp
 # NSMBW          .text:  0x80014F10 - 0x80015D60
-    d_SmallScore.cpp
+    d_lyt/d_SmallScore.cpp
 # NSMBW          .text:  0x80015D60 - 0x80016F70
-  # d_WarningBattery.cpp
+  # d_lyt/d_WarningBattery.cpp
 # NSMBW          .text:  0x80016F70 - 0x80018CA0
-  # d_WarningErrorInfo.cpp
+  # d_lyt/d_WarningErrorInfo.cpp
 # NSMBW          .text:  0x80018CA0 - 0x80019990
-  # d_WarningNunchuk.cpp
+  # d_lyt/d_WarningNunchuk.cpp
 # NSMBW          .text:  0x80019990 - 0x8001A6B0
-  # d_WarningOther.cpp
+  # d_lyt/d_WarningOther.cpp
 # NSMBW          .text:  0x8001A6B0 - 0x8001B3A0
-  # d_WarningYoKo.cpp
+  # d_lyt/d_WarningYoKo.cpp
 # NSMBW          .text:  0x8001B3A0 - 0x8001BB90
-  # d_WipeCircle.cpp
+  # d_lyt/d_WipeCircle.cpp
 # NSMBW          .text:  0x8001BB90 - 0x8001C170
-  # d_WipeDokan.cpp
+  # d_lyt/d_WipeDokan.cpp
 # NSMBW          .text:  0x8001C170 - 0x8001C690
-  # d_WipeKuppa.cpp
+  # d_lyt/d_WipeKuppa.cpp
 # NSMBW          .text:  0x8001C690 - 0x8001CBB0
-  # d_WipeMario.cpp
+  # d_lyt/d_WipeMario.cpp
 # NSMBW          .text:  0x8001CBB0 - 0x8001DA50
-  # d_a_boss_demo.cpp
+  # d_actor/d_a_boss_demo.cpp
 # NSMBW          .text:  0x8001DA50 - 0x8001F6C0
-  # d_a_bullet.cpp
+  # d_actor/d_a_bullet.cpp
 # NSMBW          .text:  0x8001F6C0 - 0x800208B0
-  # d_a_en_bigpile.cpp
+  # d_enemy/d_a_en_bigpile.cpp
 # NSMBW          .text:  0x800208B0 - 0x80023C60
-    d_a_en_blockmain.cpp
+    d_enemy/d_a_en_blockmain.cpp
 # NSMBW          .text:  0x80023C60 - 0x80026BB0
-  # d_a_en_bros_base.cpp
+  # d_enemy/d_a_en_bros_base.cpp
 # NSMBW          .text:  0x80026BB0 - 0x800272F0
-  # d_a_en_carry.cpp
+  # d_enemy/d_a_en_carry.cpp
 # NSMBW          .text:  0x800272F0 - 0x800281C0
-  # d_a_en_coin_main.cpp
+  # d_enemy/d_a_en_coin_main.cpp
 # NSMBW          .text:  0x800281C0 - 0x8002AB40
-  # d_a_en_dfpakkun.cpp
+  # d_enemy/d_a_en_dfpakkun.cpp
 # NSMBW          .text:  0x8002AB40 - 0x8002BE40
-  # d_a_en_door.cpp
+  # d_enemy/d_a_en_door.cpp
 # NSMBW          .text:  0x8002BE40 - 0x8002CB70
-  # d_a_en_dpakkun.cpp
+  # d_enemy/d_a_en_dpakkun.cpp
 # NSMBW          .text:  0x8002CB70 - 0x8002EF50
-    d_a_en_dpakkun_base.cpp
+    d_enemy/d_a_en_dpakkun_base.cpp
 # NSMBW          .text:  0x8002EF50 - 0x800311E0
-    d_a_en_jimen_pakkun_base.cpp
+    d_enemy/d_a_en_jimen_pakkun_base.cpp
 # NSMBW          .text:  0x800311E0 - 0x800331E0
-  # d_a_en_kuribo_base.cpp
+  # d_enemy/d_a_en_kuribo_base.cpp
 # NSMBW          .text:  0x800331E0 - 0x800356D0
-  # d_a_en_lkuribo_base.cpp
+  # d_enemy/d_a_en_lkuribo_base.cpp
 # NSMBW          .text:  0x800356D0 - 0x80036930
-  # d_a_en_net_nokonoko_base.cpp
+  # d_enemy/d_a_en_net_nokonoko_base.cpp
 # NSMBW          .text:  0x80036930 - 0x80037EA0
-  # d_a_en_obj_coinblock.cpp
+  # d_enemy/d_a_en_obj_coinblock.cpp
 # NSMBW          .text:  0x80037EA0 - 0x8003C9F0
-    d_a_en_shell.cpp
+    d_enemy/d_a_en_shell.cpp
 # NSMBW          .text:  0x8003C9F0 - 0x8003DBD0
-  # d_a_en_super_bigpile.cpp
+  # d_enemy/d_a_en_super_bigpile.cpp
 # NSMBW          .text:  0x8003DBD0 - 0x80040920
-  # d_a_en_togezo_base.cpp
+  # d_enemy/d_a_en_togezo_base.cpp
 # NSMBW          .text:  0x80040920 - 0x80041C00
-  # d_a_en_fireball_base.cpp
+  # d_enemy/d_a_en_fireball_base.cpp
 # NSMBW          .text:  0x80041C00 - 0x80042480
-  # d_a_fly_dokan.cpp
+  # d_actor/d_a_fly_dokan.cpp
 # NSMBW          .text:  0x80042480 - 0x80042A70
-  # d_a_ice_ashiba_base.cpp
+  # d_actor/d_a_ice_ashiba_base.cpp
 # NSMBW          .text:  0x80042A70 - 0x80042AE0
-  # d_a_kawanagare_obj.cpp
+  # d_actor/d_a_kawanagare_obj.cpp
 # NSMBW          .text:  0x80042AE0 - 0x80042AE0
-  # d_a_kawanagare_obj.cpp
+  # d_actor/d_a_kawanagare_obj.cpp
 # NSMBW          .text:  0x800437D0 - 0x80044460
-    d_a_lift_remocon_main.cpp
+    d_actor/d_a_lift_remocon_main.cpp
 # NSMBW          .text:  0x80044460 - 0x80044940
-  # d_a_move_pipe.cpp
+  # d_actor/d_a_move_pipe.cpp
 # NSMBW          .text:  0x80044940 - 0x800451F0
-  # d_a_net_enemy.cpp
+  # d_actor/d_a_net_enemy.cpp
 # NSMBW          .text:  0x800451F0 - 0x80045600
-  # d_a_obj_move_on_base.cpp
+  # d_actor/d_a_obj_move_on_base.cpp
 # NSMBW          .text:  0x80045600 - 0x80045650
-  # d_a_obj_pipe.cpp
+  # d_actor/d_a_obj_pipe.cpp
 # NSMBW          .text:  0x80045650 - 0x80045D20
-  # d_a_obj_pipe_base.cpp
+  # d_actor/d_a_obj_pipe_base.cpp
 # NSMBW          .text:  0x80045D20 - 0x800460D0
-  # d_a_obj_spin_child_base.cpp
+  # d_actor/d_a_obj_spin_child_base.cpp
 # NSMBW          .text:  0x800460D0 - 0x8005B3A0
-    d_a_player_base.cpp
+    d_a_player/d_a_player_base.cpp
 # NSMBW          .text:  0x8005B3A0 - 0x8005D7E0
-    d_a_player_demo_manager.cpp
+    d_a_player/d_a_player_demo_manager.cpp
 # NSMBW          .text:  0x8005D7E0 - 0x8005DFD0
-  # d_a_player_hio_ADJ.cpp
+  # d_a_player/d_a_player_hio_ADJ.cpp
 # NSMBW          .text:  0x8005DFD0 - 0x8005E9A0
-    d_a_player_key.cpp
+    d_a_player/d_a_player_key.cpp
 # NSMBW          .text:  0x8005E9A0 - 0x800613B0
-    d_a_player_manager.cpp
+    d_a_player/d_a_player_manager.cpp
 # NSMBW          .text:  0x800613B0 - 0x800620F0
-  # d_a_right_base.cpp
+  # d_actor/d_a_right_base.cpp
 # NSMBW          .text:  0x800620F0 - 0x800622A0
-  # d_a_rot_block.cpp
+  # d_actor/d_a_rot_block.cpp
 # NSMBW          .text:  0x800622A0 - 0x80062F00
-  # d_a_rot_objs_base.cpp
+  # d_actor/d_a_rot_objs_base.cpp
 # NSMBW          .text:  0x80062F00 - 0x80063820
-  # d_a_sink_dokan.cpp
+  # d_actor/d_a_sink_dokan.cpp
 # NSMBW          .text:  0x80063820 - 0x80063F80
-  # d_a_spin_child_base.cpp
+  # d_actor/d_a_spin_child_base.cpp
 # NSMBW          .text:  0x80063F80 - 0x80064110
-  # d_a_zoom_pipe_base.cpp
+  # d_actor/d_a_zoom_pipe_base.cpp
 # NSMBW          .text:  0x80064110 - 0x800660C0
-    d_actor.cpp
+    d_actor/d_actor.cpp
 # NSMBW          .text:  0x800660C0 - 0x80066380
-    d_actor_groupid_mng.cpp
+    d_actor/d_actor_groupid_mng.cpp
 # NSMBW          .text:  0x80066380 - 0x80066FB0
-    d_actor_mng.cpp
+    d_actor/d_actor_mng.cpp
 # NSMBW          .text:  0x80066FB0 - 0x80068040
-    d_actor_state.cpp
+    d_actor/d_actor_state.cpp
 # NSMBW          .text:  0x80068040 - 0x80069020
     d_actorcreate_mng.cpp
 # NSMBW          .text:  0x80069020 - 0x800690F0
@@ -148,27 +148,27 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8006C420 - 0x8006C6D0
     d_base.cpp
 # NSMBW          .text:  0x8006C6D0 - 0x8006CF40
-    d_base_actor.cpp
+    d_actor/d_base_actor.cpp
 # NSMBW          .text:  0x8006CF40 - 0x80076BC0
     d_bc.cpp
 # NSMBW          .text:  0x80076BC0 - 0x80076FD0
     d_beans_kuribo_mng.cpp
 # NSMBW          .text:  0x80076FD0 - 0x8007E180
-    d_bg.cpp
+    d_bg/d_bg.cpp
 # NSMBW          .text:  0x8007E180 - 0x8007F7A0
-  # d_bg_actor_mng.cpp
+  # d_bg/d_bg_actor_mng.cpp
 # NSMBW          .text:  0x8007F7A0 - 0x80081070
-    d_bg_ctr.cpp
+    d_bg/d_bg_ctr.cpp
 # NSMBW          .text:  0x80081070 - 0x800818E0
-  # d_bg_global.cpp
+  # d_bg/d_bg_global.cpp
 # NSMBW          .text:  0x800818E0 - 0x80081D20
-  # d_bg_panel.cpp
+  # d_bg/d_bg_panel.cpp
 # NSMBW          .text:  0x80081D20 - 0x800822E0
-    d_bg_parameter.cpp
+    d_bg/d_bg_parameter.cpp
 # NSMBW          .text:  0x800822E0 - 0x80083490
-    d_bg_texture.cpp
+    d_bg/d_bg_texture.cpp
 # NSMBW          .text:  0x80083490 - 0x800872E0
-  # d_bg_unit.cpp
+  # d_bg/d_bg_unit.cpp
 # NSMBW          .text:  0x800872E0 - 0x80087F40
   # d_bgtex_mng.cpp
 # NSMBW          .text:  0x80087F40 - 0x80088D90
@@ -196,47 +196,47 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8008F460 - 0x8008F920
   # d_dylink.cpp
 # NSMBW          .text:  0x8008F920 - 0x8008FE30
-    d_ef.cpp
+    d_ef/d_ef.cpp
 # NSMBW          .text:  0x8008FE30 - 0x800909A0
-  # d_eff_big_block_fragment.cpp
+  # d_ef/d_eff_big_block_fragment.cpp
 # NSMBW          .text:  0x800909A0 - 0x80091100
-  # d_eff_block_fragment.cpp
+  # d_ef/d_eff_block_fragment.cpp
 # NSMBW          .text:  0x80091100 - 0x80091860
-  # d_eff_ice_fragment.cpp
+  # d_ef/d_eff_ice_fragment.cpp
 # NSMBW          .text:  0x80091860 - 0x80091F60
-  # d_eff_wan_chain.cpp
+  # d_ef/d_eff_wan_chain.cpp
 # NSMBW          .text:  0x80091F60 - 0x80092290
-  # d_eff_water_splash.cpp
+  # d_ef/d_eff_water_splash.cpp
 # NSMBW          .text:  0x80092290 - 0x80092300
-  # d_effactor.cpp
+  # d_ef/d_effactor.cpp
 # NSMBW          .text:  0x80092300 - 0x80092C00
-    d_effactor_mng.cpp
+    d_ef/d_effactor_mng.cpp
 # NSMBW          .text:  0x80092C00 - 0x80092F10
-  # d_effect_proc.cpp
+  # d_ef/d_effect_proc.cpp
 # NSMBW          .text:  0x80092F10 - 0x80094E80
-  # d_effectmanager.cpp
+  # d_ef/d_effectmanager.cpp
 # NSMBW          .text:  0x80094E80 - 0x800983C0
-    d_enemy.cpp
+    d_enemy/d_enemy.cpp
 # NSMBW          .text:  0x800983C0 - 0x8009AD30
-    d_enemy_boss.cpp
+    d_enemy/d_enemy_boss.cpp
 # NSMBW          .text:  0x8009AD30 - 0x8009EA30
-  # d_enemy_boss_koopa_jr_base.cpp
+  # d_enemy/d_enemy_boss_koopa_jr_base.cpp
 # NSMBW          .text:  0x8009EA30 - 0x8009EAF0
-    d_enemy_boyon_mng.cpp
+    d_enemy/d_enemy_boyon_mng.cpp
 # NSMBW          .text:  0x8009EAF0 - 0x8009F5F0
-    d_enemy_carry.cpp
+    d_enemy/d_enemy_carry.cpp
 # NSMBW          .text:  0x8009F5F0 - 0x800A2870
-    d_enemy_death.cpp
+    d_enemy/d_enemy_death.cpp
 # NSMBW          .text:  0x800A2870 - 0x800A2B70
-    d_enemy_fumi.cpp
+    d_enemy/d_enemy_fumi.cpp
 # NSMBW          .text:  0x800A2B70 - 0x800A7450
-    d_enemy_jr_clown_base.cpp
+    d_enemy/d_enemy_jr_clown_base.cpp
 # NSMBW          .text:  0x800A7450 - 0x800A7DA0
-    d_enemy_manager.cpp
+    d_enemy/d_enemy_manager.cpp
 # NSMBW          .text:  0x800A7DA0 - 0x800A8710
-    d_enemy_state.cpp
+    d_enemy/d_enemy_state.cpp
 # NSMBW          .text:  0x800A8710 - 0x800B0A20
-  # d_enemy_toride_kokoopa.cpp
+  # d_enemy/d_enemy_toride_kokoopa.cpp
 # NSMBW          .text:  0x800B0A20 - 0x800B0EA0
     d_fader.cpp
 # NSMBW          .text:  0x800B0EA0 - 0x800B11D0
@@ -244,78 +244,78 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800B11D0 - 0x800B14E0
   # d_font_manager.cpp
 # NSMBW          .text:  0x800B14E0 - 0x800B2D20
-    d_fukidashiInfo.cpp
+    d_lyt/d_fukidashiInfo.cpp
 # NSMBW          .text:  0x800B2D20 - 0x800B2E70
   # d_funsui_act.cpp
 # NSMBW          .text:  0x800B2E70 - 0x800B5930
     d_game_common.cpp
 # NSMBW          .text:  0x800B5930 - 0x800B5B50
-    d_game_key.cpp
+    d_game_key/d_game_key.cpp
 # NSMBW          .text:  0x800B5B50 - 0x800B64A0
-    d_game_key_core.cpp
+    d_game_key/d_game_key_core.cpp
 # NSMBW          .text:  0x800B64A0 - 0x800B6570
   # d_graph.cpp
 # NSMBW          .text:  0x800B6570 - 0x800B8130
   # d_hana_body.cpp
 # NSMBW          .text:  0x800B8130 - 0x800B8490
-  # d_ice_effect_maker.cpp
+  # d_ice/d_ice_effect_maker.cpp
 # NSMBW          .text:  0x800B8490 - 0x800B8FF0
-  # d_ice_manager.cpp
+  # d_ice/d_ice_manager.cpp
 # NSMBW          .text:  0x800B8FF0 - 0x800B90A0
-  # d_ice_param.cpp
+  # d_ice/d_ice_param.cpp
 # NSMBW          .text:  0x800B90A0 - 0x800BAC00
-  # d_iggy_wan_kusari.cpp
+  # d_wan_kusari/d_iggy_wan_kusari.cpp
 # NSMBW          .text:  0x800BAC00 - 0x800BB0E0
-  # d_iggy_wan_kusari_piece.cpp
+  # d_wan_kusari/d_iggy_wan_kusari_piece.cpp
 # NSMBW          .text:  0x800BB0E0 - 0x800BBD80
 # NSMBW          .data:  0x80315E90 - 0x80315EB0
 # NSMBW          .bss:   0x80359054 - 0x803590F0
 # NSMBW          .sbss:  0x8042A25C - 0x8042A268
     d_info.cpp
 # NSMBW          .text:  0x800BBD80 - 0x800BC330
-  # d_ka_draw.cpp
+  # d_ka/d_ka_draw.cpp
 # NSMBW          .text:  0x800BC330 - 0x800BC9A0
-  # d_kinoko_kasa_draw.cpp
+  # d_ka/d_kinoko_kasa_draw.cpp
 # NSMBW          .text:  0x800BC9A0 - 0x800BCBD0
-  # d_kinoko_lift_draw.cpp
+  # d_ka/d_kinoko_lift_draw.cpp
 # nsmbw-project
-    d_kinopico_model.cpp
+    d_player_model/d_kinopico_model.cpp
 # NSMBW          .text:  0x800BCBD0 - 0x800BD7F0
-    d_kinopio_model.cpp
+    d_player_model/d_kinopio_model.cpp
 # NSMBW          .text:  0x800BD7F0 - 0x800C0060
-  # d_lift_all_hit_draw.cpp
+  # d_lift/d_lift_all_hit_draw.cpp
 # NSMBW          .text:  0x800C0060 - 0x800C0360
-  # d_lift_down_on_normal_draw.cpp
+  # d_lift/d_lift_down_on_normal_draw.cpp
 # NSMBW          .text:  0x800C0360 - 0x800C0B30
-  # d_lift_normal_model_draw.cpp
+  # d_lift/d_lift_normal_model_draw.cpp
 # NSMBW          .text:  0x800C0B30 - 0x800C0DC0
   # d_light.cpp
 # NSMBW          .text:  0x800C0DC0 - 0x800C89A0
   # d_line_mng.cpp
 # NSMBW          .text:  0x800C89A0 - 0x800C9B50
-    d_lytbase.cpp
+    d_lyt/d_lytbase.cpp
 # NSMBW          .text:  0x800C9B50 - 0x800CA000
-    d_lyttextbox.cpp
+    d_lyt/d_lyttextbox.cpp
 # NSMBW          .text:  0x800CA000 - 0x800CA150
   # d_main.cpp
 # NSMBW          .text:  0x800CA150 - 0x800CAC00
-  # d_mario_model.cpp
+  # d_player_model/d_mario_model.cpp
 # NSMBW          .text:  0x800CAC00 - 0x800CD290
-  # d_mask_draw.cpp
+  # d_mask/d_mask_draw.cpp
 # NSMBW          .text:  0x800CD290 - 0x800CD800
-    d_mask_mng.cpp
+    d_mask/d_mask_mng.cpp
 # NSMBW          .text:  0x800CD800 - 0x800CDB60
   # d_md_actor.cpp
 # NSMBW          .text:  0x800CDB60 - 0x800CDFB0
-    d_message.cpp
+    d_lyt/d_message.cpp
 # NSMBW          .text:  0x800CDFB0 - 0x800CE660
-    d_mj2d_game.cpp
+    d_mj2d/d_mj2d_game.cpp
 # NSMBW          .text:  0x800CE660 - 0x800CE7F0
-    d_mj2d_header.cpp
+    d_mj2d/d_mj2d_header.cpp
 # nsmbw-project
-    d_mj2d_json_handler.cpp
+    d_mj2d/d_mj2d_json_handler.cpp
 # NSMBW          .text:  0x800CE7F0 - 0x800CE8F0
-  # d_msgres.cpp
+  # d_lyt/d_msgres.cpp
 # NSMBW          .text:  0x800CE8F0 - 0x800CED00
     d_multi_manager.cpp
 # NSMBW          .text:  0x800CED00 - 0x800CFCE0
@@ -329,21 +329,21 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800D0A90 - 0x800D15F0
     d_pause_manager.cpp
 # NSMBW          .text:  0x800D15F0 - 0x800D2480
-  # d_pc.cpp
+  # d_pole/d_pc.cpp
 # NSMBW          .text:  0x800D2480 - 0x800D2600
-  # d_pole_ctr.cpp
+  # d_pole/d_pole_ctr.cpp
 # NSMBW          .text:  0x800D2600 - 0x800D2AE0
-  # d_pole_rope.cpp
+  # d_pole/d_pole_rope.cpp
 # NSMBW          .text:  0x800D2AE0 - 0x800D2D10
-    d_player_effect.cpp
+    d_ef/d_player_effect.cpp
 # NSMBW          .text:  0x800D2D10 - 0x800D2EC0
-    d_player_effect_mng.cpp
+    d_ef/d_player_effect_mng.cpp
 # NSMBW          .text:  0x800D2EC0 - 0x800D5420
-    d_player_model.cpp
+    d_player_model/d_player_model.cpp
 # NSMBW          .text:  0x800D5420 - 0x800D6DB0
-    d_player_model_base.cpp
+    d_player_model/d_player_model_base.cpp
 # NSMBW          .text:  0x800D6DB0 - 0x800D7190
-    d_player_model_manager.cpp
+    d_player_model/d_player_model_manager.cpp
 # NSMBW          .text:  0x800D7190 - 0x800D7440
   # d_player_orchestra.cpp
 # NSMBW          .text:  0x800D7440 - 0x800D81A0
@@ -409,51 +409,51 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800E8BC0 - 0x800E8C40
   # d_video.cpp
 # NSMBW          .text:  0x800E8C40 - 0x800EA740
-  # d_wan_kusari.cpp
+  # d_wan_kusari/d_wan_kusari.cpp
 # NSMBW          .text:  0x800EA740 - 0x800EAB10
-  # d_wan_kusari_piece.cpp
+  # d_wan_kusari/d_wan_kusari_piece.cpp
 # NSMBW          .text:  0x800EAB10 - 0x800EB5D0
-  # d_water_draw.cpp
+  # d_water/d_water_draw.cpp
 # NSMBW          .text:  0x800EB5D0 - 0x800EBCF0
-  # d_water_entry_mng.cpp
+  # d_water/d_water_entry_mng.cpp
 # NSMBW          .text:  0x800EBCF0 - 0x800EE030
-  # d_water_wave.cpp
+  # d_water/d_water_wave.cpp
 # NSMBW          .text:  0x800EE030 - 0x800EE3C0
   # d_wipe_fader.cpp
 # NSMBW          .text:  0x800EE3C0 - 0x800F1A50
-  # d_wm_MapModel.cpp
+  # d_wm/d_wm_MapModel.cpp
 # NSMBW          .text:  0x800F1A50 - 0x800F24A0
-  # d_wm_Map_ExRouteAnim.cpp
+  # d_wm/d_wm_Map_ExRouteAnim.cpp
 # NSMBW          .text:  0x800F24A0 - 0x800F2820
-  # d_wm_ShadowVolume.cpp
+  # d_wm/d_wm_ShadowVolume.cpp
 # NSMBW          .text:  0x800F2820 - 0x800F2C00
-    d_wm_actor.cpp
+    d_wm/d_wm_actor.cpp
 # NSMBW          .text:  0x800F2C00 - 0x800F3570
-    d_wm_connect.cpp
+    d_wm/d_wm_connect.cpp
 # NSMBW          .text:  0x800F3570 - 0x800F60E0
-    d_wm_csvdata.cpp
+    d_wm/d_wm_csvdata.cpp
 # NSMBW          .text:  0x800F60E0 - 0x800F7050
-    d_wm_demo_actor.cpp
+    d_wm/d_wm_demo_actor.cpp
 # NSMBW          .text:  0x800F7050 - 0x800F7510
-  # d_wm_en_path.cpp
+  # d_wm/d_wm_en_path.cpp
 # NSMBW          .text:  0x800F7510 - 0x800F9380
-  # d_wm_enemy.cpp
+  # d_wm/d_wm_enemy.cpp
 # NSMBW          .text:  0x800F9380 - 0x800FD6A0
-    d_wm_lib.cpp
+    d_wm/d_wm_lib.cpp
 # NSMBW          .text:  0x800FD6A0 - 0x800FD8F0
-  # d_wm_material.cpp
+  # d_wm/d_wm_material.cpp
 # NSMBW          .text:  0x800FD8F0 - 0x800FDB60
-  # d_wm_material.cpp
+  # d_wm/d_wm_material.cpp
 # NSMBW          .text:  0x800FDB60 - 0x800FDC40
-    d_wm_path.cpp
+    d_wm/d_wm_path.cpp
 # NSMBW          .text:  0x800FDC40 - 0x800FE140
-    d_wm_player_base.cpp
+    d_wm/d_wm_player_base.cpp
 # NSMBW          .text:  0x800FE140 - 0x800FE160
-  # d_wm_viewclip.cpp
+  # d_wm/d_wm_viewclip.cpp
 # NSMBW          .text:  0x800FE160 - 0x800FE2E0
   # d_world.cpp
 # NSMBW          .text:  0x800FE2E0 - 0x800FFF80
-    d_yoshi_model.cpp
+    d_player_model/d_yoshi_model.cpp
 )
 
 #
@@ -462,5 +462,5 @@ target_sources(project PRIVATE
 #
 target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x8092F020 - 0x80932F60
-    d_CourseSelectManager.cpp
+    d_lyt/d_CourseSelectManager.cpp
 )

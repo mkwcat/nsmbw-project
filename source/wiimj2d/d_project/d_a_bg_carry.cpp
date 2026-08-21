@@ -4,11 +4,12 @@
 #include "d_a_bg_carry.h"
 
 #include "d_player/d_a_player.h"
-#include "d_static/d_actor.h"
+#include "d_static/d_Panel/d_PanelObjMgr.h"
+#include "d_static/d_actor/d_actor.h"
 #include "d_static/d_audio.h"
-#include "d_static/d_bg.h"
-#include "d_static/d_effactor_mng.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_bg/d_bg.h"
+#include "d_static/d_ef/d_effactor_mng.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include "egg/prim/eggBitFlag.h"
 
 void daBgCarry_c::callBackF(
@@ -109,7 +110,9 @@ void daBgCarry_c::collisionCallback(
 
 dBaseActorProfile_s g_profile_AC_BG_CARRY{
     {{
-        .mClassInit    = []() -> fBase_c* { return new daBgCarry_c(); },
+        .mClassInit = []() -> fBase_c* {
+            return new daBgCarry_c();
+        },
         .mExecuteOrder = 412,
         .mDrawOrder    = 523,
     }},
@@ -140,8 +143,7 @@ sCcDatNewF l_bgcarry_cc = {
     &daBgCarry_c::collisionCallback,
 };
 
-daBgCarry_c::daBgCarry_c() {
-}
+daBgCarry_c::daBgCarry_c() {}
 
 daBgCarry_c::~daBgCarry_c() {
     mPanelObj.~dPanelObjList_c();
@@ -323,8 +325,7 @@ void daBgCarry_c::initializeState_Throw() {
     mBg.release();
 }
 
-void daBgCarry_c::finalizeState_Throw() {
-}
+void daBgCarry_c::finalizeState_Throw() {}
 
 void daBgCarry_c::executeState_Throw() {
     calcSpeedY();

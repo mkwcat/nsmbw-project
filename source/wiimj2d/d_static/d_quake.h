@@ -2,19 +2,17 @@
 
 #include <egg/prim/eggBitFlag.h>
 
-class dQuake_c
-{
+class dQuake_c {
 public:
     // Constants and Types
     // ^^^^^^
 
-    enum class TYPE_QUAKE_e {
-    };
+    enum class TYPE_QUAKE_e {};
 
     enum class TYPE_SHOCK_e {
-        HIP_ATTACK = 3,
-        PLAYER_DAMAGE = 4,
-        HIP_ATTACK2 = 7,
+        HIP_ATTACK          = 3,
+        PLAYER_DAMAGE       = 4,
+        HIP_ATTACK2         = 7,
         PLAYER_BUBBLE_SHAKE = 10,
     };
 

@@ -6,7 +6,7 @@
 #include "d_enemies/d_a_en_item.h"
 #include "d_player/d_a_player.h"
 #include "d_project/d_gamerule.h"
-#include "d_static/d_actor_mng.h"
+#include "d_static/d_actor/d_actor_mng.h"
 #include "d_static/d_audio.h"
 #include "d_static/d_balloon_mng.h"
 #include "d_static/d_quake.h"

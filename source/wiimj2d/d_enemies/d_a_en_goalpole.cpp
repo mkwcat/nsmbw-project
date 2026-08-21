@@ -3,8 +3,8 @@
 
 #include "d_a_en_goalpole.h"
 
-#include "d_static/d_a_player_base.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_base.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_cc.h"
 #include <bit>
 

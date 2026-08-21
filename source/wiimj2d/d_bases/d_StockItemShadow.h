@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_static/d_base.h"
-#include "d_static/d_lytbase.h"
+#include "d_static/d_lyt/d_lytbase.h"
 
 class dStockItemShadow_c : public dBase_c {
     SIZE_ASSERT(0x280);

@@ -5,7 +5,7 @@
 
 #include "d_bases/d_s_world_map.h"
 #include "d_project/d_gamerule.h"
-#include "d_static/d_game_key.h"
+#include "d_static/d_game_key/d_game_key.h"
 #include "sound/SndAudioMgr.h"
 #include "sound/SndID.h"
 

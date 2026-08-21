@@ -3,8 +3,7 @@
 #include "d_static/d_res.h"
 #include <egg/core/eggHeap.h>
 
-class dResMng_c
-{
+class dResMng_c {
     VTABLE(0x00, dResMng_c, 0x80319868);
 
 public:

@@ -2,8 +2,7 @@
 
 #include "machine/m_vec.h"
 
-class dScoreMng_c
-{
+class dScoreMng_c {
 public:
     // Instance Methods
     // ^^^^^^

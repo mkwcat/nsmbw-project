@@ -1,7 +1,6 @@
 #pragma once
 
-class dStageTimer_c
-{
+class dStageTimer_c {
     VTABLE(0x00, dStageTimer_c, 0x8031B358);
 
 public:
@@ -21,10 +20,7 @@ public:
     /* 0x800E3A00 */
     void setTimer(short timer);
 
-    inline short getTimer() const
-    {
-        return (m_timer + 0xFFF) / 0x1000;
-    }
+    inline short getTimer() const { return (m_timer + 0xFFF) / 0x1000; }
 
     /* 0x800E3A20 */
     void execute();

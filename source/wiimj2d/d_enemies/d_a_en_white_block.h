@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_a_en_blockmain.h"
+#include "d_static/d_enemy/d_a_en_blockmain.h"
 #include "d_static/d_allocator.h"
 #include "machine/m_3d_mdl.h"
 #include <array>

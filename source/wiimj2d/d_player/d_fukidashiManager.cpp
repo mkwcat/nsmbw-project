@@ -4,7 +4,7 @@
 #include "d_fukidashiManager.h"
 
 #include "d_static/d_info.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 
 [[nsmbw(0x80156FE0)]]
 fBase_c* dfukidashiManager_c_classInit()

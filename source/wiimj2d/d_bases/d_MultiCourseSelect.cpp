@@ -2,11 +2,11 @@
 // NSMBW   d_bases.text:  0x80798920 - 0x8079D540
 
 #include "d_bases/d_MultiCourseSelect.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_common.h"
 #include "d_static/d_info.h"
-#include "d_static/d_mj2d_game.h"
-#include "d_static/d_mj2d_header.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_header.h"
 #include "d_static/d_save_manager.h"
 
 [[nsmbw(0x80798920)]]

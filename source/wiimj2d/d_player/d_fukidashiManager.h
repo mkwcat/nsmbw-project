@@ -2,8 +2,8 @@
 
 #include "d_static/d_2d.h"
 #include "d_static/d_base.h"
-#include "d_static/d_fukidashiInfo.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_lyt/d_fukidashiInfo.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 
 class dfukidashiManager_c : public dBase_c
 {

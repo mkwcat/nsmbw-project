@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_wm_actor.h"
+#include "d_static/d_wm/d_wm_actor.h"
 
 class dCsSeqMng_c : public dWmActor_c {
     SIZE_ASSERT(0x1D4);

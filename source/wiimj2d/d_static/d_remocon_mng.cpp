@@ -3,10 +3,10 @@
 
 #include "d_remocon_mng.h"
 
-#include "d_static/d_mj2d_game.h"
-#include "egg/audio/eggAudioRmtSpeaker.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include "machine/m_pad.h"
 #include "mkwcat/ToString.hpp"
+#include <egg/audio/eggAudioRmtSpeaker.h>
 #include <egg/core/eggController.h>
 #include <memory>
 #include <revolution/os.h>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_a_lift_remocon_main.h"
-#include "d_static/d_a_player_manager.h"
-#include "d_static/d_actor.h"
+#include "d_static/d_actor/d_a_lift_remocon_main.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_static/d_actor/d_actor.h"
 
 class daNiceBoat_c : public daLiftRemoconMain_c {
 public:

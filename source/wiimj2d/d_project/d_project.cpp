@@ -6,7 +6,7 @@
 #include "component/c_json.h"
 #include "d_player/d_s_boot.h"
 #include "d_project/d_exception.h"
-#include "d_static/d_a_player_manager.h"
+#include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_info.h"
 #include "d_static/d_nand_thread.h"
 #include "d_static/d_remocon_mng.h"

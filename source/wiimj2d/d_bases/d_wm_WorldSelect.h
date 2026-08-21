@@ -2,7 +2,7 @@
 
 #include "component/c_array.h"
 #include "d_static/d_base.h"
-#include "d_static/d_mj2d_game.h"
+#include "d_static/d_mj2d/d_mj2d_game.h"
 #include "machine/m_angle.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"

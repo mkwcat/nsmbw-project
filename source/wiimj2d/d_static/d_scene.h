@@ -5,8 +5,7 @@
 
 class sPhase_c;
 
-class dScene_c : public dBase_c
-{
+class dScene_c : public dBase_c {
     SIZE_ASSERT(0x74);
 
 public:
@@ -42,10 +41,7 @@ public:
     /* 0x800E1F50 */
     static void setNextScene(u16 profile, u32 param, bool param2);
 
-    static inline bool isWorldMap()
-    {
-        return m_nowScene == dProf::WORLD_MAP;
-    }
+    static inline bool isWorldMap() { return m_nowScene == dProf::WORLD_MAP; }
 
 public:
     // Static Variables

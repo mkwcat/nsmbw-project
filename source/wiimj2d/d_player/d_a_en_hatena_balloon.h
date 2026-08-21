@@ -1,9 +1,9 @@
 #pragma once
 
 #include "d_profile/d_profile.h"
-#include "d_static/d_actor.h"
+#include "d_static/d_actor/d_actor.h"
 #include "d_static/d_allocator.h"
-#include "d_static/d_enemy.h"
+#include "d_static/d_enemy/d_enemy.h"
 #include "machine/m_3d_anmchr.h"
 #include "machine/m_3d_anmtexpat.h"
 #include "machine/m_3d_anmtexsrt.h"
