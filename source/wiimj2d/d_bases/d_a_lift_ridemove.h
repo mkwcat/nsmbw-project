@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_system/d_actor_state.h"
-#include "d_system/d_rc.h"
+#include "d_static/d_actor_state.h"
+#include "d_static/d_rc.h"
 
 class daLiftRideMove_c : public dActorState_c {
 public:

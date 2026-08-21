@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_base.h"
+#include "d_static/d_base.h"
 #include "state/s_State.h"
 
 class dGameOver_c : public dBase_c

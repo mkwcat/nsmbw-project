@@ -4,7 +4,7 @@
 #include "d_a_jr_clown_for_player.h"
 
 #include "d_player/d_a_player.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_mj2d_game.h"
 #include "machine/m_3d_fanm.h"
 
 const char* daJrClownForPlayer_c::getStepOnEffectName(

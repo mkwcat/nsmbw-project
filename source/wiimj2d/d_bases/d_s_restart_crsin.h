@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_system/d_info.h"
-#include "d_system/d_scene.h"
+#include "d_static/d_info.h"
+#include "d_static/d_scene.h"
 
 class dScRestartCrsin_c : public dScene_c {
 public:

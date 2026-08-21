@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_system/d_2d.h"
-#include "d_system/d_base.h"
-#include "d_system/d_game_common.h"
-#include "d_system/d_lytbase.h"
-#include "d_system/d_lyttextbox.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_2d.h"
+#include "d_static/d_base.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_lytbase.h"
+#include "d_static/d_lyttextbox.h"
+#include "d_static/d_mj2d_game.h"
 #include "nw4r/lyt/Pane.h"
 #include "nw4r/lyt/Window.h"
 #include "state/s_FStateFct.h"

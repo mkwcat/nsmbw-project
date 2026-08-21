@@ -4,7 +4,7 @@
 
 #include "Four.h"
 
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_mj2d_game.h"
 #include "mkwcat/Port.hpp"
 #include <cstring>
 #include <revolution/os.h>

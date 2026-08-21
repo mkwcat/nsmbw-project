@@ -1,12 +1,12 @@
 #pragma once
 
-#include "d_system/d_2d.h"
-#include "d_system/d_base.h"
-#include "d_system/d_info.h"
-#include "d_system/d_lytbase.h"
-#include "d_system/d_lyttextbox.h"
-#include "d_system/d_mj2d_game.h"
-#include "d_system/d_remocon_mng.h"
+#include "d_static/d_2d.h"
+#include "d_static/d_base.h"
+#include "d_static/d_info.h"
+#include "d_static/d_lytbase.h"
+#include "d_static/d_lyttextbox.h"
+#include "d_static/d_mj2d_game.h"
+#include "d_static/d_remocon_mng.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 

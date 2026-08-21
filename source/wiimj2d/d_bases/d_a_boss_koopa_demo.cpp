@@ -6,9 +6,9 @@
 #include "d_en_boss/d_a_en_boss_koopa.h"
 #include "d_player/d_a_player.h"
 #include "d_profile/d_profile.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_enemy_manager.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_enemy_manager.h"
+#include "d_static/d_mj2d_game.h"
 #include "sound/SndSceneMgr.h"
 #include <array>
 #include <bit>

@@ -5,7 +5,7 @@
 
 #include "d_profile/d_all_base_headers.h"
 #include "d_profile/d_profile.h"
-#include "d_system/d_base.h"
+#include "d_static/d_base.h"
 #include <cassert>
 #include <cstring>
 #include <string_view>

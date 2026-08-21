@@ -3,9 +3,9 @@
 
 #include "d_a_en_goalpole.h"
 
-#include "d_system/d_a_player_base.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_cc.h"
+#include "d_static/d_a_player_base.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_cc.h"
 #include <bit>
 
 [[nsmbw(0x80A096E0)]]

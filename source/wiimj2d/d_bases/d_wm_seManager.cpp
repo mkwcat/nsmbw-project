@@ -3,9 +3,9 @@
 
 #include "d_wm_seManager.h"
 
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_audio.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_audio.h"
+#include "d_static/d_mj2d_game.h"
 #include "sound/SndAudioMgr.h"
 #include "sound/SndID.h"
 #include "sound/SndObjectEnemy.h"

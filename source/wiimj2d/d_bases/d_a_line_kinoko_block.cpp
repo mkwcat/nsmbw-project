@@ -1,7 +1,7 @@
 // d_a_line_kinoko_block.cpp
 // NSMBW d_bases.text: 0x80857490 - 0x808581A0
 
-#include "d_system/d_a_player_manager.h"
+#include "d_static/d_a_player_manager.h"
 
 [[nsmbw(0x80857770)]]
 int daLineKinokoBlock_c_numPlayersInMask(u32 mask)

@@ -4,7 +4,7 @@
 #include "d_a_yoshi.h"
 
 #include "d_bases/d_s_stage.h"
-#include "d_system/d_a_player_manager.h"
+#include "d_static/d_a_player_manager.h"
 
 [[nsmbw(0x8014EAF0)]]
 dAcPy_c* daYoshi_c::getPlayerRideOn() const;

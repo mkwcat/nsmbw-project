@@ -1,7 +1,7 @@
 // d_a_fireball_player.cpp
 // NSMBW .text: 0x8011A5B0 - 0x8011B640
 
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_mj2d_game.h"
 #include <mkwcat/Relocate.hpp>
 
 /* 0x80375840 */

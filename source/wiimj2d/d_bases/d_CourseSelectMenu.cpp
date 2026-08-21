@@ -3,8 +3,8 @@
 
 #include "d_CourseSelectMenu.h"
 
-#include "d_system/d_game_common.h"
-#include "d_system/d_message.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_message.h"
 #include <revolution/sc.h>
 
 [[nsmbw(0x8077AA10)]]

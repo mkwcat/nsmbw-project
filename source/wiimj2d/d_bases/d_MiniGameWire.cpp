@@ -2,7 +2,7 @@
 // NSMBW   d_bases.text:  0x8078DA20 - 0x80790450
 
 #include "d_MiniGameWire.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_mj2d_game.h"
 
 [[nsmbw(0x8078DA20)]]
 dMiniGameWire_c* dMiniGameWire_c_classInit()

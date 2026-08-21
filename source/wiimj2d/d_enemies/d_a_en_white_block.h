@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_system/d_a_en_blockmain.h"
-#include "d_system/d_allocator.h"
+#include "d_static/d_a_en_blockmain.h"
+#include "d_static/d_allocator.h"
 #include "machine/m_3d_mdl.h"
 #include <array>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_base.h"
+#include "d_static/d_base.h"
 
 class dCollectionCoinBase_c;
 class dCollectionCoinDate_c;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_actor.h"
-#include "d_system/d_cc.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_actor.h"
+#include "d_static/d_cc.h"
 #include <array>
 
 class dAcPy_c;

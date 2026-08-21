@@ -1,8 +1,8 @@
 #pragma once
 
 #include "d_profile/d_profile.h"
-#include "d_system/d_allocator.h"
-#include "d_system/d_enemy.h"
+#include "d_static/d_allocator.h"
+#include "d_static/d_enemy.h"
 #include "state/s_State.h"
 
 class daEnItem_c : public dEn_c, public dProf::Info<daEnItem_c, dProf::EN_ITEM> {

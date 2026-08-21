@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_system/d_mj2d_game.h"
-#include "d_system/d_scene.h"
+#include "d_static/d_mj2d_game.h"
+#include "d_static/d_scene.h"
 
 class dSelectCursor_c;
 

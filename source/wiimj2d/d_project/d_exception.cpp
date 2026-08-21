@@ -5,7 +5,7 @@
 
 #include "d_base_dump.h"
 #include "d_project/d_project.h"
-#include "d_system/d_system.h"
+#include "d_static/d_system.h"
 #include "machine/m_nandfile.h"
 #include "machine/m_pipe.h"
 #include "nw4r/db/db_console.h"

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "d_player/d_death_message_mgr.h"
-#include "d_system/d_base.h"
-#include "d_system/d_lytbase.h"
-#include "d_system/d_lyttextbox.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_base.h"
+#include "d_static/d_lytbase.h"
+#include "d_static/d_lyttextbox.h"
+#include "d_static/d_mj2d_game.h"
 #include "machine/m_ef.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"

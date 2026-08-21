@@ -4,11 +4,11 @@
 #include "d_a_bg_carry.h"
 
 #include "d_player/d_a_player.h"
-#include "d_system/d_actor.h"
-#include "d_system/d_audio.h"
-#include "d_system/d_bg.h"
-#include "d_system/d_effactor_mng.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_actor.h"
+#include "d_static/d_audio.h"
+#include "d_static/d_bg.h"
+#include "d_static/d_effactor_mng.h"
+#include "d_static/d_mj2d_game.h"
 #include "egg/prim/eggBitFlag.h"
 
 void daBgCarry_c::callBackF(

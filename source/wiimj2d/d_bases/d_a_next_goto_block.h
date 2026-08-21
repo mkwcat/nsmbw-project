@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_actor_state.h"
-#include "d_system/d_cc.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_actor_state.h"
+#include "d_static/d_cc.h"
 #include "d_player/d_a_player.h"
 #include "machine/m_vec.h"
 #include "state/s_State.h"

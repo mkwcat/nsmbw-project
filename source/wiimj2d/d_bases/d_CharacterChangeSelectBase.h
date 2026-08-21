@@ -1,9 +1,9 @@
 #pragma once
 
 #include "component/c_array.h"
-#include "d_system/d_base.h"
-#include "d_system/d_info.h"
-#include "d_system/d_lytbase.h"
+#include "d_static/d_base.h"
+#include "d_static/d_info.h"
+#include "d_static/d_lytbase.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
 

@@ -1,7 +1,7 @@
 // d_a_en_mecha_koopa.cpp
 // NSMBW d_enemies.text: 0x80A64110 - 0x80A67470
 
-#include "d_system/d_a_player_manager.h"
+#include "d_static/d_a_player_manager.h"
 
 [[nsmbw(0x80A65530)]]
 void UNDEF_80A65530() ASM_METHOD(

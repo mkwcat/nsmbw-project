@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_enemy.h"
+#include "d_static/d_enemy.h"
 
 class daYoshiEgg_c : public dEn_c
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_scene.h"
+#include "d_static/d_scene.h"
 #include "state/s_FStateFct.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"

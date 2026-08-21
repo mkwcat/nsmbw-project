@@ -5,10 +5,10 @@
 
 #include "d_bases/d_s_stage.h"
 #include "d_player/d_a_player.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_cyuukan.h"
-#include "d_system/d_flag_ctrl.h"
-#include "d_system/d_info.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_cyuukan.h"
+#include "d_static/d_flag_ctrl.h"
+#include "d_static/d_info.h"
 
 [[nsmbw(0x807E2710)]]
 void daChukanPoint_c::setCyuukanData() {

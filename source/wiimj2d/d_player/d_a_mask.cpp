@@ -1,7 +1,7 @@
 // d_a_mask.cpp
 // NSMBW .text: 0x80124EB0 - 0x80126650
 
-#include "d_system/d_a_player_manager.h"
+#include "d_static/d_a_player_manager.h"
 
 class daPlBase_c;
 

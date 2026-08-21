@@ -2,9 +2,9 @@
 // NSMBW .text: 0x8083EBC0 - 0x8083FEC0
 
 #include "d_a_lift_remocon_seesaw.h"
-#include "d_system/d_game_common.h"
-#include "d_system/d_game_key.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_game_key.h"
+#include "d_static/d_mj2d_game.h"
 #include <algorithm>
 
 short sSeesawAngle[PLAYER_COUNT];

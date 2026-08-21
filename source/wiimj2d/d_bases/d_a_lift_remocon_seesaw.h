@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_a_lift_remocon_main.h"
+#include "d_static/d_a_lift_remocon_main.h"
 
 class daLiftRemoconSeesaw_c : public daLiftRemoconMain_c {
 public:

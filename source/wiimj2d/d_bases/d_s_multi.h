@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_bases/d_MultiCourseSelect.h"
-#include "d_system/d_scene.h"
+#include "d_static/d_scene.h"
 #include "state/s_FStateFct.h"
 #include "state/s_StateMethodUsr_FI.h"
 #include "state/s_StateMgr.h"

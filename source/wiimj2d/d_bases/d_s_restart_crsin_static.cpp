@@ -7,9 +7,9 @@
 #include "d_bases/d_s_stage.h"
 #include "d_profile/d_profile.h"
 #include "d_project/d_demo_info.h"
-#include "d_system/d_fader.h"
-#include "d_system/d_info.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_fader.h"
+#include "d_static/d_info.h"
+#include "d_static/d_mj2d_game.h"
 #include "framework/f_feature.h"
 #include "machine/m_dvd.h"
 

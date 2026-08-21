@@ -3,12 +3,12 @@
 
 #include "d_GameOver.h"
 
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_game_common.h"
-#include "d_system/d_info.h"
-#include "d_system/d_mj2d_game.h"
-#include "d_system/d_save_manager.h"
-#include "d_system/d_wm_lib.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_info.h"
+#include "d_static/d_mj2d_game.h"
+#include "d_static/d_save_manager.h"
+#include "d_static/d_wm_lib.h"
 
 [[nsmbw(0x80788F10)]]
 void dGameOver_c::finalizeState_ExitAnimeEndWait()

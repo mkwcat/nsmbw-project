@@ -3,7 +3,7 @@
 
 #include "d_a_obj_grass.h"
 
-#include "d_system/d_a_player_manager.h"
+#include "d_static/d_a_player_manager.h"
 
 u32 daObjGrass_c_getSize() {
     return sizeof(daObjGrass_c);

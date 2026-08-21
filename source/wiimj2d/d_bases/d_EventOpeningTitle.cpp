@@ -7,8 +7,8 @@
 #include "d_bases/d_s_stage.h"
 #include "d_profile/d_profile.h"
 #include "d_project/d_project.h"
-#include "d_system/d_game_common.h"
-#include "d_system/d_info.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_info.h"
 #include <cstdlib>
 
 [[nsmbw(0x80781D00)]]

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_info.h"
+#include "d_static/d_info.h"
 #include <iterator>
 
 namespace dDemoInfo

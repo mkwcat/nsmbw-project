@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_system/d_enemy.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_enemy.h"
+#include "d_static/d_mj2d_game.h"
 #include "state/s_State.h"
 
 class daMiniGameWireMesh_c : public dEn_c

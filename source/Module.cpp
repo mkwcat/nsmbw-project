@@ -6,7 +6,7 @@
 #include <revolution/arc.h>
 #include <revolution/dvd.h>
 #include <revolution/os.h>
-#include <wiimj2d/d_system/d_system.h>
+#include <wiimj2d/d_static/d_system.h>
 
 // External init
 int main();

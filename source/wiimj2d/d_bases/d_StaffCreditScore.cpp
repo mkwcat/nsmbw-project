@@ -3,11 +3,11 @@
 
 #include "d_StaffCreditScore.h"
 #include "d_player/d_a_player.h"
-#include "d_system/d_a_player_demo_manager.h"
-#include "d_system/d_game_common.h"
-#include "d_system/d_lyttextbox.h"
-#include "d_system/d_message.h"
-#include "d_system/d_mj2d_game.h"
+#include "d_static/d_a_player_demo_manager.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_lyttextbox.h"
+#include "d_static/d_message.h"
+#include "d_static/d_mj2d_game.h"
 #include "sound/SndSceneMgr.h"
 
 [[nsmbw(0x807ADAD0)]]

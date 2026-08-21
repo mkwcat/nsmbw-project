@@ -1,8 +1,8 @@
 // d_a_en_jumpdai.cpp
 // NSMBW d_enemies.text: 0x80A38A00 - 0x80A3AEF0
 
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_info.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_info.h"
 
 [[nsmbw(0x80A39660)]]
 void UNDEF_80A39660() ASM_METHOD(

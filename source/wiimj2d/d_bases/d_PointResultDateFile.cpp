@@ -2,7 +2,7 @@
 // NSMBW   d_bases.text:  0x807A3F50 - 0x807A7770
 
 #include "d_bases/d_PointResultDateFile.h"
-#include "d_system/d_info.h"
+#include "d_static/d_info.h"
 #include "sound/SndAudioMgr.h"
 #include "sound/SndID.h"
 

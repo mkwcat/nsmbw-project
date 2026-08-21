@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_base.h"
+#include "d_static/d_base.h"
 
 /**
  * Displays the controller information screen. This is the screen that reads "Hold the Wii Remote

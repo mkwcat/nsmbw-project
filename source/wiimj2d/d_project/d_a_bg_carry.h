@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_system/d_PanelObjList.h"
-#include "d_system/d_actor_state.h"
-#include "d_system/d_bg_ctr.h"
+#include "d_static/d_PanelObjList.h"
+#include "d_static/d_actor_state.h"
+#include "d_static/d_bg_ctr.h"
 #include "state/s_State.h"
 
 class daBgCarry_c final : public dActorMultiState_c

@@ -8,13 +8,13 @@
 #include "d_bases/d_MiniGameWire.h"
 #include "d_bases/d_ModelPlayManager.h"
 #include "d_bases/d_StaffCreditScore.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_cyuukan.h"
-#include "d_system/d_info.h"
-#include "d_system/d_mj2d_game.h"
-#include "d_system/d_save_manager.h"
-#include "d_system/d_start_info.h"
-#include "d_system/d_wm_lib.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_cyuukan.h"
+#include "d_static/d_info.h"
+#include "d_static/d_mj2d_game.h"
+#include "d_static/d_save_manager.h"
+#include "d_static/d_start_info.h"
+#include "d_static/d_wm_lib.h"
 
 [[nsmbw(0x80924950)]]
 bool dScStage_c::CreatedLayouts() const {

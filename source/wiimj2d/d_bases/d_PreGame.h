@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_lytbase.h"
+#include "d_static/d_lytbase.h"
 
 #include <nw4r/lyt/Pane.h>
 

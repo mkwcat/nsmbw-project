@@ -3,7 +3,7 @@
 
 #include "d_death_message_mgr.h"
 
-#include "d_system/d_game_common.h"
+#include "d_static/d_game_common.h"
 #include <algorithm>
 #include <cwchar>
 #include <egg/gfx/eggFrustum.h>

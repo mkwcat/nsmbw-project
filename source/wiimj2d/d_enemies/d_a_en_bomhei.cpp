@@ -3,7 +3,7 @@
 
 #include "d_a_en_bomhei.h"
 
-#include "d_system/d_a_player_manager.h"
+#include "d_static/d_a_player_manager.h"
 
 [[nsmbw(0x809C9DD0)]]
 void UNDEF_809C9DD0() ASM_METHOD(

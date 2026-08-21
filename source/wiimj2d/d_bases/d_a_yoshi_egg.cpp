@@ -2,9 +2,9 @@
 // NSMBW d_bases.text: 0x80910F00 - 0x809125E0
 
 #include "d_a_yoshi_egg.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_game_common.h"
-#include "d_system/d_yoshi_model.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_game_common.h"
+#include "d_static/d_yoshi_model.h"
 #include "machine/m_ef.h"
 
 extern const float c_eggColorFrames[dYoshiMdl_c::COLOR_COUNT] = {

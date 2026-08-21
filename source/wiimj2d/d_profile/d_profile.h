@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_system/d_system.h"
+#include "d_static/d_system.h"
 #include "framework/f_base.h"
 #include "framework/f_profile.h"
 #include <mkwcat/Concepts.hpp>

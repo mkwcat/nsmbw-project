@@ -6,10 +6,10 @@
 #include "d_player/d_a_player.h"
 #include "d_player/d_a_yoshi.h"
 #include "d_profile/d_profile.h"
-#include "d_system/d_a_player_manager.h"
-#include "d_system/d_base.h"
-#include "d_system/d_player_model_manager.h"
-#include "d_system/d_yoshi_model.h"
+#include "d_static/d_a_player_manager.h"
+#include "d_static/d_base.h"
+#include "d_static/d_player_model_manager.h"
+#include "d_static/d_yoshi_model.h"
 #include <algorithm>
 #include <array>
 #include <cstring>

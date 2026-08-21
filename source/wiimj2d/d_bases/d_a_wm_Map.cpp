@@ -5,10 +5,10 @@
 
 #include "d_bases/d_s_world_map.h"
 #include "d_project/d_gamerule.h"
-#include "d_system/d_info.h"
-#include "d_system/d_mj2d_game.h"
-#include "d_system/d_wm_connect.h"
-#include "d_system/d_wm_lib.h"
+#include "d_static/d_info.h"
+#include "d_static/d_mj2d_game.h"
+#include "d_static/d_wm_connect.h"
+#include "d_static/d_wm_lib.h"
 
 [[nsmbw(0x808DFE50)]]
 void daWmMap_c::createEnemyActors();
