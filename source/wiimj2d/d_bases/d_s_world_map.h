@@ -58,9 +58,9 @@ public:
     // ^^^^^^
 
     /* 0x8042A52D */ static WORLD_e m_WorldNo;
-    /* 0x8042A52E */ static u8      m_SceneNo;
+    /* 0x8042A52E */ static s8      m_SceneNo;
     /* 0x80429355 */ static WORLD_e m_PrevWorldNo;
-    /* 0x80429356 */ static u8      m_PrevSceneNo;
+    /* 0x80429356 */ static s8      m_PrevSceneNo;
 
     /* 0x8042A538 */ static bool    m_GameOver;
 };

@@ -14,13 +14,13 @@
 WORLD_e dScWMap_c::m_WorldNo;
 
 [[nsmbw_data(0x8042A52E)]]
-u8 dScWMap_c::m_SceneNo;
+s8 dScWMap_c::m_SceneNo;
 
 [[nsmbw_data(0x80429355)]]
 WORLD_e dScWMap_c::m_PrevWorldNo;
 
 [[nsmbw_data(0x80429356)]]
-u8 dScWMap_c::m_PrevSceneNo;
+s8 dScWMap_c::m_PrevSceneNo;
 
 [[nsmbw_data(0x8042A538)]]
 bool dScWMap_c::m_GameOver;
@@ -34,6 +34,15 @@ void dScWMap_c::returnToWorldScene() {
         m_PrevWorldNo                = dInfo_c::m_startGameInfo.stage1.world;
         m_PrevSceneNo                = dInfo_c::m_startGameInfo.stage1.getWorldSceneNo();
         daWmMap_c::m_setStageRndizer = dInfo_c::m_startGameInfo.stage1.stage;
+    }
+
+    if (m_PrevWorldNo < WORLD_e::WORLD_1 || m_PrevWorldNo > WORLD_e::WORLD_9) {
+        m_PrevWorldNo = m_WorldNo < WORLD_e::WORLD_1 || m_WorldNo > WORLD_e::WORLD_9
+                            ? WORLD_e::WORLD_1
+                            : m_WorldNo;
+    }
+    if (m_PrevSceneNo < 0 || m_PrevSceneNo > 1) {
+        m_PrevSceneNo = m_SceneNo < 0 || m_SceneNo > 1 ? 0 : m_SceneNo;
     }
 
     return setNextWorldScene(static_cast<u8>(m_PrevWorldNo), m_PrevSceneNo);
