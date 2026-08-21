@@ -1,9 +1,9 @@
-// d_pregamelyt.cpp
+// d_PreGame.cpp
 // NSMBW d_en_boss.text: 0x80B6BCC0 - 0x80B6D1C0
 
 // I'm not sure why this is in d_en_boss
 
-#include "d_pregamelyt.h"
+#include "d_PreGame.h"
 
 #include "d_system/d_a_player_manager.h"
 #include "d_system/d_game_common.h"
@@ -13,10 +13,9 @@
 #include <algorithm>
 
 [[nsmbw(0x80B6BCC0)]]
-void dPreGameLyt_c::setPlayerRest()
-{
+void dPreGame_c::setPlayerRest() {
     for (std::size_t i = 0; i < LytPlayerCount; i++) {
-        int rest = daPyMng_c::mRest[static_cast<PLAYER_TYPE_e>(i)];
+        int           rest = daPyMng_c::mRest[static_cast<PLAYER_TYPE_e>(i)];
 
         LytTextBox_c *m0, *m1;
         if (i < 4) {
@@ -40,37 +39,38 @@ void dPreGameLyt_c::setPlayerRest()
     }
 }
 
-void dPreGameLyt_c::createLayoutExtra()
-{
-    LytTextBox_c* old = reinterpret_cast<LytTextBox_c*>(mpExtra);
-    mpExtra = new Extra_s{};
+void dPreGame_c::createLayoutExtra() {
+    LytTextBox_c* old         = reinterpret_cast<LytTextBox_c*>(mpExtra);
+    mpExtra                   = new Extra_s{};
     mpExtra->mpTRemainderOld1 = old;
 
     mLayout.TPaneRegister(
-      mpExtra->mpTRemainder0, {
-                                "T_remainder_04",
-                                "T_remainder_06",
-                                "T_remainder_08",
-                                "T_remainder_15",
-                                "T_remainder_14",
-                                "T_remainder_05",
-                                "T_remainder_07",
-                                "T_remainder_09",
-                              }
+        mpExtra->mpTRemainder0, //
+        {
+            "T_remainder_04",
+            "T_remainder_06",
+            "T_remainder_08",
+            "T_remainder_15",
+            "T_remainder_14",
+            "T_remainder_05",
+            "T_remainder_07",
+            "T_remainder_09",
+        }
     );
 
     mLayout.NPaneRegister(
-      mpExtra->mpNPlayer, {
-                            "N_kinopico_00",
-                            "N_player_05",
-                            "N_player_06",
-                            "N_player_07",
-                          }
+        mpExtra->mpNPlayer, //
+        {
+            "N_kinopico_00",
+            "N_player_05",
+            "N_player_06",
+            "N_player_07",
+        }
     );
 }
 
 [[nsmbw(0x80B6C040)]]
-void dPreGameLyt_c::createLayout() ASM_METHOD(
+void dPreGame_c::createLayout() ASM_METHOD(
   // clang-format off
 /* 80B6C040 9421FFE0 */  stwu     r1, -32(r1);
 /* 80B6C044 7C0802A6 */  mflr     r0;
@@ -144,7 +144,7 @@ UNDEF_80b6c120:;
 /* 80B6C148 4081FFD8 */  ble+     UNDEF_80b6c120;
 
                          mr       r3, r28;
-                         bl       createLayoutExtra__13dPreGameLyt_cFv;
+                         bl       createLayoutExtra__10dPreGame_cFv;
 
 /* 80B6C14C 7F83E378 */  mr       r3, r28;
 /* 80B6C150 389D0618 */  addi     r4, r29, 1560;
@@ -367,37 +367,36 @@ UNDEF_80b6c474:;
 );
 
 [[nsmbw(0x80B6C830)]]
-void dPreGameLyt_c::Phase0_Init()
-{
+void dPreGame_c::Phase0_Init() {
     nw4r::math::VEC3 pos[LytPlayerCount], battPos[4];
-    std::size_t i;
+    unsigned         i;
     for (i = 0; i < 4; i++) {
         nw4r::lyt::Pane* pane = mpNPlayer[i];
-        pos[i] = pane->GetTranslate();
+        pos[i]                = pane->GetTranslate();
         pane->SetVisible(false);
 
-        pane = mpNBatteryArray[i];
+        pane       = mpNBatteryArray[i];
         battPos[i] = pane->GetTranslate();
         pane->SetVisible(false);
     }
     for (; i < LytPlayerCount; i++) {
         nw4r::lyt::Pane* pane = mpExtra->mpNPlayer[i - 4];
-        pos[i] = pane->GetTranslate();
+        pos[i]                = pane->GetTranslate();
         pane->SetVisible(false);
     }
 
     if (dInfo_c::m_startGameInfo.demoType != dInfo_c::DemoType_e::SUPER_GUIDE) {
         std::size_t count = 0, battCount = 0;
-        bool middle = daPyMng_c::getEntryNum() <= 4;
+        bool        middle = daPyMng_c::getEntryNum() <= 4;
         for (i = 0; i < PLAYER_COUNT; i++) {
-            std::size_t type = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
+            unsigned type = +daPyMng_c::mPlayerType[i];
             if (type >= LytPlayerCount) {
                 continue;
             }
 
             if (count < LytPlayerCount && daPyMng_c::mPlayerEntry[i]) {
-                nw4r::lyt::Pane* pane = type < 4 ? mpNPlayer[type] : mpExtra->mpNPlayer[type - 4];
-                auto fixPos = pos[count++];
+                nw4r::lyt::Pane* pane   = type < 4 ? mpNPlayer[type] : mpExtra->mpNPlayer[type - 4];
+                auto             fixPos = pos[count++];
                 if (middle) {
                     fixPos.x = 0;
                 }
@@ -415,11 +414,11 @@ void dPreGameLyt_c::Phase0_Init()
         mNumPlayers = count;
 
         nw4r::math::VEC3 zankiPos =
-          mpNZankiPos[std::max<int>(std::min<int>(count - 1, 3), 0)]->GetTranslate();
+            mpNZankiPos[std::max<int>(std::min<int>(count - 1, 3), 0)]->GetTranslate();
         mpNZanki->SetTranslate(zankiPos);
 
         f32 battPos =
-          mpNBatteryPos[std::max<int>(std::min<int>(battCount - 1, 3), 0)]->GetTranslate().x;
+            mpNBatteryPos[std::max<int>(std::min<int>(battCount - 1, 3), 0)]->GetTranslate().x;
         nw4r::math::VEC3 origBattPos = mpNBattery->GetTranslate();
         mpNBattery->SetTranslate({battPos, origBattPos.y, origBattPos.z});
     }
@@ -438,12 +437,12 @@ void dPreGameLyt_c::Phase0_Init()
         mpTOtasukePlay0->setMessage(msgRes, 102, 45, 0);
         mpTOtasukePlay1->setMessage(msgRes, 102, 45, 0);
 
-        float width = mpTOtasukePlay0->GetSize().width;
-        nw4r::ut::Rect rect = mpTOtasukePlay0->GetTextDrawRect();
+        float          width = mpTOtasukePlay0->GetSize().width;
+        nw4r::ut::Rect rect  = mpTOtasukePlay0->GetTextDrawRect();
         width -= rect.right - rect.left;
         float center = width / 2;
 
-        auto pos = mpTOtasukePlay0->GetTranslate();
+        auto  pos    = mpTOtasukePlay0->GetTranslate();
         pos.x += center;
 
         mpTOtasukePlay0->SetTranslate(pos);
@@ -457,7 +456,7 @@ void dPreGameLyt_c::Phase0_Init()
 
         mLayout.AnimeStartSetup(1, false);
         mSuperGuideDispDone = false;
-        mPhase = 1;
+        mPhase              = 1;
     } else {
         mPhase = 2;
     }

@@ -3,21 +3,26 @@
 #include "d_system/d_base_actor.h"
 #include "machine/m_sphere.h"
 
-namespace m3d
-{
+namespace m3d {
 class bmdl_c;
 } // namespace m3d
 
 /**
  * Base class for world map actors.
  */
-class dWmActor_c : public dBaseActor_c
-{
+class dWmActor_c : public dBaseActor_c {
     SIZE_ASSERT(0x138);
 
 public:
+    // Structors
+    // ^^^^^^
+
     /* 0x800F2820 */
     dWmActor_c();
+
+public:
+    // Virtual Methods
+    // ^^^^^^
 
     /**
      * VT+0x48 0x800F2880
@@ -79,13 +84,17 @@ public:
      */
     virtual ACTOR_KIND_e GetActorType() override;
 
+public:
+    // Static Methods
+    // ^^^^^^
+
     /**
      * 0x800F2B00
      * Creates a world map actor without a parent. See dBaseActor_c::construct.
      */
     static dWmActor_c* construct(
-      u16 profName, unsigned long param = 0, const mVec3_c* position = nullptr,
-      const mAng3_c* rotation = nullptr
+        u16 profName, unsigned long param = 0, const mVec3_c* position = nullptr,
+        const mAng3_c* rotation = nullptr
     );
 
     /**
@@ -93,8 +102,8 @@ public:
      * Creates a child world map actor with the given parent. See dBaseActor_c::construct.
      */
     static dWmActor_c* construct(
-      u16 profName, dBase_c* base, unsigned long param = 0, const mVec3_c* position = nullptr,
-      const mAng3_c* rotation = nullptr
+        u16 profName, dBase_c* base, unsigned long param = 0, const mVec3_c* position = nullptr,
+        const mAng3_c* rotation = nullptr
     );
 
     /**
@@ -122,6 +131,9 @@ public:
     static void setSoftLight_Boss(m3d::bmdl_c& mdl);
 
 private:
+    // Instance Variables
+    // ^^^^^^
+
     /**
      * A sphere representing the actor's visible area.
      */

@@ -117,8 +117,6 @@ public:
     /* 0x808EE110 */
     f32 getDistanceToAheadPlayer();
 
-    bool isPastAheadPlayer(float& distToNextNode);
-
     /* 0x808EE200 */
     dWmPlayerBase_c* getAheadPlayer();
 
@@ -145,6 +143,13 @@ public:
 
     /* 0x808EF2D0 */
     bool isPlayerStar();
+
+    // Instance Methods
+    // ++++++
+
+    daWmSubPlayer_c* Next() const { return static_cast<daWmSubPlayer_c*>(mNextPlayer); }
+
+    bool isPastAheadPlayer(float& distToNextNode);
 
 public:
     // Static Methods

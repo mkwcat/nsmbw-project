@@ -4,13 +4,13 @@
 
 #include <nw4r/lyt/Pane.h>
 
-class dPreGameLyt_c
+class dPreGame_c
 {
 public:
     // Structors
     // ^^^^^^
 
-    ~dPreGameLyt_c()
+    ~dPreGame_c()
     {
         if (mpExtra != nullptr) {
             delete mpExtra;

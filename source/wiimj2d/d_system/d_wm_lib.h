@@ -148,7 +148,7 @@ bool CheckOnCenterLineX(const mVec3_c&);
 /* 0x800FA2E0 */
 bool CheckOnCenterLineY(const mVec3_c&);
 
-/* 0x800FA360 */
+/* 0x800FA360 @unofficial */
 s32 UNDEF_0x800FA360(...);
 
 /* 0x800FA440 */
@@ -161,10 +161,10 @@ SttsOpen_e GetOpenStatusCore(WorldNo, CourseNo, const dCsvData_c&);
 SttsOpen_e OpenStatOverWrite(SttsOpen_e, SttsOpen_e);
 
 /* 0x800FA740 */
-s32 UNDEF_0x800FA740(...);
+int GetRootPointNum(const char*, dWmLib::RouteType_e, const dCsvData_c&);
 
 /* 0x800FA7D0 */
-s32 UNDEF_0x800FA7D0(...);
+int GetRootPointOf(const char*, dWmLib::RouteType_e, int, const dCsvData_c&);
 
 /* 0x800FA8F0 */
 RouteType_e GetRouteType(const char*);
@@ -247,11 +247,11 @@ bool isStartPointKinokoHouse1up();
 /* 0x800FB570 */
 bool isStartPointKinokoHouseRed();
 
-/* 0x800FB5C0 @unofficial */
-bool getMaskAnimeMaterial(dWmMapModel_c*, const char*, char*);
+/* 0x800FB5C0 */
+bool makeMatNameByRouteName(dWmMapModel_c*, const char*, char*);
 
-/* 0x800FB780 @unofficial */
-void copyRouteName(const char* src, char* dest);
+/* 0x800FB780 */
+void makeRouteNameByMaterialName(const char* src, char* dest);
 
 /* 0x800FB7D0 */
 void findRouteByMaterial(const char*, int, char*);
@@ -259,8 +259,8 @@ void findRouteByMaterial(const char*, int, char*);
 /* 0x800FB900 */
 void findShortMaterial(const char*, int, char*);
 
-/* 0x800FBA10 @unofficial */
-bool isMaskAnimeFinish(const char*, char, char);
+/* 0x800FBA10 */
+bool isMaterialAnimPlayEnd(const char*, char, int);
 
 /* 0x800FBAA0 */
 bool checkIsAllPlayerWaitDemo();
@@ -332,7 +332,7 @@ bool getModelNodePos(const m3d::bmdl_c*, const char*);
 bool getModelNodePos(const m3d::bmdl_c*, int);
 
 /* 0x800FC6D0 */
-void UNDEF_0x800FC6D0(...);
+void calcPlayerCollision(mVec3_c*, float, float);
 
 /* 0x800FC900 */
 bool IsAntlionWorld();

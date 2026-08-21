@@ -2,23 +2,27 @@
 
 #include "d_system/d_wm_demo_actor.h"
 
-class dWmPlayerBase_c : public dWmDemoActor_c
-{
+class dWmPlayerBase_c : public dWmDemoActor_c {
     SIZE_ASSERT(0x1C9);
 
 public:
+    // Structors
+    // ^^^^^^
+
     dWmPlayerBase_c()
-      : dWmDemoActor_c()
-      , m_0x18C(false)
-      , m_0x1A8(1)
-      , m_0x1AC(-1)
-      , m_0x1B0(-1)
-      , m_0x1C8(-1)
-    {
-    }
+        : dWmDemoActor_c()
+        , m_0x18C(false)
+        , m_0x1A8(1)
+        , m_0x1AC(-1)
+        , m_0x1B0(-1)
+        , m_0x1C8(-1) {}
+
+public:
+    // Virtual Methods
+    // ^^^^^^
 
     /**
-     * VT+0x58 0x808EF670 - Inlined somewhere?
+     * VT+0x58 0x808EF670 (weak)
      * Gets the actor kind. See ACTOR_KIND_e.
      */
     virtual ACTOR_KIND_e GetActorType() override;
@@ -53,21 +57,24 @@ public:
      */
     virtual void VT_0x84();
 
-    s32 getPlayerNo() const
-    {
-        return mParam & 0xF;
-    }
+public:
+    // Inline Instance Methods
+    // ++++++
 
-    FILL(0x174, 0x184);
+    s32 getPlayerNo() const { return mParam & 0xF; }
+
+public:
+    // Instance Variables
+    // ^^^^^^
 
     /* 0x184 */ dWmPlayerBase_c* mNextPlayer;
     /* 0x188 */ dWmPlayerBase_c* mPrevPlayer;
 
-    /* 0x18C */ bool m_0x18C;
+    /* 0x18C */ bool             m_0x18C;
 
     FILL(0x18D, 0x1A8);
 
-    /* 0x1A8 */ u8 m_0x1A8;
+    /* 0x1A8 */ u8  m_0x1A8;
     /* 0x1AC */ s32 m_0x1AC;
     /* 0x1B0 */ s32 m_0x1B0;
 

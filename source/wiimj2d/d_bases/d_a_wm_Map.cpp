@@ -54,8 +54,8 @@ void daWmMap_c::setNodeRndizer() {
     }
 
     dInfo_c* info         = dInfo_c::m_instance;
-    info->mCurrentWorldNo = static_cast<int>(stage.world);
-    info->mCurrentStageNo = static_cast<int>(stage.stage);
+    info->mCurrentWorldNo = +stage.world;
+    info->mCurrentStageNo = +stage.stage;
 
     if (dWmConnect_c::dPnt_c* point = mConnect[mCurrentMap].GetConnectFromCourseNo(
             static_cast<dWmLib::CourseNo>(stage.stage)

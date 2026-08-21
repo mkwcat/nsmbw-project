@@ -8,12 +8,8 @@
 #include "d_system/d_wm_player_base.h"
 #include "machine/m_vec.h"
 
-class daWmPlayer_c_0x29C {
-public:
-    u32 m_0x0;
-
-    virtual ~daWmPlayer_c_0x29C();
-};
+class dWmPyCamBase_c;
+class daWmSubPlayer_c;
 
 class daWmPlayer_c : public dWmPlayerBase_c {
     SIZE_ASSERT(0x30C);
@@ -90,35 +86,35 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x80902C50 */
-    void UNDEF_80902C50();
-
     /* 0x80902BD0 */
-    void createSubPlayers();
+    void CreateSubPlayers();
+
+    /* 0x80902C50 */
+    void PlayerEntryInit();
 
     /* 0x80902CA0 */
-    void updateActivePlayers();
+    void PlayerEntryUpdate();
 
     /* 0x80902E30 */
-    void setPlayerActive(u32 id, bool param2, bool param3);
+    void SetPlayerEntry(int plr, bool update, bool enter);
 
     /* 0x80902ED0 */
-    void UNDEF_80902ED0(PLAYER_TYPE_e param_1, int param_2, PLAYER_CREATE_ITEM_e param_3);
+    void updateSubPlayerModel(PLAYER_TYPE_e type, PLAYER_MODE_e mode, bool star);
 
-    /* 0x80902FA0 @unofficial */
-    void setSubPlayerPower();
+    /* 0x80902FA0 */
+    void updatePlayerMode();
 
     /* 0x80903380 */
-    void UNDEF_80903380();
+    void initCamera();
 
     /* 0x80903930 */
-    void UNDEF_80903930();
+    void initStartPoint();
 
     /* 0x80903ED0 */
-    void UNDEF_80903ED0();
+    void initDemo();
 
     /* 0x80904120 */
-    u32 UNDEF_80904120();
+    u32 checkCsGuideKey();
 
     /* 0x80904370 */
     u32 UNDEF_80904370(u32);
@@ -133,7 +129,7 @@ public:
     void UNDEF_80906FE0(s32 param_1, s32 param_2);
 
     /* 0x80907590 */
-    void UNDEF_80907590();
+    void updateCourseNode();
 
     /* 0x80907D10 */
     bool isRouteClosedByGate(int node);
@@ -155,6 +151,11 @@ public:
 
     /* 0x8090CE10 */
     bool startGame(WORLD_e world, STAGE_e stage, u8 entrance);
+
+    // Instance Methods
+    // ++++++
+
+    daWmSubPlayer_c* GetSubPlayer() const;
 
 public:
     // Static Methods
@@ -207,8 +208,8 @@ public:
 
     FILL(0x290, 0x298);
 
-    /* 0x298 */ float               m0x298;
-    /* 0x29C */ daWmPlayer_c_0x29C* mp0x29C;
+    /* 0x298 */ float           m0x298;
+    /* 0x29C */ dWmPyCamBase_c* mPyCamera;
 
     FILL(0x2A0, 0x2E0);
 

@@ -6,6 +6,7 @@
 #include "d_bases/d_a_wm_KinoBalloon.h"
 #include "d_bases/d_a_wm_SubPlayer.h"
 #include "d_bases/d_cs_seq_mng.h"
+#include "d_bases/d_wm_player_camera_base.h"
 #include "d_bases/d_world_camera.h"
 #include "d_profile/d_profile.h"
 #include "d_project/d_gamerule.h"
@@ -36,7 +37,7 @@ daWmPlayer_c::daWmPlayer_c()
     , m0x2E0(2)
     , m0x2FC(0) {
     ms_instance = this;
-    mp0x29C     = nullptr;
+    mPyCamera   = nullptr;
 }
 
 [[nsmbw(0x80902890)]]
@@ -46,28 +47,26 @@ daWmPlayer_c::~daWmPlayer_c() {
     // This object doesn't belong to this class, so null it so it doesn't get deleted
     mModelManager.mModel = nullptr;
 
-    if (mp0x29C != nullptr) {
-        delete mp0x29C;
+    if (mPyCamera) {
+        delete mPyCamera;
     }
+
+#ifndef __has_macintosh_dt_fix
+    mModelManager.~dPyMdlMng_c();
+#endif // !__has_macintosh_dt_fix
 }
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 [[nsmbw(0x80902960)]]
 fBase_c::PACK_RESULT_e daWmPlayer_c::create() {
     mAngle.y = 0;
 
     mPad::setCurrentChannel(mPad::CH_e::CHAN_0);
 
-    UNDEF_80903930();
+    initStartPoint();
 
     mModelManager.mModel = nullptr;
-
     // Create subplayer models
-    createSubPlayers();
-
+    CreateSubPlayers();
     ASSERT(mModelManager.mModel != nullptr);
 
     // Some shadow related thing maybe?
@@ -75,38 +74,25 @@ fBase_c::PACK_RESULT_e daWmPlayer_c::create() {
     CreateShadowModel("character_SV", "g3d/model.brres", "character_SV", 1);
     mVisible = true;
 
-    UNDEF_80903380();
-    UNDEF_80903ED0();
-    UNDEF_80902C50();
-    UNDEF_80907590();
+    initCamera();
+    initDemo();
+    PlayerEntryInit();
+    updateCourseNode();
 
-    return fBase_c::PACK_RESULT_e::SUCCEEDED;
+    return PACK_RESULT_e::SUCCEEDED;
 }
 
-/**
- * VT+0x20
- * do method for the execute operation.
- */
 [[nsmbw(0x809029E0)]]
 fBase_c::PACK_RESULT_e daWmPlayer_c::execute();
 
-/**
- * VT+0x2C
- * do method for the draw operation.
- */
 [[nsmbw(0x80902AC0)]]
 fBase_c::PACK_RESULT_e daWmPlayer_c::draw();
 
-/**
- * VT+0x14
- * do method for the delete operation. This method was renamed due to conflict with the delete
- * C++ keyword.
- */
 [[nsmbw(0x80902B30)]]
 fBase_c::PACK_RESULT_e daWmPlayer_c::doDelete();
 
 [[nsmbw(0x80902BD0)]]
-void daWmPlayer_c::createSubPlayers() {
+void daWmPlayer_c::CreateSubPlayers() {
     mPrevPlayer                 = nullptr;
     dWmPlayerBase_c* prevPlayer = this;
 
@@ -129,12 +115,19 @@ void daWmPlayer_c::createSubPlayers() {
     prevPlayer->mNextPlayer = nullptr;
 }
 
+daWmSubPlayer_c* daWmPlayer_c::GetSubPlayer() const {
+    return static_cast<daWmSubPlayer_c*>(mNextPlayer);
+}
+
+[[nsmbw(0x80902C50)]]
+void daWmPlayer_c::PlayerEntryInit();
+
 [[nsmbw(0x80902CA0)]]
-void daWmPlayer_c::updateActivePlayers() {
+void daWmPlayer_c::PlayerEntryUpdate() {
     bool singleEntry = dWmLib::IsSingleEntry();
 
     for (u32 i = 0; i < PLAYER_COUNT; i++) {
-        setPlayerActive(i, false, false);
+        SetPlayerEntry(i, false, false);
         daPyMng_c::mPlayerEntry[0] = 0;
     }
 
@@ -146,7 +139,7 @@ void daWmPlayer_c::updateActivePlayers() {
         if (active) {
             std::size_t index          = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
             daPyMng_c::mPlayerEntry[i] = 1;
-            setPlayerActive(
+            SetPlayerEntry(
                 index, i != 0, ms_plyConnectStage[index] != dInfo_c::PlyConnectStage_e::ENTER
             );
         }
@@ -166,104 +159,70 @@ void daWmPlayer_c::updateActivePlayers() {
             info->getPlyConnectStage(i);
     }
 
-    for (daWmSubPlayer_c* player = static_cast<daWmSubPlayer_c*>(mNextPlayer); player != nullptr;
-         player                  = static_cast<daWmSubPlayer_c*>(player->mNextPlayer)) {
+    for (daWmSubPlayer_c* player = GetSubPlayer(); player; player = player->Next()) {
         player->mp0x294 = &dWmLib::sc_0x8031D6B4;
     }
 }
 
 [[nsmbw(0x80902E30)]]
-void daWmPlayer_c::setPlayerActive(u32 id, bool param2, bool param3);
+void daWmPlayer_c::SetPlayerEntry(int plr, bool update, bool enter);
 
 [[nsmbw(0x80902ED0)]]
-void daWmPlayer_c::UNDEF_80902ED0(PLAYER_TYPE_e param_1, int param_2, PLAYER_CREATE_ITEM_e param_3)
-    ASM_METHOD(
-    // clang-format off
-/* 80902ED0 9421FFE0 */  stwu     r1, -32(r1);
-/* 80902ED4 7C0802A6 */  mflr     r0;
-                         stw      r3, 8(r1);
-/* 80902ED8 90010024 */  stw      r0, 36(r1);
-/* 80902EDC 93E1001C */  stw      r31, 28(r1);
-/* 80902EE0 93C10018 */  stw      r30, 24(r1);
-/* 80902EE4 7CDE3378 */  mr       r30, r6;
-/* 80902EE8 93A10014 */  stw      r29, 20(r1);
-/* 80902EEC 7CBD2B78 */  mr       r29, r5;
-/* 80902EF0 93810010 */  stw      r28, 16(r1);
-/* 80902EF4 7C9C2378 */  mr       r28, r4;
-/* 80902EF8 83E30184 */  lwz      r31, 388(r3);
-/* 80902EFC 48000074 */  b        UNDEF_80902f70;
-UNDEF_80902f00:;
-/* 80902F00 7FE3FB78 */  mr       r3, r31;
-/* 80902F04 7F84E378 */  mr       r4, r28;
-/* 80902F08 4BFEC3A9 */  bl       UNDEF_808ef2b0;
-/* 80902F0C 2C030000 */  cmpwi    r3, 0;
-/* 80902F10 4182005C */  beq-     UNDEF_80902f6c;
-/* 80902F14 807F01CC */  lwz      r3, 460(r31);
-/* 80902F18 7FA4EB78 */  mr       r4, r29;
-/* 80902F1C 80630004 */  lwz      r3, 4(r3);
-                         lis      r9, mPlayerEntry__9daPyMng_c@ha;
-                         lwz      r9, mPlayerType__9daPyMng_c@l(r9); // Player 1 character
-                         cmpw     r9, r28;
-                         bne      daWmPlayer_c_UNDEF_80902ED0_NotPlayer1;
-                         lwz      r9, 8(r1);
-                         stw      r3, 460 + 4(r9);
-daWmPlayer_c_UNDEF_80902ED0_NotPlayer1:;
-/* 80902F20 81830000 */  lwz      r12, 0(r3);
-/* 80902F24 818C0030 */  lwz      r12, 48(r12);
-/* 80902F28 7D8903A6 */  mtctr    r12;
-/* 80902F2C 4E800421 */  bctrl    ;
-/* 80902F30 2C1E0000 */  cmpwi    r30, 0;
-/* 80902F34 41820044 */  beq-     UNDEF_80902f78;
-/* 80902F38 807F01CC */  lwz      r3, 460(r31);
-/* 80902F3C 80630004 */  lwz      r3, 4(r3);
-/* 80902F40 81830000 */  lwz      r12, 0(r3);
-/* 80902F44 818C0040 */  lwz      r12, 64(r12);
-/* 80902F48 7D8903A6 */  mtctr    r12;
-/* 80902F4C 4E800421 */  bctrl    ;
-/* 80902F50 807F01CC */  lwz      r3, 460(r31);
-/* 80902F54 80630004 */  lwz      r3, 4(r3);
-/* 80902F58 81830000 */  lwz      r12, 0(r3);
-/* 80902F5C 818C0048 */  lwz      r12, 72(r12);
-/* 80902F60 7D8903A6 */  mtctr    r12;
-/* 80902F64 4E800421 */  bctrl    ;
-/* 80902F68 48000010 */  b        UNDEF_80902f78;
-UNDEF_80902f6c:;
-/* 80902F6C 83FF0184 */  lwz      r31, 388(r31);
-UNDEF_80902f70:;
-/* 80902F70 2C1F0000 */  cmpwi    r31, 0;
-/* 80902F74 4082FF8C */  bne+     UNDEF_80902f00;
-UNDEF_80902f78:;
-/* 80902F78 80010024 */  lwz      r0, 36(r1);
-/* 80902F7C 83E1001C */  lwz      r31, 28(r1);
-/* 80902F80 83C10018 */  lwz      r30, 24(r1);
-/* 80902F84 83A10014 */  lwz      r29, 20(r1);
-/* 80902F88 83810010 */  lwz      r28, 16(r1);
-/* 80902F8C 7C0803A6 */  mtlr     r0;
-/* 80902F90 38210020 */  addi     r1, r1, 32;
-/* 80902F94 4E800020 */  blr      ;
-    // clang-format on
-  );
-
-[[nsmbw(0x80902FA0)]]
-void daWmPlayer_c::setSubPlayerPower() {
-    dInfo_c* info = dInfo_c::m_instance;
-
-    for (u32 i = 0; i < PLAYER_COUNT; i++) {
-        dInfo_c::PlyConnectStage_e flag = info->getPlyConnectStage(i);
-        if (flag == dInfo_c::PlyConnectStage_e::ENTER) {
-            PLAYER_TYPE_e plrType = daPyMng_c::mPlayerType[i];
-            int           subPowerup =
-                static_cast<int>(dCourseSelectManager_c::m_instance->getPlayerPowerup(i));
-            UNDEF_80902ED0(
-                plrType, subPowerup,
-                daPyMng_c::mCreateItem[plrType] & PLAYER_CREATE_ITEM_e::STAR_POWER
-            );
+void daWmPlayer_c::updateSubPlayerModel(
+    PLAYER_TYPE_e type, PLAYER_MODE_e mode, bool star
+) {
+    daWmSubPlayer_c* player = GetSubPlayer();
+    while ((player = player->Next())) {
+        if (player->isPlayerType(type)) {
+            break;
         }
+    }
+    if (player == nullptr) {
+        return;
+    }
+
+    dPyMdlBase_c* model = player->mModelManager->mModel;
+
+    if (daPyMng_c::mPlayerType[0] == type) {
+        // Update player 1 model
+        mModelManager.mModel = model;
+    }
+
+    model->setPlayerMode(+mode);
+    if (star) {
+        model->onStarAnm();
+        model->onStarEffect();
     }
 }
 
+[[nsmbw(0x80902FA0)]]
+void daWmPlayer_c::updatePlayerMode() {
+    dInfo_c* info = dInfo_c::m_instance;
+
+    for (u32 i = 0; i < PLAYER_COUNT; i++) {
+        if (info->getPlyConnectStage(i) != dInfo_c::PlyConnectStage_e::ENTER) {
+            continue;
+        }
+
+        PLAYER_TYPE_e type = daPyMng_c::mPlayerType[i];
+        PLAYER_MODE_e mode = dCourseSelectManager_c::m_instance->getPlayerPowerup(i);
+        updateSubPlayerModel(
+            type, mode, !!(daPyMng_c::mCreateItem[type] & PLAYER_CREATE_ITEM_e::STAR_POWER)
+        );
+    }
+}
+
+[[nsmbw(0x80903380)]]
+void daWmPlayer_c::initCamera();
+
+[[nsmbw(0x80903930)]]
+void daWmPlayer_c::initStartPoint();
+
+[[nsmbw(0x80903ED0)]]
+void daWmPlayer_c::initDemo();
+
 [[nsmbw(0x80904120)]]
-u32 daWmPlayer_c::UNDEF_80904120() {
+u32 daWmPlayer_c::checkCsGuideKey() {
     if (!UNDEF_809087A0()) {
         return 0;
     }
@@ -354,6 +313,9 @@ u32 daWmPlayer_c::UNDEF_80904440();
 [[nsmbw(0x80904810)]]
 u32 daWmPlayer_c::UNDEF_80904810();
 
+[[nsmbw(0x80907590)]]
+void daWmPlayer_c::updateCourseNode();
+
 EXTERN_REPL(0x80907D10, bool daWmPlayer_c::isRouteClosedByGate2(int node));
 
 [[nsmbw(0x80907D10)]]
@@ -392,39 +354,25 @@ void daWmPlayer_c::initActiveCharaFlags() {
     }
 }
 
-/**
- * VT+0x70
- */
 [[nsmbw(0x8090BE30)]]
 void daWmPlayer_c::VT_0x70();
 
-/**
- * VT+0x74
- */
 [[nsmbw(0x8090C160)]]
 void daWmPlayer_c::VT_0x74();
 
-/**
- * VT+0x80
- */
 [[nsmbw(0x8090C8C0)]]
 void daWmPlayer_c::VT_0x80();
 
-/**
- * VT+0x78
- */
 [[nsmbw(0x8090C8E0)]]
 void daWmPlayer_c::VT_0x78();
 
-/**
- * VT+0x7C
- */
 [[nsmbw(0x8090C940)]]
 void daWmPlayer_c::procDemoLose();
 
 [[nsmbw(0x8090CE10)]]
-bool daWmPlayer_c::startGame(WORLD_e world, STAGE_e stage, u8 entrance) ASM_METHOD(
-  // clang-format off
+bool daWmPlayer_c::startGame(
+    WORLD_e world, STAGE_e stage, u8 entrance
+) ASM_METHOD(
 /* 8090CE10 9421FFA0 */  stwu     r1, -96(r1);
 /* 8090CE14 7C0802A6 */  mflr     r0;
 /* 8090CE18 90010064 */  stw      r0, 100(r1);
@@ -523,5 +471,4 @@ UNDEF_8090cf0c:;
 /* 8090CF6C 7C0803A6 */  mtlr     r0;
 /* 8090CF70 38210060 */  addi     r1, r1, 96;
 /* 8090CF74 4E800020 */  blr;
-  // clang-format on
 );

@@ -10,37 +10,30 @@
 #include "d_system/d_wm_player_base.h"
 #include "machine/m_angle.h"
 #include "machine/m_heap.h"
-#include <mkwcat/Port.hpp>
+#include <mkwcat/NoConsteval.hpp>
 #include <revolution/os.h>
 
-/**
- * Copy of create.
- */
+// This is a float literal changed to read-only data field.
+// Temporary(?) hack that makes the node reached check more generous
+[[nsmbw_data_noconstinit(0x8093CE28)]]
+extern const float l_SUB_PLAYER_NODE_REACH_DIST = mkwcat::NoConsteval(0.05f);
+
 EXTERN_REPL(
-  0x808EB220, //
-  fBase_c::PACK_RESULT_e daWmSubPlayer_c::createSubPlayer()
+    0x808EB220, //
+    fBase_c::PACK_RESULT_e daWmSubPlayer_c::createSubPlayer()
 );
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 [[nsmbw(0x808EB220)]]
-fBase_c::PACK_RESULT_e daWmSubPlayer_c::create()
-{
+fBase_c::PACK_RESULT_e daWmSubPlayer_c::create() {
     createSubPlayer();
 
     mNodeTrail.alloc(16, mHeap::g_gameHeaps[0]);
-
-    // Temporary(?) hack that makes the node reached check more generous
-    *static_cast<float*>(mkwcat::Port<0x8093CE28>()) = 0.05f;
 
     return PACK_RESULT_e::SUCCEEDED;
 }
 
 [[nsmbw(0x808EB7D0)]]
 void daWmSubPlayer_c::loadModel() ASM_METHOD(
-  // clang-format off
 /* 808EB7D0 9421FFE0 */  stwu     r1, -32(r1);
 /* 808EB7D4 7C0802A6 */  mflr     r0;
 /* 808EB7E0 90010024 */  stw      r0, 36(r1);
@@ -113,18 +106,16 @@ UNDEF_808eb884:;
 /* 808EB8C4 7C0803A6 */  mtlr     r0;
 /* 808EB8C8 38210020 */  addi     r1, r1, 32;
 /* 808EB8CC 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x808EDC40)]]
 void daWmSubPlayer_c::setWalkSpeed(f32 speed);
 
 [[nsmbw(0x808EE0C0)]]
-s32 daWmSubPlayer_c::getPlayerOrder()
-{
-    s32 order = 1;
-    s32 playerNo = getPlayerNo();
-    dWmPlayerBase_c* player = daWmPlayer_c::ms_instance->mNextPlayer;
+s32 daWmSubPlayer_c::getPlayerOrder() {
+    s32              order    = 1;
+    s32              playerNo = getPlayerNo();
+    dWmPlayerBase_c* player   = daWmPlayer_c::ms_instance->mNextPlayer;
 
     for (s32 i = 0; i < playerNo; i++) {
         if (player->mVisible) {
@@ -140,8 +131,9 @@ s32 daWmSubPlayer_c::getPlayerOrder()
 [[nsmbw(0x808EE110)]]
 f32 daWmSubPlayer_c::getDistanceToAheadPlayer();
 
-bool daWmSubPlayer_c::isPastAheadPlayer(float& distToNextNode)
-{
+bool daWmSubPlayer_c::isPastAheadPlayer(
+    float& distToNextNode
+) {
     if (getPlayerOrder() == 1 || mToNode < 0) {
         return false;
     }
@@ -160,7 +152,7 @@ bool daWmSubPlayer_c::isPastAheadPlayer(float& distToNextNode)
         return false;
     }
 
-    mVec3_c toPos = daWmMap_c::m_instance->GetPos(mToNode);
+    mVec3_c toPos  = daWmMap_c::m_instance->GetPos(mToNode);
     distToNextNode = mVec3_c::distance(mPos, toPos);
     return distToNextNode < mVec3_c::distance(ahead->mPos, toPos);
 }
@@ -169,15 +161,14 @@ bool daWmSubPlayer_c::isPastAheadPlayer(float& distToNextNode)
 dWmPlayerBase_c* daWmSubPlayer_c::getAheadPlayer();
 
 [[nsmbw(0x808EE620)]]
-void daWmSubPlayer_c::calcWalkSpeed()
-{
-    f32 prevSpeedF = mSpeedF;
+void daWmSubPlayer_c::calcWalkSpeed() {
+    f32  prevSpeedF = mSpeedF;
 
-    bool ahead = false;
-    f32 distToNextNode;
+    bool ahead      = false;
+    f32  distToNextNode;
     if (isSubPlayerStopPoint()) {
         const float l_SPEED_FACTOR_ARR[] = {
-          1.00, 0.75, 0.50, 0.25, 0.18, 0.145, 0.11, 0.09,
+            1.00, 0.75, 0.50, 0.25, 0.18, 0.145, 0.11, 0.09,
         };
 
         setWalkSpeed(l_SPEED_FACTOR_ARR[getPlayerOrder()]);
@@ -210,95 +201,94 @@ void daWmSubPlayer_c::calcWalkSpeed()
 int daWmSubPlayer_c::getSubPlayerNum();
 
 [[nsmbw(0x808EE960)]]
-f32 daWmSubPlayer_c::getPlayerOrderDistance()
-{
+f32 daWmSubPlayer_c::getPlayerOrderDistance() {
     using FloatArray = f32[];
 
     return FloatArray{
-      // 2 players
-      0.0, 45.0,
+        // 2 players
+        0.0, 45.0,
 
-      // 3 players
-      0.0, 40.0, 40.0,
+        // 3 players
+        0.0, 40.0, 40.0,
 
-      // 4 players
-      0.0, 40.0, 40.0, 50.0,
+        // 4 players
+        0.0, 40.0, 40.0, 50.0,
 
-      // 5 players
-      0.0, 40.0, 40.0, 40.0, 40.0,
+        // 5 players
+        0.0, 40.0, 40.0, 40.0, 40.0,
 
-      // 6 players
-      0.0, 40.0, 45.0, 50.0, 45.0, 40.0,
+        // 6 players
+        0.0, 40.0, 45.0, 50.0, 45.0, 40.0,
 
-      // 7 players
-      0.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0,
+        // 7 players
+        0.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0,
 
-      // 8 players
-      0.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0
+        // 8 players
+        0.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0, 40.0
     }[getPlayerOrderTableIndex(getPlayerOrder())];
 }
 
 [[nsmbw(0x808EE9B0)]]
-s16 daWmSubPlayer_c::getPlayerOrderAngle()
-{
+s16 daWmSubPlayer_c::getPlayerOrderAngle() {
     using AngleArray = s16[];
 
     return AngleArray{
-      // 2 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(180.0),
+        // 2 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(180.0),
 
-      // 3 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(137.33),
-      mAng::fromDegree(-137.33),
+        // 3 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(137.33),
+        mAng::fromDegree(-137.33),
 
-      // 4 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(126.343),
-      mAng::fromDegree(-126.343),
-      mAng::fromDegree(180.0),
+        // 4 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(126.343),
+        mAng::fromDegree(-126.343),
+        mAng::fromDegree(180.0),
 
-      // 5 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(-140.0),
-      mAng::fromDegree(140.0),
-      mAng::fromDegree(74.0),
-      mAng::fromDegree(-74.0),
+        // 5 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(-140.0),
+        mAng::fromDegree(140.0),
+        mAng::fromDegree(74.0),
+        mAng::fromDegree(-74.0),
 
-      // 6 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(60.0),
-      mAng::fromDegree(-120.0),
-      mAng::fromDegree(120.0),
-      mAng::fromDegree(-60.0),
-      mAng::fromDegree(180.0),
+        // 6 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(60.0),
+        mAng::fromDegree(-120.0),
+        mAng::fromDegree(120.0),
+        mAng::fromDegree(-60.0),
+        mAng::fromDegree(180.0),
 
-      // 7 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(-67.5),
-      mAng::fromDegree(67.5),
-      mAng::fromDegree(-112.5),
-      mAng::fromDegree(112.5),
-      mAng::fromDegree(-157.5),
-      mAng::fromDegree(157.5),
+        // 7 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(-67.5),
+        mAng::fromDegree(67.5),
+        mAng::fromDegree(-112.5),
+        mAng::fromDegree(112.5),
+        mAng::fromDegree(-157.5),
+        mAng::fromDegree(157.5),
 
-      // 8 players
-      mAng::fromDegree(0.0),
-      mAng::fromDegree(45.0),
-      mAng::fromDegree(-45.0),
-      mAng::fromDegree(90.0),
-      mAng::fromDegree(-90.0),
-      mAng::fromDegree(135.0),
-      mAng::fromDegree(-135.0),
-      mAng::fromDegree(180.0),
+        // 8 players
+        mAng::fromDegree(0.0),
+        mAng::fromDegree(45.0),
+        mAng::fromDegree(-45.0),
+        mAng::fromDegree(90.0),
+        mAng::fromDegree(-90.0),
+        mAng::fromDegree(135.0),
+        mAng::fromDegree(-135.0),
+        mAng::fromDegree(180.0),
 
     }[getPlayerOrderTableIndex(getPlayerOrder())];
 }
 
 [[nsmbw(0x808EEA00)]]
-s32 daWmSubPlayer_c::getPlayerOrderTableIndex(int playerOrder)
-{
+s32 daWmSubPlayer_c::getPlayerOrderTableIndex(
+    int playerOrder
+) {
     int subPlayerNum = getSubPlayerNum();
     if (subPlayerNum == 0) {
         return 0;
@@ -316,23 +306,22 @@ bool daWmSubPlayer_c::isWrongDirection(dWmLib::Dir_e dir1, dWmLib::Dir_e dir2);
 bool daWmSubPlayer_c::isSubPlayerStopPoint();
 
 [[nsmbw(0x808EF2B0)]]
-bool daWmSubPlayer_c::isPlayerType(PLAYER_TYPE_e playerType)
-{
+bool daWmSubPlayer_c::isPlayerType(
+    PLAYER_TYPE_e playerType
+) {
     return dMj2dGame_c::scDefaultPlayerTypes[getPlayerNo()] == playerType;
 }
 
 [[nsmbw(0x808EF2D0)]]
-bool daWmSubPlayer_c::isPlayerStar()
-{
+bool daWmSubPlayer_c::isPlayerStar() {
     return static_cast<bool>(
-      daPyMng_c::mCreateItem[daPyMng_c::mPlayerType[mModelManager->mModel->mPlayerNo]] &
-      PLAYER_CREATE_ITEM_e::STAR_POWER
+        daPyMng_c::mCreateItem[daPyMng_c::mPlayerType[mModelManager->mModel->mPlayerNo]] &
+        PLAYER_CREATE_ITEM_e::STAR_POWER
     );
 }
 
 [[nsmbw(0x808EF680)]]
-daWmSubPlayer_c::NodeTrail_c::Node_s* daWmSubPlayer_c::NodeTrail_c::pushNext()
-{
+daWmSubPlayer_c::NodeTrail_c::Node_s* daWmSubPlayer_c::NodeTrail_c::pushNext() {
     if (mUsedCount >= mAllocCount) {
         if (mUsedCount > mAllocCount) {
             return nullptr;

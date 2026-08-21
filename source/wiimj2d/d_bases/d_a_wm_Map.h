@@ -54,7 +54,7 @@ public:
     // Instance Variables
     // ^^^^^
 
-    FILL(0x00174, 0x03388);
+    FILL(0x00184, 0x03388);
 
     /* 0x03388 */ u32          mCurrentWorld;
     /* 0x0338C */ int          mCurrentMap;

@@ -99,10 +99,10 @@ SttsOpen_e GetOpenStatusCore(WorldNo, CourseNo, const dCsvData_c&);
 SttsOpen_e OpenStatOverWrite(SttsOpen_e, SttsOpen_e);
 
 [[nsmbw(0x800FA740)]]
-s32 UNDEF_0x800FA740(...);
+int GetRootPointNum(const char*, dWmLib::RouteType_e, const dCsvData_c&);
 
 [[nsmbw(0x800FA7D0)]]
-s32 UNDEF_0x800FA7D0(...);
+int GetRootPointOf(const char*, dWmLib::RouteType_e, int, const dCsvData_c&);
 
 [[nsmbw(0x800FA8F0)]]
 RouteType_e GetRouteType(const char*);
@@ -186,10 +186,10 @@ bool isStartPointKinokoHouse1up();
 bool isStartPointKinokoHouseRed();
 
 [[nsmbw(0x800FB5C0)]]
-bool getMaskAnimeMaterial(dWmMapModel_c*, const char*, char*);
+bool makeMatNameByRouteName(dWmMapModel_c*, const char*, char*);
 
 [[nsmbw(0x800FB780)]]
-void copyRouteName(const char* src, char* dest);
+void makeRouteNameByMaterialName(const char* src, char* dest);
 
 [[nsmbw(0x800FB7D0)]]
 void findRouteByMaterial(const char*, int, char*);
@@ -198,7 +198,7 @@ void findRouteByMaterial(const char*, int, char*);
 void findShortMaterial(const char*, int, char*);
 
 [[nsmbw(0x800FBA10)]]
-bool isMaskAnimeFinish(const char*, char, char);
+bool isMaterialAnimPlayEnd(const char*, char, int);
 
 [[nsmbw(0x800FBAA0)]]
 bool checkIsAllPlayerWaitDemo();
@@ -270,7 +270,7 @@ bool getModelNodePos(const m3d::bmdl_c*, const char*);
 bool getModelNodePos(const m3d::bmdl_c*, int);
 
 [[nsmbw(0x800FC6D0)]]
-void UNDEF_0x800FC6D0(...);
+void calcPlayerCollision(mVec3_c*, float, float);
 
 [[nsmbw(0x800FC900)]]
 bool IsAntlionWorld();

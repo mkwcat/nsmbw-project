@@ -235,7 +235,7 @@ target_sources(project PRIVATE
     d_s_game_over.cpp
 # NSMBW   d_bases.text:  0x80922060 - 0x80923970
     d_s_movie.cpp
-# NSMBW   d_bases.text:  0x80923970 - 0x80923B60
+# NSMBW   d_bases.text:  0x80923970 - 0x80923B60Ï
     d_s_restart_crsin.cpp
 # NSMBW   d_bases.text:  0x80923B60 - 0x80923C10
     d_s_select.cpp
@@ -249,4 +249,21 @@ target_sources(project PRIVATE
     d_wm_WorldSelectGuide.cpp
 # NSMBW   d_bases.text:  0x8092B8B0 - 0x8092F020
     d_world_camera.cpp
+)
+
+#
+# d_en_boss.rel
+# NSMBW d_en_boss.text:  0x80B6BCC0 - 0x80B73A3C
+#
+target_sources(project PRIVATE
+# NSMBW d_en_boss.text:  0x80B6BCC0 - 0x80B6D1C0
+    d_PreGame.cpp
+# NSMBW d_en_boss.text:  0x80B6D1C0 - 0x80B6D3C0
+  # d_wm_camera_move.cpp
+# NSMBW d_en_boss.text:  0x80B6D3C0 - 0x80B6E600
+  # d_wm_kameck_demo_camera.cpp
+# NSMBW d_en_boss.text:  0x80B6E600 - 0x80B726D0
+  # d_wm_player_camera.cpp
+# NSMBW d_en_boss.text:  0x80B726D0 - 0x80B73A3C
+    d_wm_player_camera_base.cpp
 )

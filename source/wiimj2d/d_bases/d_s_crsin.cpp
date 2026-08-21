@@ -77,7 +77,7 @@ int dScCrsin_c::loadDefaultObjectResPhase()
 [[nsmbw(0x8091EFD0)]]
 dScCrsin_c::~dScCrsin_c()
 {
-    mPreGameLyt.~dPreGameLyt_c();
+    mPreGameLyt.~dPreGame_c();
 }
 
 [[nsmbw(0x8091F560)]]
