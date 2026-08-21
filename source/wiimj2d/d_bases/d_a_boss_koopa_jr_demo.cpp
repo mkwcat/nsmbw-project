@@ -21,7 +21,6 @@ daBossKoopaJrDemo_c* daBossKoopaJrDemo_c_classInit() {
 }
 
 daBossKoopaJrDemo_c::daBossKoopaJrDemo_c() ASM_METHOD(
-  // clang-format off
 /* 807D0070 9421FFF0 */  stwu     r1, -16(r1);
 /* 807D0074 7C0802A6 */  mflr     r0;
 /* 807D007C 90010014 */  stw      r0, 20(r1);
@@ -42,7 +41,6 @@ UNDEF_807d00b4:;
 /* 807D00C0 7C0803A6 */  mtlr     r0;
 /* 807D00C4 38210010 */  addi     r1, r1, 16;
 /* 807D00C8 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x807D00D0)]]
@@ -89,8 +87,8 @@ void daBossKoopaJrDemo_c::initialize() {
     ));
     if (mDemoNum == 3) {
         auto* bg            = dBg_c::m_bg_p;
-        bg->m0x00110        = m0x418;
-        bg->m0x00114        = 18;
+        bg->m0x90110        = m0x418;
+        bg->m0x90114        = 18;
         mpPeach             = static_cast<daPeachForAirshipDemo_c*>(dActor_c::construct(
             dProf::PEACH_FOR_AIRSHIP_DEMO, this, 0,
             (const mVec3_c[]) {{mAirshipDemoX + 2.5f * 16.0f, mAirshipDemoY, 3256.0f}}, nullptr, 0
