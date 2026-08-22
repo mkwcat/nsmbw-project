@@ -307,9 +307,9 @@ bool daWmSubPlayer_c::isSubPlayerStopPoint();
 
 [[nsmbw(0x808EF2B0)]]
 bool daWmSubPlayer_c::isPlayerType(
-    PLAYER_TYPE_e playerType
+    PLAYER_TYPE_e type
 ) {
-    return dMj2dGame_c::scDefaultPlayerTypes[getPlayerNo()] == playerType;
+    return dMj2dGame_c::scDefaultPlayerTypes[getPlayerNo()] == type;
 }
 
 [[nsmbw(0x808EF2D0)]]

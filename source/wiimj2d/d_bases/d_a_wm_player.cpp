@@ -10,10 +10,10 @@
 #include "d_bases/d_world_camera.h"
 #include "d_profile/d_profile.h"
 #include "d_project/d_gamerule.h"
-#include "d_static/d_lyt/d_CourseSelectManager.h"
 #include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_game_key/d_game_key_core.h"
 #include "d_static/d_info.h"
+#include "d_static/d_lyt/d_CourseSelectManager.h"
 #include "d_static/d_mj2d/d_mj2d_game.h"
 #include "d_static/d_wm/d_wm_lib.h"
 #include "machine/m_pad.h"
@@ -106,8 +106,8 @@ void daWmPlayer_c::CreateSubPlayers() {
         prevPlayer              = player;
 
         // Set player 1's model if this is player 1's character
-        PLAYER_TYPE_e character = dMj2dGame_c::scDefaultPlayerTypes[i % PLAYER_COUNT];
-        if (character == daPyMng_c::mPlayerType[0]) {
+        PLAYER_TYPE_e type      = dMj2dGame_c::scDefaultPlayerTypes[i % PLAYER_COUNT];
+        if (type == daPyMng_c::mPlayerType[0]) {
             mModelManager.mModel = player->mModelManager->mModel;
         }
     }
@@ -171,8 +171,8 @@ void daWmPlayer_c::SetPlayerEntry(int plr, bool update, bool enter);
 void daWmPlayer_c::updateSubPlayerModel(
     PLAYER_TYPE_e type, PLAYER_MODE_e mode, bool star
 ) {
-    daWmSubPlayer_c* player = GetSubPlayer();
-    while ((player = player->Next())) {
+    daWmSubPlayer_c* player;
+    for (player = GetSubPlayer(); player; player = player->Next()) {
         if (player->isPlayerType(type)) {
             break;
         }
@@ -350,7 +350,7 @@ void daWmPlayer_c::initActiveCharaFlags() {
         if (flag != dInfo_c::PlyConnectStage_e::ENTER) {
             flag = dInfo_c::PlyConnectStage_e::OFF;
         }
-        ms_plyConnectStage[s32(daPyMng_c::mPlayerType[i]) % SUBPLAYER_COUNT] = flag;
+        ms_plyConnectStage[+daPyMng_c::mPlayerType[i] % SUBPLAYER_COUNT] = flag;
     }
 }
 

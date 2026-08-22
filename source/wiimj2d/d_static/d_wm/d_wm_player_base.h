@@ -61,7 +61,7 @@ public:
     // Inline Instance Methods
     // ++++++
 
-    s32 getPlayerNo() const { return mParam & 0xF; }
+    int getPlayerNo() const { return mParam & 0xF; }
 
 public:
     // Instance Variables
