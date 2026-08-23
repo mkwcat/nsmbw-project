@@ -4,9 +4,9 @@
 #include "egg/math/eggVector.h"
 #include "egg/prim/eggBitFlag.h"
 #include "eggExEffect.h"
-#include "nw4r/math/mtx.h"
-#include "nw4r/math/vec.h"
-#include "revolution/gx/GXStruct.h"
+#include <nw4r/math/mtx.h>
+#include <nw4r/math/vec.h>
+#include <revolution/gx/GXStruct.h>
 #include <nw4r/ef/Handle.h>
 
 namespace EGG

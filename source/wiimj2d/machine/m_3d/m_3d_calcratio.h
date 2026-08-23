@@ -2,7 +2,7 @@
 #define M3D_M_CALC_RATIO_H
 
 #include <egg/core/eggFrmHeap.h>
-#include "machine/m_allocator.h"
+#include "m_allocator.h"
 
 namespace m3d
 {

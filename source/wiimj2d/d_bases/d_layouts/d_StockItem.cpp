@@ -3,14 +3,14 @@
 
 #include "d_StockItem.h"
 
-#include "d_bases/d_StockItemShadow.h"
-#include "d_bases/d_a_wm_2DPlayer.h"
-#include "d_bases/d_a_wm_Item.h"
-#include "d_bases/d_wm_seManager.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_audio.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "sound/SndSceneMgr.h"
+#include "d_StockItemShadow.h"
+#include "d_a_wm_2DPlayer.h"
+#include "d_a_wm_Item.h"
+#include "d_wm_seManager.h"
+#include "d_a_player_manager.h"
+#include "d_audio.h"
+#include "d_mj2d_game.h"
+#include "SndSceneMgr.h"
 #include <iterator>
 
 [[nsmbw(0x807AF370)]]

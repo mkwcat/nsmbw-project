@@ -1,12 +1,11 @@
 #pragma once
 
-#include "d_static/d_Panel/d_PanelObjList.h"
-#include "d_static/d_actor/d_actor_state.h"
-#include "d_static/d_bg/d_bg_ctr.h"
-#include "state/s_State.h"
+#include "d_PanelObjList.h"
+#include "d_actor_state.h"
+#include "d_bg_ctr.h"
+#include "s_State.h"
 
-class daBgCarry_c final : public dActorMultiState_c
-{
+class daBgCarry_c final : public dActorMultiState_c {
 public:
     // Structors
     // ^^^^^^
@@ -62,11 +61,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x414 */ u16 mTileNum;
+    /* 0x414 */ u16             mTileNum;
     /* 0x418 */ dPanelObjList_c mPanelObj;
-    /* 0x438 */ int mCarryNo;
-    /* 0x43C */ mVec3_c mCarryOffset;
-    /* 0x448 */ dBg_ctr_c mBg;
+    /* 0x438 */ int             mCarryNo;
+    /* 0x43C */ mVec3_c         mCarryOffset;
+    /* 0x448 */ dBg_ctr_c       mBg;
 
 public:
     // Static Methods

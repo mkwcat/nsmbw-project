@@ -2,9 +2,9 @@
 // NSMBW: 0x808638C0 - 0x80864A80
 
 #include "d_a_mini_game_balloon.h"
-#include "d_bases/d_a_mini_game_gun_battery_mgr.h"
-#include "machine/m_ef.h"
-#include "machine/m_vec.h"
+#include "d_a_mini_game_gun_battery_mgr.h"
+#include "m_ef.h"
+#include "m_vec.h"
 
 [[nsmbw(0x80864170)]]
 bool daMiniGameBalloon_c::hitCallback_Cannon(dCc_c* self, dCc_c* other) ASM_METHOD(

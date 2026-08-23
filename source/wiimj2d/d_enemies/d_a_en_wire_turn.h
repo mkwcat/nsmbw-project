@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_static/d_allocator.h"
-#include "d_static/d_ka_draw.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_3d/m_3d_mdl.h"
-#include "machine/m_vec.h"
-#include "state/s_State.h"
+#include "d_allocator.h"
+#include "d_ka_draw.h"
+#include "d_mj2d_game.h"
+#include "m_3d_mdl.h"
+#include "m_vec.h"
+#include "s_State.h"
 #include <d_static/d_enemy/d_enemy.h>
 
 class daEnWrturn_c : public dEn_c {

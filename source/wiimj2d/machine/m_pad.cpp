@@ -3,7 +3,7 @@
 
 #include "m_pad.h"
 
-#include "mkwcat/ToString.hpp"
+#include <mkwcat/ToString.hpp>
 #include <egg/core/eggController.h>
 #include <mkwcat/Relocate.hpp>
 #include <revolution/pad.h>

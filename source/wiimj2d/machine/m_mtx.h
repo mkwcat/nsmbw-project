@@ -1,8 +1,8 @@
 #pragma once
 
-#include "machine/m_angle.h"
-#include "machine/m_vec.h"
-#include "nw4r/math/vec.h"
+#include "m_angle.h"
+#include "m_vec.h"
+#include <nw4r/math/vec.h>
 
 /**
  * A 3x4 matrix.

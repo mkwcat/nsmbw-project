@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_wm/d_wm_demo_actor.h"
+#include "d_wm_demo_actor.h"
 
 class dWmPlayerBase_c : public dWmDemoActor_c {
     SIZE_ASSERT(0x1C9);

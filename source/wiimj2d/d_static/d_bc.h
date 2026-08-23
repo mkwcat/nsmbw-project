@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_rc.h"
-#include "egg/prim/eggBitFlag.h"
+#include "d_rc.h"
+#include <egg/prim/eggBitFlag.h>
 
 enum SensorFlags {
     SENSOR_IS_POINT = 0,

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_scene.h"
-#include "state/s_FStateFct.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_scene.h"
+#include "s_FStateFct.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 class dWiiStrap_c;
 class dYesNoWindow_c;

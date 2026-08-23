@@ -3,9 +3,9 @@
 
 #include "d_base_dump.h"
 
-#include "d_profile/d_all_base_headers.h"
-#include "d_profile/d_profile.h"
-#include "d_static/d_base.h"
+#include "d_all_base_headers.h"
+#include "d_profile.h"
+#include "d_base.h"
 #include <cassert>
 #include <cstring>
 #include <string_view>
@@ -407,7 +407,7 @@ public:
 
 using StructureProvider_c = StructureProviderIf_c<
 #define PROFILE(id, name, ...) __VA_OPT__(__VA_ARGS__, )
-#include "d_profile/d_profile_table.inc"
+#include "d_profile_table.inc"
 #undef PROFILE
     dActor_c, dEn_c>;
 
@@ -582,7 +582,7 @@ void dumpStructure(
 
 static constinit const u16 c_profileToStructure[] = {
 #define PROFILE(id, name, type) [id] = static_cast<u16>(StructureProvider_c::cPos<type>),
-#include "d_profile/d_profile_table.inc"
+#include "d_profile_table.inc"
 #undef PROFILE
 };
 

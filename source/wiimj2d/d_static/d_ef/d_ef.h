@@ -1,6 +1,6 @@
 #pragma once
 
-#include "machine/m_ef.h"
+#include "m_ef.h"
 #include <revolution/sc.h>
 
 class mVec3_c;

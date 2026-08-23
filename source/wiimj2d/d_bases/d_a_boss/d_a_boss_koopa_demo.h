@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_actor/d_a_boss_demo.h"
-#include "d_static/d_ef/d_ef.h"
-#include "d_static/d_util.h"
+#include "d_a_boss_demo.h"
+#include "d_ef.h"
+#include "d_util.h"
 #include <nw4r/ut/Color.h>
 
 class daBossKoopaDemo_c : public daBossDemo_c {

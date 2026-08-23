@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component/c_list.h"
+#include "c_list.h"
 #include "f_base_id.h"
 #include "f_profile.h"
 

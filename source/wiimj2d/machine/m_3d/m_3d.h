@@ -4,7 +4,7 @@
 #include <egg/core/eggHeap.h>
 // #include <egg/gfx/eggFog.h>
 // #include <egg/gfx/eggLight.h>
-#include "machine/m_allocator.h"
+#include "m_allocator.h"
 #include <nw4r/g3d/g3d_scnroot.h>
 #include <nw4r/g3d/g3d_resmdl.h>
 #include "m_3d_scnleaf.h"

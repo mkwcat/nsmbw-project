@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_res.h"
+#include "d_res.h"
 #include <egg/core/eggHeap.h>
 
 class dResMng_c {

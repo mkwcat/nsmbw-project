@@ -3,7 +3,7 @@
 
 #include "d_mj2d_header.h"
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_mj2d_game.h"
 #include <cstring>
 
 [[nsmbw(0x800CE660)]]

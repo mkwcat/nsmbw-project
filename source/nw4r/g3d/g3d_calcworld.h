@@ -5,7 +5,7 @@
 #include "nw4r/g3d/g3d_resmdl.h"
 #include "nw4r/math/mtx.h"
 #include "nw4r/math/vec.h"
-#include "revolution/mtx.h"
+#include <revolution/mtx.h>
 
 namespace nw4r {
 namespace g3d {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_static/d_a_player/d_a_player_hio_ADJ.h"
-#include "d_static/d_player_model/d_player_model_base.h"
-#include "machine/m_angle.h"
-#include "machine/m_mtx.h"
-#include "machine/m_vec.h"
+#include "d_a_player_hio_ADJ.h"
+#include "d_player_model_base.h"
+#include "m_angle.h"
+#include "m_mtx.h"
+#include "m_vec.h"
 
 class dPyMdlMng_c {
     SIZE_ASSERT(0xC);

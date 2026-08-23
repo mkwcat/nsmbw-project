@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_bg/d_bg_ctr.h"
-#include "d_static/d_enemy/d_enemy.h"
+#include "d_bg_ctr.h"
+#include "d_enemy.h"
 #include <revolution/types.h>
 
 class daEnBlockMain_c : public dEn_c {

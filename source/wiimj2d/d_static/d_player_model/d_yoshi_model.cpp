@@ -3,9 +3,9 @@
 
 #include "d_yoshi_model.h"
 
-#include "d_bases/d_s_stage.h"
-#include "d_static/d_game_common.h"
-#include "framework/f_feature.h"
+#include "d_s_stage.h"
+#include "d_game_common.h"
+#include "f_feature.h"
 
 extern const char* const c_yoshiColorNames[dYoshiMdl_c::COLOR_COUNT] = {
     "Y_TexGreen",   "Y_TexRed",    "Y_TexYellow", "Y_TexBlue",

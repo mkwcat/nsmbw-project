@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_player_model/d_player_model_base.h"
-#include "machine/m_3d/m_3d_anmmatclr.h"
-#include "machine/m_3d/m_3d_anmtexpat.h"
-#include "machine/m_3d/m_3d_mdl.h"
+#include "d_player_model_base.h"
+#include "m_3d_anmmatclr.h"
+#include "m_3d_anmtexpat.h"
+#include "m_3d_mdl.h"
 #include <nw4r/g3d/g3d_resfile.h>
 
 class dPlayerMdl_c : public dPyMdlBase_c {

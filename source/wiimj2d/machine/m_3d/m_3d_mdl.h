@@ -1,9 +1,9 @@
 #ifndef M3D_M_MDL_H
 #define M3D_M_MDL_H
 
-#include "machine/m_3d/m_3d_banm.h"
-#include "machine/m_3d/m_3d_calcratio.h"
-#include "machine/m_3d/m_3d_smdl.h"
+#include "m_3d_banm.h"
+#include "m_3d_calcratio.h"
+#include "m_3d_smdl.h"
 #include <nw4r/g3d/g3d_anmchr.h>
 #include <nw4r/g3d/g3d_calcworld.h>
 #include <nw4r/g3d/g3d_resmdl.h>

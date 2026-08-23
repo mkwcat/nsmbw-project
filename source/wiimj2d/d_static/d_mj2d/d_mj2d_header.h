@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_mj2d_game.h"
 
 class dSaveMng_c;
 class dMj2dJsonHandler_c;

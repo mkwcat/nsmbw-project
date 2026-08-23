@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_game_key/d_game_key_core.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_pad.h"
+#include "d_game_key_core.h"
+#include "d_mj2d_game.h"
+#include "m_pad.h"
 #include <egg/core/eggHeap.h>
 
 class dGameKey_c {

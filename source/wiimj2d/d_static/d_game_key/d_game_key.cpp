@@ -3,9 +3,9 @@
 
 #include "d_game_key.h"
 
-#include "d_static/d_game_key/d_game_key_core.h"
-#include "machine/m_heap.h"
-#include "machine/m_pad.h"
+#include "d_game_key_core.h"
+#include "m_heap.h"
+#include "m_pad.h"
 
 [[nsmbw_data_noconstinit(0x8042A230)]]
 dGameKey_c* dGameKey_c::m_instance = [](mHeap::ScopeHeap_c = 0) {

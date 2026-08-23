@@ -3,11 +3,11 @@
 
 #include "d_fukidashiInfo.h"
 
-#include "d_project/d_gamerule.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_info.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_pause_manager.h"
+#include "d_gamerule.h"
+#include "d_a_player_manager.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include "d_pause_manager.h"
 #include <nw4r/lyt/Material.h>
 #include <nw4r/ut/Color.h>
 

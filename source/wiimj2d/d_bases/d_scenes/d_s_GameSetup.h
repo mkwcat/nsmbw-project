@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_scene.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_mj2d_game.h"
+#include "d_scene.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 class da2DPlayer_c;
 class dNumberOfPeopleChange_c;

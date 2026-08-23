@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_static/d_game_key/d_game_key_core.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "framework/f_profile.h"
-#include "machine/m_3d/m_3d_bmdl.h"
-#include "machine/m_vec.h"
+#include "d_game_key_core.h"
+#include "d_mj2d_game.h"
+#include "f_profile.h"
+#include "m_3d_bmdl.h"
+#include "m_vec.h"
 
 class dWmActor_c;
 class dWmEnemy_c;

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "d_static/d_ef/d_ef.h"
-#include "d_static/d_enemy/d_enemy_boss.h"
-#include "machine/m_3d/m_3d_anmchr.h"
-#include "machine/m_3d/m_3d_anmmatclr.h"
-#include "machine/m_3d/m_3d_anmtexpat.h"
-#include "machine/m_3d/m_3d_anmtexsrt.h"
-#include "machine/m_3d/m_3d_mdl.h"
+#include "d_ef.h"
+#include "d_enemy_boss.h"
+#include "m_3d_anmchr.h"
+#include "m_3d_anmmatclr.h"
+#include "m_3d_anmtexpat.h"
+#include "m_3d_anmtexsrt.h"
+#include "m_3d_mdl.h"
 
 class daEnBossKoopa_c : public dEnBoss_c {
     SIZE_ASSERT(0x15C8);

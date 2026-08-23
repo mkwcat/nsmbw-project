@@ -2,7 +2,7 @@
 #define M3D_M_BANM_H
 
 #include <egg/core/eggFrmHeap.h>
-#include "machine/m_allocator.h"
+#include "m_allocator.h"
 #include <nw4r/g3d/g3d_anmobj.h>
 
 namespace m3d {

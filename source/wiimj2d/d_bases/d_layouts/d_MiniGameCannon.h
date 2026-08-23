@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_base.h"
+#include "d_lytbase.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 class dMiniGameCannon_c : public dBase_c {
     SIZE_ASSERT(0x2E8 + 0xE8);

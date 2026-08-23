@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "framework/f_list.h"
-#include "machine/m_angle.h"
-#include "machine/m_mtx.h"
-#include "machine/m_vec.h"
+#include "d_base.h"
+#include "f_list.h"
+#include "m_angle.h"
+#include "m_mtx.h"
+#include "m_vec.h"
 
 struct dBaseActorProfile_s : dBaseProfile_s {
     /**

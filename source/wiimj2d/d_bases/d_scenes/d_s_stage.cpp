@@ -3,18 +3,18 @@
 
 #include "d_s_stage.h"
 
-#include "d_bases/d_layouts/d_MessageWindow.h"
-#include "d_bases/d_layouts/d_MiniGameCannon.h"
-#include "d_bases/d_layouts/d_MiniGameWire.h"
-#include "d_bases/d_layouts/d_ModelPlayManager.h"
-#include "d_bases/d_layouts/d_StaffCreditScore.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_cyuukan.h"
-#include "d_static/d_info.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_save_manager.h"
-#include "d_static/d_start_info.h"
-#include "d_static/d_wm/d_wm_lib.h"
+#include "d_MessageWindow.h"
+#include "d_MiniGameCannon.h"
+#include "d_MiniGameWire.h"
+#include "d_ModelPlayManager.h"
+#include "d_StaffCreditScore.h"
+#include "d_a_player_manager.h"
+#include "d_cyuukan.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include "d_save_manager.h"
+#include "d_start_info.h"
+#include "d_wm_lib.h"
 
 [[nsmbw(0x80924950)]]
 bool dScStage_c::CreatedLayouts() const {

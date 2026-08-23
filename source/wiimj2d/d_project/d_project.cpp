@@ -3,20 +3,20 @@
 
 #include "d_project.h"
 
-#include "component/c_json.h"
-#include "d_player/d_s_boot.h"
-#include "d_project/d_exception.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_info.h"
-#include "d_static/d_nand_thread.h"
-#include "d_static/d_remocon_mng.h"
-#include "d_static/d_save_manager.h"
-#include "d_static/d_system.h"
-#include "machine/m_dvd.h"
-#include "machine/m_heap.h"
-#include "machine/m_pad.h"
-#include "revolution/os/OSError.h"
-#include "sound/SndAudioMgr.h"
+#include "c_json.h"
+#include "d_s_boot.h"
+#include "d_exception.h"
+#include "d_a_player_manager.h"
+#include "d_info.h"
+#include "d_nand_thread.h"
+#include "d_remocon_mng.h"
+#include "d_save_manager.h"
+#include "d_system.h"
+#include "m_dvd.h"
+#include "m_heap.h"
+#include "m_pad.h"
+#include <revolution/os/OSError.h>
+#include "SndAudioMgr.h"
 #include <egg/core/eggController.h>
 
 void dProject_c::preCModuleInit(

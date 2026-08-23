@@ -1,17 +1,17 @@
 #pragma once
 
-#include "d_profile/d_profile.h"
-#include "d_static/d_a_player/d_a_player_key.h"
-#include "d_static/d_actor/d_actor.h"
-#include "d_static/d_cc.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_player_model/d_player_model_manager.h"
-#include "d_static/d_quake.h"
-#include "machine/m_mtx.h"
-#include "sound/SndID.h"
-#include "sound/SndObjectPlayer.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_profile.h"
+#include "d_a_player_key.h"
+#include "d_actor.h"
+#include "d_cc.h"
+#include "d_mj2d_game.h"
+#include "d_player_model_manager.h"
+#include "d_quake.h"
+#include "m_mtx.h"
+#include "SndID.h"
+#include "SndObjectPlayer.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 struct sSpeedData;
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "d_CharacterChangeSelectBase.h"
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "state/s_State.h"
+#include "d_base.h"
+#include "d_lytbase.h"
+#include "s_State.h"
 #include <nw4r/lyt/Pane.h>
 
 class dCharacterChangeIndicator_c;

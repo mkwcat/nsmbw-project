@@ -1,13 +1,13 @@
 #pragma once
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_actor/d_base_actor.h"
-#include "d_static/d_bc.h"
-#include "d_static/d_cc.h"
-#include "d_static/d_rc.h"
-#include "framework/f_base_id.h"
-#include "machine/m_vec.h"
-#include "state/s_RangeData.h"
+#include "d_a_player_manager.h"
+#include "d_base_actor.h"
+#include "d_bc.h"
+#include "d_cc.h"
+#include "d_rc.h"
+#include "f_base_id.h"
+#include "m_vec.h"
+#include "s_RangeData.h"
 #include <nw4r/ut/Rect.h>
 
 class dPropelParts_c;

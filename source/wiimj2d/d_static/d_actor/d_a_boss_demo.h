@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_actor/d_actor_state.h"
-#include "framework/f_base_id.h"
-#include "state/s_State.h"
+#include "d_actor_state.h"
+#include "f_base_id.h"
+#include "s_State.h"
 
 class daBossDemo_c : public dActorState_c {
     SIZE_ASSERT(0x3DC);

@@ -3,8 +3,8 @@
 
 #include "d_s_stage.h"
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "framework/f_feature.h"
+#include "d_mj2d_game.h"
+#include "f_feature.h"
 #include <mkwcat/Relocate.hpp>
 
 [[nsmbw_data(0x8042931C)]]

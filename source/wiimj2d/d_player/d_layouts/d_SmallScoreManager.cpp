@@ -3,7 +3,7 @@
 
 #include "d_SmallScoreManager.h"
 
-#include "machine/m_vec.h"
+#include "m_vec.h"
 
 [[nsmbw(0x8042A5B0)]]
 dSmallScoreManager_c* dSmallScoreManager_c::m_instance;

@@ -3,15 +3,15 @@
 
 #include "d_s_restart_crsin.h"
 
-#include "d_bases/d_s_crsin.h"
-#include "d_bases/d_s_stage.h"
-#include "d_profile/d_profile.h"
-#include "d_project/d_demo_info.h"
-#include "d_static/d_fader.h"
-#include "d_static/d_info.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "framework/f_feature.h"
-#include "machine/m_dvd.h"
+#include "d_s_crsin.h"
+#include "d_s_stage.h"
+#include "d_profile.h"
+#include "d_demo_info.h"
+#include "d_fader.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include "f_feature.h"
+#include "m_dvd.h"
 
 [[nsmbw(0x80374060)]]
 dInfo_c::StartGameInfo_s dScRestartCrsin_c::m_startGameInfo;

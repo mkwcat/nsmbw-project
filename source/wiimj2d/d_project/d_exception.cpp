@@ -4,13 +4,13 @@
 #include "d_exception.h"
 
 #include "d_base_dump.h"
-#include "d_project/d_project.h"
-#include "d_static/d_system.h"
-#include "machine/m_nandfile.h"
-#include "machine/m_pipe.h"
-#include "nw4r/db/db_console.h"
-#include "nw4r/db/db_exception.h"
-#include "revolution/os/OSThread.h"
+#include "d_project.h"
+#include "d_system.h"
+#include "m_nandfile.h"
+#include "m_pipe.h"
+#include <nw4r/db/db_console.h>
+#include <nw4r/db/db_exception.h>
+#include <revolution/os/OSThread.h>
 #include <algorithm>
 #include <array>
 #include <cstdio>

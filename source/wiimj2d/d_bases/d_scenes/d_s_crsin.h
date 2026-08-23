@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_bases/d_layouts/d_PreGame.h"
-#include "d_static/d_scene.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_PreGame.h"
+#include "d_scene.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 class dScCrsin_c : public dScene_c {
 public:

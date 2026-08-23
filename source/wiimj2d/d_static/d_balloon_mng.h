@@ -1,6 +1,6 @@
 #pragma once
 
-#include "framework/f_base_id.h"
+#include "f_base_id.h"
 
 class dBalloonMng_c
 {

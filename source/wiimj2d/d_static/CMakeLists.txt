@@ -1,3 +1,19 @@
+target_include_directories(project PRIVATE
+    .
+    d_a_player
+    d_actor
+    d_bg
+    d_ef
+    d_enemy
+    d_game_key
+    d_lyt
+    d_mask
+    d_mj2d
+    d_Panel
+    d_player_model
+    d_wm
+)
+
 
 #
 # WIIMJ2D.dol

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_actor/d_base_actor.h"
-#include "machine/m_sphere.h"
+#include "d_base_actor.h"
+#include "m_sphere.h"
 
 namespace m3d {
 class bmdl_c;

@@ -2,13 +2,13 @@
 // NSMBW   d_bases.text:  0x807ADAD0 - 0x807AF370
 
 #include "d_StaffCreditScore.h"
-#include "d_player/d_a_player.h"
-#include "d_static/d_a_player/d_a_player_demo_manager.h"
-#include "d_static/d_game_common.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
-#include "d_static/d_lyt/d_message.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "sound/SndSceneMgr.h"
+#include "d_a_player.h"
+#include "d_a_player_demo_manager.h"
+#include "d_game_common.h"
+#include "d_lyttextbox.h"
+#include "d_message.h"
+#include "d_mj2d_game.h"
+#include "SndSceneMgr.h"
 
 [[nsmbw(0x807ADAD0)]]
 dStaffCreditScore_c* dStaffCreditScore_c_classInit()

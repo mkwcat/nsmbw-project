@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_wm/d_wm_lib.h"
+#include "d_wm_lib.h"
 #include <nw4r/math/vec.h>
 
 class dCsvData_c;

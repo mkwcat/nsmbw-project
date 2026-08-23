@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "d_static/d_ef/d_ef.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_ef.h"
+#include "d_base.h"
+#include "d_ef.h"
+#include "d_mj2d_game.h"
+#include "m_ef.h"
 
 class daMiniGameWireMeshMgrObj_c : public dBase_c {
 public:

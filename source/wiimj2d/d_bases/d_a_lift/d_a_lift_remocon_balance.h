@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_static/d_actor/d_a_lift_remocon_main.h"
-#include "d_static/d_allocator.h"
-#include "d_static/d_rot_shake.h"
-#include "machine/m_3d/m_3d_anmchr.h"
-#include "machine/m_3d/m_3d_anmtexpat.h"
+#include "d_a_lift_remocon_main.h"
+#include "d_allocator.h"
+#include "d_rot_shake.h"
+#include "m_3d_anmchr.h"
+#include "m_3d_anmtexpat.h"
 
 class daRemoconBalance_c : public daLiftRemoconMain_c {
     // Original size: 0x668

@@ -3,8 +3,8 @@
 
 #include "d_a_en_dpakkun_base.h"
 
-#include "d_player/d_a_player.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
+#include "d_a_player.h"
+#include "d_a_player_manager.h"
 
 [[nsmbw(0x8002D730)]]
 int daEnDpakkunBase_c::hitCallback_YoshiHipAttk(dCc_c* main, dCc_c* other) ASM_METHOD(

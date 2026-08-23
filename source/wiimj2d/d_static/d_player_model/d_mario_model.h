@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_player_model/d_player_model.h"
+#include "d_player_model.h"
 
 class dMarioMdl_c : public dPlayerMdl_c {
     SIZE_ASSERT(0x874);

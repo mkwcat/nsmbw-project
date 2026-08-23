@@ -3,8 +3,8 @@
 
 #include "d_CourseSelectGuide.h"
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_game_common.h"
+#include "d_a_player_manager.h"
+#include "d_game_common.h"
 #include <algorithm>
 
 [[nsmbw_data(0x80429EDC)]]

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "machine/m_allocator.h"
+#include "m_allocator.h"
 #include <egg/core/eggHeap.h>
 
 class dHeapAllocator_c : public mHeapAllocator_c {

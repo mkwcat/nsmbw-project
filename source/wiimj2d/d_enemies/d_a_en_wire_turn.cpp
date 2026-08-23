@@ -3,10 +3,10 @@
 
 #include "d_a_en_wire_turn.h"
 
-#include "d_profile/d_profile.h"
-#include "d_static/d_audio.h"
-#include "d_static/d_cc.h"
-#include "sound/SndID.h"
+#include "d_profile.h"
+#include "d_audio.h"
+#include "d_cc.h"
+#include "SndID.h"
 #include <algorithm>
 #include <mkwcat/Relocate.hpp>
 #include <mkwcat/VTable.hpp>

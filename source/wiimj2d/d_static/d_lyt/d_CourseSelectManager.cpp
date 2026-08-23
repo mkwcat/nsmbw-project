@@ -3,15 +3,15 @@
 
 #include "d_CourseSelectManager.h"
 
-#include "d_bases/d_CharacterChangeSelectBase.h"
-#include "d_bases/d_CourseSelectMenu.h"
-#include "d_bases/d_EasyPairing.h"
-#include "d_bases/d_NumberOfPeopleChange.h"
-#include "d_bases/d_StockItem.h"
-#include "d_bases/d_a_wm_2DPlayer.h"
-#include "d_bases/d_a_wm_player.h"
-#include "d_static/d_game_common.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_CharacterChangeSelectBase.h"
+#include "d_CourseSelectMenu.h"
+#include "d_EasyPairing.h"
+#include "d_NumberOfPeopleChange.h"
+#include "d_StockItem.h"
+#include "d_a_wm_2DPlayer.h"
+#include "d_a_wm_player.h"
+#include "d_game_common.h"
+#include "d_mj2d_game.h"
 #include <iterator>
 
 [[nsmbw_data(0x809A2370)]]

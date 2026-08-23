@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_lyt/d_lytbase.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
-#include "machine/m_vec.h"
+#include "d_lytbase.h"
+#include "d_lyttextbox.h"
+#include "m_vec.h"
 
 /**
  * Handles the creation, animation, and rendering of a single small score popup, which appears when

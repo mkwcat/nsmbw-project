@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_vec.h"
+#include "d_mj2d_game.h"
+#include "m_vec.h"
 
 class daPyDemoMng_c {
 public:

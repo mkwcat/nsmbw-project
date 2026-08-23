@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_Panel/d_PanelObjList.h"
+#include "d_PanelObjList.h"
 
 class dPanelObjMgr_c {
 public:

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_player_model/d_player_model_base.h"
-#include "nw4r/g3d/g3d_resfile.h"
+#include "d_player_model_base.h"
+#include <nw4r/g3d/g3d_resfile.h>
 
 class dYoshiMdl_c : public dPyMdlBase_c {
     SIZE_ASSERT(0x404);

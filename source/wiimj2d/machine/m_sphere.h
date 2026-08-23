@@ -2,7 +2,7 @@
 
 #include <cfloat>
 #include <cmath>
-#include "machine/m_vec.h"
+#include "m_vec.h"
 
 class mSphere_c
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_lyt/d_lytbase.h"
-#include "machine/m_vec.h"
-#include "state/s_State.h"
+#include "d_lytbase.h"
+#include "m_vec.h"
+#include "s_State.h"
 #include <nw4r/lyt/Picture.h>
 
 class dfukidashiInfo_c {

@@ -3,11 +3,11 @@
 
 #include "d_a_en_blockmain.h"
 
-#include "d_player/d_a_yoshi.h"
-#include "d_project//d_gamerule.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_actorcreate_mng.h"
-#include "d_static/d_player_model/d_yoshi_model.h"
+#include "d_a_yoshi.h"
+#include "d_gamerule.h"
+#include "d_a_player_manager.h"
+#include "d_actorcreate_mng.h"
+#include "d_yoshi_model.h"
 
 [[nsmbw(0x80021AB0)]]
 bool daEnBlockMain_c::isYossyColor(

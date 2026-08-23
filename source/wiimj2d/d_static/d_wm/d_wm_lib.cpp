@@ -3,7 +3,7 @@
 
 #include "d_wm_lib.h"
 
-#include "d_static/d_game_key/d_game_key.h"
+#include "d_game_key.h"
 
 namespace dWmLib {
 

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "d_bases/d_layouts/d_Continue.h"
-#include "d_bases/d_layouts/d_MessageWindow.h"
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_CourseSelectGuide.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "state/s_FStateFct.h"
-#include "state/s_State.h"
-#include "state/s_StateMethodUsr_FI.h"
-#include "state/s_StateMgr.h"
+#include "d_Continue.h"
+#include "d_MessageWindow.h"
+#include "d_base.h"
+#include "d_CourseSelectGuide.h"
+#include "d_mj2d_game.h"
+#include "s_FStateFct.h"
+#include "s_State.h"
+#include "s_StateMethodUsr_FI.h"
+#include "s_StateMgr.h"
 
 class dCourseSelectMenu_c;
 class dNumberOfPeopleChange_c;

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
-#include "nw4r/lyt/Window.h"
-#include "state/s_FStateFct.h"
-#include "state/s_StateInterfaces.h"
-#include "state/s_StateMethodUsr_FI.h"
-#include "state/s_StateMgr.h"
+#include "d_base.h"
+#include "d_lytbase.h"
+#include "d_lyttextbox.h"
+#include <nw4r/lyt/Window.h>
+#include "s_FStateFct.h"
+#include "s_StateInterfaces.h"
+#include "s_StateMethodUsr_FI.h"
+#include "s_StateMgr.h"
 #include <nw4r/lyt/Pane.h>
 #include <nw4r/lyt/Picture.h>
 

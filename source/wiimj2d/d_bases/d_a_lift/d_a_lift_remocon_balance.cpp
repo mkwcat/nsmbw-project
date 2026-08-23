@@ -3,7 +3,7 @@
 
 #include "d_a_lift_remocon_balance.h"
 
-#include "d_static/d_a_player/d_a_player_base.h"
+#include "d_a_player_base.h"
 #include <mkwcat/VTable.hpp>
 
 [[nsmbw(0x8083C020)]]

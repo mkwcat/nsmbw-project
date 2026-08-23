@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_base.h"
+#include "d_a_player_manager.h"
+#include "d_base.h"
 
 class daObjGrass_c : public dBase_c {
 public:

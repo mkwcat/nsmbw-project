@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_profile/d_profile.h"
-#include "d_static/d_base.h"
+#include "d_profile.h"
+#include "d_base.h"
 
 class sPhase_c;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "machine/m_allocator.h"
+#include "m_allocator.h"
 #include <nw4r/g3d/g3d_scnobj.h>
 
 namespace m3d

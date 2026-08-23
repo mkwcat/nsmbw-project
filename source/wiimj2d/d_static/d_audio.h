@@ -1,9 +1,9 @@
 #pragma once
 
-#include "machine/m_vec.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndObjectMap.h"
-#include "sound/SndObjectPlayer.h"
+#include "m_vec.h"
+#include "SndAudioMgr.h"
+#include "SndObjectMap.h"
+#include "SndObjectPlayer.h"
 
 namespace dAudio
 {

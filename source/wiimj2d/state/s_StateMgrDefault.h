@@ -1,9 +1,9 @@
 #pragma once
 
-#include "state/s_FStateFct.h"
-#include "state/s_StateInterfaces.h"
-#include "state/s_StateMethodUsr_FI.h"
-#include "state/s_StateMgr.h"
+#include "s_FStateFct.h"
+#include "s_StateInterfaces.h"
+#include "s_StateMethodUsr_FI.h"
+#include "s_StateMgr.h"
 
 template<class T>
 using sStateMgrDefault_c =

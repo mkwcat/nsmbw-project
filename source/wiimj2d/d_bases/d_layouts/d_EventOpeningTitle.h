@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
-#include "nw4r/lyt/Pane.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_base.h"
+#include "d_lytbase.h"
+#include "d_lyttextbox.h"
+#include <nw4r/lyt/Pane.h>
+#include "s_StateMgrDefault.h"
 
 class dEventOpeningTitle_c : public dBase_c {
 public:

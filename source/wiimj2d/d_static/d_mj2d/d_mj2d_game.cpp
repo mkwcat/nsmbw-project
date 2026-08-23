@@ -3,8 +3,8 @@
 
 #include "d_mj2d_game.h"
 
-#include "d_static/d_cyuukan.h"
-#include "framework/f_feature.h"
+#include "d_cyuukan.h"
+#include "f_feature.h"
 
 const PLAYER_TYPE_e dMj2dGame_c::scDefaultPlayerTypes[PLAYER_COUNT] = {
     PLAYER_TYPE_e::MARIO,       PLAYER_TYPE_e::LUIGI,     PLAYER_TYPE_e::YELLOW_TOAD,

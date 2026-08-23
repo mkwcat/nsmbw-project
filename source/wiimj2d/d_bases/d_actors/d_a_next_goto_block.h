@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_actor/d_actor_state.h"
-#include "d_static/d_cc.h"
-#include "d_player/d_a_player.h"
-#include "machine/m_vec.h"
-#include "state/s_State.h"
+#include "d_a_player_manager.h"
+#include "d_actor_state.h"
+#include "d_cc.h"
+#include "d_a_player.h"
+#include "m_vec.h"
+#include "s_State.h"
 
 class daNextGotoBlock_c : public dActorState_c {
 public:

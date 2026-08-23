@@ -1,8 +1,8 @@
 #pragma once
 
-#include "machine/m_angle.h"
-#include "machine/m_mtx.h"
-#include "machine/m_vec.h"
+#include "m_angle.h"
+#include "m_mtx.h"
+#include "m_vec.h"
 #include <egg/util/eggEffect.h>
 
 namespace mEf {

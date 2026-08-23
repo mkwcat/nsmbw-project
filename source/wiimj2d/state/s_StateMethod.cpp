@@ -2,8 +2,8 @@
 // NSMBW .text: 0x8015FAE0 - 0x8015FDD0
 
 #include "s_StateMethod.h"
-#include "framework/f_feature.h"
-#include "revolution/os/OSError.h"
+#include "f_feature.h"
+#include <revolution/os/OSError.h>
 
 /**
  * Constructs a new sStateMethod_c instance.

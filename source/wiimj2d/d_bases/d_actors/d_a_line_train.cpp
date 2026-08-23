@@ -3,7 +3,7 @@
 
 #include "d_a_line_train.h"
 
-#include "component/c_bitmask.h"
+#include "c_bitmask.h"
 
 [[gnu::used]]
 constinit u32 daLineTrain_c_size = sizeof(daLineTrain_c);

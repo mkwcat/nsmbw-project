@@ -1,16 +1,16 @@
 #pragma once
 
-#include "d_player/d_a_yoshi.h"
-#include "d_profile/d_profile.h"
-#include "d_static/d_a_player/d_a_player_base.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_bc.h"
-#include "d_static/d_cc.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_player_model/d_player_model_manager.h"
-#include "d_static/d_quake.h"
-#include "framework/f_base_id.h"
-#include "state/s_State.h"
+#include "d_a_yoshi.h"
+#include "d_profile.h"
+#include "d_a_player_base.h"
+#include "d_a_player_manager.h"
+#include "d_bc.h"
+#include "d_cc.h"
+#include "d_mj2d_game.h"
+#include "d_player_model_manager.h"
+#include "d_quake.h"
+#include "f_base_id.h"
+#include "s_State.h"
 
 /**
  * The player class for Mario, Luigi and the Toads.

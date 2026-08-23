@@ -1,7 +1,7 @@
 #pragma once
 
 #include "nw4r/ut/Color.h"
-#include "revolution/gx/GXStruct.h"
+#include <revolution/gx/GXStruct.h>
 
 namespace nw4r::lyt
 {
@@ -13,8 +13,8 @@ constexpr u32 PANE_NAME_SIZE = 16;
 constexpr u32 PANE_USERDATA_SIZE = 8;
 constexpr u32 ANIMTARGET_PANE_MAX = 10;
 constexpr u32 MATERIAL_NAME_SIZE = 20;
-constexpr u32 NW4R_RES_NAME_SIZE = 16;
-constexpr u32 NW4R_MAT_NAME_SIZE = 20;
+constexpr u32 NW4R_RES_NAME_SIZE  = 16;
+constexpr u32 NW4R_MAT_NAME_SIZE  = 20;
 
 constexpr u32 TEXCOORD_VTX_COUNT = 4;
 

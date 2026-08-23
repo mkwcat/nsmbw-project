@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "state/s_FStateFct.h"
-#include "state/s_StateMethodUsr_FI.h"
-#include "state/s_StateMgr.h"
-#include "state/s_State.h"
+#include "d_base.h"
+#include "d_lytbase.h"
+#include "s_FStateFct.h"
+#include "s_StateMethodUsr_FI.h"
+#include "s_StateMgr.h"
+#include "s_State.h"
 
 class dPointResultDateFile_c : public dBase_c
 {

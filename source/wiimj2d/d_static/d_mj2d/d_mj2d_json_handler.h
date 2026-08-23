@@ -1,9 +1,9 @@
 #pragma once
 
-#include "component/c_json.h"
-#include "d_static/d_mj2d/d_mj2d_data.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_mj2d/d_mj2d_header.h"
+#include "c_json.h"
+#include "d_mj2d_data.h"
+#include "d_mj2d_game.h"
+#include "d_mj2d_header.h"
 #include <cstdio>
 #include <variant>
 

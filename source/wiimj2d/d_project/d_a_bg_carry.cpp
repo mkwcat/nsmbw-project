@@ -3,14 +3,14 @@
 
 #include "d_a_bg_carry.h"
 
-#include "d_player/d_a_player.h"
-#include "d_static/d_Panel/d_PanelObjMgr.h"
-#include "d_static/d_actor/d_actor.h"
-#include "d_static/d_audio.h"
-#include "d_static/d_bg/d_bg.h"
-#include "d_static/d_ef/d_effactor_mng.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "egg/prim/eggBitFlag.h"
+#include "d_PanelObjMgr.h"
+#include "d_a_player.h"
+#include "d_actor.h"
+#include "d_audio.h"
+#include "d_bg.h"
+#include "d_effactor_mng.h"
+#include "d_mj2d_game.h"
+#include <egg/prim/eggBitFlag.h>
 
 void daBgCarry_c::callBackF(
     dActor_c* self, dActor_c* other

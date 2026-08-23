@@ -2,7 +2,7 @@
 // NSMBW d_profile.rodata: 0x8076A748 - 0x8076B300
 
 #include "d_profile.h"
-#include "framework/f_profile.h"
+#include "f_profile.h"
 #include <array>
 
 namespace dProfTable

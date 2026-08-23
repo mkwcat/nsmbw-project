@@ -1,11 +1,11 @@
 #pragma once
 
-#include "component/c_array.h"
-#include "d_static/d_base.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_angle.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "c_array.h"
+#include "d_base.h"
+#include "d_mj2d_game.h"
+#include "m_angle.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 #include <nw4r/lyt/Pane.h>
 
 class daWmIsland_c;

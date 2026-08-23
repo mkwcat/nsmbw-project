@@ -3,7 +3,7 @@
 
 #include "d_player_model_base.h"
 
-#include "machine/m_mtx.h"
+#include "m_mtx.h"
 
 /* VT+0x10 */
 [[nsmbw(0x800D5720)]]

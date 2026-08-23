@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_2d.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
-#include "framework/f_base.h"
-#include "machine/m_2d.h"
+#include "d_2d.h"
+#include "d_lyttextbox.h"
+#include "f_base.h"
+#include "m_2d.h"
 #include <nw4r/lyt/Layout.h>
 #include <nw4r/lyt/Pane.h>
 #include <nw4r/lyt/Picture.h>

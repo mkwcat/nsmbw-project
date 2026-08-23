@@ -1,7 +1,7 @@
 // d_mask_mng.cpp
 // NSMBW .text: 0x800CD290 - 0x800CD800
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_mj2d_game.h"
 
 namespace dMaskMng
 {

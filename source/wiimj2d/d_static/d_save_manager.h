@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_mj2d/d_mj2d_data.h"
+#include "d_mj2d_data.h"
 
 namespace EGG {
 class Heap;

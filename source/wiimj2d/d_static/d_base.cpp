@@ -3,8 +3,8 @@
 
 #include "d_base.h"
 
-#include "d_profile/d_profile.h"
-#include "framework/f_feature.h"
+#include "d_profile.h"
+#include "f_feature.h"
 #include <revolution/os.h>
 
 [[nsmbw(0x8006C420)]]

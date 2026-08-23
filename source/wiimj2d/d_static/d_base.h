@@ -1,8 +1,8 @@
 #pragma once
 
-#include "component/c_unary_tree.h"
-#include "d_profile/d_profile.h"
-#include "framework/f_base.h"
+#include "c_unary_tree.h"
+#include "d_profile.h"
+#include "f_base.h"
 
 struct dBaseProfile_s : fProfileDat_c {
 };

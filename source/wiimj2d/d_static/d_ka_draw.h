@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_allocator.h"
-#include "machine/m_3d/m_3d_mdl.h"
-#include "machine/m_vec.h"
+#include "d_allocator.h"
+#include "m_3d_mdl.h"
+#include "m_vec.h"
 
 class dKADr_c {
     SIZE_ASSERT(0x11E);

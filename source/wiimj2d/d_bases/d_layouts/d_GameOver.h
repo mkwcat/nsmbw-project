@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "state/s_State.h"
+#include "d_base.h"
+#include "s_State.h"
 
 class dGameOver_c : public dBase_c
 {

@@ -3,9 +3,9 @@
 
 #include "d_nextgoto_list.h"
 
-#include "component/c_json.h"
-#include "d_static/d_dvd.h"
-#include "machine/m_heap.h"
+#include "c_json.h"
+#include "d_dvd.h"
+#include "m_heap.h"
 #include <cassert>
 #include <cstdlib>
 #include <cstring>

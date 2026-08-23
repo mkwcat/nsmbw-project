@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_player_model/d_player_model_manager.h"
-#include "machine/m_vec.h"
-#include "sound/SndObjectPlayer.h"
+#include "d_a_player_manager.h"
+#include "d_mj2d_game.h"
+#include "d_player_model_manager.h"
+#include "m_vec.h"
+#include "SndObjectPlayer.h"
 
 class SndObjctEmy;
 class SndObjctCmnEmy;

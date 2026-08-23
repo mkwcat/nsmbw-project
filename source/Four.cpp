@@ -4,9 +4,9 @@
 
 #include "Four.h"
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "mkwcat/Port.hpp"
+#include "d_mj2d_game.h"
 #include <cstring>
+#include <mkwcat/Port.hpp>
 #include <revolution/os.h>
 
 struct FourPatch {

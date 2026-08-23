@@ -3,9 +3,9 @@
 
 #include "d_a_lift_remocon_main.h"
 
-#include "d_static/d_a_player/d_a_player_base.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_actor/d_actor.h"
+#include "d_a_player_base.h"
+#include "d_a_player_manager.h"
+#include "d_actor.h"
 #include <revolution/os/OSError.h>
 
 [[nsmbw(0x800440C0)]]

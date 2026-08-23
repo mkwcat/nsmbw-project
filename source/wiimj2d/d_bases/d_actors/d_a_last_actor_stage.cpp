@@ -3,37 +3,36 @@
 
 #include "d_a_last_actor_stage.h"
 
-#include "d_bases/d_s_stage.h"
-#include "d_player/d_WarningManager.h"
-#include "d_player/d_a_player.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_actor/d_actor.h"
-#include "d_static/d_actor/d_actor_mng.h"
-#include "d_static/d_actorcreate_mng.h"
-#include "d_static/d_attention.h"
-#include "d_static/d_balloon_mng.h"
-#include "d_static/d_beans_kuribo_mng.h"
-#include "d_static/d_bg/d_bg_ctr.h"
-#include "d_static/d_cc.h"
-#include "d_static/d_coin.h"
-#include "d_static/d_ef/d_effactor_mng.h"
-#include "d_static/d_enemy/d_enemy_manager.h"
-#include "d_static/d_game_common.h"
-#include "d_static/d_game_key/d_game_key.h"
-#include "d_static/d_game_key/d_game_key_core.h"
-#include "d_static/d_next.h"
-#include "d_static/d_pause_manager.h"
-#include "d_static/d_remocon_mng.h"
-#include "d_static/d_stage_timer.h"
-#include "d_static/d_switchflag_mng.h"
-#include "d_static/d_tencoin_mng.h"
-#include "machine/m_fader.h"
-#include "sound/SndAudioMgr.h"
+#include "SndAudioMgr.h"
+#include "d_WarningManager.h"
+#include "d_a_player.h"
+#include "d_a_player_manager.h"
+#include "d_actor.h"
+#include "d_actor_mng.h"
+#include "d_actorcreate_mng.h"
+#include "d_attention.h"
+#include "d_balloon_mng.h"
+#include "d_beans_kuribo_mng.h"
+#include "d_bg_ctr.h"
+#include "d_cc.h"
+#include "d_coin.h"
+#include "d_effactor_mng.h"
+#include "d_enemy_manager.h"
+#include "d_game_common.h"
+#include "d_game_key.h"
+#include "d_game_key_core.h"
+#include "d_next.h"
+#include "d_pause_manager.h"
+#include "d_remocon_mng.h"
+#include "d_s_stage.h"
+#include "d_stage_timer.h"
+#include "d_switchflag_mng.h"
+#include "d_tencoin_mng.h"
+#include "m_fader.h"
 #include <revolution/vi.h>
 
 [[nsmbw(0x80830690)]]
-daLastActorStage_c* daLastActorStage_c_classInit()
-{
+daLastActorStage_c* daLastActorStage_c_classInit() {
     return new daLastActorStage_c();
 }
 
@@ -42,11 +41,10 @@ daLastActorStage_c* daLastActorStage_c_classInit()
  * do method for the create operation.
  */
 [[nsmbw(0x808306E0)]]
-fBase_c::PACK_RESULT_e daLastActorStage_c::create()
-{
+fBase_c::PACK_RESULT_e daLastActorStage_c::create() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         mBtnPressed[i] = 0;
-        mIsShaking[i] = false;
+        mIsShaking[i]  = false;
     }
 
     return PACK_RESULT_e::SUCCEEDED;
@@ -65,8 +63,7 @@ fBase_c::PACK_RESULT_e daLastActorStage_c::doDelete();
  * do method for the execute operation.
  */
 [[nsmbw(0x80830720)]]
-fBase_c::PACK_RESULT_e daLastActorStage_c::execute()
-{
+fBase_c::PACK_RESULT_e daLastActorStage_c::execute() {
     if (!dGameCom::isGameStop(0xFFFFFFFF)) {
         if (mFader_c::isStatus(mFader_c::EStatus::HIDDEN)) {
             dSwitchFlagMng_c::m_instance->execute();
@@ -125,15 +122,15 @@ fBase_c::PACK_RESULT_e daLastActorStage_c::execute()
         for (int i = 0; i < PLAYER_COUNT; i++) {
             if (mBtnPressed[i] != 0) {
                 gameKey->mpCores[i]->m0x30 = gameKey->mpCores[i]->mHeld & mBtnPressed[i];
-                mBtnPressed[i] = 0;
+                mBtnPressed[i]             = 0;
             }
             gameKey->mpCores[i]->mShakeOld = mIsShaking[i];
-            mIsShaking[i] = false;
+            mIsShaking[i]                  = false;
         }
     }
 
     SndAudioMgr::sInstance->setIsReplay(
-      dScStage_c::m_gameMode != dScStage_c::GAME_MODE_e::UNKNOWN_0
+        dScStage_c::m_gameMode != dScStage_c::GAME_MODE_e::UNKNOWN_0
     );
 
     if (!dScStage_c::isNowReplay()) {

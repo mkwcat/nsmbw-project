@@ -3,12 +3,12 @@
 
 #include "d_a_wm_Map.h"
 
-#include "d_bases/d_s_world_map.h"
-#include "d_project/d_gamerule.h"
-#include "d_static/d_info.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_wm/d_wm_connect.h"
-#include "d_static/d_wm/d_wm_lib.h"
+#include "d_s_world_map.h"
+#include "d_gamerule.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include "d_wm_connect.h"
+#include "d_wm_lib.h"
 
 [[nsmbw(0x808DFE50)]]
 void daWmMap_c::createEnemyActors();

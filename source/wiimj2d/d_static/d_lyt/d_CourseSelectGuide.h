@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_lyt/d_lytbase.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
+#include "d_lytbase.h"
+#include "d_lyttextbox.h"
 #include <nw4r/lyt/Picture.h>
 
 class dCourseSelectGuide_c {

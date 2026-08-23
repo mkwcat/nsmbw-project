@@ -2,8 +2,8 @@
 // NSMBW d_bases.text: 0x80845940 - 0x808468E0
 
 #include "d_a_lift_ridemove.h"
-#include "d_player/d_a_player.h"
-#include "d_player/d_a_yoshi.h"
+#include "d_a_player.h"
+#include "d_a_yoshi.h"
 
 [[nsmbw(0x80845D60)]]
 bool daLiftRideMove_c::isAllPlayerOnLift()

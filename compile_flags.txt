@@ -70,6 +70,11 @@ c++
 -Isource/wiimj2d/d_static/machine/m_3d
 -Isource/wiimj2d/d_static/sound
 -Isource/wiimj2d/d_static/state
+-Isource/wiimj2d/framework
+-Isource/wiimj2d/machine
+-Isource/wiimj2d/machine/m_3d
+-Isource/wiimj2d/sound
+-Isource/wiimj2d/state
 -include
 source/System.h
 

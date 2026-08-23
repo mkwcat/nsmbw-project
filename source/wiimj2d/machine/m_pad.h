@@ -1,6 +1,6 @@
 #pragma once
 
-#include "machine/m_vec.h"
+#include "m_vec.h"
 #include <array>
 #include <egg/core/eggController.h>
 

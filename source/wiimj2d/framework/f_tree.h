@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component/c_tree.h"
+#include "c_tree.h"
 #include "f_profile.h"
 
 class fTrNdBa_c;

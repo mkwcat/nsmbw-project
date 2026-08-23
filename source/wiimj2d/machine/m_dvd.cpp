@@ -3,7 +3,7 @@
 
 #include "m_dvd.h"
 
-#include "egg/core/eggStreamDecomp.h"
+#include <egg/core/eggStreamDecomp.h>
 #include <cstring>
 #include <egg/core/eggDvdFile.h>
 #include <egg/core/eggDvdRipper.h>

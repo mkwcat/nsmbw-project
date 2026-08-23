@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_course_data.h"
-#include "d_static/d_fader.h"
+#include "d_course_data.h"
+#include "d_fader.h"
 
 class dNext_c {
     SIZE_ASSERT(0x24);

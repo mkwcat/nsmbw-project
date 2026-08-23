@@ -3,7 +3,7 @@
 
 #include "d_kinopio_model.h"
 
-#include "d_static/d_player_model/d_player_model_manager.h"
+#include "d_player_model_manager.h"
 #include <nw4r/g3d/g3d_resanmchr.h>
 
 [[nsmbw(0x800BCBD0)]]

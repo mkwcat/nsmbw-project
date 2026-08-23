@@ -3,14 +3,14 @@
 
 #include "d_SelectPlayer.h"
 
-#include "d_player/d_SelectCursor.h"
-#include "d_static/d_game_common.h"
-#include "d_static/d_game_key/d_game_key.h"
-#include "d_static/d_game_key/d_game_key_core.h"
-#include "d_static/d_info.h"
-#include "machine/m_pad.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndID.h"
+#include "d_SelectCursor.h"
+#include "d_game_common.h"
+#include "d_game_key.h"
+#include "d_game_key_core.h"
+#include "d_info.h"
+#include "m_pad.h"
+#include "SndAudioMgr.h"
+#include "SndID.h"
 #include <revolution/wpad.h>
 
 enum ANIM_ID_e {

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_bases/d_layouts/d_MultiCourseSelect.h"
-#include "d_static/d_scene.h"
-#include "state/s_FStateFct.h"
-#include "state/s_State.h"
-#include "state/s_StateMethodUsr_FI.h"
-#include "state/s_StateMgr.h"
+#include "d_MultiCourseSelect.h"
+#include "d_scene.h"
+#include "s_FStateFct.h"
+#include "s_State.h"
+#include "s_StateMethodUsr_FI.h"
+#include "s_StateMgr.h"
 
 class dMultiCourseSelect_c;
 

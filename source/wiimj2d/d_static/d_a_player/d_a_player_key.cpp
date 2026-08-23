@@ -3,8 +3,8 @@
 
 #include "d_a_player_key.h"
 
-#include "d_static/d_game_key/d_game_key.h"
-#include "d_static/d_game_key/d_game_key_core.h"
+#include "d_game_key.h"
+#include "d_game_key_core.h"
 
 [[nsmbw(0x8005E040)]]
 void dAcPyKey_c::update() ASM_METHOD(

@@ -3,7 +3,7 @@
 
 #include "d_a_reverse_block.h"
 
-#include "d_player/d_a_player.h"
+#include "d_a_player.h"
 
 [[nsmbw(0x80897F60)]]
 daReverseBlock_c* daReverseBlock_c_classInit()

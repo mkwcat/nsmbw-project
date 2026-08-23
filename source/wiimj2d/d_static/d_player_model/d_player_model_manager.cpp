@@ -3,11 +3,11 @@
 
 #include "d_player_model_manager.h"
 
-#include "d_static/d_player_model/d_kinopico_model.h"
-#include "d_static/d_player_model/d_kinopio_model.h"
-#include "d_static/d_player_model/d_mario_model.h"
-#include "d_static/d_player_model/d_yoshi_model.h"
-#include "machine/m_heap.h"
+#include "d_kinopico_model.h"
+#include "d_kinopio_model.h"
+#include "d_mario_model.h"
+#include "d_yoshi_model.h"
+#include "m_heap.h"
 #include <mkwcat/NoInitialize.hpp>
 
 [[nsmbw_data(0x803710A0)]]

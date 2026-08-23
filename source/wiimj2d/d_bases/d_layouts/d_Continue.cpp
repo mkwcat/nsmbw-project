@@ -3,20 +3,20 @@
 
 #include "d_Continue.h"
 
-#include "d_profile/d_profile.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_ef/d_ef.h"
-#include "d_static/d_game_common.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_save_manager.h"
-#include "d_static/d_scene.h"
-#include "framework/f_base.h"
-#include "machine/m_pad.h"
-#include "machine/m_vec.h"
-#include "nw4r/lyt/Pane.h"
-#include "nw4r/lyt/Types.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndID.h"
+#include "d_profile.h"
+#include "d_a_player_manager.h"
+#include "d_ef.h"
+#include "d_game_common.h"
+#include "d_mj2d_game.h"
+#include "d_save_manager.h"
+#include "d_scene.h"
+#include "f_base.h"
+#include "m_pad.h"
+#include "m_vec.h"
+#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/Types.h>
+#include "SndAudioMgr.h"
+#include "SndID.h"
 
 #include <revolution/os.h>
 #include <revolution/sc.h>

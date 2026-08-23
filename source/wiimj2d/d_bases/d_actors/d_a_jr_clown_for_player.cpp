@@ -3,9 +3,9 @@
 
 #include "d_a_jr_clown_for_player.h"
 
-#include "d_player/d_a_player.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_3d/m_3d_fanm.h"
+#include "d_a_player.h"
+#include "d_mj2d_game.h"
+#include "m_3d_fanm.h"
 
 const char* daJrClownForPlayer_c::getStepOnEffectName(
     const dAcPy_c* py

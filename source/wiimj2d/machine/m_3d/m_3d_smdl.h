@@ -1,8 +1,8 @@
 #ifndef M3D_M_SMDL_H
 #define M3D_M_SMDL_H
 
-#include "machine/m_3d/m_3d_bmdl.h"
-#include "machine/m_3d/m_3d_scnleaf.h"
+#include "m_3d_bmdl.h"
+#include "m_3d_scnleaf.h"
 #include <nw4r/g3d/g3d_resmdl.h>
 
 

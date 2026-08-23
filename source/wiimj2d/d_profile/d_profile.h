@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_system.h"
-#include "framework/f_base.h"
-#include "framework/f_profile.h"
+#include "d_system.h"
+#include "f_base.h"
+#include "f_profile.h"
 #include <mkwcat/Concepts.hpp>
 #include <type_traits>
 

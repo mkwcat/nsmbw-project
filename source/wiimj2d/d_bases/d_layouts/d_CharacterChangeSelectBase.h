@@ -1,11 +1,11 @@
 #pragma once
 
-#include "component/c_array.h"
-#include "d_static/d_base.h"
-#include "d_static/d_info.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "c_array.h"
+#include "d_base.h"
+#include "d_info.h"
+#include "d_lytbase.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 class dCharacterChangeSelectContents_c;
 class dCharacterChangeSelectArrow_c;

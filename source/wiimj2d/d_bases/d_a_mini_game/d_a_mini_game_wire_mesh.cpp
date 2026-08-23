@@ -1,7 +1,7 @@
 // d_a_mini_game_wire_mesh.cpp
 // NSMBW d_bases.text: 0x808681B0 - 0x8086A040
 
-#include "d_bases/d_a_mini_game_wire_mesh.h"
+#include "d_a_mini_game_wire_mesh.h"
 #include <cstring>
 
 [[nsmbw(0x808681B0)]]

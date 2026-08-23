@@ -1,7 +1,7 @@
 // s_Printf.cpp
 // NSMBW .text: 0x8015F810 - 0x8015F900
 
-#include "d_project/d_exception.h"
+#include "d_exception.h"
 #include <cstdarg>
 #include <cstdio>
 #include <mkwcat/Region.hpp>

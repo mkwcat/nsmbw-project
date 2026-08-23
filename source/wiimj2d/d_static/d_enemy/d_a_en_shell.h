@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_enemy/d_enemy.h"
-#include "state/s_State.h"
+#include "d_enemy.h"
+#include "s_State.h"
 
 class dCc_c;
 

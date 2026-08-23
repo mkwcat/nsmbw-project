@@ -3,21 +3,21 @@
 
 #include "d_balloon_mng.h"
 
-#include "d_player/d_a_en_hatena_balloon.h"
-#include "d_player/d_a_player.h"
-#include "d_profile/d_profile.h"
-#include "d_project/d_gamerule.h"
-#include "d_static/d_actor/d_a_boss_demo.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_actor/d_actor.h"
-#include "d_static/d_actor/d_actor_mng.h"
-#include "d_static/d_actorcreate_mng.h"
-#include "d_static/d_enemy/d_enemy_boss.h"
-#include "d_static/d_info.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "egg/math/eggMath.h"
-#include "framework/f_manager.h"
-#include "framework/f_param.h"
+#include "d_a_en_hatena_balloon.h"
+#include "d_a_player.h"
+#include "d_profile.h"
+#include "d_gamerule.h"
+#include "d_a_boss_demo.h"
+#include "d_a_player_manager.h"
+#include "d_actor.h"
+#include "d_actor_mng.h"
+#include "d_actorcreate_mng.h"
+#include "d_enemy_boss.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include <egg/math/eggMath.h>
+#include "f_manager.h"
+#include "f_param.h"
 #include <cstddef>
 #include <iterator>
 

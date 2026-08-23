@@ -3,7 +3,7 @@
 
 #include "d_a_en_white_block.h"
 
-#include "revolution/os/OSLink.h"
+#include <revolution/os/OSLink.h>
 #include <mkwcat/Relocate.hpp>
 
 [[nsmbw(0x80AC8270)]]

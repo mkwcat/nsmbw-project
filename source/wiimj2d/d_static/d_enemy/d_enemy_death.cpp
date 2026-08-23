@@ -1,7 +1,7 @@
 // d_enemy_death.cpp
 // NSMBW .text: 0x8009F5F0 - 0x800A2870
 
-#include "d_static/d_enemy/d_enemy.h"
+#include "d_enemy.h"
 
 [[nsmbw(0x8009F840)]]
 bool dEn_c::hitCallback_Star(dCc_c*, dCc_c*);

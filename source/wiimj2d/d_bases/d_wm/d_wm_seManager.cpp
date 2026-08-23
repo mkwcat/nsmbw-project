@@ -3,14 +3,14 @@
 
 #include "d_wm_seManager.h"
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_audio.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndID.h"
-#include "sound/SndObjectEnemy.h"
-#include "sound/SndObjectMap.h"
-#include "sound/SndObjectPlayer.h"
+#include "d_a_player_manager.h"
+#include "d_audio.h"
+#include "d_mj2d_game.h"
+#include "SndAudioMgr.h"
+#include "SndID.h"
+#include "SndObjectEnemy.h"
+#include "SndObjectMap.h"
+#include "SndObjectPlayer.h"
 #include <iterator>
 
 [[nsmbw_data(0x8042A55C)]]

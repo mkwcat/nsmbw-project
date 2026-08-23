@@ -3,8 +3,8 @@
 
 #include "d_a_en_block.h"
 
-#include "d_enemies/d_a_en_item.h"
-#include "framework//f_param.h"
+#include "d_a_en_item.h"
+#include "f_param.h"
 
 [[nsmbw(0x809BEE00)]]
 void daEnBlock_c_onCreate() ASM_METHOD(

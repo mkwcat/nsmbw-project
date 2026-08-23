@@ -1,14 +1,14 @@
 #pragma once
 
-#include "d_static/d_base.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "nw4r/lyt/Pane.h"
-#include "nw4r/lyt/Picture.h"
-#include "state/s_FStateFct.h"
-#include "state/s_State.h"
-#include "state/s_StateMethodUsr_FI.h"
-#include "state/s_StateMgr.h"
+#include "d_base.h"
+#include "d_lytbase.h"
+#include "d_mj2d_game.h"
+#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/Picture.h>
+#include "s_FStateFct.h"
+#include "s_State.h"
+#include "s_StateMethodUsr_FI.h"
+#include "s_StateMgr.h"
 
 class da2DPlayer_c;
 class daWmItem_c;

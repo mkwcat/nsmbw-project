@@ -1,10 +1,10 @@
 // d_PointResultDateFile.cpp
 // NSMBW   d_bases.text:  0x807A3F50 - 0x807A7770
 
-#include "d_bases/d_PointResultDateFile.h"
-#include "d_static/d_info.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndID.h"
+#include "d_PointResultDateFile.h"
+#include "d_info.h"
+#include "SndAudioMgr.h"
+#include "SndID.h"
 
 static const SndID::Type PLY_CLEAR_SND[4][2] = {
     {SndID::SE_VOC_MA_GET_PRIZE,  SndID::SE_VOC_MA_CLEAR_MULTI},

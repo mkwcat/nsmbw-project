@@ -1,6 +1,6 @@
 #pragma once
 
-#include "machine/m_angle.h"
+#include "m_angle.h"
 #include <egg/math/eggMath.h>
 #include <nw4r/math/vec.h>
 

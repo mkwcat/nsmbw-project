@@ -1,18 +1,16 @@
 #pragma once
 
-#include "machine/m_3d/m_3d_mdl.h"
-#include "machine/m_allocator.h"
-#include "machine/m_mtx.h"
+#include "m_3d_mdl.h"
+#include "m_allocator.h"
+#include "m_mtx.h"
 
 class dAcPy_c;
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 class ResAnmChr;
 }
 
-class dPyMdlBase_c
-{
+class dPyMdlBase_c {
     SIZE_ASSERT(0x20C);
 
     /* 0x000 VTABLE 0x80318CB8 */
@@ -31,46 +29,45 @@ public:
     // Constants and Types
     // ^^^^^^
 
-    enum class TexAnmType_e {
-    };
+    enum class TexAnmType_e {};
 
     /* @unofficial */
     enum class ChrAnmType_e {
-        WAIT = 0,
-        WALK = 1,
-        RUN = 2,
-        B_DASH = 3,
-        B_DASH2 = 4,
-        JUMP = 5,
-        JUMP2 = 6,
-        JUMPED = 7,
-        _2JMP_C_1 = 8,
-        _2JMP_C_2 = 9,
-        _2JUMPED = 10,
-        ROLL_JUMP = 11,
-        _2JUMP2 = 12,
-        MAME_JUMP2 = 13,
-        TURN = 14,
-        TURNED = 15,
-        HIPSR = 16,
-        HIPAT = 17,
-        HIPED = 18,
-        HIP_TO_STOOP = 19,
-        STOOP = 20,
-        STOOP_START = 21,
-        SLIP = 22,
-        MONKEY_START = 0x2F,
-        MONKEY_WAIT_R = 0x30,
-        MONKEY_WAIT_L = 0x31,
-        MONKEY_R_TO_L = 0x32,
-        MONKEY_L_TO_R = 0x33,
-        GOAL_PUTON_CAP = 0x5A,
+        WAIT            = 0,
+        WALK            = 1,
+        RUN             = 2,
+        B_DASH          = 3,
+        B_DASH2         = 4,
+        JUMP            = 5,
+        JUMP2           = 6,
+        JUMPED          = 7,
+        _2JMP_C_1       = 8,
+        _2JMP_C_2       = 9,
+        _2JUMPED        = 10,
+        ROLL_JUMP       = 11,
+        _2JUMP2         = 12,
+        MAME_JUMP2      = 13,
+        TURN            = 14,
+        TURNED          = 15,
+        HIPSR           = 16,
+        HIPAT           = 17,
+        HIPED           = 18,
+        HIP_TO_STOOP    = 19,
+        STOOP           = 20,
+        STOOP_START     = 21,
+        SLIP            = 22,
+        MONKEY_START    = 0x2F,
+        MONKEY_WAIT_R   = 0x30,
+        MONKEY_WAIT_L   = 0x31,
+        MONKEY_R_TO_L   = 0x32,
+        MONKEY_L_TO_R   = 0x33,
+        GOAL_PUTON_CAP  = 0x5A,
         GOAL_PUTON_CAP2 = 0x5C,
-        STAR_ROLL = 0x75,
-        SJUMPED = 0x78,
-        DEMO_TALK = 0xAB,
-        BUSY_WAIT = 0xAC,
-        ENDING_WAIT = 0xAF,
+        STAR_ROLL       = 0x75,
+        SJUMPED         = 0x78,
+        DEMO_TALK       = 0xAB,
+        BUSY_WAIT       = 0xAC,
+        ENDING_WAIT     = 0xAF,
     };
 
 public:
@@ -103,9 +100,7 @@ public:
     virtual void setDark(int);
 
     /* VT+0x3C 0x800BD750 */
-    virtual void VT_0x3C()
-    {
-    }
+    virtual void VT_0x3C() {}
 
     /* VT+0x40 0x800D6D70 */
     virtual void onStarAnm();
@@ -168,25 +163,20 @@ public:
     virtual float* getLegLengthP(u8);
 
     /* VT+0xAC 0x800BD720 */
-    virtual void updateBonusCap()
-    {
-    }
+    virtual void updateBonusCap() {}
 
 public:
     // Instance Methods
     // ^^^^^^
 
-    mMtx_c& getMtx()
-    {
-        return mMtx;
-    }
+    mMtx_c& getMtx() { return mMtx; }
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x004 */ mAllocator_c mAllocator;
-    /* 0x020 */ dAcPy_c* mpOwner;
+    /* 0x004 */ mAllocator_c  mAllocator;
+    /* 0x020 */ dAcPy_c*      mpOwner;
     /* 0x024 */ dPyMdlBase_c* mpSpinLiftParentMdl;
 
     FILL(0x028, 0x108);
@@ -195,10 +185,10 @@ public:
 
     FILL(0x138, 0x150);
 
-    /* 0x150 */ u8 mPlayerNo;
-    /* 0x151 */ u8 mCharaID;
-    /* 0x152 */ u8 mPowerupID;
-    /* 0x153 */ u8 mCurColorType;
+    /* 0x150 */ u8  mPlayerNo;
+    /* 0x151 */ u8  mCharaID;
+    /* 0x152 */ u8  mPowerupID;
+    /* 0x153 */ u8  mCurColorType;
 
     /* 0x154 */ u32 mCurrentAnm;
 

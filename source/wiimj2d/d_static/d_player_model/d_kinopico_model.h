@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_static/d_player_model/d_player_model.h"
+#include "d_player_model.h"
 
 class dKinopicoMdl_c final : public dPlayerMdl_c {
 public:

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_enemy/d_enemy.h"
-#include "machine/m_vec.h"
+#include "d_a_player_manager.h"
+#include "d_enemy.h"
+#include "m_vec.h"
 
 class daEnRedRing_c : public dEn_c
 {

@@ -3,9 +3,9 @@
 
 #include "d_a_lift_fall.h"
 
-#include "d_player/d_a_ice.h"
-#include "d_player/d_a_player.h"
-#include "d_player/d_a_yoshi.h"
+#include "d_a_ice.h"
+#include "d_a_player.h"
+#include "d_a_yoshi.h"
 
 [[nsmbw(0x808377B0)]]
 bool daLiftFall_c::checkRideStart() const

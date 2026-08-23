@@ -3,12 +3,12 @@
 
 #include "d_game_key_core.h"
 
-#include "d_bases/d_s_stage.h"
-#include "d_project/d_gamerule.h"
-#include "d_static/d_remocon_mng.h"
-#include "machine/m_pad.h"
-#include "machine/m_vec.h"
-#include "state/s_Lib.h"
+#include "d_s_stage.h"
+#include "d_gamerule.h"
+#include "d_remocon_mng.h"
+#include "m_pad.h"
+#include "m_vec.h"
+#include "s_Lib.h"
 #include <cmath>
 #include <egg/core/eggController.h>
 #include <revolution/pad.h>

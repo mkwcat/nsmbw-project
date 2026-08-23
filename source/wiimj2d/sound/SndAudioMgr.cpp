@@ -3,7 +3,7 @@
 
 #include "SndAudioMgr.h"
 
-#include "machine/m_dvd.h"
+#include "m_dvd.h"
 #include <egg/core/eggDvdRipper.h>
 #include <nw4r/snd/DvdSoundArchive.h>
 #include <revolution/os.h>

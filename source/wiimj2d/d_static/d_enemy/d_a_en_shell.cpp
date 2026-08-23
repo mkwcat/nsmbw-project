@@ -3,7 +3,7 @@
 
 #include "d_a_en_shell.h"
 
-#include "d_static/d_mj2d/d_mj2d_game.h"
+#include "d_mj2d_game.h"
 
 [[nsmbw(0x800389E0)]]
 void daEnShell_c::Normal_VsPlHitCheck(dCc_c* main, dCc_c* other) ASM_METHOD(

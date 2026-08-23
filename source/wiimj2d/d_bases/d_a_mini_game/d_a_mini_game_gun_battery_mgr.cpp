@@ -3,14 +3,14 @@
 
 #include "d_a_mini_game_gun_battery_mgr.h"
 
-#include "d_bases/d_s_stage.h"
-#include "d_player/d_a_player.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_game_common.h"
-#include "machine/m_fader.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndID.h"
-#include "sound/SndSceneMgr.h"
+#include "d_s_stage.h"
+#include "d_a_player.h"
+#include "d_a_player_manager.h"
+#include "d_game_common.h"
+#include "m_fader.h"
+#include "SndAudioMgr.h"
+#include "SndID.h"
+#include "SndSceneMgr.h"
 
 [[nsmbw(0x80866120)]]
 daMiniGameGunBatteryMgrObj_c* daMiniGameGunBatteryMgrObj_c_classInit() {

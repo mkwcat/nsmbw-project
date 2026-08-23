@@ -3,19 +3,19 @@
 
 #include "d_CharacterChangeSelectBase.h"
 
-#include "d_bases/d_CharacterChangeIndicator.h"
-#include "d_bases/d_CharacterChangeSelectArrow.h"
-#include "d_bases/d_CharacterChangeSelectContents.h"
-#include "d_bases/d_a_wm_2DPlayer.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_game_key/d_game_key.h"
-#include "d_static/d_game_key/d_game_key_core.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_remocon_mng.h"
-#include "d_static/d_scene.h"
-#include "sound/SndAudioMgr.h"
-#include "sound/SndID.h"
-#include "sound/SndSceneMgr.h"
+#include "d_CharacterChangeIndicator.h"
+#include "d_CharacterChangeSelectArrow.h"
+#include "d_CharacterChangeSelectContents.h"
+#include "d_a_wm_2DPlayer.h"
+#include "d_a_player_manager.h"
+#include "d_game_key.h"
+#include "d_game_key_core.h"
+#include "d_mj2d_game.h"
+#include "d_remocon_mng.h"
+#include "d_scene.h"
+#include "SndAudioMgr.h"
+#include "SndID.h"
+#include "SndSceneMgr.h"
 #include <revolution/os.h>
 
 fBase_c* dCharacterChangeSelectBase_c_classInit()

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "component/c_json.h"
-#include "component/c_random.h"
+#include "c_json.h"
+#include "c_random.h"
 #include <string_view>
 #include <vector>
 

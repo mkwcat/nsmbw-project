@@ -1,6 +1,6 @@
 #pragma once
 
-#include "machine/m_2d.h"
+#include "m_2d.h"
 #include <nw4r/lyt/DrawInfo.h>
 #include <nw4r/lyt/Pane.h>
 #include <nw4r/lyt/ResourceAccessor.h>

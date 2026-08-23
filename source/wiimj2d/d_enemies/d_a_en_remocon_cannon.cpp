@@ -2,15 +2,15 @@
 // NSMBW .text: 0x80A94D90 - 0x80A97B30
 
 #include "d_a_en_remocon_cannon.h"
-#include "d_player/d_a_player.h"
-#include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_game_common.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "egg/util/eggEffect.h"
-#include "machine/m_ef.h"
-#include "machine/m_vec.h"
-#include "nw4r/math/types.h"
-#include "sound/SndID.h"
+#include "d_a_player.h"
+#include "d_a_player_manager.h"
+#include "d_game_common.h"
+#include "d_mj2d_game.h"
+#include <egg/util/eggEffect.h>
+#include "m_ef.h"
+#include "m_vec.h"
+#include <nw4r/math/types.h>
+#include "SndID.h"
 
 float remoCannonGuideColorSet(int playerNo)
 {

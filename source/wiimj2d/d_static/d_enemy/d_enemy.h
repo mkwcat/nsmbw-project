@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_static/d_actor/d_actor.h"
-#include "d_static/d_actor/d_actor_state.h"
-#include "state/s_State.h"
+#include "d_actor.h"
+#include "d_actor_state.h"
+#include "s_State.h"
 
 class dCc_c;
 

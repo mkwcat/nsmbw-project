@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_static/d_bc.h"
-#include "machine/m_vec.h"
+#include "d_bc.h"
+#include "m_vec.h"
 
 typedef void (*callbackF)(dActor_c* self, dActor_c* other);
 typedef void (*callbackH)(dActor_c* self, dActor_c* other);

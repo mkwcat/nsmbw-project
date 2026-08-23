@@ -1,9 +1,9 @@
 #pragma once
 
-#include "d_static/d_cyuukan.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_save_manager.h"
-#include "d_static/d_start_info.h"
+#include "d_cyuukan.h"
+#include "d_mj2d_game.h"
+#include "d_save_manager.h"
+#include "d_start_info.h"
 #include <mkwcat/Enum.h>
 
 class dInfo_c {

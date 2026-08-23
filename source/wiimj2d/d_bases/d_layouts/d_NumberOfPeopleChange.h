@@ -1,14 +1,14 @@
 #pragma once
 
-#include "d_static/d_2d.h"
-#include "d_static/d_base.h"
-#include "d_static/d_info.h"
-#include "d_static/d_lyt/d_lytbase.h"
-#include "d_static/d_lyt/d_lyttextbox.h"
-#include "d_static/d_mj2d/d_mj2d_game.h"
-#include "d_static/d_remocon_mng.h"
-#include "state/s_State.h"
-#include "state/s_StateMgrDefault.h"
+#include "d_2d.h"
+#include "d_base.h"
+#include "d_info.h"
+#include "d_lytbase.h"
+#include "d_lyttextbox.h"
+#include "d_mj2d_game.h"
+#include "d_remocon_mng.h"
+#include "s_State.h"
+#include "s_StateMgrDefault.h"
 
 class dCharacterChangeSelectBase_c;
 class dCharacterChangeSelectContents_c;
