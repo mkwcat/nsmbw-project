@@ -6,7 +6,6 @@
 [[nsmbw(0x8008C200)]]
 dCc_c::dCc_c();
 
-/* VT+0x8 */
 [[nsmbw(0x8008C260)]]
 dCc_c::~dCc_c();
 
@@ -18,6 +17,9 @@ void dCc_c::release();
 
 [[nsmbw(0x8008C3E0)]]
 void dCc_c::set(dActor_c* actor, sCcDatNewF* collInfo);
+
+[[nsmbw(0x8008C440)]]
+void dCc_c::set(dActor_c* actor, sCcDatNewF* collInfo, u8 amiLine);
 
 [[nsmbw(0x8008C9E0)]]
 void dCc_c::execute();

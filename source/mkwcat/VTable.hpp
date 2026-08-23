@@ -3,6 +3,8 @@
 //  nsmbw-project
 //
 
+#pragma once
+
 #include <type_traits>
 
 namespace mkwcat {

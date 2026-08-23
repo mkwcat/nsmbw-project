@@ -14,8 +14,8 @@ enum CC_SHAPE_e {
 
 ///< @unofficial
 enum CC_STATUS_FLAG_e {
-    CC_STATUS_NONE = 0,
-    CC_STATUS_NO_REVISION = 0_bit,
+    CC_STATUS_NONE         = 0,
+    CC_STATUS_NO_REVISION  = 0_bit,
     CC_STATUS_NO_PASS_INFO = 2_bit,
 };
 
@@ -34,7 +34,7 @@ enum CC_KIND_e {
     CC_KIND_ITEM,
     CC_KIND_TAMA,
     CC_KIND_KILLER,
-    CC_KIND_GOAL_POLE
+    CC_KIND_GOAL_POLE,
 };
 
 ///< @unofficial
@@ -61,7 +61,7 @@ enum CC_ATTACK_e {
     CC_ATTACK_YOSHI_BULLET,
     CC_ATTACK_YOSHI_FIRE,
     CC_ATTACK_ICE_2,
-    CC_ATTACK_SAND_PILLAR
+    CC_ATTACK_SAND_PILLAR,
 };
 
 class dCc_c;
@@ -71,20 +71,19 @@ struct sCcDatNewF {
 
     mVec2_c mSize;
 
-    u8 mKind;
-    u8 mAttack;
+    u8      mKind;
+    u8      mAttack;
 
-    u32 mVsKind;
+    u32     mVsKind;
 
-    u32 mVsDamage;
+    u32     mVsDamage;
 
-    u16 mStatus;
+    u16     mStatus;
 
     void (*mCallback)(dCc_c* self, dCc_c* target);
 };
 
-class dCc_c
-{
+class dCc_c {
     SIZE_ASSERT(0xA4);
 
     /* 0x00 VTABLE 0x803110F0 */
@@ -112,6 +111,9 @@ public:
     /* 0x8008C3E0 */
     void set(dActor_c* actor, sCcDatNewF* collInfo);
 
+    /* 0x8008C440 */
+    void set(dActor_c* actor, sCcDatNewF* collInfo, u8 amiLine);
+
 public:
     // Static Methods
     // ^^^^^^
@@ -123,36 +125,36 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x04 */ dActor_c* mpOwner;
-    /* 0x08 */ dActor_c* mFriendActor;
-    /* 0x0C */ u32 m0x0C;
+    /* 0x04 */ dActor_c*  mpOwner;
+    /* 0x08 */ dActor_c*  mFriendActor;
+    /* 0x0C */ u32        m0x0C;
 
-    /* 0x10 */ dCc_c* mpNext;
-    /* 0x14 */ dCc_c* mpPrev;
+    /* 0x10 */ dCc_c*     mpNext;
+    /* 0x14 */ dCc_c*     mpPrev;
 
-    /* 0x18 */ u32 mCanBounce;
+    /* 0x18 */ u32        mCanBounce;
 
     /* 0x1C */ sCcDatNewF mCcData;
 
-    /* 0x40 */ float mTrpOffsets[4];
-    /* 0x50 */ float mCollOffsetX[8];
-    /* 0x70 */ float mCollOffsetY[8];
+    /* 0x40 */ float      mTrpOffsets[4];
+    /* 0x50 */ float      mCollOffsetX[8];
+    /* 0x70 */ float      mCollOffsetY[8];
 
-    /* 0x90 */ mVec2_c mCollPos;
+    /* 0x90 */ mVec2_c    mCollPos;
 
-    /* 0x98 */ u16 mCollidedWith;
-    /* 0x9A */ u16 mAttSent;
-    /* 0x9C */ u16 mAttReceived;
+    /* 0x98 */ u16        mCollidedWith;
+    /* 0x9A */ u16        mAttSent;
+    /* 0x9C */ u16        mAttReceived;
 
-    /* 0x9E */ u8 mShape;
+    /* 0x9E */ u8         mShape;
 
-    /* 0x9F */ u8 mAmiLine;
+    /* 0x9F */ u8         mAmiLine;
 
-    /* 0xA0 */ u8 mLayer;
+    /* 0xA0 */ u8         mLayer;
 
-    /* 0xA1 */ u8 mInfo;
+    /* 0xA1 */ u8         mInfo;
 
-    /* 0xA2 */ bool mIsLinked;
+    /* 0xA2 */ bool       mIsLinked;
 
     FILL(0xA3, 0xA4);
 
@@ -164,6 +166,6 @@ public:
 
     static hitCheck _hitCheck[4][4];
 
-    static dCc_c* mEntryN; ///< The first collider in the list.
-    static dCc_c* mEntryB; ///< The last collider in the list.
+    static dCc_c*   mEntryN; ///< The first collider in the list.
+    static dCc_c*   mEntryB; ///< The last collider in the list.
 };

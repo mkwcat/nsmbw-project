@@ -640,9 +640,15 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     // daEnWhiteBlock_c::UNDEF_80ac9160
     {0x80AC921C + 2, 2},
 
-    // TODO: 80acae60 daEnWrturn_c::UNDEF_80acae60
-    // TODO: 80acafb0 daEnWrturn_c::UNDEF_80acafb0
-    // TODO: 80acb120 daEnWrturn_c::executeState_Move
+    // daEnWrturn_c::UNDEF_80aca6d0
+    {0x80ACA71C + 2, 2},
+    // daEnWrturn_c::UNDEF_80acae60
+    {0x80ACAF30 + 2, 2},
+    {0x80ACAF84 + 2, 2},
+    // daEnWrturn_c::UNDEF_80acafb0
+    {0x80ACAFF0 + 2, 2},
+    // daEnWrturn_c::executeState_Move
+    {0x80ACB28C + 2, 2},
 
     // daEnZoom_c::execute - Some 2-5 special zoom thing
     {0x80ACD0F4 + 2, 2},

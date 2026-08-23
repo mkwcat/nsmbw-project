@@ -273,11 +273,11 @@ target_sources(project PRIVATE
 # NSMBW          .sbss:  0x8042A25C - 0x8042A268
     d_info.cpp
 # NSMBW          .text:  0x800BBD80 - 0x800BC330
-  # d_ka/d_ka_draw.cpp
+    d_ka_draw.cpp
 # NSMBW          .text:  0x800BC330 - 0x800BC9A0
-  # d_ka/d_kinoko_kasa_draw.cpp
+  # d_kinoko_kasa_draw.cpp
 # NSMBW          .text:  0x800BC9A0 - 0x800BCBD0
-  # d_ka/d_kinoko_lift_draw.cpp
+  # d_kinoko_lift_draw.cpp
 # nsmbw-project
     d_player_model/d_kinopico_model.cpp
 # NSMBW          .text:  0x800BCBD0 - 0x800BD7F0
