@@ -2,7 +2,8 @@
 // NSMBW d_enemies.text: 0x809D0090 - 0x809D0450
 
 [[nsmbw(0x809D0120)]]
-void daEnBkBlock_c_onCreate() ASM_METHOD(
+void daEnBkBlock_c_onCreate()
+    ASM_METHOD(
   // clang-format off
 /* 809D0120 9421FFE0 */  stwu     r1, -32(r1);
 /* 809D0124 7C0802A6 */  mflr     r0;

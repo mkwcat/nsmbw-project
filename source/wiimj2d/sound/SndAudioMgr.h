@@ -4,8 +4,7 @@
 #include <egg/audio/eggAudioMgr.h>
 #include <nw4r/snd/SoundArchivePlayer.h>
 
-class SndAudioMgr : public EGG::ExpAudioMgr
-{
+class SndAudioMgr : public EGG::ExpAudioMgr {
 public:
     // Instance Methods
     // ^^^^^^

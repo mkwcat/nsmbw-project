@@ -5,25 +5,21 @@
 #include <egg/core/eggHeap.h>
 #include <optional>
 
-namespace mDvd
-{
+namespace mDvd {
 
-class UncompressInfo_c
-{
+class UncompressInfo_c {
 public:
     // Structors
     // ^^^^^^
 
-    constexpr UncompressInfo_c(u8 type, const char* extension)
-      : mType(type)
-      , mExtension(extension)
-    {
-    }
+    constexpr UncompressInfo_c(
+        u8 type, const char* extension
+    )
+        : mType(type)
+        , mExtension(extension) {}
 
     /* VT+0x08 */
-    virtual ~UncompressInfo_c()
-    {
-    }
+    virtual ~UncompressInfo_c() {}
 
 public:
     // Virtual Methods
@@ -33,13 +29,13 @@ public:
     virtual EGG::StreamDecomp* Construct() const = 0;
 
     /* VT+0x10 */
-    virtual void Destruct() const = 0;
+    virtual void Destruct() const                = 0;
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    u8 mType;
+    u8          mType;
     const char* mExtension;
 
 public:
@@ -50,28 +46,22 @@ public:
 };
 
 template <class T>
-class TUncompressInfo_c : public UncompressInfo_c
-{
+class TUncompressInfo_c : public UncompressInfo_c {
 public:
     // Structors
     // ^^^^^^
-    constexpr TUncompressInfo_c(u8 type, const char* extension)
-      : UncompressInfo_c(type, extension)
-    {
-    }
+    constexpr TUncompressInfo_c(
+        u8 type, const char* extension
+    )
+        : UncompressInfo_c(type, extension) {}
 
 public:
     // Virtual Methods
     // ^^^^^^
 
-    virtual T* Construct() const override
-    {
-        return new (m_UnionObjectBuffer) T();
-    }
+    virtual T* Construct() const override { return new (m_UnionObjectBuffer) T(); }
 
-    virtual void Destruct() const override
-    {
-    }
+    virtual void Destruct() const override {}
 };
 
 /* 0x80377DE4 */
@@ -91,19 +81,19 @@ extern TUncompressInfo_c<EGG::StreamDecompRL> s_UncompressInfoRL;
 
 /* 0x8016B1D0 @unofficial */
 void initAutoStreamDecompInfo(
-  const UncompressInfo_c* const* begin, const UncompressInfo_c* const* end
+    const UncompressInfo_c* const* begin, const UncompressInfo_c* const* end
 );
 
 /* 0x8016B3E0 */
 void* loadToMainRAM(
-  int entryNum, char* dst, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir, s32 offset,
-  std::size_t* outAmountRead, std::size_t* outFileSize, std::size_t decompressorType
+    int entryNum, char* dst, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir, s32 offset,
+    std::size_t* outAmountRead, std::size_t* outFileSize, std::size_t decompressorType
 );
 
 /* +++ */
 void* loadToMainRAM(
-  const char* path, char* dst, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
-  s32 offset, std::size_t* outAmountRead, std::size_t* outFileSize
+    const char* path, char* dst, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
+    s32 offset, std::size_t* outAmountRead, std::size_t* outFileSize
 );
 
 /* +++ */
@@ -116,8 +106,7 @@ void setOverlayRes(std::optional<bool> isRndizerRes);
 void getOverlayRes(bool* isRndizerRes);
 
 // +++
-class MultiArchiveBuilder_c
-{
+class MultiArchiveBuilder_c {
 public:
     // Constants
     // ++++++
@@ -129,8 +118,9 @@ public:
     // ++++++
 
     MultiArchiveBuilder_c(
-      EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir = EGG::DvdRipper::ALLOC_DIR_BOTTOM,
-      u32 dstMaxCount = 0, u32 dstStrTabMaxSize = 1
+        EGG::Heap*                      heap,
+        EGG::DvdRipper::EAllocDirection allocDir = EGG::DvdRipper::ALLOC_DIR_BOTTOM,
+        u32 dstMaxCount = 0, u32 dstStrTabMaxSize = 1
     );
 
     ~MultiArchiveBuilder_c();
@@ -146,39 +136,27 @@ public:
      * Retuns the destination FST. The data will be invalidated if copyArchive is called, or if the
      * object is destroyed.
      */
-    FstEntry* getDst() const
-    {
-        return mDst;
-    }
+    FstEntry* getDst() const { return mDst; }
 
     /**
      * Returns the number of entries in the destination FST. This will be 0 if copyArchive has not
      * been called. This value will no longer reflect the number of entries if copyArchive is called
      * again.
      */
-    u32 getDstCount() const
-    {
-        return mDstCount;
-    }
+    u32 getDstCount() const { return mDstCount; }
 
     /**
      * Returns the destination string table. The data will be invalidated if copyArchive is called,
      * or if the object is destroyed.
      */
-    const char* getDstStrTab() const
-    {
-        return mDstStrTab;
-    }
+    const char* getDstStrTab() const { return mDstStrTab; }
 
     /**
      * Returns the size of the destination string table. This will be 0 if copyArchive has not been
      * called. This value will no longer reflect the size of the string table if copyArchive is
      * called again.
      */
-    u32 getDstStrTabSize() const
-    {
-        return mDstStrTabSize;
-    }
+    u32 getDstStrTabSize() const { return mDstStrTabSize; }
 
     /**
      * Adds up the file size of every file in the destination FST.
@@ -192,8 +170,9 @@ public:
     void addRootEntry(const char* name);
 
 private:
-    static bool isSkippableName(const char* name)
-    {
+    static bool isSkippableName(
+        const char* name
+    ) {
         return name[0] == '\0' || std::strcmp(name, ".") == 0;
     }
 
@@ -210,30 +189,29 @@ public:
     // ++++++
 
     static void* loadArchive(
-      EGG::DvdFile* dvdFile, char* path, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
-      u32* outAmountRead, u32* outFileSize
+        EGG::DvdFile* dvdFile, char* path, EGG::Heap* heap,
+        EGG::DvdRipper::EAllocDirection allocDir, u32* outAmountRead, u32* outFileSize
     );
 
 public:
     // Instance Variables
     // ++++++
 
-    EGG::Heap* mHeap;
+    EGG::Heap*                      mHeap;
     EGG::DvdRipper::EAllocDirection mAllocDir;
 
-    FstEntry* mDst = nullptr;
-    u32 mDstCount = 0;
-    u32 mDstMaxCount;
+    FstEntry*                       mDst      = nullptr;
+    u32                             mDstCount = 0;
+    u32                             mDstMaxCount;
 
-    char* mDstStrTab = nullptr;
-    u32 mDstStrTabSize = 0;
-    u32 mDstStrTabMaxSize;
+    char*                           mDstStrTab     = nullptr;
+    u32                             mDstStrTabSize = 0;
+    u32                             mDstStrTabMaxSize;
 };
 
 } // namespace mDvd
 
-class mDvd_command_c
-{
+class mDvd_command_c {
 public:
     // Structors
     // ^^^^^^
@@ -253,8 +231,7 @@ public:
     // ^^^^^^
 };
 
-class mDvd_toMainRam_c : public mDvd_command_c
-{
+class mDvd_toMainRam_c : public mDvd_command_c {
 public:
     // Static Methods
     // ^^^^^^

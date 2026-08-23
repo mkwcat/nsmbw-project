@@ -8,8 +8,7 @@
 #include "d_bg_parameter.h"
 #include "d_profile.h"
 
-u32 daEnRedcoin_c_sizeof()
-{
+u32 daEnRedcoin_c_sizeof() {
     return sizeof(daEnRedcoin_c);
 }
 
@@ -48,8 +47,7 @@ UNDEF_80a939e4:;
 );
 
 [[nsmbw(0x80A94250)]]
-void daEnRedcoin_c::selectItems()
-{
+void daEnRedcoin_c::selectItems() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         mPlyItemSpawnMode[i] = 0;
 
@@ -64,7 +62,7 @@ void daEnRedcoin_c::selectItems()
 
         mPlyItemSpawnMode[i] = 1;
 
-        using IntArray = int[];
+        using IntArray       = int[];
         switch (player->mPlayerMode) {
         case PLAYER_MODE_e::NONE:
         case PLAYER_MODE_e::MUSHROOM:
@@ -79,8 +77,7 @@ void daEnRedcoin_c::selectItems()
 }
 
 [[nsmbw(0x80A94340)]]
-void daEnRedcoin_c::awardItems()
-{
+void daEnRedcoin_c::awardItems() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPlyItemSpawnMode[i] == 0) {
             continue;
@@ -93,8 +90,6 @@ void daEnRedcoin_c::awardItems()
         }
 
         mVec3_c position = {mPos.x, dBgParameter_c::ms_Instance_p->mScreenTop + 2, 0};
-        dActor_c::construct(
-          dProf::EN_ITEM, i << 16 | mPlyItem[i] | 0x2080, &position, nullptr, 0
-        );
+        dActor_c::construct(dProf::EN_ITEM, i << 16 | mPlyItem[i] | 0x2080, &position, nullptr, 0);
     }
 }

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace nw4r::ut
-{
+namespace nw4r::ut {
 
 struct Node {
     SIZE_ASSERT(0x8);
@@ -15,8 +14,8 @@ struct List {
 
     Node* m_head;
     Node* m_tail;
-    u16 m_count;
-    u16 m_offset;
+    u16   m_count;
+    u16   m_offset;
 };
 
 /* 0x80228F10 */

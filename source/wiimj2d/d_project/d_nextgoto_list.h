@@ -16,8 +16,7 @@ struct dNextGotoEntry_s {
     u32 group_end   : 1;
 };
 
-class dNextGotoList_c final : private cJson::HandlerIf_c, public std::vector<dNextGotoEntry_s>
-{
+class dNextGotoList_c final : private cJson::HandlerIf_c, public std::vector<dNextGotoEntry_s> {
 public:
     // Type Aliases
     // ^^^^^^
@@ -124,8 +123,7 @@ private:
 constinit inline std::vector<dNextGotoList_c::Index>& dNextGotoList_c::ms_lookup =
     dNextGotoList_c::ms_instance.m_lookupTable;
 
-class dNextGotoList_c::Randomizer_c final
-{
+class dNextGotoList_c::Randomizer_c final {
 public:
     // Structors
     // ^^^^^^

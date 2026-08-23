@@ -3,6 +3,4 @@
 
 #include "m_3d_bmdl.h"
 
-namespace m3d
-{
-}
+namespace m3d {}

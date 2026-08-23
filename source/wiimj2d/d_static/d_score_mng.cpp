@@ -4,9 +4,9 @@
 #include "d_score_mng.h"
 
 #include "d_MiniGameCannon.h"
-#include "d_s_stage.h"
 #include "d_a_player_manager.h"
 #include "d_game_common.h"
+#include "d_s_stage.h"
 
 [[nsmbw_data(0x8042A330)]]
 dScoreMng_c* dScoreMng_c::m_instance;

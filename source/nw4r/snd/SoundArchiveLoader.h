@@ -3,16 +3,13 @@
 #include "SoundArchive.h"
 #include <revolution/os/OSMutex.h>
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
 class SoundMemoryAllocatable;
 
-namespace detail
-{
+namespace detail {
 
-class SoundArchiveLoader
-{
+class SoundArchiveLoader {
 public:
     // Instance Methods
     // ^^^^^^
@@ -24,14 +21,14 @@ public:
 private:
     /* 0x80277210 */
     void* LoadGroupInternal(
-      u32 id, SoundMemoryAllocatable* pAllocatable, void** ppWaveBuffer, u32 blockSize
+        u32 id, SoundMemoryAllocatable* pAllocatable, void** ppWaveBuffer, u32 blockSize
     );
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x00 */ OSMutex mMutex;
+    /* 0x00 */ OSMutex             mMutex;
     /* 0x18 */ const SoundArchive* mArc;
 };
 

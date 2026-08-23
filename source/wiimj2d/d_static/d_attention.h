@@ -1,7 +1,6 @@
 #pragma once
 
-class dAttention_c
-{
+class dAttention_c {
 public:
     // Instance Methods
     // ^^^^^^

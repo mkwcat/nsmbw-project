@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_profile.h"
-#include "d_gamerule.h"
 #include "d_a_player_manager.h"
 #include "d_base.h"
 #include "d_fader.h"
+#include "d_gamerule.h"
 #include "d_mj2d_game.h"
+#include "d_profile.h"
 #include "m_vec.h"
 
 class dGameDisplay_c;

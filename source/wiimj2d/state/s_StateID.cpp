@@ -2,6 +2,7 @@
 // NSMBW .text: 0x8015F900 - 0x8015FAE0
 
 #include "s_StateID.h"
+
 #include <cstring>
 
 /**
@@ -32,8 +33,9 @@ bool sStateID_c::operator==(const sStateIDIf_c& other) const;
 bool sStateID_c::operator!=(const sStateIDIf_c& other) const;
 
 [[nsmbw(0x8015FA50)]]
-bool sStateID_c::isSameName(const char* otherName) const
-{
+bool sStateID_c::isSameName(
+    const char* otherName
+) const {
     char* part = std::strrchr(otherName, ':');
     if (part != nullptr) {
         otherName = part + 1;
@@ -46,8 +48,7 @@ bool sStateID_c::isSameName(const char* otherName) const
 const char* sStateID_c::name() const;
 
 [[nsmbw(0x8015FA70)]]
-unsigned sStateID_c::number() const
-{
+unsigned sStateID_c::number() const {
     if (mNumber == -1) {
         mNumber = sm_numberMemo.get();
     }

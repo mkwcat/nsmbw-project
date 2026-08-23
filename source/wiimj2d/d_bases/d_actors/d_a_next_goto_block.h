@@ -1,9 +1,9 @@
 #pragma once
 
+#include "d_a_player.h"
 #include "d_a_player_manager.h"
 #include "d_actor_state.h"
 #include "d_cc.h"
-#include "d_a_player.h"
 #include "m_vec.h"
 #include "s_State.h"
 
@@ -12,9 +12,7 @@ public:
     // Structors
     // ^^^^^^
 
-    daNextGotoBlock_c()
-    {
-    }
+    daNextGotoBlock_c() {}
 
     /* VT+0x48 0x8086EBB0 */
     virtual ~daNextGotoBlock_c() override;
@@ -53,20 +51,20 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x3D0 */ mVec2_c mCenterDist;
-    /* 0x3D8 */ mVec2_c mEdgeDist;
+    /* 0x3D0 */ mVec2_c     mCenterDist;
+    /* 0x3D8 */ mVec2_c     mEdgeDist;
     /* 0x3E0 */ daPlBase_c* REMOVED(mpaPlayers)[4];
-    /* 0x3F0 */ s32 m0x3F0;
-    /* 0x3F4 */ s16 mWidth;
-    /* 0x3F6 */ s16 mHeight;
-    /* 0x3F8 */ s16 mRequireVine;
-    /* 0x3FA */ s16 REMOVED(m0x3FA)[4];
-    /* 0x402 */ s16 m0x402;
-    /* 0x404 */ s16 m0x404;
-    /* 0x406 */ s16 REMOVED(m0x406)[4];
-    /* 0x40E */ bool REMOVED(mPlayerInBlock)[4];
-    /* 0x412 */ u8 mGotoID;
-    /* 0x413 */ bool mExitToWorldMap;
+    /* 0x3F0 */ s32         m0x3F0;
+    /* 0x3F4 */ s16         mWidth;
+    /* 0x3F6 */ s16         mHeight;
+    /* 0x3F8 */ s16         mRequireVine;
+    /* 0x3FA */ s16         REMOVED(m0x3FA)[4];
+    /* 0x402 */ s16         m0x402;
+    /* 0x404 */ s16         m0x404;
+    /* 0x406 */ s16         REMOVED(m0x406)[4];
+    /* 0x40E */ bool        REMOVED(mPlayerInBlock)[4];
+    /* 0x412 */ u8          mGotoID;
+    /* 0x413 */ bool        mExitToWorldMap;
 
     OFFSET_ASSERT(0x414);
 

@@ -3,11 +3,9 @@
 #include "egg/prim/eggBitFlag.h"
 #include "eggHeap.h"
 
-namespace EGG
-{
+namespace EGG {
 
-class ExpHeap : public Heap
-{
+class ExpHeap : public Heap {
 public:
     /* 0x802B9840 */
     static u32 getSizeForMBlock(const void* block);

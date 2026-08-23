@@ -1,10 +1,8 @@
 #pragma once
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 
-class DrawInfo
-{
+class DrawInfo {
     FILL(0x00, 0x54);
 };
 

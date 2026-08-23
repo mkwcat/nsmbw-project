@@ -8,8 +8,7 @@
  * @tparam T The class that this state belongs to.
  */
 template <class T>
-class sFStateID_c final : public sStateID_c
-{
+class sFStateID_c final : public sStateID_c {
 public:
     typedef void (T::*stateFunc)();
 
@@ -22,13 +21,12 @@ public:
      * @param finalize The finalize method for this state ID.
      */
     constexpr sFStateID_c(
-      const char* name, stateFunc initialize, stateFunc execute, stateFunc finalize
+        const char* name, stateFunc initialize, stateFunc execute, stateFunc finalize
     )
-      : sStateID_c()
-      , mpInitialize(initialize)
-      , mpExecute(execute)
-      , mpFinalize(finalize)
-    {
+        : sStateID_c()
+        , mpInitialize(initialize)
+        , mpExecute(execute)
+        , mpFinalize(finalize) {
         mpName = name;
     }
 
@@ -37,8 +35,9 @@ public:
      * Calls the initialize method on the owner.
      * @param owner The owner of this state ID.
      */
-    virtual void initializeState(T& owner) const
-    {
+    virtual void initializeState(
+        T& owner
+    ) const {
         (owner.*mpInitialize)();
     }
 
@@ -47,8 +46,9 @@ public:
      * Calls the execute method on the owner.
      * @param owner The owner of this state ID.
      */
-    virtual void executeState(T& owner) const
-    {
+    virtual void executeState(
+        T& owner
+    ) const {
         (owner.*mpExecute)();
     }
 
@@ -57,8 +57,9 @@ public:
      * Calls the finalize method on the owner.
      * @param owner The owner of this state ID.
      */
-    virtual void finalizeState(T& owner) const
-    {
+    virtual void finalizeState(
+        T& owner
+    ) const {
         (owner.*mpFinalize)();
     }
 

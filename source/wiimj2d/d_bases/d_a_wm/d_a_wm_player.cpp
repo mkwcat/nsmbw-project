@@ -3,19 +3,19 @@
 
 #include "d_a_wm_player.h"
 
+#include "d_CourseSelectManager.h"
+#include "d_a_player_manager.h"
 #include "d_a_wm_KinoBalloon.h"
 #include "d_a_wm_SubPlayer.h"
 #include "d_cs_seq_mng.h"
+#include "d_game_key_core.h"
+#include "d_gamerule.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include "d_profile.h"
+#include "d_wm_lib.h"
 #include "d_wm_player_camera_base.h"
 #include "d_world_camera.h"
-#include "d_profile.h"
-#include "d_gamerule.h"
-#include "d_a_player_manager.h"
-#include "d_game_key_core.h"
-#include "d_info.h"
-#include "d_CourseSelectManager.h"
-#include "d_mj2d_game.h"
-#include "d_wm_lib.h"
 #include "m_pad.h"
 #include <egg/core/eggController.h>
 #include <revolution/os.h>

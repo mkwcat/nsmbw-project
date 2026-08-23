@@ -3,8 +3,7 @@
 #include "d_a_player_manager.h"
 #include "d_enemy.h"
 
-class daEnRedcoin_c : public dEn_c
-{
+class daEnRedcoin_c : public dEn_c {
 public:
     // Instance Methods
     // ^^^^^^

@@ -5,10 +5,10 @@
 
 #include "d_mj2d_game.h"
 #include "m_pad.h"
-#include <mkwcat/ToString.hpp>
 #include <egg/audio/eggAudioRmtSpeaker.h>
 #include <egg/core/eggController.h>
 #include <memory>
+#include <mkwcat/ToString.hpp>
 #include <revolution/os.h>
 #include <revolution/wpad.h>
 

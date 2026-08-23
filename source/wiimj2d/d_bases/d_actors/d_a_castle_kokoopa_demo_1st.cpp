@@ -13,15 +13,14 @@
 #include <egg/math/eggMath.h>
 
 [[nsmbw(0x807DAC10)]]
-daCastleKokoopaDemo1st_c* daCastleKokoopaDemo1st_c_classInit()
-{
+daCastleKokoopaDemo1st_c* daCastleKokoopaDemo1st_c_classInit() {
     auto* base = new daCastleKokoopaDemo1st_c();
 
     // This should be done in create
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        base->mpPlayersInOrder[i] = nullptr;
+        base->mpPlayersInOrder[i]     = nullptr;
         base->mBattleStControlStep[i] = 1;
-        base->mIggyDemoScrollStep[i] = 1;
+        base->mIggyDemoScrollStep[i]  = 1;
     }
 
     return base;
@@ -66,8 +65,7 @@ daCastleKokoopaDemo1st_c::daCastleKokoopaDemo1st_c() ASM_METHOD(
 );
 
 [[nsmbw(0x807DACB0)]]
-bool daCastleKokoopaDemo1st_c::checkBattleStDemo()
-{
+bool daCastleKokoopaDemo1st_c::checkBattleStDemo() {
     switch (mCheckBattleStDemoStep) {
     case 1: {
         f32 checkPos = mPos.x - 32.0;
@@ -75,7 +73,7 @@ bool daCastleKokoopaDemo1st_c::checkBattleStDemo()
             if (isPlayerEntry(i) && daPyMng_c::getPlayer(i)->mPos.x > checkPos) {
                 daPyDemoMng_c::mspInstance->startControlDemoAll();
                 dBlockMng_c::m_instance->mDisableDonutLift = 1;
-                dEnemyMng_c::m_instance->m0x15C = 1;
+                dEnemyMng_c::m_instance->m0x15C            = 1;
                 setFlag115();
                 mCheckBattleStDemoStep++;
                 return false;
@@ -115,12 +113,11 @@ bool daCastleKokoopaDemo1st_c::checkBattleStDemo()
 }
 
 [[nsmbw(0x807DB440)]]
-bool daCastleKokoopaDemo1st_c::calcBattleStDemoControl()
-{
-    int numPly = daPyMng_c::mNum;
+bool daCastleKokoopaDemo1st_c::calcBattleStDemoControl() {
+    int numPly          = daPyMng_c::mNum;
 
     f32 playerStandArea = EGG::Math<f32>::lerp(f32(numPly - 4) / 4.0, 96.0, 140.0);
-    f32 playerDist = playerStandArea / (numPly + 1);
+    f32 playerDist      = playerStandArea / (numPly + 1);
 
     for (int i = 0; i < numPly; i++) {
         dAcPy_c* player = mpPlayersInOrder[i];
@@ -128,7 +125,7 @@ bool daCastleKokoopaDemo1st_c::calcBattleStDemoControl()
         switch (mBattleStControlStep[i]) {
         case 1: {
             f32& walkToPos = mWalkToPos[player->getPlrNo()];
-            walkToPos = playerDist * (i + 1) + (mRightBoundary - playerStandArea / 2);
+            walkToPos      = playerDist * (i + 1) + (mRightBoundary - playerStandArea / 2);
 
             if (!player->isNowBgCross(daPlBase_c::BGC_FOOT)) {
                 continue;
@@ -172,8 +169,7 @@ bool daCastleKokoopaDemo1st_c::calcBattleStDemoControl()
 }
 
 [[nsmbw(0x807DB740)]]
-bool daCastleKokoopaDemo1st_c::calcIggyDemoScroll()
-{
+bool daCastleKokoopaDemo1st_c::calcIggyDemoScroll() {
     // Only used in World 5 Iggy castle boss
 
     bool ready = true;
@@ -225,14 +221,14 @@ bool daCastleKokoopaDemo1st_c::calcIggyDemoScroll()
 }
 
 [[nsmbw(0x807DB920)]]
-bool daCastleKokoopaDemo1st_c::isPlayerEntry(int player)
-{
+bool daCastleKokoopaDemo1st_c::isPlayerEntry(
+    int player
+) {
     return daPyMng_c::mActPlayerInfo & (1 << player);
 }
 
 [[nsmbw(0x807DB950)]]
-void daCastleKokoopaDemo1st_c::setFlag115()
-{
+void daCastleKokoopaDemo1st_c::setFlag115() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (isPlayerEntry(i)) {
             daPyMng_c::getPlayer(i)->onStatus(115);

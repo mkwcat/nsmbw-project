@@ -4,17 +4,12 @@
 #include "m_3d_fanm.h"
 #include <nw4r/g3d/g3d_anmtexpat.h>
 
-namespace m3d
-{
+namespace m3d {
 
-class anmTexPat_c : public banm_c
-{
-    class child_c : public fanm_c
-    {
+class anmTexPat_c : public banm_c {
+    class child_c : public fanm_c {
     public:
-        child_c()
-        {
-        }
+        child_c() {}
 
         virtual ~child_c();
         virtual int getType() const override;
@@ -45,12 +40,12 @@ public:
     void setAnm(bmdl_c&, nw4r::g3d::ResAnmTexPat, s32, playMode_e);
 
     void play(s32);
-    f32 getFrame(s32) const;
+    f32  getFrame(s32) const;
     void setFrame(f32, s32);
     void setRate(f32, s32);
     bool isStop(s32) const;
 
-    f32 getFrameMax(s32) const;
+    f32  getFrameMax(s32) const;
     void setFrameStart(f32, s32);
 
 private:

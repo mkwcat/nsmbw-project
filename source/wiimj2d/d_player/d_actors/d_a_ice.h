@@ -1,10 +1,9 @@
 #pragma once
 
-#include "d_profile.h"
 #include "d_actor.h"
+#include "d_profile.h"
 
-class daIce_c : public dActor_c, public dProf::Info<daIce_c, dProf::ICE_ACTOR>
-{
+class daIce_c : public dActor_c, public dProf::Info<daIce_c, dProf::ICE_ACTOR> {
 public:
     // Instance Methods
     // ^^^^^^

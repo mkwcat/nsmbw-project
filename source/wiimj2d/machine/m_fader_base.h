@@ -3,24 +3,23 @@
 /**
  * Base fader implementation.
  */
-class mFaderBase_c
-{
+class mFaderBase_c {
 public:
     enum EStatus {
         /**
          * The screen is completely blacked out.
          */
-        OPAQUE = 0,
+        OPAQUE   = 0,
 
         /**
          * The screen is completely unblocked.
          */
-        HIDDEN = 1,
+        HIDDEN   = 1,
 
         /**
          * Transition from OPAQUE to HIDDEN.
          */
-        FADE_IN = 2,
+        FADE_IN  = 2,
 
         /**
          * Transition from HIDDEN to OPAQUE.

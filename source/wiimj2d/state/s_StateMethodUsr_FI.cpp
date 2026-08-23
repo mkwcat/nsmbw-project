@@ -5,7 +5,7 @@
 
 [[nsmbw(0x8015FDD0)]]
 sStateMethodUsr_FI_c::sStateMethodUsr_FI_c(
-  sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
+    sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
 );
 
 /**

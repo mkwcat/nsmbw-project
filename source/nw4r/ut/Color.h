@@ -2,18 +2,18 @@
 
 #include <revolution/gx/GXStruct.h>
 
-namespace nw4r::ut
-{
+namespace nw4r::ut {
 
 struct Color : GXColor {
-    constexpr Color(u8 r = 0, u8 g = 0, u8 b = 0, u8 a = 255)
-      : GXColor{r, g, b, a}
-    {
-    }
+    constexpr Color(
+        u8 r = 0, u8 g = 0, u8 b = 0, u8 a = 255
+    )
+        : GXColor{r, g, b, a} {}
 
-    constexpr Color(const char (&colorCode)[8], u8 alpha = 255)
-      : GXColor{0, 0, 0, 0}
-    {
+    constexpr Color(
+        const char (&colorCode)[8], u8 alpha = 255
+    )
+        : GXColor{0, 0, 0, 0} {
         a = alpha;
 
         if (colorCode[0] != '#') {
@@ -41,9 +41,10 @@ struct Color : GXColor {
         b = color & 0xFF;
     }
 
-    constexpr Color(const char (&colorCode)[10])
-      : GXColor{0, 0, 0, 0}
-    {
+    constexpr Color(
+        const char (&colorCode)[10]
+    )
+        : GXColor{0, 0, 0, 0} {
         if (colorCode[0] != '#') {
             r = 0;
             g = 0;
@@ -71,21 +72,19 @@ struct Color : GXColor {
         a = color & 0xFF;
     }
 
-    constexpr operator GXColorS10() const
-    {
-        return {r, g, b, a};
-    }
+    constexpr operator GXColorS10() const { return {r, g, b, a}; }
 };
 
 struct ColorS10 : GXColorS10 {
-    constexpr ColorS10(s16 r = 0, s16 g = 0, s16 b = 0, s16 a = 255)
-      : GXColorS10{r, g, b, a}
-    {
-    }
+    constexpr ColorS10(
+        s16 r = 0, s16 g = 0, s16 b = 0, s16 a = 255
+    )
+        : GXColorS10{r, g, b, a} {}
 
-    constexpr ColorS10(const char (&colorCode)[8], s16 alpha = 255)
-      : GXColorS10{0, 0, 0, 0}
-    {
+    constexpr ColorS10(
+        const char (&colorCode)[8], s16 alpha = 255
+    )
+        : GXColorS10{0, 0, 0, 0} {
         a = alpha;
 
         if (colorCode[0] != '#') {
@@ -113,9 +112,10 @@ struct ColorS10 : GXColorS10 {
         b = color & 0xFF;
     }
 
-    constexpr ColorS10(const char (&colorCode)[10])
-      : GXColorS10{0, 0, 0, 0}
-    {
+    constexpr ColorS10(
+        const char (&colorCode)[10]
+    )
+        : GXColorS10{0, 0, 0, 0} {
         if (colorCode[0] != '#') {
             r = 0;
             g = 0;
@@ -143,10 +143,7 @@ struct ColorS10 : GXColorS10 {
         a = color & 0xFF;
     }
 
-    constexpr operator GXColor() const
-    {
-        return {u8(r), u8(g), u8(b), u8(a)};
-    }
+    constexpr operator GXColor() const { return {u8(r), u8(g), u8(b), u8(a)}; }
 };
 
 } // namespace nw4r::ut

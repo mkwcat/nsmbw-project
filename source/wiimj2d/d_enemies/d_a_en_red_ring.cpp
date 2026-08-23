@@ -3,8 +3,7 @@
 
 #include "d_a_en_red_ring.h"
 
-u32 daEnRedRing_c_sizeof()
-{
+u32 daEnRedRing_c_sizeof() {
     return sizeof(daEnRedRing_c);
 }
 

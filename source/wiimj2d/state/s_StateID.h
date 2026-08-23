@@ -5,19 +5,14 @@
 /**
  * A generic implementation of a state ID. It simply contains a name string and a unique number.
  */
-class sStateID_c : public sStateIDIf_c
-{
+class sStateID_c : public sStateIDIf_c {
 public:
-    class NumberMemo_c
-    {
+    class NumberMemo_c {
     public:
         constexpr NumberMemo_c()
-          : curr(0)
-        {
-        }
+            : curr(0) {}
 
-        constexpr unsigned get()
-        {
+        constexpr unsigned get() {
             curr++;
             return curr;
         }
@@ -26,10 +21,8 @@ public:
     };
 
     constexpr sStateID_c()
-      : mpName(nullptr)
-      , mNumber(-1)
-    {
-    }
+        : mpName(nullptr)
+        , mNumber(-1) {}
 
     /* 0x8015F900 */
     sStateID_c(const char* name);
@@ -75,8 +68,7 @@ protected:
     /* 0x8042A640 */ static NumberMemo_c sm_numberMemo;
 };
 
-namespace sStateID
-{
+namespace sStateID {
 
 /**
  * 0x80377D04

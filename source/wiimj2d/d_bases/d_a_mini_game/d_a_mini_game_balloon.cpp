@@ -2,6 +2,7 @@
 // NSMBW: 0x808638C0 - 0x80864A80
 
 #include "d_a_mini_game_balloon.h"
+
 #include "d_a_mini_game_gun_battery_mgr.h"
 #include "m_ef.h"
 #include "m_vec.h"
@@ -219,8 +220,10 @@ UNDEF_808643dc:;
   // clang-format on
 );
 
-void daMiniGameBalloon_c::EffectBalloonGet(int playerType, mVec3_c *effPos) {
-    const char *PLY_EFFECT_NAME[] = {
+void daMiniGameBalloon_c::EffectBalloonGet(
+    int playerType, mVec3_c* effPos
+) {
+    const char* PLY_EFFECT_NAME[] = {
         "Wm_mg_balloonget_r",
         "Wm_mg_balloonget_g",
         "Wm_mg_balloonget_b",
@@ -232,6 +235,6 @@ void daMiniGameBalloon_c::EffectBalloonGet(int playerType, mVec3_c *effPos) {
         "Wm_mg_balloonget_r",
     };
 
-    const char *effName = PLY_EFFECT_NAME[playerType];
+    const char* effName = PLY_EFFECT_NAME[playerType];
     mEf::createEffect(effName, 0, effPos, nullptr, nullptr);
 }

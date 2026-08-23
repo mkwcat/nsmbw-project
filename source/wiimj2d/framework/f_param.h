@@ -2,7 +2,8 @@
 
 #include <bit>
 
-template <class T> class fParam_c : public T::Param_s {
+template <class T>
+class fParam_c : public T::Param_s {
 public:
     // Structors
     // ^^^^^^

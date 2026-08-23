@@ -5,27 +5,27 @@
 
 #include <revolution/os.h>
 
-namespace
-{
+namespace {
 #include <mkwcat.rsid>
 #include <wiimj2d.rsid>
 } // namespace
 
-namespace nw4r::snd::detail
-{
+namespace nw4r::snd::detail {
 
-static constexpr u32 TOADETTE_BANK = 1000;
+static constexpr u32 TOADETTE_BANK         = 1000;
 static constexpr u32 TOADETTE_BANK_FILE_ID = 1000;
 
 // Hack, i wanna do this better and not embedded in nw4r later, but this is more of a PoC patch
 
-static bool IsToadetteSound(u32 id)
-{
+static bool IsToadetteSound(
+    u32 id
+) {
     return id >= 5010 && id <= 5079;
 }
 
-static u32 GetBaseToadetteSoundId(u32 id)
-{
+static u32 GetBaseToadetteSoundId(
+    u32 id
+) {
     if (IsToadetteSound(id)) {
         if (id == SE_VOC_KC_CS_COURSE_MISS) {
             return SE_VOC_KO_CS_COURSE_MISS;
@@ -63,37 +63,40 @@ static u32 GetBaseToadetteSoundId(u32 id)
 }
 
 EXTERN_REPL(
-  0x80276020, //
-  SoundType SoundArchiveFileReader::GetSoundTypeInternal(u32 id) const
+    0x80276020, //
+    SoundType SoundArchiveFileReader::GetSoundTypeInternal(u32 id) const
 );
 
 [[nsmbw(0x80276020)]]
-SoundType SoundArchiveFileReader::GetSoundType(u32 id) const
-{
+SoundType SoundArchiveFileReader::GetSoundType(
+    u32 id
+) const {
     return GetSoundTypeInternal(GetBaseToadetteSoundId(id));
 }
 
 EXTERN_REPL(
-  0x80276110, //
-  bool SoundArchiveFileReader::ReadSoundInfoInternal(u32 id, SoundArchive::SoundInfo* pSoundInfo)
-    const
+    0x80276110, //
+    bool SoundArchiveFileReader::ReadSoundInfoInternal(u32 id, SoundArchive::SoundInfo* pSoundInfo)
+        const
 );
 
 [[nsmbw(0x80276110)]]
-bool SoundArchiveFileReader::ReadSoundInfo(u32 id, SoundArchive::SoundInfo* pSoundInfo) const
-{
+bool SoundArchiveFileReader::ReadSoundInfo(
+    u32 id, SoundArchive::SoundInfo* pSoundInfo
+) const {
     return ReadSoundInfoInternal(GetBaseToadetteSoundId(id), pSoundInfo);
 }
 
 EXTERN_REPL(
-  0x80276350, //
-  bool SoundArchiveFileReader::ReadSeqSoundInfoInternal(u32 id, SoundArchive::SeqSoundInfo* pInfo)
-    const
+    0x80276350, //
+    bool SoundArchiveFileReader::ReadSeqSoundInfoInternal(u32 id, SoundArchive::SeqSoundInfo* pInfo)
+        const
 );
 
 [[nsmbw(0x80276350)]]
-bool SoundArchiveFileReader::ReadSeqSoundInfo(u32 id, SoundArchive::SeqSoundInfo* pInfo) const
-{
+bool SoundArchiveFileReader::ReadSeqSoundInfo(
+    u32 id, SoundArchive::SeqSoundInfo* pInfo
+) const {
     bool result = ReadSeqSoundInfoInternal(GetBaseToadetteSoundId(id), pInfo);
     if (!result || !IsToadetteSound(id)) {
         return result;
@@ -104,8 +107,9 @@ bool SoundArchiveFileReader::ReadSeqSoundInfo(u32 id, SoundArchive::SeqSoundInfo
 }
 
 [[nsmbw(0x80276630)]]
-bool SoundArchiveFileReader::ReadBankInfo(u32 id, SoundArchive::BankInfo* pInfo) const
-{
+bool SoundArchiveFileReader::ReadBankInfo(
+    u32 id, SoundArchive::BankInfo* pInfo
+) const {
     if (id == TOADETTE_BANK) {
         pInfo->fileId = TOADETTE_BANK_FILE_ID;
         return true;
@@ -124,8 +128,9 @@ bool SoundArchiveFileReader::ReadBankInfo(u32 id, SoundArchive::BankInfo* pInfo)
 [[nsmbw(0x80276B10)]]
 const char* SoundArchiveFileReader::GetSoundLabelString(u32 id) const;
 
-const char* SoundArchiveFileReader::GetString(u32 id) const
-{
+const char* SoundArchiveFileReader::GetString(
+    u32 id
+) const {
     if (id == 0xFFFFFFFF) {
         return nullptr;
     }
@@ -137,10 +142,11 @@ const char* SoundArchiveFileReader::GetString(u32 id) const
     return static_cast<const char*>(GetPtrConst(mStringBase, mStringTable->offsetTable.items[id]));
 }
 
-const SoundArchiveFile::BankInfo* SoundArchiveFileReader::impl_GetBankInfo(u32 id) const
-{
+const SoundArchiveFile::BankInfo* SoundArchiveFileReader::impl_GetBankInfo(
+    u32 id
+) const {
     const SoundArchiveFile::BankTable* pTable =
-      Util::GetDataRefAddress0(mInfo->bankTableRef, mInfo);
+        Util::GetDataRefAddress0(mInfo->bankTableRef, mInfo);
 
     if (pTable == nullptr) {
         return nullptr;
@@ -153,10 +159,11 @@ const SoundArchiveFile::BankInfo* SoundArchiveFileReader::impl_GetBankInfo(u32 i
     return Util::GetDataRefAddress0(pTable->items[id], mInfo);
 }
 
-const SoundArchiveFile::GroupInfo* SoundArchiveFileReader::impl_GetGroupInfo(u32 id) const
-{
+const SoundArchiveFile::GroupInfo* SoundArchiveFileReader::impl_GetGroupInfo(
+    u32 id
+) const {
     const SoundArchiveFile::GroupTable* pTable =
-      Util::GetDataRefAddress0(mInfo->groupTableRef, mInfo);
+        Util::GetDataRefAddress0(mInfo->groupTableRef, mInfo);
 
     if (pTable == nullptr) {
         return nullptr;

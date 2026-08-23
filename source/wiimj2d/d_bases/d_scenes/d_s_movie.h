@@ -2,8 +2,7 @@
 
 #include "d_scene.h"
 
-class dScMovie_c : public dScene_c
-{
+class dScMovie_c : public dScene_c {
 public:
     // Virtual Functions
     // ^^^^^^

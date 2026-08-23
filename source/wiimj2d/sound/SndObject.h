@@ -7,25 +7,25 @@
 #include <nw4r/snd/SoundHandle.h>
 
 template <int TParam>
-class NMSndObject : public NMSndObjectBase
-{
+class NMSndObject : public NMSndObjectBase {
     SIZE_ASSERT(0xAC);
 
 public:
     // Structors
     // ^^^^^^
 
-    NMSndObject(nw4r::snd::SoundArchivePlayer& soundArchivePlayer)
-      : NMSndObjectBase(OBJ_TYPE::TYPE_0, soundArchivePlayer)
-      , m0x64(1.0)
-      , m0x68f(0.0)
-      , m0x6C(0.0)
-      , mPan(0.0)
-      , maSndObjList()
-    {
+    NMSndObject(
+        nw4r::snd::SoundArchivePlayer& soundArchivePlayer
+    )
+        : NMSndObjectBase(OBJ_TYPE::TYPE_0, soundArchivePlayer)
+        , m0x64(1.0)
+        , m0x68f(0.0)
+        , m0x6C(0.0)
+        , mPan(0.0)
+        , maSndObjList() {
         SetPlayableSoundCount(0, TParam);
 
-        mNumHandles = std::size(maSndObjList);
+        mNumHandles   = std::size(maSndObjList);
         mRemotePlayer = 1;
     }
 
@@ -33,8 +33,7 @@ public:
     // Constants and Types
     // ^^^^^^
 
-    class SoundHandlePrm : public nw4r::snd::SoundHandle
-    {
+    class SoundHandlePrm : public nw4r::snd::SoundHandle {
         SIZE_ASSERT(0x8);
 
     public:
@@ -43,10 +42,8 @@ public:
 
         /* [0x80046470 with TParam = 4] */
         SoundHandlePrm()
-          : nw4r::snd::SoundHandle()
-          , m0x4(1.0f)
-        {
-        }
+            : nw4r::snd::SoundHandle()
+            , m0x4(1.0f) {}
 
     public:
         // Instance Variables
@@ -96,9 +93,9 @@ public:
         /* 0x68 */ f32 m0x68f;
     };
 
-    /* 0x6C */ f32 m0x6C;
-    /* 0x70 */ f32 mPan;
-    /* 0x74 */ SoundHandlePrm maSndObjList[6];
+    /* 0x6C */ f32              m0x6C;
+    /* 0x70 */ f32              mPan;
+    /* 0x74 */ SoundHandlePrm   maSndObjList[6];
     /* 0xA4 */ nw4r::math::VEC2 m0xA4;
 };
 

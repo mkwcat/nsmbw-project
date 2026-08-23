@@ -3,21 +3,21 @@
 
 #include "d_project.h"
 
+#include "SndAudioMgr.h"
 #include "c_json.h"
-#include "d_s_boot.h"
-#include "d_exception.h"
 #include "d_a_player_manager.h"
+#include "d_exception.h"
 #include "d_info.h"
 #include "d_nand_thread.h"
 #include "d_remocon_mng.h"
+#include "d_s_boot.h"
 #include "d_save_manager.h"
 #include "d_system.h"
 #include "m_dvd.h"
 #include "m_heap.h"
 #include "m_pad.h"
-#include <revolution/os/OSError.h>
-#include "SndAudioMgr.h"
 #include <egg/core/eggController.h>
+#include <revolution/os/OSError.h>
 
 void dProject_c::preCModuleInit(
     s32 arcEntryNum, ARCHandle* arcHandle

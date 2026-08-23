@@ -3,8 +3,7 @@
 #include "d_base.h"
 #include "d_mj2d_game.h"
 
-class daFloorJrC_c : public dBase_c
-{
+class daFloorJrC_c : public dBase_c {
 public:
     // Structors
     // ^^^^^^

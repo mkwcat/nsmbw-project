@@ -3,18 +3,15 @@
 #include <nw4r/lyt/ResourceAccessor.h>
 #include <nw4r/ut/List.h>
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 class Group;
 };
 
-namespace m2d
-{
+namespace m2d {
 
 class AnmResV2_c;
 
-class FrameCtrl_c
-{
+class FrameCtrl_c {
     SIZE_ASSERT(0x14);
     /* 0x00 VTABLE 0x80317774 */
 
@@ -29,35 +26,32 @@ public:
     /* 0x10 */ float m0x10 = 1.0f;
 };
 
-class AnmGroupBase_c
-{
+class AnmGroupBase_c {
     SIZE_ASSERT(0x10);
 
 public:
-    /* 0x0 */ FrameCtrl_c* mpFrameCtrl;
-    /* 0x4 */ AnmResV2_c* mpAnmRes;
+    /* 0x0 */ FrameCtrl_c*      mpFrameCtrl;
+    /* 0x4 */ AnmResV2_c*       mpAnmRes;
     /* 0x8 */ nw4r::lyt::Group* mpLytGroup;
-    /* 0xC */ u8 mFlag;
+    /* 0xC */ u8                mFlag;
 };
 
-class AnmGroup_c : public AnmGroupBase_c
-{
+class AnmGroup_c : public AnmGroupBase_c {
     SIZE_ASSERT(0x28);
 
 public:
     /* 0x10 */ FrameCtrl_c mFrameCtrl;
-    /* 0x24 */ s32 m0x24;
+    /* 0x24 */ s32         m0x24;
 };
 
-class ResAccIf_c
-{
+class ResAccIf_c {
     SIZE_ASSERT(0xC);
 
     /* 0x0 VTABLE */
 
 public:
     /* VT+0x8 */
-    virtual ~ResAccIf_c() = 0;
+    virtual ~ResAccIf_c()  = 0;
 
     /* VT+0xC */
     virtual void creater() = 0;
@@ -73,25 +67,24 @@ public:
 
 private:
     /* 0x4 */ nw4r::lyt::ResourceAccessor* mpResAccessor;
-    /* 0x8 */ void* mpResource;
+    /* 0x8 */ void*                        mpResource;
 };
 
-class Base_c
-{
+class Base_c {
     SIZE_ASSERT(0xD);
 
 public:
-    Base_c(u8 priority)
-      : mPriority(priority)
-    {
-    }
+    Base_c(
+        u8 priority
+    )
+        : mPriority(priority) {}
 
     /* 0x0 */ nw4r::ut::Node mLink;
 
     /* 0x8 VTABLE */
 
     /* VT+0x8 */
-    virtual ~Base_c() = default;
+    virtual ~Base_c()   = default;
 
     /* VT+0xC */
     virtual void draw() = 0;

@@ -8,8 +8,7 @@
 #include "d_a_yoshi.h"
 
 [[nsmbw(0x808377B0)]]
-bool daLiftFall_c::checkRideStart() const
-{
+bool daLiftFall_c::checkRideStart() const {
     int count = 0;
     for (dRc_c* rc = mRc.mpChain; rc != nullptr; rc = rc->mpNext) {
         dActor_c* actor = rc->mpOwner;
@@ -42,7 +41,7 @@ bool daLiftFall_c::checkRideStart() const
         // 1 = 50%
         // 2 = 75%
         // 3 = 100%
-        u32 r = (minPlr + 1) * 0x4000;
+        u32 r  = (minPlr + 1) * 0x4000;
         minPlr = s16((r * daPyMng_c::getEntryNum()) >> 16);
         if (minPlr < 1) {
             minPlr = 1;

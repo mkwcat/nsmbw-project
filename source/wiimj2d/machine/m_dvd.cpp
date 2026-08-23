@@ -3,11 +3,11 @@
 
 #include "m_dvd.h"
 
-#include <egg/core/eggStreamDecomp.h>
 #include <cstring>
 #include <egg/core/eggDvdFile.h>
 #include <egg/core/eggDvdRipper.h>
 #include <egg/core/eggExpHeap.h>
+#include <egg/core/eggStreamDecomp.h>
 #include <optional>
 #include <revolution/arc.h>
 #include <revolution/dvd.h>

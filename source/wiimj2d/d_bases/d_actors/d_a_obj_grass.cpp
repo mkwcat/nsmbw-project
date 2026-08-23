@@ -79,9 +79,9 @@ UNDEF_808761c0:;
   // clang-format on
 );
 
-
 [[nsmbw(0x80876680)]]
-void daObjGrass_c_onExecute() ASM_METHOD(
+void daObjGrass_c_onExecute()
+    ASM_METHOD(
   // clang-format off
 /* 80876680 9421FD80 */  stwu     r1, -640(r1);
 /* 80876684 7C0802A6 */  mflr     r0;

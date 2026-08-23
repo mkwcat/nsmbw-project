@@ -1,7 +1,6 @@
 #pragma once
 
-namespace nw4r::ut
-{
+namespace nw4r::ut {
 
 struct BinaryBlockHeader {
     SIZE_ASSERT(0x8);

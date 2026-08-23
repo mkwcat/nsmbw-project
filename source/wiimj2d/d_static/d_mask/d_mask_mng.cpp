@@ -3,8 +3,7 @@
 
 #include "d_mj2d_game.h"
 
-namespace dMaskMng
-{
+namespace dMaskMng {
 
 [[nsmbw(0x800CD290)]]
 void CreatePlayerMask() ASM_METHOD(

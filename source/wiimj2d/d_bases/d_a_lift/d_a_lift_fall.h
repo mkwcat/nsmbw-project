@@ -3,8 +3,7 @@
 #include "d_actor_state.h"
 #include "d_rc.h"
 
-class daLiftFall_c : public dActorState_c
-{
+class daLiftFall_c : public dActorState_c {
 public:
     // Instance Methods
     // ^^^^^^

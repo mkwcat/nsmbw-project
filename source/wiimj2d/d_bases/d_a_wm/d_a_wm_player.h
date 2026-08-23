@@ -1,11 +1,11 @@
 #pragma once
 
-#include "d_wm_seManager.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
 #include "d_player_model_manager.h"
 #include "d_wm_lib.h"
 #include "d_wm_player_base.h"
+#include "d_wm_seManager.h"
 #include "m_vec.h"
 
 class dWmPyCamBase_c;

@@ -102,7 +102,6 @@ UNDEF_8085956c:;
 );
 
 [[nsmbw(0x8085A990)]]
-int daLineTrain_c::numPlayersRide()
-{
+int daLineTrain_c::numPlayersRide() {
     return mPlayerRideMask.popCount();
 }

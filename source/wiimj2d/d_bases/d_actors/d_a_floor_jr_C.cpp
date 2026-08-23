@@ -6,8 +6,7 @@
 #include <mkwcat/Relocate.hpp>
 
 [[nsmbw(0x807F1A00)]]
-daFloorJrC_c* daFloorJrC_c_classInit()
-{
+daFloorJrC_c* daFloorJrC_c_classInit() {
     daFloorJrC_c* obj = new daFloorJrC_c;
 
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
@@ -24,8 +23,7 @@ daFloorJrC_c* daFloorJrC_c_classInit()
 daFloorJrC_c::daFloorJrC_c();
 
 [[nsmbw(0x807F28E0)]]
-void daFloorJrC_c::clearPlayerInfo()
-{
+void daFloorJrC_c::clearPlayerInfo() {
     m0x674 = m0x670;
     m0x670 = m0x66C;
 
@@ -39,18 +37,18 @@ void daFloorJrC_c::clearPlayerInfo()
 }
 
 [[nsmbw(0x807F2940)]]
-bool daFloorJrC_c::checkPlayerFlag(int player)
-{
+bool daFloorJrC_c::checkPlayerFlag(
+    int player
+) {
     return m0x686[player] && !m0x68A[player];
 }
 
 #if PLAYER_COUNT > 7
 
 PATCH_REFERENCES(
-  offsetof(daFloorJrC_c, m0x686),
-  {
-    {0x807F1D68 + 2, R_PPC_ADDR16_LO},
-  }
+    offsetof(daFloorJrC_c, m0x686), {
+                                        {0x807F1D68 + 2, R_PPC_ADDR16_LO},
+                                    }
 );
 
 #endif

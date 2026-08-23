@@ -4,8 +4,7 @@
 #include <egg/core/eggAllocator.h>
 #include <egg/core/eggHeap.h>
 
-class mAllocator_c : public EGG::Allocator
-{
+class mAllocator_c : public EGG::Allocator {
 public:
     mAllocator_c();
     // vtable at 0x10
@@ -15,8 +14,7 @@ public:
     bool attach(EGG::Heap* heap, int align);
 };
 
-class mHeapAllocator_c : public mAllocator_c
-{
+class mHeapAllocator_c : public mAllocator_c {
 public:
     mHeapAllocator_c();
     // vtable at 0x10

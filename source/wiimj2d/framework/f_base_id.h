@@ -7,7 +7,7 @@ enum class fBaseID_e {
     /**
      * Represents the null base.
      */
-    NONE = 0,
+    NONE  = 0,
 
     /**
      * The starting identifier value.
@@ -17,5 +17,5 @@ enum class fBaseID_e {
     /**
      * The maximum identifier value.
      */
-    MAX = -1,
+    MAX   = -1,
 };

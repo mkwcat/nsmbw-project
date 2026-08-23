@@ -3,15 +3,15 @@
 
 #include "d_a_en_item.h"
 
+#include "SndID.h"
 #include "d_a_player.h"
-#include "d_gamerule.h"
 #include "d_a_player_manager.h"
 #include "d_audio.h"
 #include "d_enemy_manager.h"
 #include "d_game_common.h"
+#include "d_gamerule.h"
 #include "d_mj2d_game.h"
 #include "d_score_mng.h"
-#include "SndID.h"
 
 [[nsmbw(0x80A26C30)]]
 fBase_c::PACK_RESULT_e daEnItem_c::create() ASM_METHOD(

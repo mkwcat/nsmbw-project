@@ -9,21 +9,17 @@
 #include <revolution/os/OSCache.h>
 #include <revolution/os/OSError.h>
 
-namespace mDvd
-{
+namespace mDvd {
 
 MultiArchiveBuilder_c::MultiArchiveBuilder_c(
-  EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir, u32 dstMaxCount, u32 dstStrTabMaxSize
+    EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir, u32 dstMaxCount, u32 dstStrTabMaxSize
 )
-  : mHeap(heap)
-  , mAllocDir(allocDir)
-  , mDstMaxCount(dstMaxCount)
-  , mDstStrTabMaxSize(dstStrTabMaxSize)
-{
-}
+    : mHeap(heap)
+    , mAllocDir(allocDir)
+    , mDstMaxCount(dstMaxCount)
+    , mDstStrTabMaxSize(dstStrTabMaxSize) {}
 
-MultiArchiveBuilder_c::~MultiArchiveBuilder_c()
-{
+MultiArchiveBuilder_c::~MultiArchiveBuilder_c() {
     if (mDst != nullptr) {
         delete[] mDst;
     }
@@ -33,8 +29,9 @@ MultiArchiveBuilder_c::~MultiArchiveBuilder_c()
     }
 }
 
-s32 MultiArchiveBuilder_c::addString(const char* str)
-{
+s32 MultiArchiveBuilder_c::addString(
+    const char* str
+) {
     // Find if the string already exists
     for (u32 i = 0; i < mDstStrTabSize; i++) {
         if (std::strcmp(mDstStrTab + i, str) == 0) {
@@ -52,8 +49,9 @@ s32 MultiArchiveBuilder_c::addString(const char* str)
     return mDstStrTabSize - strLen;
 }
 
-s32 MultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstIndex, s32 parent)
-{
+s32 MultiArchiveBuilder_c::addEntry(
+    FstEntry entry, const char* name, s32 dstIndex, s32 parent
+) {
     if (dstIndex < 0) {
         dstIndex = mDstCount + dstIndex + 1;
     }
@@ -90,13 +88,13 @@ s32 MultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstInd
 
     // Now add the entry
     FstEntry* dstEntry = mDst + dstIndex;
-    *dstEntry = {
-      .isDir = !!entry.isDir,
-      .stringOffset = static_cast<u32>(addString(name)),
-      .dir = {
-        .parent = entry.dir.parent,
-        .next = entry.isDir ? dstIndex + 1 : entry.file.length,
-      },
+    *dstEntry          = {
+                 .isDir        = !!entry.isDir,
+                 .stringOffset = static_cast<u32>(addString(name)),
+                 .dir          = {
+                              .parent = entry.dir.parent,
+                              .next   = entry.isDir ? dstIndex + 1 : entry.file.length,
+        },
     };
 
     mDstCount++;
@@ -105,18 +103,16 @@ s32 MultiArchiveBuilder_c::addEntry(FstEntry entry, const char* name, s32 dstInd
 }
 
 s32 MultiArchiveBuilder_c::addEntryStrTab(
-  FstEntry entry, const char* strTab, s32 dstIndex, s32 parent
-)
-{
+    FstEntry entry, const char* strTab, s32 dstIndex, s32 parent
+) {
     return addEntry(entry, strTab + entry.stringOffset, dstIndex, parent);
 }
 
 s32 MultiArchiveBuilder_c::copyArchive2(
-  const char* srcFst, u32 startIndex, s32 dstIndex, u32 offsetDisplacement
-)
-{
+    const char* srcFst, u32 startIndex, s32 dstIndex, u32 offsetDisplacement
+) {
     const FstEntry* srcFstEntries = reinterpret_cast<const FstEntry*>(srcFst);
-    const char* srcStrTab = srcFst + (srcFstEntries[0].dir.next * sizeof(FstEntry));
+    const char*     srcStrTab     = srcFst + (srcFstEntries[0].dir.next * sizeof(FstEntry));
 
     assert(srcFstEntries[startIndex].isDir);
     s32 parent = dstIndex - 1;
@@ -131,18 +127,18 @@ s32 MultiArchiveBuilder_c::copyArchive2(
     u32 copyCount = srcFstEntries[startIndex].dir.next;
 
     for (u32 index = startIndex + 1; index < copyCount; index++) {
-        const FstEntry* srcEntry = srcFstEntries + index;
-        const char* srcEntryName = srcStrTab + srcEntry->stringOffset;
+        const FstEntry* srcEntry     = srcFstEntries + index;
+        const char*     srcEntryName = srcStrTab + srcEntry->stringOffset;
         if (isSkippableName(srcEntryName)) {
             continue;
         }
 
         FstEntry* dstEntry = nullptr;
-        s32 cond = 1;
+        s32       cond     = 1;
 
         // Check if the entry already exists, or find a place to insert this entry
         for (; dstIndex < mDstCount; dstIndex++) {
-            dstEntry = mDst + dstIndex;
+            dstEntry                 = mDst + dstIndex;
             const char* dstEntryName = mDstStrTab + dstEntry->stringOffset;
             if (isSkippableName(dstEntryName)) {
                 continue;
@@ -194,13 +190,12 @@ s32 MultiArchiveBuilder_c::copyArchive2(
 }
 
 bool MultiArchiveBuilder_c::copyArchive(
-  const char* srcFst, u32 fstSize, u32 startIndex, u32 offsetDisplacement
-)
-{
+    const char* srcFst, u32 fstSize, u32 startIndex, u32 offsetDisplacement
+) {
     // Get max copy size
-    const FstEntry* srcFstEntries = reinterpret_cast<const FstEntry*>(srcFst);
-    u32 oldDstMaxCount = mDstMaxCount;
-    u32 oldDstStrTabMaxSize = mDstStrTabMaxSize;
+    const FstEntry* srcFstEntries       = reinterpret_cast<const FstEntry*>(srcFst);
+    u32             oldDstMaxCount      = mDstMaxCount;
+    u32             oldDstStrTabMaxSize = mDstStrTabMaxSize;
     mDstMaxCount += srcFstEntries[startIndex].dir.next - startIndex;
     mDstStrTabMaxSize += fstSize - (srcFstEntries[0].dir.next * sizeof(FstEntry));
 
@@ -208,7 +203,7 @@ bool MultiArchiveBuilder_c::copyArchive(
 
     // Allocate destination FST
     FstEntry* dstFst =
-      static_cast<FstEntry*>(mHeap->alloc(sizeof(FstEntry) * mDstMaxCount, tmpAllocAlign));
+        static_cast<FstEntry*>(mHeap->alloc(sizeof(FstEntry) * mDstMaxCount, tmpAllocAlign));
     assert(dstFst != nullptr);
 
     // Allocate destination string table
@@ -230,8 +225,7 @@ bool MultiArchiveBuilder_c::copyArchive(
     return copyArchive2(srcFst, startIndex, 1, offsetDisplacement) >= 0;
 }
 
-u32 MultiArchiveBuilder_c::getTotalFileSize() const
-{
+u32 MultiArchiveBuilder_c::getTotalFileSize() const {
     u32 totalSize = 0;
     for (u32 i = 0; i < mDstCount; i++) {
         if (!mDst[i].isDir) {
@@ -242,8 +236,9 @@ u32 MultiArchiveBuilder_c::getTotalFileSize() const
     return totalSize;
 }
 
-void MultiArchiveBuilder_c::addRootEntry(const char* name)
-{
+void MultiArchiveBuilder_c::addRootEntry(
+    const char* name
+) {
     if (mDstCount != 0) {
         return;
     }
@@ -253,18 +248,18 @@ void MultiArchiveBuilder_c::addRootEntry(const char* name)
 
     // Create empty filesystem
     const u32 dataSize = sizeof(FstEntry) + std::strlen(name);
-    char data[dataSize];
+    char      data[dataSize];
 
 #pragma clang diagnostic pop
 
     FstEntry* rootEntry = reinterpret_cast<FstEntry*>(data);
-    *rootEntry = {
-      .isDir = 1,
-      .stringOffset = 0,
-      .dir = {
-        .parent = 0,
-        .next = 1,
-      },
+    *rootEntry          = {
+                 .isDir        = 1,
+                 .stringOffset = 0,
+                 .dir          = {
+                              .parent = 0,
+                              .next   = 1,
+        },
     };
 
     if (name != nullptr) {
@@ -275,10 +270,9 @@ void MultiArchiveBuilder_c::addRootEntry(const char* name)
 }
 
 void* MultiArchiveBuilder_c::loadArchive(
-  EGG::DvdFile* dvdFile, char* path, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
-  u32* outAmountRead, u32* outFileSize
-)
-{
+    EGG::DvdFile* dvdFile, char* path, EGG::Heap* heap, EGG::DvdRipper::EAllocDirection allocDir,
+    u32* outAmountRead, u32* outFileSize
+) {
     ARCHandle* exArcHandle = DVDGetExArcHandle();
     if (exArcHandle == nullptr) {
         return nullptr;
@@ -290,10 +284,10 @@ void* MultiArchiveBuilder_c::loadArchive(
     }
 
     const EGG::DvdRipper::EAllocDirection tmpAllocDir = allocDir == EGG::DvdRipper::ALLOC_DIR_BOTTOM
-                                                          ? EGG::DvdRipper::ALLOC_DIR_TOP
-                                                          : EGG::DvdRipper::ALLOC_DIR_BOTTOM;
+                                                            ? EGG::DvdRipper::ALLOC_DIR_TOP
+                                                            : EGG::DvdRipper::ALLOC_DIR_BOTTOM;
     const u32 finalAllocAlign = allocDir == EGG::DvdRipper::ALLOC_DIR_BOTTOM ? -0x20 : 0x20;
-    const u32 tmpAllocAlign = tmpAllocDir == EGG::DvdRipper::ALLOC_DIR_BOTTOM ? -0x20 : 0x20;
+    const u32 tmpAllocAlign   = tmpAllocDir == EGG::DvdRipper::ALLOC_DIR_BOTTOM ? -0x20 : 0x20;
 
     MultiArchiveBuilder_c builder(heap, tmpAllocDir);
 
@@ -323,7 +317,7 @@ void* MultiArchiveBuilder_c::loadArchive(
         }
 
         if (!builder.copyArchive(
-              reinterpret_cast<char*>(fstData), arcHeader.fstSize, 0, dvdFile->mFileInfo.startAddr
+                reinterpret_cast<char*>(fstData), arcHeader.fstSize, 0, dvdFile->mFileInfo.startAddr
             )) {
             OS_REPORT("Failed to copy archive\n");
             heap->free(fstData);
@@ -337,8 +331,8 @@ void* MultiArchiveBuilder_c::loadArchive(
 
     // Copy the ex ARC FST now
     {
-        void* exArcFstData = exArcHandle->FSTStart;
-        u32 exArcFstSize = exArcHandle->FSTLength;
+        void*        exArcFstData = exArcHandle->FSTStart;
+        u32          exArcFstSize = exArcHandle->FSTLength;
 
         EGG::DvdFile exArcDvdFile;
         if (!exArcDvdFile.open(DVDGetExArchiveEntrynum())) {
@@ -347,8 +341,8 @@ void* MultiArchiveBuilder_c::loadArchive(
         }
 
         if (!builder.copyArchive(
-              reinterpret_cast<char*>(exArcFstData), exArcFstSize, arcDir.entryNum,
-              exArcDvdFile.mFileInfo.startAddr
+                reinterpret_cast<char*>(exArcFstData), exArcFstSize, arcDir.entryNum,
+                exArcDvdFile.mFileInfo.startAddr
             )) {
             OS_REPORT("Failed to copy ex ARC archive\n");
             return nullptr;
@@ -357,17 +351,17 @@ void* MultiArchiveBuilder_c::loadArchive(
 
     // Build the new archive
     const ARCHeader newArcHeader = {
-      .magic = ARC_MAGIC,
-      .fstOffset = sizeof(ARCHeader),
-      .fstSize = builder.getDstCount() * sizeof(FstEntry) + builder.getDstStrTabSize(),
-      .fileStart = ((newArcHeader.fstOffset + newArcHeader.fstSize) + 0x1F) & ~0x1F,
-      .reserved = {0},
+        .magic     = ARC_MAGIC,
+        .fstOffset = sizeof(ARCHeader),
+        .fstSize   = builder.getDstCount() * sizeof(FstEntry) + builder.getDstStrTabSize(),
+        .fileStart = ((newArcHeader.fstOffset + newArcHeader.fstSize) + 0x1F) & ~0x1F,
+        .reserved  = {0},
     };
 
     const u32 fileDataSize = builder.getTotalFileSize();
 
-    char* newArcData =
-      static_cast<char*>(heap->alloc(newArcHeader.fileStart + fileDataSize, finalAllocAlign));
+    char*     newArcData =
+        static_cast<char*>(heap->alloc(newArcHeader.fileStart + fileDataSize, finalAllocAlign));
     if (newArcData == nullptr) {
         OS_REPORT("Failed to allocate new ARC buffer\n");
         return nullptr;
@@ -379,23 +373,23 @@ void* MultiArchiveBuilder_c::loadArchive(
     const u32 fstEntrySize = sizeof(FstEntry) * builder.getDstCount();
     std::memcpy(newArcData + newArcHeader.fstOffset, builder.getDst(), fstEntrySize);
     std::memcpy(
-      newArcData + newArcHeader.fstOffset + fstEntrySize, builder.getDstStrTab(),
-      builder.getDstStrTabSize()
+        newArcData + newArcHeader.fstOffset + fstEntrySize, builder.getDstStrTab(),
+        builder.getDstStrTabSize()
     );
 
     // Load the file data
-    u32 fileDataOffset = newArcHeader.fileStart;
-    FstEntry* fst = reinterpret_cast<FstEntry*>(newArcData + newArcHeader.fstOffset);
-    const u32 fstCount = builder.getDstCount();
+    u32       fileDataOffset = newArcHeader.fileStart;
+    FstEntry* fst            = reinterpret_cast<FstEntry*>(newArcData + newArcHeader.fstOffset);
+    const u32 fstCount       = builder.getDstCount();
     for (u32 i = 0; i < fstCount; i++) {
         if (fst[i].isDir) {
             continue;
         }
 
-        const u32 length = (fst[i].file.length + 0x1F) & ~0x1F;
+        const u32 length             = (fst[i].file.length + 0x1F) & ~0x1F;
         // This is silly but it's necessary for loading the file data!!
         dvdFile->mFileInfo.startAddr = fst[i].file.startAddr;
-        dvdFile->mFileInfo.length = length;
+        dvdFile->mFileInfo.length    = length;
         if (dvdFile->readData(newArcData + fileDataOffset, length, 0) != length) {
             OS_REPORT("Failed to read file data\n");
             heap->free(newArcData);
@@ -411,7 +405,7 @@ void* MultiArchiveBuilder_c::loadArchive(
     OS_REPORT("Loaded archive %s\n", path);
 
     *outAmountRead = newArcHeader.fileStart + fileDataSize;
-    *outFileSize = newArcHeader.fileStart + fileDataSize;
+    *outFileSize   = newArcHeader.fileStart + fileDataSize;
 
     return newArcData;
 }

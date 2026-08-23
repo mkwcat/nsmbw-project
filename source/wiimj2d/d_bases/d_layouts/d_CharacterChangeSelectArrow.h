@@ -5,8 +5,7 @@
 #include "s_State.h"
 #include <nw4r/lyt/Pane.h>
 
-class dCharacterChangeSelectArrow_c : public dBase_c
-{
+class dCharacterChangeSelectArrow_c : public dBase_c {
 public:
     sState_Extern(0x80990818, dCharacterChangeSelectArrow_c, OnStageWait);
     sState_Extern(0x80990858, dCharacterChangeSelectArrow_c, OnStageAnimeEndWait);
@@ -30,7 +29,7 @@ public:
 
     FILL(0x25C, 0x264);
 
-    /* 0x264 */ int mOption;
+    /* 0x264 */ int  mOption;
 
     /* 0x268 */ bool m0x268;
     /* 0x269 */ bool m0x269;

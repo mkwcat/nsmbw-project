@@ -8,7 +8,7 @@ namespace nw4r {
 namespace g3d {
 namespace detail {
 namespace dcc {
-bool CalcTexMtx_3dsmax(math::MTX34 *, bool, const TexSrt &, TexSrt::Flag);
+bool CalcTexMtx_3dsmax(math::MTX34*, bool, const TexSrt&, TexSrt::Flag);
 }
 } // namespace detail
 } // namespace g3d

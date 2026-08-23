@@ -3,13 +3,13 @@
 
 #include "d_s_restart_crsin.h"
 
-#include "d_s_crsin.h"
-#include "d_s_stage.h"
-#include "d_profile.h"
 #include "d_demo_info.h"
 #include "d_fader.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
+#include "d_profile.h"
+#include "d_s_crsin.h"
+#include "d_s_stage.h"
 #include "f_feature.h"
 #include "m_dvd.h"
 

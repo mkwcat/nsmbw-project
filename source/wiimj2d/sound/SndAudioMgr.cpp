@@ -23,8 +23,7 @@ bool SndAudioMgr::isSndPlaying(SndID::Type sound);
 [[nsmbw(0x80196FD0)]]
 void SndAudioMgr::setIsReplay(bool value);
 
-void SndAudioMgr::loadKinopicoSound()
-{
+void SndAudioMgr::loadKinopicoSound() {
     // Allocate memory for the sound data
     u32 bnkSize = 0, waveSize = 0;
     mDvd::getFileSize("/Sound/BANK_SE_VOC_COURSE_KC.brbnk", &bnkSize);
@@ -37,14 +36,14 @@ void SndAudioMgr::loadKinopicoSound()
 
     // Load bank data
     bnkData = mDvd::loadToMainRAM(
-      "/Sound/BANK_SE_VOC_COURSE_KC.brbnk", static_cast<char*>(bnkData), nullptr,
-      EGG::DvdRipper::EAllocDirection::ALLOC_DIR_TOP, 0, nullptr, nullptr
+        "/Sound/BANK_SE_VOC_COURSE_KC.brbnk", static_cast<char*>(bnkData), nullptr,
+        EGG::DvdRipper::EAllocDirection::ALLOC_DIR_TOP, 0, nullptr, nullptr
     );
     ASSERT(bnkData != nullptr);
 
     waveData = mDvd::loadToMainRAM(
-      "/Sound/GROUP_SE_VOC_COURSE_KC.brwar", static_cast<char*>(waveData), nullptr,
-      EGG::DvdRipper::EAllocDirection::ALLOC_DIR_TOP, 0, nullptr, nullptr
+        "/Sound/GROUP_SE_VOC_COURSE_KC.brwar", static_cast<char*>(waveData), nullptr,
+        EGG::DvdRipper::EAllocDirection::ALLOC_DIR_TOP, 0, nullptr, nullptr
     );
     ASSERT(waveData != nullptr);
 

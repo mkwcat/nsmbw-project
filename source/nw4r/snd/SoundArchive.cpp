@@ -3,8 +3,7 @@
 
 #include "SoundArchive.h"
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
 [[nsmbw(0x80275860)]]
 const char* SoundArchive::GetSoundLabelString(u32 id) const;

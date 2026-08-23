@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vec.h"
 #include "mtx.h"
+#include "vec.h"
 
 namespace nw4r::math {
 
@@ -15,4 +15,4 @@ struct AABB {
     VEC3 max; // at 0xC
 };
 
-}
+} // namespace nw4r::math

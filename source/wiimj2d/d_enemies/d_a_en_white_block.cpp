@@ -3,8 +3,8 @@
 
 #include "d_a_en_white_block.h"
 
-#include <revolution/os/OSLink.h>
 #include <mkwcat/Relocate.hpp>
+#include <revolution/os/OSLink.h>
 
 [[nsmbw(0x80AC8270)]]
 fBase_c* daEnWhiteBlock_c_classInit() {

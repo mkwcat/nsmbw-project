@@ -24,7 +24,8 @@ constexpr std::size_t COUNT      = [] -> std::size_t {
 
 constexpr std::size_t CUSTOM_COUNT = COUNT - BASE_COUNT;
 
-template <dProfName V> struct Name_c {
+template <dProfName V>
+struct Name_c {
     static constexpr dProfName StaticNonRegionalValue = V;
 
     static inline constexpr dProfName toNative();
@@ -36,7 +37,8 @@ template <dProfName V> struct Name_c {
 #include "d_profile_table.inc"
 #undef PROFILE
 
-template <dProfName V> constexpr dProfName Name_c<V>::toNative() {
+template <dProfName V>
+constexpr dProfName Name_c<V>::toNative() {
     // Apply the region-dependant changes to the value
     dProfName value = V;
 
@@ -80,7 +82,8 @@ constexpr dProfName toStatic(
     return value;
 }
 
-template <class Owner, auto... Profiles> struct Info {};
+template <class Owner, auto... Profiles>
+struct Info {};
 
 template <class Owner, auto... Profiles>
 constexpr bool hasProfile(

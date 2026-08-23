@@ -3,19 +3,18 @@
 
 #include "d_StockItem.h"
 
+#include "SndSceneMgr.h"
 #include "d_StockItemShadow.h"
+#include "d_a_player_manager.h"
 #include "d_a_wm_2DPlayer.h"
 #include "d_a_wm_Item.h"
-#include "d_wm_seManager.h"
-#include "d_a_player_manager.h"
 #include "d_audio.h"
 #include "d_mj2d_game.h"
-#include "SndSceneMgr.h"
+#include "d_wm_seManager.h"
 #include <iterator>
 
 [[nsmbw(0x807AF370)]]
-dStockItem_c* dStockItem_c_classInit()
-{
+dStockItem_c* dStockItem_c_classInit() {
     return new dStockItem_c();
 }
 
@@ -23,8 +22,7 @@ dStockItem_c* dStockItem_c_classInit()
 dStockItem_c::dStockItem_c();
 
 [[nsmbw(0x807AF8D0)]]
-bool dStockItem_c::createLayout()
-{
+bool dStockItem_c::createLayout() {
     if (!mLayout.ReadResource("stockItem/stockItem.arc", false)) {
         return false;
     }
@@ -32,178 +30,183 @@ bool dStockItem_c::createLayout()
     mLayout.build("stockItem_27.brlyt", nullptr);
 
     using StringArray = const char*[];
-    using IntArray = const int[];
+    using IntArray    = const int[];
 
     mLayout.AnimeResRegister(
-      StringArray{
-        "stockItem_27_inWindow.brlan",
-        "stockItem_27_itemOnButton.brlan",
-        "stockItem_27_itemIdleButton.brlan",
-        "stockItem_27_itemHitButton.brlan",
-        "stockItem_27_itemOffButton.brlan",
-        "stockItem_27_outWindow.brlan",
-      },
-      6
+        StringArray{
+            "stockItem_27_inWindow.brlan",
+            "stockItem_27_itemOnButton.brlan",
+            "stockItem_27_itemIdleButton.brlan",
+            "stockItem_27_itemHitButton.brlan",
+            "stockItem_27_itemOffButton.brlan",
+            "stockItem_27_outWindow.brlan",
+        },
+        6
     );
 
     mLayout.GroupRegister(
-      StringArray{
-        "A00_Window",     "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton",
-        "B04_itemButton", "B05_itemButton", "B03_itemButton", "B00_itemButton", "B01_itemButton",
-        "B02_itemButton", "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton",
-        "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton", "B04_itemButton",
-        "B05_itemButton", "B03_itemButton", "B00_itemButton", "B01_itemButton", "B02_itemButton",
-        "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton", "A00_Window",
-      },
-      IntArray{
-        0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5,
-      },
-      0x1E
+        StringArray{
+            "A00_Window",     "B00_itemButton", "B01_itemButton", "B02_itemButton",
+            "B06_itemButton", "B04_itemButton", "B05_itemButton", "B03_itemButton",
+            "B00_itemButton", "B01_itemButton", "B02_itemButton", "B06_itemButton",
+            "B04_itemButton", "B05_itemButton", "B03_itemButton", "B00_itemButton",
+            "B01_itemButton", "B02_itemButton", "B06_itemButton", "B04_itemButton",
+            "B05_itemButton", "B03_itemButton", "B00_itemButton", "B01_itemButton",
+            "B02_itemButton", "B06_itemButton", "B04_itemButton", "B05_itemButton",
+            "B03_itemButton", "A00_Window",
+        },
+        IntArray{
+            0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5,
+        },
+        0x1E
     );
 
     mpRootPane = mLayout.getRootPane();
 
     mLayout.NPaneRegister(
-      mpNullPanes, {
-                     "N_forUse_1PPos",
-                     "N_forUse_2PPos",
-                     "N_forUse_3PPos",
-                     "N_forUse_4PPos",
-                     "N_iconKinoko_00",
-                     "N_iconFlower_00",
-                     "N_iconPro_00",
-                     "N_iconIce_00",
-                     "N_iconPen_00",
-                     "N_mameKinoko_00",
-                     "N_iconStar_00",
-                     "N_stockItem",
-                     "N_stockItem_01",
-                     "N_itemSelect_00",
-                   }
+        mpNullPanes, {
+                         "N_forUse_1PPos",
+                         "N_forUse_2PPos",
+                         "N_forUse_3PPos",
+                         "N_forUse_4PPos",
+                         "N_iconKinoko_00",
+                         "N_iconFlower_00",
+                         "N_iconPro_00",
+                         "N_iconIce_00",
+                         "N_iconPen_00",
+                         "N_mameKinoko_00",
+                         "N_iconStar_00",
+                         "N_stockItem",
+                         "N_stockItem_01",
+                         "N_itemSelect_00",
+                     }
     );
 
     mLayout.TPaneNameRegister(
-      StringArray{
-        "T_titleStock_00",
-        "T_titleUse_01",
-      },
-      IntArray{
-        0x1E,
-        0x2F,
-      },
-      0x2, 2
+        StringArray{
+            "T_titleStock_00",
+            "T_titleUse_01",
+        },
+        IntArray{
+            0x1E,
+            0x2F,
+        },
+        0x2, 2
     );
 
     mLayout.PPaneRegister(
-      mpPicturePanes, {
-                        "P_iconKinoko_00", "P_iconFlower_00", "P_iconPro_00",    "P_iconIce_00",
-                        "P_iconPen_00",    "P_mameKinoko_00", "P_iconStar_00",   "P_buttonBase_00",
-                        "P_buttonBase_01", "P_buttonBase_02", "P_buttonBase_06", "P_buttonBase_04",
-                        "P_buttonBase_05", "P_buttonBase_03", "P_iconBase_00",   "P_iconBase_01",
-                        "P_iconBase_02",   "P_iconBase_03",   "P_iconBase_04",   "P_iconBase_05",
-                        "P_iconBase_06",   "P_iconBase_07",   "P_iconBase_08",   "P_iconBase_09",
-                      }
+        mpPicturePanes,
+        {
+            "P_iconKinoko_00", "P_iconFlower_00", "P_iconPro_00",    "P_iconIce_00",
+            "P_iconPen_00",    "P_mameKinoko_00", "P_iconStar_00",   "P_buttonBase_00",
+            "P_buttonBase_01", "P_buttonBase_02", "P_buttonBase_06", "P_buttonBase_04",
+            "P_buttonBase_05", "P_buttonBase_03", "P_iconBase_00",   "P_iconBase_01",
+            "P_iconBase_02",   "P_iconBase_03",   "P_iconBase_04",   "P_iconBase_05",
+            "P_iconBase_06",   "P_iconBase_07",   "P_iconBase_08",   "P_iconBase_09",
+        }
     );
 
     // New
     mLayout.NPaneRegister(
-      mpNForUsePos, {
-                      "N_forUse_1PPos",
-                      "N_forUse_2PPos",
-                      "N_forUse_3PPos",
-                      "N_forUse_4PPos",
-                      "N_forUse_5PPos",
-                      "N_forUse_5PPos",
-                      "N_forUse_5PPos",
-                      "N_forUse_5PPos",
-                    }
+        mpNForUsePos, {
+                          "N_forUse_1PPos",
+                          "N_forUse_2PPos",
+                          "N_forUse_3PPos",
+                          "N_forUse_4PPos",
+                          "N_forUse_5PPos",
+                          "N_forUse_5PPos",
+                          "N_forUse_5PPos",
+                          "N_forUse_5PPos",
+                      }
     );
 
     mLayout.PPaneRegister(
-      mpPIconBase4P,
-      {
-        "P_iconBase_00", "P_iconBase_01", "P_iconBase_02", "P_iconBase_03",
+        mpPIconBase4P,
+        {
+            "P_iconBase_00", "P_iconBase_01", "P_iconBase_02", "P_iconBase_03",
 
-        "P_iconBase_04", "P_iconBase_05",
+            "P_iconBase_04", "P_iconBase_05",
 
-        "P_iconBase_06", "P_iconBase_07", "P_iconBase_08",
+            "P_iconBase_06", "P_iconBase_07", "P_iconBase_08",
 
-        "P_iconBase_09",
+            "P_iconBase_09",
 
-        "P_iconBase_10", "P_iconBase_11", "P_iconBase_12", "P_iconBase_13", "P_iconBase_14",
+            "P_iconBase_10", "P_iconBase_11", "P_iconBase_12", "P_iconBase_13", "P_iconBase_14",
 
-        "P_iconBase_15", "P_iconBase_16", "P_iconBase_17", "P_iconBase_18", "P_iconBase_19",
-        "P_iconBase_20",
+            "P_iconBase_15", "P_iconBase_16", "P_iconBase_17", "P_iconBase_18", "P_iconBase_19",
+            "P_iconBase_20",
 
-        "P_iconBase_21", "P_iconBase_22", "P_iconBase_23", "P_iconBase_24", "P_iconBase_25",
-        "P_iconBase_26", "P_iconBase_27",
+            "P_iconBase_21", "P_iconBase_22", "P_iconBase_23", "P_iconBase_24", "P_iconBase_25",
+            "P_iconBase_26", "P_iconBase_27",
 
-        "P_iconBase_28", "P_iconBase_29", "P_iconBase_30", "P_iconBase_31", "P_iconBase_32",
-        "P_iconBase_33", "P_iconBase_34", "P_iconBase_35",
-      }
+            "P_iconBase_28", "P_iconBase_29", "P_iconBase_30", "P_iconBase_31", "P_iconBase_32",
+            "P_iconBase_33", "P_iconBase_34", "P_iconBase_35",
+        }
     );
 
     return true;
 }
 
 [[nsmbw(0x807AFB90)]]
-dStockItem_c::PANE_LIST_e dStockItem_c::getPosPaneForPlayer(int player)
-{
-    using PaneList = PANE_LIST_e[8][8];
+dStockItem_c::PANE_LIST_e dStockItem_c::getPosPaneForPlayer(
+    int player
+) {
+    using PaneList      = PANE_LIST_e[8][8];
 
     PANE_LIST_e posPane = PaneList{
-      {
-        PANE_LIST_e::P_iconBase_09,
-      },
-      {
-        PANE_LIST_e::P_iconBase_07,
-        PANE_LIST_e::P_iconBase_08,
-      },
-      {
-        PANE_LIST_e::P_iconBase_04,
-        PANE_LIST_e::P_iconBase_05,
-        PANE_LIST_e::P_iconBase_06,
-      },
-      {
-        PANE_LIST_e::P_iconBase_00,
-        PANE_LIST_e::P_iconBase_01,
-        PANE_LIST_e::P_iconBase_02,
-        PANE_LIST_e::P_iconBase_03,
-      },
-      {
-        PANE_LIST_e::P_iconBase_10,
-        PANE_LIST_e::P_iconBase_11,
-        PANE_LIST_e::P_iconBase_12,
-        PANE_LIST_e::P_iconBase_13,
-        PANE_LIST_e::P_iconBase_14,
-      },
-      {
-        PANE_LIST_e::P_iconBase_15,
-        PANE_LIST_e::P_iconBase_16,
-        PANE_LIST_e::P_iconBase_17,
-        PANE_LIST_e::P_iconBase_18,
-        PANE_LIST_e::P_iconBase_19,
-        PANE_LIST_e::P_iconBase_20,
-      },
-      {
-        PANE_LIST_e::P_iconBase_21,
-        PANE_LIST_e::P_iconBase_22,
-        PANE_LIST_e::P_iconBase_23,
-        PANE_LIST_e::P_iconBase_24,
-        PANE_LIST_e::P_iconBase_25,
-        PANE_LIST_e::P_iconBase_26,
-        PANE_LIST_e::P_iconBase_27,
-      },
-      {
-        PANE_LIST_e::P_iconBase_28,
-        PANE_LIST_e::P_iconBase_29,
-        PANE_LIST_e::P_iconBase_30,
-        PANE_LIST_e::P_iconBase_31,
-        PANE_LIST_e::P_iconBase_32,
-        PANE_LIST_e::P_iconBase_33,
-        PANE_LIST_e::P_iconBase_34,
-        PANE_LIST_e::P_iconBase_35,
-      },
+        {
+            PANE_LIST_e::P_iconBase_09,
+        },
+        {
+            PANE_LIST_e::P_iconBase_07,
+            PANE_LIST_e::P_iconBase_08,
+        },
+        {
+            PANE_LIST_e::P_iconBase_04,
+            PANE_LIST_e::P_iconBase_05,
+            PANE_LIST_e::P_iconBase_06,
+        },
+        {
+            PANE_LIST_e::P_iconBase_00,
+            PANE_LIST_e::P_iconBase_01,
+            PANE_LIST_e::P_iconBase_02,
+            PANE_LIST_e::P_iconBase_03,
+        },
+        {
+            PANE_LIST_e::P_iconBase_10,
+            PANE_LIST_e::P_iconBase_11,
+            PANE_LIST_e::P_iconBase_12,
+            PANE_LIST_e::P_iconBase_13,
+            PANE_LIST_e::P_iconBase_14,
+        },
+        {
+            PANE_LIST_e::P_iconBase_15,
+            PANE_LIST_e::P_iconBase_16,
+            PANE_LIST_e::P_iconBase_17,
+            PANE_LIST_e::P_iconBase_18,
+            PANE_LIST_e::P_iconBase_19,
+            PANE_LIST_e::P_iconBase_20,
+        },
+        {
+            PANE_LIST_e::P_iconBase_21,
+            PANE_LIST_e::P_iconBase_22,
+            PANE_LIST_e::P_iconBase_23,
+            PANE_LIST_e::P_iconBase_24,
+            PANE_LIST_e::P_iconBase_25,
+            PANE_LIST_e::P_iconBase_26,
+            PANE_LIST_e::P_iconBase_27,
+        },
+        {
+            PANE_LIST_e::P_iconBase_28,
+            PANE_LIST_e::P_iconBase_29,
+            PANE_LIST_e::P_iconBase_30,
+            PANE_LIST_e::P_iconBase_31,
+            PANE_LIST_e::P_iconBase_32,
+            PANE_LIST_e::P_iconBase_33,
+            PANE_LIST_e::P_iconBase_34,
+            PANE_LIST_e::P_iconBase_35,
+        },
     }[mPresentPlayerCount - 1][player];
 
     if (posPane == PANE_LIST_e::FIRST) {
@@ -782,10 +785,11 @@ UNDEF_807b0430:;
   // clang-format on
 )
 
-  void stockItemPlayStarVoice(PLAYER_TYPE_e character, bool isMame)
-{
+        void stockItemPlayStarVoice(
+            PLAYER_TYPE_e character, bool isMame
+        ) {
     dAudio::SndObjctCSPly_c* playerSound =
-      dWmSeManager_c::m_pInstance->mpObjCSPlyArray[static_cast<int>(character)];
+        dWmSeManager_c::m_pInstance->mpObjCSPlyArray[static_cast<int>(character)];
     playerSound->mSoundPlyMode = (isMame) ? 3 : 0;
     playerSound->startVoiceSound(SndObjctPly::PLAYER_VOICE_e::GET_STAR, 0);
 }
@@ -1013,11 +1017,10 @@ UNDEF_807b0a74:;
 );
 
 [[nsmbw(0x807B13C0)]]
-void dStockItem_c::finalizeState_WindowCloseAnimeEndWait()
-{
+void dStockItem_c::finalizeState_WindowCloseAnimeEndWait() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (maPlayerPresent[i]) {
-            int type = static_cast<int>(daPyMng_c::mPlayerType[i]);
+            int type                  = static_cast<int>(daPyMng_c::mPlayerType[i]);
             mpa2DPlayer[type]->m0x269 = 1;
         }
     }
@@ -1025,7 +1028,7 @@ void dStockItem_c::finalizeState_WindowCloseAnimeEndWait()
     for (int i = 0; i < std::size(mpaItem); i++) {
         daWmItem_c* item = mpaItem[i];
 
-        item->mVisible = false;
+        item->mVisible   = false;
         item->updateVisiblity();
     }
 

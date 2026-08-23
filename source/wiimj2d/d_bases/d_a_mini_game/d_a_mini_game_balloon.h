@@ -15,5 +15,5 @@ public:
     // ^^^^^^
 
     /* unofficial */
-    void EffectBalloonGet(int playerType, mVec3_c *effPos);
+    void EffectBalloonGet(int playerType, mVec3_c* effPos);
 };

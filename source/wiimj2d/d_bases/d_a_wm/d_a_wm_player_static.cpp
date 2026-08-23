@@ -2,10 +2,11 @@
 // NSMBW .text: 0x80100A10 - 0x801016B0
 // NSMBW .sbss: 0x8042A47E - 0x8042A484
 
-#include "c_lib.h"
 #include "d_a_wm_player.h"
-#include "d_a_wm_Map.h"
+
+#include "c_lib.h"
 #include "d_a_player_manager.h"
+#include "d_a_wm_Map.h"
 #include "d_mj2d_game.h"
 #include "d_wm_lib.h"
 
@@ -16,8 +17,9 @@ daWmPlayer_c* daWmPlayer_c::ms_instance;
 int daWmPlayer_c::getSubPlayerNum();
 
 [[nsmbw(0x80100B60)]]
-const char* daWmPlayer_c::getSkeletonRoot(dPyMdlMng_c::ModelType_e character)
-{
+const char* daWmPlayer_c::getSkeletonRoot(
+    dPyMdlMng_c::ModelType_e character
+) {
     switch (character) {
     case dPyMdlMng_c::ModelType_e::MODEL_MARIO:
         return "mario_all_root";
@@ -45,17 +47,18 @@ const char* daWmPlayer_c::getSkeletonRoot(dPyMdlMng_c::ModelType_e character)
 }
 
 [[nsmbw(0x80100C50)]]
-dWmSeManager_c::WmPlyVoice_e daWmPlayer_c::getCourseInVoiceId(int node)
-{
+dWmSeManager_c::WmPlyVoice_e daWmPlayer_c::getCourseInVoiceId(
+    int node
+) {
     int subPlayerCount = getSubPlayerNum();
     if (subPlayerCount < 1 && daPyMng_c::mPlayerType[0] == PLAYER_TYPE_e::MARIO) {
         char* nodeName =
-          daWmMap_c::m_instance->mCsvData[daWmMap_c::m_instance->mCurrentMap].GetPointName(node);
+            daWmMap_c::m_instance->mCsvData[daWmMap_c::m_instance->mCurrentMap].GetPointName(node);
         dWmLib::StageType_e stageType =
-          dWmLib::GetCourseTypeFromCourseNo(dWmLib::GetCourseNoFromPointName(nodeName));
+            dWmLib::GetCourseTypeFromCourseNo(dWmLib::GetCourseNoFromPointName(nodeName));
         if (cLib::isOneOf(
-              stageType, dWmLib::StageType_e::GHOST, dWmLib::StageType_e::TOWER,
-              dWmLib::StageType_e::CASTLE, dWmLib::StageType_e::DOOMSHIP
+                stageType, dWmLib::StageType_e::GHOST, dWmLib::StageType_e::TOWER,
+                dWmLib::StageType_e::CASTLE, dWmLib::StageType_e::DOOMSHIP
             )) {
             return dWmSeManager_c::WmPlyVoice_e::COURSE_IN_HARD;
         }

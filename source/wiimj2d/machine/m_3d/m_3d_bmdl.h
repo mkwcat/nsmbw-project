@@ -9,18 +9,14 @@
 #include <revolution/gx/GXEnum.h>
 #include <revolution/gx/GXStruct.h>
 
-namespace m3d
-{
+namespace m3d {
 
-class bmdl_c : public scnLeaf_c
-{
+class bmdl_c : public scnLeaf_c {
     SIZE_ASSERT(0xC);
 
 public:
     bmdl_c()
-      : mpCurrentAnm(nullptr)
-    {
-    }
+        : mpCurrentAnm(nullptr) {}
 
     /* VT+0x08 */ virtual ~bmdl_c();
 
@@ -38,7 +34,7 @@ public:
     nw4r::g3d::ResMdl getResMdl() const;
     nw4r::g3d::ResMat getResMat(u32 index) const;
 
-    void removeAnm(nw4r::g3d::ScnMdlSimple::AnmObjType);
+    void               removeAnm(nw4r::g3d::ScnMdlSimple::AnmObjType);
     nw4r::g3d::AnmObj* getAnmObj(nw4r::g3d::ScnMdlSimple::AnmObjType) const;
     void setTevColor(u32, GXTevRegID, GXColor, bool);
     void setTevColorAll(GXTevRegID, GXColor, bool);

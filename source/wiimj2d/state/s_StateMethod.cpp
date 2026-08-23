@@ -2,6 +2,7 @@
 // NSMBW .text: 0x8015FAE0 - 0x8015FDD0
 
 #include "s_StateMethod.h"
+
 #include "f_feature.h"
 #include <revolution/os/OSError.h>
 
@@ -13,7 +14,7 @@
  */
 [[nsmbw(0x8015FAE0)]]
 sStateMethod_c::sStateMethod_c(
-  sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
+    sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
 );
 
 /**
@@ -50,8 +51,9 @@ void sStateMethod_c::finalizeStateMethod();
  * @param newStateID The new state ID to transition to.
  */
 [[nsmbw(0x8015FD50)]]
-void sStateMethod_c::changeStateMethod(const sStateIDIf_c& newStateID)
-{
+void sStateMethod_c::changeStateMethod(
+    const sStateIDIf_c& newStateID
+) {
     if (newStateID.isNull()) {
         return;
     }

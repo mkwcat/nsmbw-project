@@ -14,35 +14,28 @@
 #include "g3d_restex.h"
 #include <nw4r/ut/BinaryFileFormat.h>
 
-namespace nw4r
-{
-namespace g3d
-{
+namespace nw4r {
+namespace g3d {
 
 struct ResFileData {
     SIZE_ASSERT(0x30);
-    /* 0x00 */ ut::BinaryFileHeader mHeader;
+    /* 0x00 */ ut::BinaryFileHeader  mHeader;
     /* 0x10 */ ut::BinaryBlockHeader mRootHeader;
-    /* 0x18 */ ResDicData mRootData;
+    /* 0x18 */ ResDicData            mRootData;
 };
 
 struct ResFile {
     ResCommon<ResFileData> mFile; // at 0x0
 
     ResFile()
-      : mFile(static_cast<void*>(nullptr))
-    {
-    }
+        : mFile(static_cast<void*>(nullptr)) {}
 
-    ResFile(void* ptr)
-      : mFile(ptr)
-    {
-    }
+    ResFile(
+        void* ptr
+    )
+        : mFile(ptr) {}
 
-    inline ResFileData& ref() const
-    {
-        return mFile.ref();
-    }
+    inline ResFileData& ref() const { return mFile.ref(); }
 
     ResMdl GetResMdl(const char*) const;
     ResMdl GetResMdl(int) const;
@@ -86,23 +79,20 @@ struct ResFile {
     ResAnmScn GetResAnmScn(int) const;
     ResAnmScn GetResAnmScn(u32) const; // inlined
 
-    u32 GetResMdlNumEntries() const; // inlined
-    u32 GetResPlttNumEntries() const; // inlined
-    u32 GetResTexNumEntries() const; // inlined
-    u32 GetResAnmChrNumEntries() const; // inlined
-    u32 GetResAnmVisNumEntries() const; // inlined
-    u32 GetResAnmClrNumEntries() const; // inlined
+    u32 GetResMdlNumEntries() const;       // inlined
+    u32 GetResPlttNumEntries() const;      // inlined
+    u32 GetResTexNumEntries() const;       // inlined
+    u32 GetResAnmChrNumEntries() const;    // inlined
+    u32 GetResAnmVisNumEntries() const;    // inlined
+    u32 GetResAnmClrNumEntries() const;    // inlined
     u32 GetResAnmTexPatNumEntries() const; // inlined
     u32 GetResAnmTexSrtNumEntries() const; // inlined
-    u32 GetResAnmShpNumEntries() const; // inlined
+    u32 GetResAnmShpNumEntries() const;    // inlined
     u32 GetResAnmScnNumEntries() const;
 
     bool Bind(ResFile);
 
-    bool Bind()
-    {
-        return Bind(*this);
-    }
+    bool Bind() { return Bind(*this); }
 
     void Release();
     void Init();

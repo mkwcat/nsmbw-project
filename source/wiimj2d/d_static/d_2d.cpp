@@ -3,8 +3,7 @@
 
 #include "d_2d.h"
 
-namespace d2d
-{
+namespace d2d {
 
 [[nsmbw(0x80006AA0)]]
 ResAccMultLoader_c::ResAccMultLoader_c();

@@ -3,24 +3,23 @@
 #include "g3d_rescommon.h"
 #include <revolution/gx/GXEnum.h>
 
-namespace nw4r::g3d
-{
+namespace nw4r::g3d {
 
 struct ResTexData {
     char mMagic[4]; // "TEX0"; at 0x0
-    u32 mLength; // at 0x4
-    u32 mRevision; // at 0x8
-    s16 SHORT_0xC;
-    u16 SHORT_0xE;
-    u32 INT_0x10;
-    u32 WORD_0x14;
-    u32 mFlags; // at 0x18
-    u16 SHORT_0x1C;
-    u16 SHORT_0x1E;
+    u32  mLength;   // at 0x4
+    u32  mRevision; // at 0x8
+    s16  SHORT_0xC;
+    u16  SHORT_0xE;
+    u32  INT_0x10;
+    u32  WORD_0x14;
+    u32  mFlags; // at 0x18
+    u16  SHORT_0x1C;
+    u16  SHORT_0x1E;
 
     union // at 0x20
     {
-        GXTexFmt mFormat;
+        GXTexFmt   mFormat;
         GXCITexFmt mCiFormat;
     };
 
@@ -31,53 +30,44 @@ struct ResTexData {
 
 struct ResPlttData {
     char mMagic[4]; // "PLT0"; at 0x0
-    u32 mLength; // at 0x4
-    u32 mRevision; // at 0x8
+    u32  mLength;   // at 0x4
+    u32  mRevision; // at 0x8
 };
 
 struct ResTex {
     enum {
-        REVISION = 1
+        REVISION = 1,
     };
 
     ResCommon<ResTexData> mTex; // at 0x0
 
-    inline ResTex(void* vptr)
-      : mTex(vptr)
-    {
-    }
+    inline ResTex(
+        void* vptr
+    )
+        : mTex(vptr) {}
 
-    inline bool CheckRevision() const
-    {
-        return mTex.ref().mRevision == REVISION;
-    }
+    inline bool CheckRevision() const { return mTex.ref().mRevision == REVISION; }
 
     bool GetTexObjParam(void**, u16*, u16*, GXTexFmt*, f32*, f32*, u8*) const;
     bool GetTexObjCIParam(void**, u16*, u16*, GXCITexFmt*, f32*, f32*, u8*) const;
     void Init();
 
-    bool IsValid() const
-    {
-        return mTex.IsValid();
-    }
+    bool IsValid() const { return mTex.IsValid(); }
 };
 
 struct ResPltt {
     enum {
-        REVISION = 1
+        REVISION = 1,
     };
 
     ResCommon<ResPlttData> mPltt; // at 0x0
 
-    inline ResPltt(void* vptr)
-      : mPltt(vptr)
-    {
-    }
+    inline ResPltt(
+        void* vptr
+    )
+        : mPltt(vptr) {}
 
-    inline bool CheckRevision() const
-    {
-        return mPltt.ref().mRevision == REVISION;
-    }
+    inline bool CheckRevision() const { return mPltt.ref().mRevision == REVISION; }
 
     void DCStore(bool);
 };

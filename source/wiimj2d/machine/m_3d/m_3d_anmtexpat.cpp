@@ -3,8 +3,7 @@
 
 #include "m_3d_anmtexpat.h"
 
-namespace m3d
-{
+namespace m3d {
 
 [[nsmbw(0x80166970)]]
 bool anmTexPat_c::create(nw4r::g3d::ResMdl, nw4r::g3d::ResAnmTexPat, mAllocator_c*, u32*, s32);

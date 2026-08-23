@@ -2,11 +2,9 @@
 
 #include "SoundArchive.h"
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
-class DvdSoundArchive : public SoundArchive
-{
+class DvdSoundArchive : public SoundArchive {
 public:
     // Structors
     // ^^^^^^
@@ -32,7 +30,7 @@ public:
 
     /* VT+0x1C */
     virtual ut::FileStream* OpenExtStream(
-      void* pBuffer, int bufferSize, const char* pExtPath, u32 offset, u32 length
+        void* pBuffer, int bufferSize, const char* pExtPath, u32 offset, u32 length
     ) const override;
 
 public:

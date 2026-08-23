@@ -1,15 +1,15 @@
 #pragma once
 
-#include "d_profile.h"
+#include "SndID.h"
+#include "SndObjectPlayer.h"
 #include "d_a_player_key.h"
 #include "d_actor.h"
 #include "d_cc.h"
 #include "d_mj2d_game.h"
 #include "d_player_model_manager.h"
+#include "d_profile.h"
 #include "d_quake.h"
 #include "m_mtx.h"
-#include "SndID.h"
-#include "SndObjectPlayer.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
 

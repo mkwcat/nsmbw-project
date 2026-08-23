@@ -2,11 +2,9 @@
 
 #include "eggFrustum.h"
 
-namespace EGG
-{
+namespace EGG {
 
-class Screen : public Frustum
-{
+class Screen : public Frustum {
 #ifndef CLANGD
     SIZE_ASSERT(0x88);
 #endif
@@ -21,9 +19,7 @@ public:
     Screen();
 
     /* VT+0x08 */
-    virtual ~Screen()
-    {
-    }
+    virtual ~Screen() {}
 
 public:
     // Constants and Types
@@ -37,8 +33,8 @@ public:
     };
 
     struct TVModeInfo {
-        u16 width;
-        u16 height;
+        u16              width;
+        u16              height;
         nw4r::math::VEC2 ratios;
     };
 
@@ -59,51 +55,45 @@ public:
     // Static Methods
     // ^^^^^^
 
-    static u16 GetSizeXMax(TVMode mode)
-    {
+    static u16 GetSizeXMax(
+        TVMode mode
+    ) {
         return sTVModeInfo[mode].width;
     }
 
-    static u16 GetSizeYMax(TVMode mode)
-    {
+    static u16 GetSizeYMax(
+        TVMode mode
+    ) {
         return sTVModeInfo[mode].height;
     }
 
-    static u16 GetSizeXMax()
-    {
-        return sTVModeInfo[sTVMode].width;
-    }
+    static u16 GetSizeXMax() { return sTVModeInfo[sTVMode].width; }
 
-    static u16 GetSizeYMax()
-    {
-        return sTVModeInfo[sTVMode].height;
-    }
+    static u16 GetSizeYMax() { return sTVModeInfo[sTVMode].height; }
 
-    static inline f32 GetAdjustScale()
-    {
+    static inline f32 GetAdjustScale() {
         return f64(sTVModeInfo[0].width) / f64(sTVModeInfo[Screen::sTVMode].width);
     }
 
-    static inline f32 GetAdjustScale(TVMode mode)
-    {
+    static inline f32 GetAdjustScale(
+        TVMode mode
+    ) {
         return f64(sTVModeInfo[0].width) / f64(sTVModeInfo[mode].width);
     }
 
-    static inline f32 GetAdjustScale(TVMode rmode, TVMode lmode)
-    {
+    static inline f32 GetAdjustScale(
+        TVMode rmode, TVMode lmode
+    ) {
         return f64(sTVModeInfo[rmode].width) / f64(sTVModeInfo[lmode].width);
     }
 
-    static TVMode GetTVMode()
-    {
-        return sTVMode;
-    }
+    static TVMode GetTVMode() { return sTVMode; }
 
 public:
     // Static Variables
     // ^^^^^^
 
-    /* 0x8042B1E8 */ static TVMode sTVMode;
+    /* 0x8042B1E8 */ static TVMode     sTVMode;
     /* 0x80350820 */ static TVModeInfo sTVModeInfo[TVMode::TV_MODE_MAX];
 };
 

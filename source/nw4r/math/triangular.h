@@ -1,6 +1,3 @@
 #pragma once
 
-namespace nw4r::math
-{
-
-}
+namespace nw4r::math {}

@@ -29,28 +29,28 @@ public:
     bool checkFrame(f32) const;
     bool unk_802EAE70() const;
 
-    inline void setPlayState(playMode_e state) {
+    inline void setPlayState(
+        playMode_e state
+    ) {
         mPlayState = state;
     }
 
-    inline f32 getEndFrame() {
-        return mEndFrame;
-    }
+    inline f32 getEndFrame() { return mEndFrame; }
 
     // Something about this is wrong
-    inline void setStartFrame(f32 f) {
+    inline void setStartFrame(
+        f32 f
+    ) {
         mEndFrame = f;
     }
 
-    inline f32 getStartFrame() {
-        return mStartFrame;
-    }
+    inline f32 getStartFrame() { return mStartFrame; }
 
 private:
     f32 mEndFrame;
     f32 mStartFrame;
     f32 mCurrentFrame;
-    u8 mPlayState;
+    u8  mPlayState;
 };
 
 } // namespace m3d

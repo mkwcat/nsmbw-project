@@ -8,8 +8,10 @@ namespace nw4r {
 namespace g3d {
 struct Draw1Mat1ShpSwap {};
 
-void Draw1Mat1ShpDirectly(ResMat, ResShp, const math::MTX34 *, const math::MTX34 *, u32, Draw1Mat1ShpSwap *,
-        G3DState::IndMtxOp *);
+void Draw1Mat1ShpDirectly(
+    ResMat, ResShp, const math::MTX34*, const math::MTX34*, u32, Draw1Mat1ShpSwap*,
+    G3DState::IndMtxOp*
+);
 } // namespace g3d
 } // namespace nw4r
 

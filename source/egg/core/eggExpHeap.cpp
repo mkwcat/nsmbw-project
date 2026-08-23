@@ -3,8 +3,7 @@
 
 #include "eggExpHeap.h"
 
-namespace EGG
-{
+namespace EGG {
 
 [[nsmbw(0x802B9840)]]
 u32 ExpHeap::getSizeForMBlock(const void* block);

@@ -8,8 +8,7 @@
 #include "m_vec.h"
 #include <mkwcat/Relocate.hpp>
 
-namespace dAudio
-{
+namespace dAudio {
 
 [[nsmbw_data(0x8042A03C)]]
 SndObjctCmnEmy_c* g_pSndObjEmy;
@@ -24,8 +23,9 @@ NonPosSndObjctPly_c* g_pNonPosSndObjctPly[PLAYER_COUNT];
 bool isForbidRemoteSE();
 
 [[nsmbw(0x80069530)]]
-u32 getRemotePlayer(int player)
-{
+u32 getRemotePlayer(
+    int player
+) {
     if (isForbidRemoteSE()) {
         return 0;
     }
@@ -51,24 +51,22 @@ void pauseOffMove(int player);
 
 /* VT+0x08 - Moved here */
 [[nsmbw(0x80104160)]]
-SndObjctCSPly_c::~SndObjctCSPly_c()
-{
-}
+SndObjctCSPly_c::~SndObjctCSPly_c() {}
 
 PATCH_REFERENCES(
-  &g_pNonPosSndObjctPly, //
-  {
-    {0x80069E66, R_PPC_ADDR16_HA},
-    {0x80069E76, R_PPC_ADDR16_LO},
-    {0x8006A02A, R_PPC_ADDR16_HA},
-    {0x8006A02E, R_PPC_ADDR16_LO},
-    {0x800D72D2, R_PPC_ADDR16_HA},
-    {0x800D72E2, R_PPC_ADDR16_LO},
-    {0x800D7356, R_PPC_ADDR16_HA},
-    {0x800D7366, R_PPC_ADDR16_LO},
-    {0x800D73B6, R_PPC_ADDR16_HA},
-    {0x800D73BA, R_PPC_ADDR16_LO},
-  }
+    &g_pNonPosSndObjctPly, //
+    {
+        {0x80069E66, R_PPC_ADDR16_HA},
+        {0x80069E76, R_PPC_ADDR16_LO},
+        {0x8006A02A, R_PPC_ADDR16_HA},
+        {0x8006A02E, R_PPC_ADDR16_LO},
+        {0x800D72D2, R_PPC_ADDR16_HA},
+        {0x800D72E2, R_PPC_ADDR16_LO},
+        {0x800D7356, R_PPC_ADDR16_HA},
+        {0x800D7366, R_PPC_ADDR16_LO},
+        {0x800D73B6, R_PPC_ADDR16_HA},
+        {0x800D73BA, R_PPC_ADDR16_LO},
+    }
 )
 
 } // namespace dAudio

@@ -2,11 +2,9 @@
 
 #include <nw4r/ut/Rect.h>
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 
-class Layout
-{
+class Layout {
 public:
     // Structors
     // ^^^^^^

@@ -14,8 +14,7 @@ class dFileSelect_c;
 class dDateFile_c;
 class dInfoWindow_c;
 
-class dScGameSetup_c : public dScene_c
-{
+class dScGameSetup_c : public dScene_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -68,13 +67,13 @@ public:
 
     FILL(0x0BC, 0x0C0);
 
-    /* 0x0C0 */ da2DPlayer_c* mpa2DPlayer[ORIGINAL_PLAYER_COUNT];
+    /* 0x0C0 */ da2DPlayer_c*    mpa2DPlayer[ORIGINAL_PLAYER_COUNT];
     /* 0x0D0 */ dSelectPlayer_c* mpSelectPlayer;
-    /* 0x0D4 */ dEasyPairing_c* mpEasyPairing;
-    /* 0x0D8 */ dSequenceBG_c* mpSequenceBG;
-    /* 0x0DC */ dDateFile_c* mpDateFile[SAVE_SLOT_COUNT];
-    /* 0x0E8 */ dFileSelect_c* mpFileSelect;
-    /* 0x0EC */ dInfoWindow_c* mpInfoWindow;
+    /* 0x0D4 */ dEasyPairing_c*  mpEasyPairing;
+    /* 0x0D8 */ dSequenceBG_c*   mpSequenceBG;
+    /* 0x0DC */ dDateFile_c*     mpDateFile[SAVE_SLOT_COUNT];
+    /* 0x0E8 */ dFileSelect_c*   mpFileSelect;
+    /* 0x0EC */ dInfoWindow_c*   mpInfoWindow;
 
     FILL(0x0F0, 0x0F8);
 

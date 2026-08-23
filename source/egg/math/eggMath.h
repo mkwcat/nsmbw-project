@@ -1,52 +1,40 @@
 #pragma once
 
-namespace EGG
-{
+namespace EGG {
 
 template <typename T>
-class Math
-{
+class Math {
 public:
-    static T maxNumber()
-    {
+    static T maxNumber() {
         // TODO: Generalize to other classes
         // This is low priority since it will always be a float
         return 3.402823466e+38f;
     }
 
-    static T pi()
-    {
-        return 3.14159265f;
-    }
+    static T pi() { return 3.14159265f; }
 
-    static T pi_half()
-    {
-        return pi() / 2.0f;
-    }
+    static T pi_half() { return pi() / 2.0f; }
 
-    static T epsilon()
-    {
-        return 1.192092896e-07f;
-    }
+    static T epsilon() { return 1.192092896e-07f; }
 
-    static T inv(T t)
-    {
+    static T inv(
+        T t
+    ) {
         return 1 / t;
     }
 
-    static T abs(T t)
-    {
+    static T abs(
+        T t
+    ) {
         return t > static_cast<T>(0) ? t : -t;
     }
 
-    static T zero()
-    {
-        return static_cast<T>(0);
-    }
+    static T zero() { return static_cast<T>(0); }
 
     // Assumed to be here (emitted globally at 0x807C9890)
-    static T lerp(float t, const T& low, const T& high)
-    {
+    static T lerp(
+        float t, const T& low, const T& high
+    ) {
         if (t < 0) {
             return low;
         }

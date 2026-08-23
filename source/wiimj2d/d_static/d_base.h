@@ -4,15 +4,13 @@
 #include "d_profile.h"
 #include "f_base.h"
 
-struct dBaseProfile_s : fProfileDat_c {
-};
+struct dBaseProfile_s : fProfileDat_c {};
 
 /**
  * An extension of fBase_c with base kind and name strings. All bases should
  * inherit from this class, not from fBase_c.
  */
-class dBase_c : public fBase_c
-{
+class dBase_c : public fBase_c {
     SIZE_ASSERT(0x70);
 
 public:
@@ -95,8 +93,7 @@ public:
      * type's profile, and returns nullptr if the profile doesn't match.
      */
     template <class T>
-    constexpr T* DynamicCast()
-    {
+    constexpr T* DynamicCast() {
         return dProf::cast<T>(this);
     }
 

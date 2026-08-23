@@ -2,8 +2,7 @@
 
 #include "d_enemy.h"
 
-class daYoshiEgg_c : public dEn_c
-{
+class daYoshiEgg_c : public dEn_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -38,7 +37,7 @@ public:
     FILL(0x5F8, 0x60C);
 
     /* 0x60C */ u16 m0x60C;
-    /* 0x60E */ u8 m0x60E;
+    /* 0x60E */ u8  m0x60E;
 
     FILL(0x60F, 0x610);
 };

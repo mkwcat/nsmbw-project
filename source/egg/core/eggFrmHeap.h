@@ -1,7 +1,6 @@
 #pragma once
 
-namespace EGG
-{
+namespace EGG {
 
 class FrmHeap;
 

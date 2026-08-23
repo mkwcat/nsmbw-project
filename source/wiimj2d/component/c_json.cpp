@@ -382,8 +382,7 @@ Writer_c::Writer_c(
     std::FILE* file
 )
     : mWrite(writeToFile)
-    , mUserData(file) {
-}
+    , mUserData(file) {}
 
 bool Writer_c::null() {
     if (!mExpectValue) {

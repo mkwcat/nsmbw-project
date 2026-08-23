@@ -4,16 +4,14 @@
 #include "egg/math/eggVector.h"
 #include "egg/prim/eggBitFlag.h"
 #include "eggExEffect.h"
+#include <nw4r/ef/Handle.h>
 #include <nw4r/math/mtx.h>
 #include <nw4r/math/vec.h>
 #include <revolution/gx/GXStruct.h>
-#include <nw4r/ef/Handle.h>
 
-namespace EGG
-{
+namespace EGG {
 
-class Effect
-{
+class Effect {
     SIZE_ASSERT(0x114);
 
     /* 0x000 VTABLE 0x80350AF8 */
@@ -102,7 +100,8 @@ public:
     virtual void setColor(u8 r, u8 g, u8 b, u8 a, ERecursive);
 
     /* VT+0x5C 0x802D8470 */
-    virtual void setRegisterColor(const GXColor& regColor0, const GXColor& regColor1, u8 regIdx, ERecursive);
+    virtual void
+    setRegisterColor(const GXColor& regColor0, const GXColor& regColor1, u8 regIdx, ERecursive);
 
     /* VT+0x60 0x802D84B0 */
     virtual void setRegisterAlpha(u8 regAlpha0, u8 regAlpha1, u8 regIdx, ERecursive);
@@ -153,14 +152,14 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x004 */ char name[32];
-    /* 0x024 */ u32 mCreator;
-    /* 0x028 */ TBitFlag<u32> mFlags;
-    /* 0x02C */ Vector3f mScale;
-    /* 0x038 */ Vector3f mTranslate;
-    /* 0x044 */ Matrix34f mMatrix;
+    /* 0x004 */ char                 name[32];
+    /* 0x024 */ u32                  mCreator;
+    /* 0x028 */ TBitFlag<u32>        mFlags;
+    /* 0x02C */ Vector3f             mScale;
+    /* 0x038 */ Vector3f             mTranslate;
+    /* 0x044 */ Matrix34f            mMatrix;
     /* 0x074 */ nw4r::ef::HandleBase mHandle;
-    /* 0x07C */ ExEffectParam mExParam;
+    /* 0x07C */ ExEffectParam        mExParam;
 };
 
 } // namespace EGG

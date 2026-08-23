@@ -6,12 +6,11 @@
  * An extension to sStateMethod_c that implements the remaining abstract methods. [Name might mean
  * "Functionality implementation"].
  */
-class sStateMethodUsr_FI_c : public sStateMethod_c
-{
+class sStateMethodUsr_FI_c : public sStateMethod_c {
 public:
     /* 0x8015FDD0 */
     sStateMethodUsr_FI_c(
-      sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
+        sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
     );
 
     /* VT+0x08 */

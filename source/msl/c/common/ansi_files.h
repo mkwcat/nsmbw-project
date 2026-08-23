@@ -8,7 +8,6 @@ typedef size_t __file_handle;
 
 #define __ungetc_buffer_size 2
 
-
 enum __file_kinds {
     __closed_file      = 0,
     __disk_file        = 1,
@@ -45,16 +44,16 @@ typedef struct _file_modes {
 } file_modes;
 
 enum __io_states {
-    __neutral = 0,
-    __writing = 1,
-    __reading = 2,
+    __neutral   = 0,
+    __writing   = 1,
+    __reading   = 2,
     __rereading = 3,
 };
 
 enum __io_results {
     __no_io_error = 0,
-    __io_error = 1,
-    __io_EOF = 2,
+    __io_error    = 1,
+    __io_EOF      = 2,
 };
 
 typedef struct _file_states {

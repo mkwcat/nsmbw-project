@@ -9,47 +9,42 @@ struct mAng {
     /**
      * Constructs an empty vector.
      */
-    mAng()
-    {
-    }
+    mAng() {}
 
     /**
      * Constructs a vector from a short pointer.
      */
-    mAng(const s16* p)
-    {
+    mAng(
+        const s16* p
+    ) {
         mAngle = *p;
     }
 
     /**
      * Constructs a vector from a short value.
      */
-    constexpr mAng(s16 x)
-    {
+    constexpr mAng(
+        s16 x
+    ) {
         mAngle = x;
     }
 
     /**
      * Short cast operator.
      */
-    operator s16*()
-    {
-        return &mAngle;
-    }
+    operator s16*() { return &mAngle; }
 
     /**
      * Const short cast operator.
      */
-    operator const s16*() const
-    {
-        return &mAngle;
-    }
+    operator const s16*() const { return &mAngle; }
 
     /**
      * Augmented addition operator.
      */
-    mAng& operator+=(const mAng& v)
-    {
+    mAng& operator+=(
+        const mAng& v
+    ) {
         mAngle += v.mAngle;
         return *this;
     }
@@ -57,8 +52,9 @@ struct mAng {
     /**
      * Augmented subtraction operator.
      */
-    mAng& operator-=(const mAng& v)
-    {
+    mAng& operator-=(
+        const mAng& v
+    ) {
         mAngle -= v.mAngle;
         return *this;
     }
@@ -66,56 +62,55 @@ struct mAng {
     /**
      * Positive operator.
      */
-    mAng operator+() const
-    {
-        return *this;
-    }
+    mAng operator+() const { return *this; }
 
     /**
      * Negative operator.
      */
-    mAng operator-() const
-    {
-        return mAng(-mAngle);
-    }
+    mAng operator-() const { return mAng(-mAngle); }
 
     /**
      * Addition operator.
      */
-    mAng operator+(const mAng& v) const
-    {
+    mAng operator+(
+        const mAng& v
+    ) const {
         return mAng(mAngle + v.mAngle);
     }
 
     /**
      * Subtraction operator.
      */
-    mAng operator-(const mAng& v) const
-    {
+    mAng operator-(
+        const mAng& v
+    ) const {
         return mAng(mAngle - v.mAngle);
     }
 
     /**
      * Equality operator.
      */
-    bool operator==(const mAng& v) const
-    {
+    bool operator==(
+        const mAng& v
+    ) const {
         return mAngle == v.mAngle;
     }
 
     /**
      * Inequality operator.
      */
-    bool operator!=(const mAng& v) const
-    {
+    bool operator!=(
+        const mAng& v
+    ) const {
         return mAngle != v.mAngle;
     }
 
     /**
      * Convert float (degrees) to short angle.
      */
-    static constexpr s16 fromDegree(float degree)
-    {
+    static constexpr s16 fromDegree(
+        float degree
+    ) {
         if (degree > 180) {
             degree -= 360;
         } else if (degree < -180) {
@@ -144,23 +139,21 @@ struct mAng {
 /**
  * A three-dimensional short angle vector.
  */
-class mAng3_c
-{
+class mAng3_c {
     SIZE_ASSERT(0x6);
 
 public:
     /**
      * Constructs an empty vector.
      */
-    mAng3_c()
-    {
-    }
+    mAng3_c() {}
 
     /**
      * Constructs a vector from a short array.
      */
-    mAng3_c(const s16* p)
-    {
+    mAng3_c(
+        const s16* p
+    ) {
         x = p[0];
         y = p[1];
         z = p[2];
@@ -169,8 +162,9 @@ public:
     /**
      * Constructs a vector from three short values.
      */
-    mAng3_c(s16 fx, s16 fy, s16 fz)
-    {
+    mAng3_c(
+        s16 fx, s16 fy, s16 fz
+    ) {
         x = fx;
         y = fy;
         z = fz;
@@ -179,24 +173,19 @@ public:
     /**
      * Short cast operator.
      */
-    operator s16*()
-    {
-        return &x;
-    }
+    operator s16*() { return &x; }
 
     /**
      * Const short cast operator.
      */
-    operator const s16*() const
-    {
-        return &x;
-    }
+    operator const s16*() const { return &x; }
 
     /**
      * Augmented addition operator.
      */
-    mAng3_c& operator+=(const mAng3_c& v)
-    {
+    mAng3_c& operator+=(
+        const mAng3_c& v
+    ) {
         x += v.x;
         y += v.y;
         z += v.z;
@@ -206,8 +195,9 @@ public:
     /**
      * Augmented subtraction operator.
      */
-    mAng3_c& operator-=(const mAng3_c& v)
-    {
+    mAng3_c& operator-=(
+        const mAng3_c& v
+    ) {
         x -= v.x;
         y -= v.y;
         z -= v.z;
@@ -217,48 +207,46 @@ public:
     /**
      * Positive operator.
      */
-    mAng3_c operator+() const
-    {
-        return *this;
-    }
+    mAng3_c operator+() const { return *this; }
 
     /**
      * Negative operator.
      */
-    mAng3_c operator-() const
-    {
-        return mAng3_c(-x, -y, -z);
-    }
+    mAng3_c operator-() const { return mAng3_c(-x, -y, -z); }
 
     /**
      * Addition operator.
      */
-    mAng3_c operator+(const mAng3_c& v) const
-    {
+    mAng3_c operator+(
+        const mAng3_c& v
+    ) const {
         return mAng3_c(x + v.x, y + v.y, z + v.z);
     }
 
     /**
      * Subtraction operator.
      */
-    mAng3_c operator-(const mAng3_c& v) const
-    {
+    mAng3_c operator-(
+        const mAng3_c& v
+    ) const {
         return mAng3_c(x - v.x, y - v.y, z - v.z);
     }
 
     /**
      * Equality operator.
      */
-    bool operator==(const mAng3_c& v) const
-    {
+    bool operator==(
+        const mAng3_c& v
+    ) const {
         return x == v.x && y == v.y && z == v.z;
     }
 
     /**
      * Inequality operator.
      */
-    bool operator!=(const mAng3_c& v) const
-    {
+    bool operator!=(
+        const mAng3_c& v
+    ) const {
         return x != v.x || y != v.y || z != v.z;
     }
 

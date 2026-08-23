@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_death_message_mgr.h"
 #include "d_base.h"
+#include "d_death_message_mgr.h"
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
 #include "d_mj2d_game.h"
@@ -13,8 +13,7 @@
 #include <nw4r/lyt/TexMap.h>
 #include <revolution/gx/GXStruct.h>
 
-class dGameDisplay_c final : public dBase_c
-{
+class dGameDisplay_c final : public dBase_c {
 public:
     // Structors
     // ^^^^^^
@@ -29,7 +28,7 @@ public:
     // Constants
     // ^^^^^^
 
-    static constexpr int cMaxDispScore = 99999950;
+    static constexpr int cMaxDispScore   = 99999950;
     static constexpr int cAreaCheckCount = 3;
 
 public:
@@ -100,8 +99,9 @@ public:
     /* 0x80159DF0 */ void setScore(int score);
     /* 0x80159E60 */ void RestCoinAnimeSetup();
 
-    void newDeathMessage(const wchar_t* message, PLAYER_TYPE_e player)
-    {
+    void newDeathMessage(
+        const wchar_t* message, PLAYER_TYPE_e player
+    ) {
         mDeathMsgMgr.newMessage(message, player);
     }
 
@@ -112,13 +112,13 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x070 */ LytBase_c mLayout;
+    /* 0x070 */ LytBase_c          mLayout;
     /* 0x208 */ mEf::levelEffect_c mEffect;
 
     // Moved
-    /* 0x330 */ s16 REMOVED(mPlayerRGBA0)[4][4];
-    /* 0x350 */ s16 REMOVED(mPlayerRGBA1)[4][4];
-    /* 0x370 */ s16 REMOVED(mPlayerRGBA2)[4][4];
+    /* 0x330 */ s16                                REMOVED(mPlayerRGBA0)[4][4];
+    /* 0x350 */ s16                                REMOVED(mPlayerRGBA1)[4][4];
+    /* 0x370 */ s16                                REMOVED(mPlayerRGBA2)[4][4];
 
     /* 0x390 */ sStateMgrDefault_c<dGameDisplay_c> mStateMgr;
 
@@ -140,13 +140,13 @@ public:
     /* 0x418 */ int mAreaAlpha[cAreaCheckCount];
 
     // Changed from int to s8
-    /* 0x424 */ s8 mEffectTimer[16];
+    /* 0x424 */ s8   mEffectTimer[16];
 
-    /* 0x434 */ int mSetScoreDelay;
-    /* 0x438 */ int m0x438;
-    /* 0x43C */ int m0x43C;
-    /* 0x440 */ int m0x440;
-    /* 0x444 */ int m0x444;
+    /* 0x434 */ int  mSetScoreDelay;
+    /* 0x438 */ int  m0x438;
+    /* 0x43C */ int  m0x43C;
+    /* 0x440 */ int  m0x440;
+    /* 0x444 */ int  m0x444;
 
     /* 0x448 */ bool m0x448;
     /* 0x449 */ bool m0x449;
@@ -248,9 +248,9 @@ public:
 #define OFFSET_dGameDisplay_c_mPlayerRGBA2 0x5A4 + (4 + dGameDisplay_c_EXTRA_PLAYER_COUNT) * 0x10
     GXColorS10 mPlayerRGBA3[4 + EXTRA_PLAYER_COUNT];
 
-    int mPlayNum[4 + EXTRA_PLAYER_COUNT];
-    bool mPlayerGray[4 + EXTRA_PLAYER_COUNT];
-    bool mPlayNumSet;
+    int        mPlayNum[4 + EXTRA_PLAYER_COUNT];
+    bool       mPlayerGray[4 + EXTRA_PLAYER_COUNT];
+    bool       mPlayNumSet;
 
     union {
         struct {
@@ -290,10 +290,10 @@ public:
     };
 
     nw4r::lyt::TexMap mpaTexMap[4 + EXTRA_PLAYER_COUNT];
-    nw4r::lyt::Size maIconSize[4 + EXTRA_PLAYER_COUNT];
-    nw4r::math::VEC2 maIconScale[4 + EXTRA_PLAYER_COUNT];
+    nw4r::lyt::Size   maIconSize[4 + EXTRA_PLAYER_COUNT];
+    nw4r::math::VEC2  maIconScale[4 + EXTRA_PLAYER_COUNT];
 
-    dDeathMsgMgr_c mDeathMsgMgr;
+    dDeathMsgMgr_c    mDeathMsgMgr;
 
 public:
     // Static Variables
@@ -302,13 +302,13 @@ public:
     /* 0x8042A608 */
     static dGameDisplay_c* m_instance;
 
-    static const long cPlayerPaneIndex[];
-    static const long cPlayerPictureIndex[];
-    static const long cPlayerTextboxIndex[];
-    static const long cPlayerBothTextboxIndex[][2];
-    static const long cPictureCollectionIndex[STAR_COIN_COUNT];
-    static const long cPictureCollectOffIndex[STAR_COIN_COUNT];
-    static const long cAreaPaneIndex[cAreaCheckCount];
+    static const long      cPlayerPaneIndex[];
+    static const long      cPlayerPictureIndex[];
+    static const long      cPlayerTextboxIndex[];
+    static const long      cPlayerBothTextboxIndex[][2];
+    static const long      cPictureCollectionIndex[STAR_COIN_COUNT];
+    static const long      cPictureCollectOffIndex[STAR_COIN_COUNT];
+    static const long      cAreaPaneIndex[cAreaCheckCount];
 
 public:
     // State IDs

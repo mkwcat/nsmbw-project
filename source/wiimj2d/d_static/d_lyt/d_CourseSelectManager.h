@@ -1,9 +1,9 @@
 #pragma once
 
 #include "d_Continue.h"
+#include "d_CourseSelectGuide.h"
 #include "d_MessageWindow.h"
 #include "d_base.h"
-#include "d_CourseSelectGuide.h"
 #include "d_mj2d_game.h"
 #include "s_FStateFct.h"
 #include "s_State.h"

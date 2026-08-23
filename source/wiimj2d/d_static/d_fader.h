@@ -1,19 +1,18 @@
 #pragma once
 
-class dFader_c
-{
+class dFader_c {
 public:
     // Constants and Types
     // ^^^^^^
 
     enum class fader_type_e {
-        FADE = 0,
-        CIRCLE = 1,
-        BOWSER = 2,
-        WAVY = 3,
-        MARIO = 4,
+        FADE      = 0,
+        CIRCLE    = 1,
+        BOWSER    = 2,
+        WAVY      = 3,
+        MARIO     = 4,
         UNKNOWN_5 = 5,
-        NONE = 6,
+        NONE      = 6,
     };
 
 public:

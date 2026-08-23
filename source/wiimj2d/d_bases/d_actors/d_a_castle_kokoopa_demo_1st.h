@@ -5,8 +5,7 @@
 
 class dAcPy_c;
 
-class daCastleKokoopaDemo1st_c : public daBossDemo_c
-{
+class daCastleKokoopaDemo1st_c : public daBossDemo_c {
 public:
     // Structors
     // ^^^^^^
@@ -54,9 +53,9 @@ public:
 
     FILL(0x400, 0x408);
 
-    /* 0x408 */ s32 mCheckBattleStDemoStep;
-    /* 0x40C */ int REMOVED(m0x40C)[4];
-    /* 0x41C */ int REMOVED(m0x41C)[4];
+    /* 0x408 */ s32      mCheckBattleStDemoStep;
+    /* 0x40C */ int      REMOVED(m0x40C)[4];
+    /* 0x41C */ int      REMOVED(m0x41C)[4];
 
     /* 0x42C */ dAcPy_c* REMOVED(mpPlayersInOrder)[4];
 
@@ -68,7 +67,7 @@ public:
     OFFSET_ASSERT(0x590);
 
     /* 0x590 */ dAcPy_c* mpPlayersInOrder[PLAYER_COUNT];
-    /* 0x5B0 */ f32 mWalkToPos[PLAYER_COUNT];
-    /* 0x5D0 */ int mBattleStControlStep[PLAYER_COUNT];
-    /* 0x5F0 */ int mIggyDemoScrollStep[PLAYER_COUNT];
+    /* 0x5B0 */ f32      mWalkToPos[PLAYER_COUNT];
+    /* 0x5D0 */ int      mBattleStControlStep[PLAYER_COUNT];
+    /* 0x5F0 */ int      mIggyDemoScrollStep[PLAYER_COUNT];
 };

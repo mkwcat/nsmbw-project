@@ -3,14 +3,14 @@
 
 #include "d_a_mini_game_gun_battery_mgr.h"
 
-#include "d_s_stage.h"
-#include "d_a_player.h"
-#include "d_a_player_manager.h"
-#include "d_game_common.h"
-#include "m_fader.h"
 #include "SndAudioMgr.h"
 #include "SndID.h"
 #include "SndSceneMgr.h"
+#include "d_a_player.h"
+#include "d_a_player_manager.h"
+#include "d_game_common.h"
+#include "d_s_stage.h"
+#include "m_fader.h"
 
 [[nsmbw(0x80866120)]]
 daMiniGameGunBatteryMgrObj_c* daMiniGameGunBatteryMgrObj_c_classInit() {
@@ -19,8 +19,7 @@ daMiniGameGunBatteryMgrObj_c* daMiniGameGunBatteryMgrObj_c_classInit() {
 
 [[nsmbw(0x80866210)]]
 daMiniGameGunBatteryMgrObj_c::daMiniGameGunBatteryMgrObj_c()
-    : mStateMgr(*this, StateID_ShowRule) {
-}
+    : mStateMgr(*this, StateID_ShowRule) {}
 
 [[nsmbw(0x80866450)]]
 fBase_c::PACK_RESULT_e daMiniGameGunBatteryMgrObj_c::create();
@@ -207,5 +206,4 @@ void daMiniGameGunBatteryMgrObj_c::executeState_ShowResult() {
 }
 
 [[nsmbw(0x80866CF0)]]
-daMiniGameGunBatteryMgrObj_c::~daMiniGameGunBatteryMgrObj_c() {
-}
+daMiniGameGunBatteryMgrObj_c::~daMiniGameGunBatteryMgrObj_c() {}

@@ -4,8 +4,7 @@
 
 class Snd2DCalc;
 
-class NMSndObjectBase : public nw4r::snd::SoundActor
-{
+class NMSndObjectBase : public nw4r::snd::SoundActor {
     SIZE_ASSERT(0x64);
 
     /* 0x00 VTABLE 0x8032E318 */
@@ -40,8 +39,8 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x54 */ u32 mNumHandles;
-    /* 0x58 */ s32 mRemotePlayer;
+    /* 0x54 */ u32        mNumHandles;
+    /* 0x58 */ s32        mRemotePlayer;
     /* 0x5C */ Snd2DCalc* mpSnd2DCalc;
-    /* 0x60 */ OBJ_TYPE mObjType;
+    /* 0x60 */ OBJ_TYPE   mObjType;
 };

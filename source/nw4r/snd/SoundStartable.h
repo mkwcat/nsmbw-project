@@ -1,19 +1,16 @@
 #pragma once
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
 class SoundHandle;
 
-namespace detail
-{
+namespace detail {
 
 class ExternalSoundPlayer;
 
 } // namespace detail
 
-class SoundStartable
-{
+class SoundStartable {
 public:
     // Constants and Types
     // ^^^^^^
@@ -32,7 +29,7 @@ public:
         START_ERR_INVALID_PARAMETER,
         START_ERR_INVALID_SEQ_START_LOCATION_LABEL,
 
-        START_ERR_USER = 128,
+        START_ERR_USER    = 128,
         START_ERR_UNKNOWN = 255,
     };
 
@@ -40,23 +37,23 @@ public:
         SIZE_ASSERT(0x18);
 
         enum class EnableFlag {
-            ENABLE_START_OFFSET = 0_bit,
-            ENABLE_PLAYER_ID = 1_bit,
-            ENABLE_PLAYER_PRIORITY = 2_bit
+            ENABLE_START_OFFSET    = 0_bit,
+            ENABLE_PLAYER_ID       = 1_bit,
+            ENABLE_PLAYER_PRIORITY = 2_bit,
         };
 
         enum class StartOffsetType {
             START_OFFSET_TYPE_MILLISEC,
             START_OFFSET_TYPE_TICK,
-            START_OFFSET_TYPE_SAMPLE
+            START_OFFSET_TYPE_SAMPLE,
         };
 
-        /* 0x00 */ u32 enableFlag;
+        /* 0x00 */ u32             enableFlag;
         /* 0x04 */ StartOffsetType startOffsetType;
-        /* 0x08 */ int startOffset;
-        /* 0x0C */ u32 playerId;
-        /* 0x10 */ int playerPriority;
-        /* 0x14 */ int voiceOutCount;
+        /* 0x08 */ int             startOffset;
+        /* 0x0C */ u32             playerId;
+        /* 0x10 */ int             playerPriority;
+        /* 0x14 */ int             voiceOutCount;
     };
 
 public:
@@ -75,7 +72,7 @@ public:
     detail_SetupSound(SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo) = 0;
 
     /* VT+0x10 */
-    virtual u32 detail_ConvertLabelStringToSoundId(const char* pLabel) = 0;
+    virtual u32 detail_ConvertLabelStringToSoundId(const char* pLabel)                      = 0;
 };
 
 } // namespace nw4r::snd

@@ -1,18 +1,15 @@
 #pragma once
 
-namespace EGG
-{
+namespace EGG {
 class Heap;
 }
 
-namespace dDvd
-{
+namespace dDvd {
 
 /* 0x8008F110 */
 void create(s32, EGG::Heap*, EGG::Heap*);
 
-class loader_c
-{
+class loader_c {
 public:
     // Structors
     // ^^^^^^
@@ -44,16 +41,13 @@ public:
     // Inline Instance Methods
     // ^^^^^^
 
-    constexpr u32 getSize() const
-    {
-        return mSize;
-    }
+    constexpr u32 getSize() const { return mSize; }
 
 private:
-    u32 mSize;
-    u32 mCommand;
+    u32        mSize;
+    u32        mCommand;
     EGG::Heap* mpHeap;
-    void* mpBuffer;
+    void*      mpBuffer;
 };
 
 } // namespace dDvd

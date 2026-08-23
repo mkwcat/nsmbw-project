@@ -2,8 +2,7 @@
 
 #include "d_base.h"
 
-class dSelectCursor_c : public dBase_c
-{
+class dSelectCursor_c : public dBase_c {
 public:
     // Instance Methods
     // ^^^^^^

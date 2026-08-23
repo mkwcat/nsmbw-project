@@ -11,7 +11,7 @@ class ScnMdl : public ScnMdlSimple {
 public:
     class CopiedMatAccess {
     public:
-        CopiedMatAccess(ScnMdl *, u32);
+        CopiedMatAccess(ScnMdl*, u32);
         ResTexSrt GetResTexSrtEx(bool);
         ResMatPix GetResMatPix(bool);
         ResMatTevColor GetResMatTevColor(bool);
@@ -22,20 +22,17 @@ public:
     };
 
 public:
-    virtual bool SetAnmObj(AnmObj *p, AnmObjType type) override;
+    virtual bool SetAnmObj(AnmObj* p, AnmObjType type) override;
 
-    static ScnMdl *Construct(MEMAllocator *, unsigned long *, nw4r::g3d::ResMdl, u32 bufferOption, int);
+    static ScnMdl*
+    Construct(MEMAllocator*, unsigned long*, nw4r::g3d::ResMdl, u32 bufferOption, int);
 
-    static const G3dObj::TypeObj GetTypeObjStatic() {
-        return TypeObj(TYPE_NAME);
-    }
+    static const G3dObj::TypeObj GetTypeObjStatic() { return TypeObj(TYPE_NAME); }
 
-    DrawResMdlReplacement *GetDrawResMdlReplacement() {
-        return &mDrawMdlReplace;
-    }
+    DrawResMdlReplacement* GetDrawResMdlReplacement() { return &mDrawMdlReplace; }
 
 private:
-    char UNK_0x120[0x144 - 0x120];
+    char                  UNK_0x120[0x144 - 0x120];
     DrawResMdlReplacement mDrawMdlReplace; // at 0x144
 
     NW4R_G3D_TYPE_OBJ_DECL(ScnMdl);

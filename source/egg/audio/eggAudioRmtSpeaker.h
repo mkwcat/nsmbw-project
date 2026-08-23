@@ -1,10 +1,8 @@
 #pragma once
 
-namespace EGG
-{
+namespace EGG {
 
-class AudioRmtSpeaker
-{
+class AudioRmtSpeaker {
 public:
     // Static Methods
     // ^^^^^^

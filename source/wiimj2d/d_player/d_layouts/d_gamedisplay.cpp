@@ -3,23 +3,23 @@
 
 #include "d_gamedisplay.h"
 
-#include "d_s_stage.h"
+#include "SndAudioMgr.h"
+#include "SndID.h"
 #include "d_a_player.h"
-#include "d_gamerule.h"
 #include "d_a_player_manager.h"
 #include "d_actorcreate_mng.h"
 #include "d_game_common.h"
+#include "d_gamerule.h"
 #include "d_info.h"
 #include "d_lytbase.h"
 #include "d_mj2d_game.h"
 #include "d_multi_manager.h"
 #include "d_pause_manager.h"
+#include "d_s_stage.h"
 #include "d_save_manager.h"
 #include "d_stage_timer.h"
 #include "m_ef.h"
 #include "m_vec.h"
-#include "SndAudioMgr.h"
-#include "SndID.h"
 #include <algorithm>
 #include <iterator>
 #include <nw4r/lyt/Material.h>

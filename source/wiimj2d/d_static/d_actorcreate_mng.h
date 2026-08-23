@@ -1,7 +1,6 @@
 #pragma once
 
-class dActorCreateMng_c
-{
+class dActorCreateMng_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -15,7 +14,7 @@ public:
 
     FILL(0x000, 0xBC8);
 
-    /* 0xBC8 */ s16 m0xBC8;
+    /* 0xBC8 */ s16  m0xBC8;
     /* 0xBC9 */ bool m0xBC9;
     /* 0xBCA */ bool mIsEndingDemo;
     /* 0xBCB */ bool m_stopped;

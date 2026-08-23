@@ -3,17 +3,15 @@
 #include "m_allocator.h"
 #include <nw4r/g3d/g3d_scnobj.h>
 
-namespace m3d
-{
+namespace m3d {
 
 // NON-OFFICIAL
 enum ScnLeafType_e {
     SCN_LEAF_MODEL = 0,
-    SCN_LEAF_PROC = 2,
+    SCN_LEAF_PROC  = 2,
 };
 
-class scnLeaf_c
-{
+class scnLeaf_c {
     SIZE_ASSERT(0x8);
 
 public:
@@ -46,10 +44,7 @@ public:
 
     void setPriorityDraw(int, int);
 
-    inline nw4r::g3d::ScnLeaf* getG3dObject()
-    {
-        return mpScnLeaf;
-    }
+    inline nw4r::g3d::ScnLeaf* getG3dObject() { return mpScnLeaf; }
 
 protected:
     /* 0x4 */ nw4r::g3d::ScnLeaf* mpScnLeaf;

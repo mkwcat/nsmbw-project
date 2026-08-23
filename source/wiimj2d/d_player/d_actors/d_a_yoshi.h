@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_profile.h"
 #include "d_a_player_base.h"
 #include "d_player_model_manager.h"
+#include "d_profile.h"
 
 class dAcPy_c;
 

@@ -3,11 +3,11 @@
 
 #include "d_wm_WorldSelect.h"
 
-#include "d_s_world_map.h"
-#include "d_gamerule.h"
-#include "d_game_key.h"
 #include "SndAudioMgr.h"
 #include "SndID.h"
+#include "d_game_key.h"
+#include "d_gamerule.h"
+#include "d_s_world_map.h"
 
 [[nsmbw(0x80928EC0)]]
 int dWorldSelect_c::wrapIsland(int island);

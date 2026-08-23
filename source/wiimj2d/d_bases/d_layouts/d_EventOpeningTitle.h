@@ -3,8 +3,8 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
-#include <nw4r/lyt/Pane.h>
 #include "s_StateMgrDefault.h"
+#include <nw4r/lyt/Pane.h>
 
 class dEventOpeningTitle_c : public dBase_c {
 public:

@@ -6,8 +6,7 @@
 #include <nw4r/lyt/Resources.h>
 #include <nw4r/lyt/TextBox.h>
 
-class dDeathMsgMgr_c final : public m2d::Base_c
-{
+class dDeathMsgMgr_c final : public m2d::Base_c {
 public:
     // Constants and Types
     // ^^^^^^
@@ -40,11 +39,11 @@ private:
     // Instance Variables
     // ^^^^^^
 
-    nw4r::lyt::TextBox* mTextBox;
+    nw4r::lyt::TextBox*    mTextBox;
     nw4r::lyt::ResBlockSet mResBlockSet;
-    nw4r::lyt::DrawInfo* mpDrawInfo;
+    nw4r::lyt::DrawInfo*   mpDrawInfo;
 
-    u32 mIndex;
-    u32 mCount;
-    u32 mTimeToLive[MAX_MESSAGES];
+    u32                    mIndex;
+    u32                    mCount;
+    u32                    mTimeToLive[MAX_MESSAGES];
 };

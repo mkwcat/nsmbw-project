@@ -3,9 +3,7 @@
 #include "d_base.h"
 #include "s_State.h"
 
-class dGameOver_c : public dBase_c
-{
-
+class dGameOver_c : public dBase_c {
 public:
     // State IDs
     // ^^^^^^

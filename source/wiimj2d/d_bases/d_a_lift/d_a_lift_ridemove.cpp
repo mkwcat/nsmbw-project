@@ -2,12 +2,12 @@
 // NSMBW d_bases.text: 0x80845940 - 0x808468E0
 
 #include "d_a_lift_ridemove.h"
+
 #include "d_a_player.h"
 #include "d_a_yoshi.h"
 
 [[nsmbw(0x80845D60)]]
-bool daLiftRideMove_c::isAllPlayerOnLift()
-{
+bool daLiftRideMove_c::isAllPlayerOnLift() {
     int numPlayer = 0;
 
     for (dRc_c* rc = mRideRoll.mpChain; rc != nullptr; rc = rc->mpNext) {

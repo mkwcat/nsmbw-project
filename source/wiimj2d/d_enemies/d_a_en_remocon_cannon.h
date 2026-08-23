@@ -8,8 +8,7 @@
 #include <nw4r/g3d/g3d_resfile.h>
 
 /* @unofficial */
-class dRemoconCannonGuide_c
-{
+class dRemoconCannonGuide_c {
     SIZE_ASSERT(0xAC);
 
 public:
@@ -17,14 +16,13 @@ public:
     // ^^^^^^
 
     /* 0x00 */ nw4r::g3d::ResFile mRes;
-    /* 0x04 */ m3d::mdl_c mModel;
-    /* 0x44 */ m3d::anmChr_c mAnmChr;
-    /* 0x7C */ u32 m0x7C;
-    /* 0x80 */ m3d::anmTexPat_c mAnmTexPat;
+    /* 0x04 */ m3d::mdl_c         mModel;
+    /* 0x44 */ m3d::anmChr_c      mAnmChr;
+    /* 0x7C */ u32                m0x7C;
+    /* 0x80 */ m3d::anmTexPat_c   mAnmTexPat;
 };
 
-class daEnRemoconCannon_c : public dEn_c
-{
+class daEnRemoconCannon_c : public dEn_c {
     SIZE_ASSERT(0xB60 + 0x8);
 
 public:
@@ -90,7 +88,7 @@ public:
     FILL(0x8C4, 0x8FC);
 
     /* 0x8FC */ dEf::dLevelEffect_c mEffectTrail[2];
-    /* 0xB4C */ bool REMOVED(mCannonFired)[4];
+    /* 0xB4C */ bool                REMOVED(mCannonFired)[4];
 
     FILL(0xB50, 0xB54);
 

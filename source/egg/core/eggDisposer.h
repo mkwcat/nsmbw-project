@@ -1,17 +1,14 @@
 #pragma once
 
+namespace EGG {
 
-namespace EGG
-{
-
-class Disposer
-{
+class Disposer {
     SIZE_ASSERT(0x10);
 
     /* 0x00 VTABLE 0x80350160 */
 
 public:
-    Disposer(const Disposer&) = delete;
+    Disposer(const Disposer&)     = delete;
     Disposer(Disposer&&) noexcept = delete;
 
     /* 0x802BA410 */

@@ -3,6 +3,7 @@
 
 #include "d_s_GameSetup.h"
 
+#include "SndSceneMgr.h"
 #include "d_CharacterChangeIndicator.h"
 #include "d_CharacterChangeSelectArrow.h"
 #include "d_CharacterChangeSelectBase.h"
@@ -14,20 +15,19 @@
 #include "d_NumberOfPeopleChange.h"
 #include "d_SelectPlayer.h"
 #include "d_SequenceBG.h"
-#include "d_a_wm_2DPlayer.h"
-#include "d_s_restart_crsin.h"
-#include "d_s_world_map.h"
-#include "d_profile.h"
 #include "d_a_player_manager.h"
+#include "d_a_wm_2DPlayer.h"
 #include "d_base_actor.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
 #include "d_player_model_base.h"
+#include "d_profile.h"
+#include "d_s_restart_crsin.h"
+#include "d_s_world_map.h"
 #include "d_save_manager.h"
 #include "d_scene.h"
 #include "f_feature.h"
 #include "m_dvd.h"
-#include "SndSceneMgr.h"
 
 [[nsmbw(0x80917A70)]]
 bool dScGameSetup_c::Phase_LinkProfiles();

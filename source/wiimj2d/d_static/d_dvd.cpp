@@ -3,8 +3,7 @@
 
 #include "d_dvd.h"
 
-namespace dDvd
-{
+namespace dDvd {
 
 [[nsmbw(0x8008F110)]]
 void create(s32, EGG::Heap*, EGG::Heap*);

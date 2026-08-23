@@ -4,14 +4,13 @@
 #include <array>
 #include <egg/core/eggController.h>
 
-namespace mPad
-{
+namespace mPad {
 
 enum CH_e {
-    CHAN_0 = 0,
-    CHAN_1 = 1,
-    CHAN_2 = 2,
-    CHAN_3 = 3,
+    CHAN_0    = 0,
+    CHAN_1    = 1,
+    CHAN_2    = 2,
+    CHAN_3    = 3,
     CHAN_LAST = CHAN_3,
 
     // GameCube
@@ -40,7 +39,7 @@ extern std::array<EGG::Controller*, CH_e::COUNT> g_core_order;
 
 extern std::array<EGG::Controller*, CH_e::COUNT> g_core;
 
-extern std::array<CH_e, CH_e::COUNT> g_playerChannel;
+extern std::array<CH_e, CH_e::COUNT>             g_playerChannel;
 
 /* 0x80377FA8 */
 extern PadAdditionalData_s g_PadAdditionalData[4];

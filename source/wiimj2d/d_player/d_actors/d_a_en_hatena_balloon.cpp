@@ -3,19 +3,19 @@
 
 #include "d_a_en_hatena_balloon.h"
 
+#include "SndID.h"
 #include "d_a_en_item.h"
 #include "d_a_player.h"
-#include "d_gamerule.h"
 #include "d_actor_mng.h"
 #include "d_audio.h"
 #include "d_balloon_mng.h"
+#include "d_gamerule.h"
 #include "d_quake.h"
 #include "d_resource_mng.h"
 #include "f_param.h"
 #include "m_3d_fanm.h"
 #include "m_heap.h"
 #include "m_vec.h"
-#include "SndID.h"
 
 [[nsmbw(0x80110DE0)]]
 void daEnHatenaBalloon_c::PlYsHitCheck(dActor_c* actor, daEnHatenaBalloon_c* balloon);

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace SndID
-{
+namespace SndID {
 #include <mkwcat.rsid>
 #include <wiimj2d.rsid>
 

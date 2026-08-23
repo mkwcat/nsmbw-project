@@ -9,11 +9,11 @@ EXTERN_C_START
 #define OS_PRIORITY_MAX 31
 
 enum OSThreadState {
-    OS_THREAD_STATE_EXITED = 0,
-    OS_THREAD_STATE_READY = 1,
-    OS_THREAD_STATE_RUNNING = 2,
+    OS_THREAD_STATE_EXITED   = 0,
+    OS_THREAD_STATE_READY    = 1,
+    OS_THREAD_STATE_RUNNING  = 2,
     OS_THREAD_STATE_SLEEPING = 4,
-    OS_THREAD_STATE_MORIBUND = 8
+    OS_THREAD_STATE_MORIBUND = 8,
 };
 
 enum OSThreadFlags {
@@ -42,25 +42,25 @@ struct OSMutexQueue {
 struct OSThread {
     SIZE_ASSERT(0x318);
 
-    /* 0x000 */ OSContext context;
-    /* 0x2C8 */ u16 state;
-    /* 0x2CA */ u16 flags;
-    /* 0x2CC */ s32 suspend;
-    /* 0x2D0 */ s32 priority;
-    /* 0x2D4 */ s32 base;
-    /* 0x2D8 */ u32 val;
+    /* 0x000 */ OSContext      context;
+    /* 0x2C8 */ u16            state;
+    /* 0x2CA */ u16            flags;
+    /* 0x2CC */ s32            suspend;
+    /* 0x2D0 */ s32            priority;
+    /* 0x2D4 */ s32            base;
+    /* 0x2D8 */ u32            val;
     /* 0x2DC */ OSThreadQueue* queue;
-    /* 0x2E0 */ OSThread* next;
-    /* 0x2E4 */ OSThread* prev;
-    /* 0x2E8 */ OSThreadQueue joinQueue;
-    /* 0x2F0 */ OSMutex* mutex;
-    /* 0x2F4 */ OSMutexQueue mutexQueue;
-    /* 0x2FC */ OSThread* nextActive;
-    /* 0x300 */ OSThread* prevActive;
-    /* 0x304 */ void* stackBegin;
-    /* 0x308 */ void* stackEnd;
-    /* 0x30C */ s32 error;
-    /* 0x310 */ void* specific[2];
+    /* 0x2E0 */ OSThread*      next;
+    /* 0x2E4 */ OSThread*      prev;
+    /* 0x2E8 */ OSThreadQueue  joinQueue;
+    /* 0x2F0 */ OSMutex*       mutex;
+    /* 0x2F4 */ OSMutexQueue   mutexQueue;
+    /* 0x2FC */ OSThread*      nextActive;
+    /* 0x300 */ OSThread*      prevActive;
+    /* 0x304 */ void*          stackBegin;
+    /* 0x308 */ void*          stackEnd;
+    /* 0x30C */ s32            error;
+    /* 0x310 */ void*          specific[2];
 };
 
 typedef void (*OSSwitchThreadCallback)(OSThread* currThread, OSThread* newThread);
@@ -80,8 +80,8 @@ void __OSPromoteThread(OSThread* thread, s32 prio);
 void __OSReschedule(void);
 void OSYieldThread(void);
 BOOL OSCreateThread(
-  OSThread* thread, OSThreadFunc func, void* funcArg, void* stackBegin, u32 stackSize, s32 prio,
-  u16 flags
+    OSThread* thread, OSThreadFunc func, void* funcArg, void* stackBegin, u32 stackSize, s32 prio,
+    u16 flags
 );
 void OSExitThread(OSThread* thread);
 void OSCancelThread(OSThread* thread);

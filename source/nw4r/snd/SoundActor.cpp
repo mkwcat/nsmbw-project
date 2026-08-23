@@ -3,8 +3,7 @@
 
 #include "SoundActor.h"
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
 [[nsmbw(0x80275530)]]
 SoundActor::SoundActor(nw4r::snd::SoundArchivePlayer&);
@@ -23,8 +22,10 @@ SoundActor::StartResult
 SoundActor::SetupSound(SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo, void*);
 
 [[nsmbw(0x802756F0)]]
-SoundActor::StartResult SoundActor::
-  detail_SetupSoundWithAmbientInfo(SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo, detail::BasicSound::AmbientArgInfo* pAmbientArgInfo, void*);
+SoundActor::StartResult SoundActor::detail_SetupSoundWithAmbientInfo(
+    SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo,
+    detail::BasicSound::AmbientArgInfo* pAmbientArgInfo, void*
+);
 
 [[nsmbw(0x80275710)]]
 SoundActor::StartResult

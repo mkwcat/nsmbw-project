@@ -1,7 +1,6 @@
 #pragma once
 
-namespace nw4r::ut
-{
+namespace nw4r::ut {
 
 template <class CharT>
 class TagProcessorBase;

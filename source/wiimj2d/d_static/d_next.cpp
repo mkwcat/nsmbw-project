@@ -3,15 +3,15 @@
 
 #include "d_next.h"
 
-#include "d_s_crsin.h"
-#include "d_s_stage.h"
-#include "d_nextgoto_list.h"
 #include "d_a_player_manager.h"
 #include "d_actor.h"
 #include "d_fader.h"
 #include "d_game_common.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
+#include "d_nextgoto_list.h"
+#include "d_s_crsin.h"
+#include "d_s_stage.h"
 #include "d_save_manager.h"
 #include <bit>
 #include <cassert>

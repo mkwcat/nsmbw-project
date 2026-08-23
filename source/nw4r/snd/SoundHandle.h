@@ -2,11 +2,9 @@
 
 #include "BasicSound.h"
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
-class SoundHandle
-{
+class SoundHandle {
     SIZE_ASSERT(0x4);
 
 public:
@@ -14,14 +12,9 @@ public:
     // ^^^^^^
 
     SoundHandle()
-      : mpSound(nullptr)
-    {
-    }
+        : mpSound(nullptr) {}
 
-    ~SoundHandle()
-    {
-        DetachSound();
-    }
+    ~SoundHandle() { DetachSound(); }
 
 public:
     // Instance Methods

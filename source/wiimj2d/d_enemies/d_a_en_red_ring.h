@@ -4,8 +4,7 @@
 #include "d_enemy.h"
 #include "m_vec.h"
 
-class daEnRedRing_c : public dEn_c
-{
+class daEnRedRing_c : public dEn_c {
 public:
     // Virtual Functions
     // ^^^^^^
@@ -48,7 +47,7 @@ public:
 #else
 #  define OFFSET_daEnRedRing_c_mPlayerDelta 0x800
     /* 0x800 */ mVec2_c mPlayerDelta[PLAYER_COUNT];
-#  define OFFSET_daEnRedRing_c_mPrevPlayerDelta                                                    \
+#  define OFFSET_daEnRedRing_c_mPrevPlayerDelta \
       (OFFSET_daEnRedRing_c_mPlayerDelta + 0x8 * PLAYER_COUNT)
     /* 0x800 */ mVec2_c mPrevPlayerDelta[PLAYER_COUNT];
 #endif

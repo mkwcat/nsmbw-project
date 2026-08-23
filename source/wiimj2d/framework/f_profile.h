@@ -8,8 +8,7 @@ using fProfName = u16;
  * @unofficial
  * A set of basic information needed to construct a generic base.
  */
-class fProfileDat_c
-{
+class fProfileDat_c {
 public:
     // Instance Variables
     // ^^^^^^

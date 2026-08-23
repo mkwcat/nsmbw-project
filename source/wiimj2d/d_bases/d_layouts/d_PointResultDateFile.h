@@ -3,12 +3,11 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "s_FStateFct.h"
+#include "s_State.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
-#include "s_State.h"
 
-class dPointResultDateFile_c : public dBase_c
-{
+class dPointResultDateFile_c : public dBase_c {
     SIZE_ASSERT(0x8E0);
 
 public:
@@ -23,33 +22,33 @@ public:
     // ^^^^^^
 
     struct Player_s {
-        /* 0x00 */ u8 mCollectionCoin;
+        /* 0x00 */ u8   mCollectionCoin;
 
-        /* 0x04 */ u32 mScore;
-        /* 0x08 */ u32 mScoreBackup;
-        /* 0x0C */ u32 mCoin;
-        /* 0x10 */ u32 mCoinBackup;
-        /* 0x14 */ u32 mScoreCopy; // Unused
-        /* 0x18 */ u32 mRestNum;
-        /* 0x1C */ u32 mRestNumBackup;
+        /* 0x04 */ u32  mScore;
+        /* 0x08 */ u32  mScoreBackup;
+        /* 0x0C */ u32  mCoin;
+        /* 0x10 */ u32  mCoinBackup;
+        /* 0x14 */ u32  mScoreCopy; // Unused
+        /* 0x18 */ u32  mRestNum;
+        /* 0x1C */ u32  mRestNumBackup;
 
-        /* 0x20 */ u32 mRankNum;
-        /* 0x24 */ u32 mPlayerType;
+        /* 0x20 */ u32  mRankNum;
+        /* 0x24 */ u32  mPlayerType;
 
         /* 0x28 */ bool mPlayOutRankAnim; // Always set to 0, so the animation never plays
         /* 0x29 */ bool mIsPlayerEntry;
         /* 0x2A */ bool mCoinCountDone;
 
-        /* 0x2C */ f32 mCardTransY;
-        /* 0x30 */ u32 m_30;
-        /* 0x34 */ f32 m_34;
-        /* 0x38 */ f32 m_38;
+        /* 0x2C */ f32  mCardTransY;
+        /* 0x30 */ u32  m_30;
+        /* 0x34 */ f32  m_34;
+        /* 0x38 */ f32  m_38;
     };
 
     enum class PANE_LIST_e {
         FIRST = 0,
 
-        NONE = 44,
+        NONE  = 44,
     };
 
 public:
@@ -64,7 +63,9 @@ public:
 
     FILL(0x208, 0x6A8);
 
-    /* 0x6A8 */ sStateMgr_c<dPointResultDateFile_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c> mStateMgr;
+    /* 0x6A8 */ sStateMgr_c<
+        dPointResultDateFile_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c>
+        mStateMgr;
 
     FILL(0x6E4, 0x7BC);
 

@@ -8,16 +8,16 @@
  * @tparam T The class that this state belongs to.
  */
 template <class T>
-class sFStateFct_c : public sStateFctIf_c
-{
+class sFStateFct_c : public sStateFctIf_c {
 public:
-    sFStateFct_c(T& owner)
-      : mState(owner)
-    {
-    }
+    sFStateFct_c(
+        T& owner
+    )
+        : mState(owner) {}
 
-    virtual sStateIf_c* build(const sStateIDIf_c& id)
-    {
+    virtual sStateIf_c* build(
+        const sStateIDIf_c& id
+    ) {
         if (!id.isNull()) {
             mState.setID(static_cast<const sFStateID_c<T>*>(&id));
             return &mState;
@@ -25,8 +25,9 @@ public:
         return nullptr;
     }
 
-    virtual void dispose(sStateIf_c*& id)
-    {
+    virtual void dispose(
+        sStateIf_c*& id
+    ) {
         id = nullptr;
     }
 

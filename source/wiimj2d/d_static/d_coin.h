@@ -1,7 +1,6 @@
 #pragma once
 
-class dCoin_c
-{
+class dCoin_c {
 public:
     // Static Methods
     // ^^^^^^

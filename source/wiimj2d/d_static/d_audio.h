@@ -1,26 +1,22 @@
 #pragma once
 
-#include "m_vec.h"
 #include "SndAudioMgr.h"
 #include "SndObjectMap.h"
 #include "SndObjectPlayer.h"
+#include "m_vec.h"
 
-namespace dAudio
-{
+namespace dAudio {
 
 // Constants and Types
 // ^^^^^^
 
 class SndObjctCmnEmy_c;
 
-class SndObjctCmnMap_c final : public SndObjctCmnMap
-{
-};
+class SndObjctCmnMap_c final : public SndObjctCmnMap {};
 
 class NonPosSndObjctPly_c;
 
-class SndObjctCSPly_c final : public SndObjctPly
-{
+class SndObjctCSPly_c final : public SndObjctPly {
     SIZE_ASSERT(0xB5);
 
     /* 0x00 VTABLE 0x80321E88 */
@@ -30,9 +26,7 @@ public:
     // ^^^^^^
 
     SndObjctCSPly_c()
-      : SndObjctPly(*SndAudioMgr::sInstance->mpSoundArchivePlayer)
-    {
-    }
+        : SndObjctPly(*SndAudioMgr::sInstance->mpSoundArchivePlayer) {}
 
     /* VT+0x08 0x80104160 */
     virtual ~SndObjctCSPly_c() override;

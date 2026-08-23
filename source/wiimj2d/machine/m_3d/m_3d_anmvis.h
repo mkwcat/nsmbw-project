@@ -12,9 +12,9 @@ public:
 
     virtual int getType() const override;
 
-    bool create(nw4r::g3d::ResMdl, nw4r::g3d::ResAnmVis, mAllocator_c *, u32 *);
-    void setAnm(m3d::bmdl_c &, nw4r::g3d::ResAnmVis, m3d::playMode_e);
-    void setFrmCtrlDefault(nw4r::g3d::ResAnmVis &, m3d::playMode_e);
+    bool create(nw4r::g3d::ResMdl, nw4r::g3d::ResAnmVis, mAllocator_c*, u32*);
+    void setAnm(m3d::bmdl_c&, nw4r::g3d::ResAnmVis, m3d::playMode_e);
+    void setFrmCtrlDefault(nw4r::g3d::ResAnmVis&, m3d::playMode_e);
 };
 
 } // namespace m3d

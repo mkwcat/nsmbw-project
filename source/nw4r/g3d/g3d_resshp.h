@@ -5,8 +5,6 @@
 #include "g3d_resvtx.h"
 #include <revolution/gx/GXEnum.h>
 
-
-
 namespace nw4r {
 namespace g3d {
 struct ResTagDLData {
@@ -16,74 +14,73 @@ struct ResTagDLData {
 };
 
 struct ResPrePrimDL {
-    char UNK_0x0[0xA];
+    char          UNK_0x0[0xA];
     detail::CPCmd CP_CMD_0xA;
     detail::CPCmd CP_CMD_0x10;
-    char UNK_0x16[0xA];
+    char          UNK_0x16[0xA];
     detail::CPCmd CP_CMD_0x20;
     detail::CPCmd CP_CMD_0x26;
     detail::CPCmd CP_CMD_0x2C;
     detail::CPCmd CP_CMD_PAIRS_0x32[GX_POS_MTX_ARRAY - GX_VA_POS][2];
-    char UNK_0xC2[0x1E];
+    char          UNK_0xC2[0x1E];
 };
 
 struct ResShpData {
-    char UNK_0x0[0x4];
-    u32 mParentOffset; // at 0x4
-    char UNK_0x8[0x10];
+    char         UNK_0x0[0x4];
+    u32          mParentOffset; // at 0x4
+    char         UNK_0x8[0x10];
     ResTagDLData mPrePrimDLTag; // at 0x18
     ResTagDLData mPrimDLTag;    // at 0x24
-    char UNK_0x30[0x18];
+    char         UNK_0x30[0x18];
 
-    s16 mVtxPosIndex;                                       // at 0x48
-    s16 mVtxNrmIndex;                                       // at 0x4a
-    s16 mVtxClrIndices[GX_VA_TEX0 - GX_VA_CLR0];            // at 0x4c
-    s16 mVtxTexCoordIndices[GX_POS_MTX_ARRAY - GX_VA_TEX0]; // at 0x50
+    s16          mVtxPosIndex;                                       // at 0x48
+    s16          mVtxNrmIndex;                                       // at 0x4a
+    s16          mVtxClrIndices[GX_VA_TEX0 - GX_VA_CLR0];            // at 0x4c
+    s16          mVtxTexCoordIndices[GX_POS_MTX_ARRAY - GX_VA_TEX0]; // at 0x50
 };
 
 struct ResTagDL {
     ResCommon<ResTagDLData> mData;
 
-    inline ResTagDL(void *vptr) : mData(vptr) {}
+    inline ResTagDL(
+        void* vptr
+    )
+        : mData(vptr) {}
 
-    inline u8 *GetDL() const {
-        return const_cast<u8 *>(mData.ofs_to_ptr<u8>(mData.ref().mOffset));
-    }
+    inline u8* GetDL() const { return const_cast<u8*>(mData.ofs_to_ptr<u8>(mData.ref().mOffset)); }
 
-    inline u32 GetBufSize() const {
-        return mData.ref().mBufSize;
-    }
+    inline u32 GetBufSize() const { return mData.ref().mBufSize; }
 
-    inline u32 GetCmdSize() const {
-        return mData.ref().mCmdSize;
-    }
+    inline u32 GetCmdSize() const { return mData.ref().mCmdSize; }
 };
 
 struct ResShpPrePrim {
     ResCommon<ResPrePrimDL> mDL;
 
-    inline ResShpPrePrim(void *vptr) : mDL(vptr) {}
+    inline ResShpPrePrim(
+        void* vptr
+    )
+        : mDL(vptr) {}
 
-    inline ResPrePrimDL &ref() const {
-        return mDL.ref();
-    }
+    inline ResPrePrimDL& ref() const { return mDL.ref(); }
 };
 
 struct ResShp {
     ResCommon<ResShpData> mShp;
-    inline ResShp() : mShp((void*)nullptr) {}
-    inline ResShp(void *vptr) : mShp(vptr) {}
-    bool IsValid() const {
-        return mShp.IsValid();
-    }
 
-    inline ResShpData &ref() const {
-        return mShp.ref();
-    }
+    inline ResShp()
+        : mShp((void*) nullptr) {}
 
-    inline ResShpPrePrim GetResShpPrePrim() const {
-        return ResTagDL(&ref().mPrePrimDLTag).GetDL();
-    }
+    inline ResShp(
+        void* vptr
+    )
+        : mShp(vptr) {}
+
+    bool IsValid() const { return mShp.IsValid(); }
+
+    inline ResShpData& ref() const { return mShp.ref(); }
+
+    inline ResShpPrePrim GetResShpPrePrim() const { return ResTagDL(&ref().mPrePrimDLTag).GetDL(); }
 
     // bool GXGetVtxDescv(GXVtxDescList *) const;
     // bool GXGetVtxAttrFmtv(GXVtxAttrFmtList *) const;
@@ -92,10 +89,10 @@ struct ResShp {
 
     ResVtxPos GetResVtxPos() const;
     ResVtxNrm GetResVtxNrm() const;
-    ResVtxClr GetResVtxClr(u32) const;
+    ResVtxClr      GetResVtxClr(u32) const;
     ResVtxTexCoord GetResVtxTexCoord(u32) const; // inlined
 
-    void GXSetArray(GXAttr, const void *, u8); // inlined
+    void GXSetArray(GXAttr, const void*, u8); // inlined
 
     void Init();
 

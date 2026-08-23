@@ -4,11 +4,11 @@
 #include "d_profile.h"
 
 #include "d_a_player.h"
-#include "d_a_yoshi.h"
-#include "d_profile.h"
 #include "d_a_player_manager.h"
+#include "d_a_yoshi.h"
 #include "d_base.h"
 #include "d_player_model_manager.h"
+#include "d_profile.h"
 #include "d_yoshi_model.h"
 #include <algorithm>
 #include <array>
@@ -17,21 +17,21 @@
 #include <numeric>
 #include <utility>
 
-namespace dProf
-{
+namespace dProf {
 
 struct ActorName {
-    consteval ActorName(const auto& profName, const auto& nameString)
-      : profile(profName.StaticNonRegionalValue)
-      , name()
-    {
+    consteval ActorName(
+        const auto& profName, const auto& nameString
+    )
+        : profile(profName.StaticNonRegionalValue)
+        , name() {
         for (unsigned i = 0; i < sizeof(nameString); i++) {
             name[i] = nameString[i];
         }
     }
 
     dProfName profile;
-    char name[256];
+    char      name[256];
 }; // namespace dProfstruct ActorName
 
 constexpr auto s_formatted_name_data = [] consteval {
@@ -59,9 +59,11 @@ constexpr auto s_formatted_name_data = [] consteval {
     }();
     constexpr std::pair encoded = [formatted_table, lengths, sorted_indices]() {
         std::array<char, 0x1000> packed;
-        u32 offset = 0;
+        u32                      offset    = 0;
 
-        auto writeByte = [&](char byte) { packed[offset++] = byte; };
+        auto                     writeByte = [&](char byte) {
+            packed[offset++] = byte;
+        };
 
         for (u32 i = 0; i < std::size(formatted_table); i++) {
             const ActorName& name = formatted_table[sorted_indices[i]];
@@ -70,7 +72,7 @@ constexpr auto s_formatted_name_data = [] consteval {
 
             // Search back to see if we have a copy of the same name
             s32 foundOffset = -1;
-            u32 myLength = lengths[sorted_indices[i]];
+            u32 myLength    = lengths[sorted_indices[i]];
             for (u32 j = 0; j < offset - 2;) {
                 if (packed[j + 1] & 0x20) {
                     j += 3;
@@ -119,13 +121,13 @@ constexpr auto s_formatted_name_data = [] consteval {
 
 /* @renamed(@LOCAL@dProf_getName__FUs@s_table) */
 [[nsmbw_data(0x80320B58)]]
-const char* s_base_name_table[BASE_COUNT];
+const char*                                     s_base_name_table[BASE_COUNT];
 
 const std::array<const char*, CUSTOM_COUNT + 1> s_extra_name_table = [] {
     std::array<const char*, CUSTOM_COUNT + 1> table{};
-#define PROFILE(_ID, _NAME, _CLASS)                                                                \
-    if constexpr (_ID >= dProf::BASE_COUNT) {                                                      \
-        table[_ID - dProf::BASE_COUNT] = STRINGIFY(_NAME);                                         \
+#define PROFILE(_ID, _NAME, _CLASS) \
+    if constexpr (_ID >= dProf::BASE_COUNT) { \
+        table[_ID - dProf::BASE_COUNT] = STRINGIFY(_NAME); \
     }
 #include "d_profile_table.inc"
 #undef PROFILE
@@ -133,16 +135,18 @@ const std::array<const char*, CUSTOM_COUNT + 1> s_extra_name_table = [] {
 }();
 
 [[nsmbw(0x801018C0)]]
-const char* getName(dProfName profile)
-{
+const char* getName(
+    dProfName profile
+) {
     if (profile >= dProf::BASE_COUNT) {
         return s_extra_name_table[profile - dProf::BASE_COUNT];
     }
     return s_base_name_table[profile];
 }
 
-const char* getFormattedName(dBase_c* actor)
-{
+const char* getFormattedName(
+    dBase_c* actor
+) {
     if (actor == nullptr) {
         return nullptr;
     }
@@ -152,7 +156,7 @@ const char* getFormattedName(dBase_c* actor)
             return "Road";
         }
 
-        int colorType = daPyMng_c::getPlayerColorType(player->mPlayerType);
+        int           colorType  = daPyMng_c::getPlayerColorType(player->mPlayerType);
         PLAYER_TYPE_e playerType = static_cast<PLAYER_TYPE_e>(colorType);
 
         switch (playerType) {
@@ -202,11 +206,12 @@ const char* getFormattedName(dBase_c* actor)
     return getFormattedName(actor->mProfName);
 }
 
-const char* getFormattedName(dProfName profile)
-{
+const char* getFormattedName(
+    dProfName profile
+) {
     for (u32 i = 0; i < s_formatted_name_data.size();) {
-        u32 info = *reinterpret_cast<const u32*>(s_formatted_name_data.data() + i);
-        u32 len = (info >> 8) & 0x1FFF;
+        u32  info  = *reinterpret_cast<const u32*>(s_formatted_name_data.data() + i);
+        u32  len   = (info >> 8) & 0x1FFF;
         bool match = profile == dProfName(info >> 22);
         if (info & 0x200000) {
             if (match) {
@@ -223,8 +228,9 @@ const char* getFormattedName(dProfName profile)
     return getName(profile);
 }
 
-dProfName getProfByName(const char* string)
-{
+dProfName getProfByName(
+    const char* string
+) {
     u32 lastActor = dProf::LASTACTOR;
     for (u32 i = 0; i < lastActor; i++) {
         if (std::strcmp(string, getName(i)) == 0) {

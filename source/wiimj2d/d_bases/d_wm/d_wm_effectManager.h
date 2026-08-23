@@ -1,7 +1,6 @@
 #pragma once
 
-class dWmEffectManager_c
-{
+class dWmEffectManager_c {
 public:
     // Static Methods
     // ^^^^^^

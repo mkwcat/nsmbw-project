@@ -16,25 +16,25 @@ typedef size_t fpos_t;
 
 #include "msl/c/internal/NULL.h"
 
-#define SEEK_SET 0
-#define SEEK_CUR 1
-#define SEEK_END 2
-#define _IONBF 0
-#define _IOLBF 1
-#define _IOFBF 2
-#define BUFSIZ 0x400
-#define FOPEN_MAX 1024
-#define FILENAME_MAX 1024
-#define L_tmpnam 21 // (sizeof ".\\tmp" + sizeof "-2147483647" + sizeof ".tmp" - 2)
-#define TMP_MAX 2147483647
-#define EOF -1
+#define SEEK_SET            0
+#define SEEK_CUR            1
+#define SEEK_END            2
+#define _IONBF              0
+#define _IOLBF              1
+#define _IOFBF              2
+#define BUFSIZ              0x400
+#define FOPEN_MAX           1024
+#define FILENAME_MAX        1024
+#define L_tmpnam            21 // (sizeof ".\\tmp" + sizeof "-2147483647" + sizeof ".tmp" - 2)
+#define TMP_MAX             2147483647
+#define EOF                 -1
 #define _PRINTF_NAN_LEN_MAX 4
 
 extern FILE __stdin;
 extern FILE __stdout;
 extern FILE __stderr;
 
-#define stdin (&__stdin)
+#define stdin  (&__stdin)
 #define stdout (&__stdout)
 #define stderr (&__stderr)
 

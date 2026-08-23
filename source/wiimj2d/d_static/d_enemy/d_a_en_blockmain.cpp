@@ -3,10 +3,10 @@
 
 #include "d_a_en_blockmain.h"
 
-#include "d_a_yoshi.h"
-#include "d_gamerule.h"
 #include "d_a_player_manager.h"
+#include "d_a_yoshi.h"
 #include "d_actorcreate_mng.h"
+#include "d_gamerule.h"
 #include "d_yoshi_model.h"
 
 [[nsmbw(0x80021AB0)]]

@@ -10,35 +10,31 @@
 #include "d_mj2d_game.h"
 
 [[nsmbw(0x8078BC60)]]
-dMiniGameCannon_c* dMiniGameCannon_c_classInit()
-{
+dMiniGameCannon_c* dMiniGameCannon_c_classInit() {
     return new dMiniGameCannon_c;
 }
 
 [[nsmbw(0x8078BC90)]]
 dMiniGameCannon_c::dMiniGameCannon_c()
-  : mStateMgr(*this, StateID_TitleOpenWait)
-{
-    mReady = false;
-    mActive = false;
-    mIsWindowOpen = false;
-    mIsTitleOpen = false;
+    : mStateMgr(*this, StateID_TitleOpenWait) {
+    mReady           = false;
+    mActive          = false;
+    mIsWindowOpen    = false;
+    mIsTitleOpen     = false;
     mAnimationActive = false;
-    mCloseTitle = false;
-    mCloseOperate = false;
-    mCloseResult = false;
+    mCloseTitle      = false;
+    mCloseOperate    = false;
+    mCloseResult     = false;
 }
 
 [[nsmbw(0x8078BEA0)]]
-dMiniGameCannon_c::~dMiniGameCannon_c()
-{
+dMiniGameCannon_c::~dMiniGameCannon_c() {
     // mStateMgr.~sStateMgr_c();
     mLayout.~LytBase_c();
 }
 
 [[nsmbw(0x8078BF30)]]
-fBase_c::PACK_RESULT_e dMiniGameCannon_c::create()
-{
+fBase_c::PACK_RESULT_e dMiniGameCannon_c::create() {
     if (mReady) {
         return PACK_RESULT_e::SUCCEEDED;
     }
@@ -63,148 +59,118 @@ fBase_c::PACK_RESULT_e dMiniGameCannon_c::create()
         mPlayerEntry[i] = false;
     }
 
-    mReady = true;
+    mReady  = true;
     mActive = false;
 
     return PACK_RESULT_e::SUCCEEDED;
 }
 
 [[nsmbw(0x8078C000)]]
-bool dMiniGameCannon_c::createLayout()
-{
+bool dMiniGameCannon_c::createLayout() {
     if (!mLayout.ReadResource("miniGameCannon/miniGameCannon.arc", false)) {
         return false;
     }
 
     mLayout.build("miniGameCannon_15.brlyt", nullptr);
     mLayout.AnimeResRegister({
-      "miniGameCannon_15_inWindow.brlan",
-      "miniGameCannon_15_loopWindow.brlan",
-      "miniGameCannon_15_loopYokoIncline.brlan",
-      "miniGameCannon_15_inPlayer.brlan",
-      "miniGameCannon_15_loop1UP.brlan",
-      "miniGameCannon_15_inTitle.brlan",
-      "miniGameCannon_15_weitTitle.brlan",
-      "miniGameCannon_15_outTitle.brlan",
-      "miniGameCannon_15_outWindow.brlan",
+        "miniGameCannon_15_inWindow.brlan",
+        "miniGameCannon_15_loopWindow.brlan",
+        "miniGameCannon_15_loopYokoIncline.brlan",
+        "miniGameCannon_15_inPlayer.brlan",
+        "miniGameCannon_15_loop1UP.brlan",
+        "miniGameCannon_15_inTitle.brlan",
+        "miniGameCannon_15_weitTitle.brlan",
+        "miniGameCannon_15_outTitle.brlan",
+        "miniGameCannon_15_outWindow.brlan",
     });
     mLayout.GroupRegister(
-      {{"A00_Window", 0},
-       {"A00_Window", 1},
-       {"B00_Yokomochi", 2},
-       {"D00_1P_00", 3},
-       {"D01_2P_00", 3},
-       {"D02_3P_00", 3},
-       {"D03_4P_00", 3},
-       {"D04_5P_00", 3},
-       {"D05_6P_00", 3},
-       {"D06_7P_00", 3},
-       {"D07_8P_00", 3},
-       {"D00_1P_00", 4},
-       {"D01_2P_00", 4},
-       {"D02_3P_00", 4},
-       {"D03_4P_00", 4},
-       {"D04_5P_00", 4},
-       {"D05_6P_00", 4},
-       {"D06_7P_00", 4},
-       {"D07_8P_00", 4},
-       {"E00_title", 5},
-       {"E00_title", 6},
-       {"E00_title", 7},
-       {"A00_Window", 8}}
+        {{"A00_Window", 0}, {"A00_Window", 1}, {"B00_Yokomochi", 2}, {"D00_1P_00", 3},
+         {"D01_2P_00", 3},  {"D02_3P_00", 3},  {"D03_4P_00", 3},     {"D04_5P_00", 3},
+         {"D05_6P_00", 3},  {"D06_7P_00", 3},  {"D07_8P_00", 3},     {"D00_1P_00", 4},
+         {"D01_2P_00", 4},  {"D02_3P_00", 4},  {"D03_4P_00", 4},     {"D04_5P_00", 4},
+         {"D05_6P_00", 4},  {"D06_7P_00", 4},  {"D07_8P_00", 4},     {"E00_title", 5},
+         {"E00_title", 6},  {"E00_title", 7},  {"A00_Window", 8}}
     );
     mLayout.TPaneNameRegister(
-      300,
-      {
-        "T_info_01",
-        "T_info_02",
-        "T_infoS_00",
-        "T_info_00",
-        "T_info_03",
-        "T_title_00",
-      },
-      {1, 2, 0, 0, 3, 5}
+        300,
+        {
+            "T_info_01",
+            "T_info_02",
+            "T_infoS_00",
+            "T_info_00",
+            "T_info_03",
+            "T_title_00",
+        },
+        {1, 2, 0, 0, 3, 5}
     );
     mpRootPane = mLayout.getRootPane();
     mLayout.NPaneRegister(
-      &mpNInfo, {
+        &mpNInfo, {
                       "N_info_00",
                       "N_result_00",
                       "N_gameCannon_00",
                       "N_result_01",
-                    }
-    );
-    mLayout.NPaneRegister(
-      &mpN8pPos[0], {
-                      "N_8P_Pos_00",
-                      "N_8P_Pos_01",
-                      "N_8P_Pos_02",
-                      "N_8P_Pos_03",
-
-                      "N_7P_Pos_00",
-                      "N_7P_Pos_01",
-                      "N_7P_Pos_02",
-
-                      "N_6P_Pos_00",
-                      "N_6P_Pos_01",
-
-                      "N_5P_Pos_00",
-
-                      "N_4P_Pos_10",
-                      "N_4P_Pos_11",
-                      "N_4P_Pos_12",
-                      "N_4P_Pos_13",
-
-                      "N_4P_Pos_00",
-                      "N_4P_Pos_01",
-                      "N_4P_Pos_02",
-                      "N_4P_Pos_03",
-
-                      "N_3P_Pos_00",
-                      "N_3P_Pos_01",
-                      "N_3P_Pos_02",
-
-                      "N_2P_Pos_00",
-                      "N_2P_Pos_01",
-
-                      "N_1P_Pos_00",
-
-                      "N_1P_00",
-                      "N_2P_00",
-                      "N_3P_00",
-                      "N_4P_00",
-                      "N_5P_00",
-                      "N_6P_00",
-                      "N_7P_00",
-                      "N_8P_00",
-                    }
-    );
-    mLayout.TPaneRegister(&mpTInfo, {"T_info_04", });
-    mLayout.TPaneRegister(
-      &mpT1up[0], {
-                    "T_1Up_00",
-                    "T_1Up_01",
-                    "T_1Up_02",
-                    "T_1Up_03",
-                    "T_1Up_04",
-                    "T_1Up_05",
-                    "T_1Up_06",
-                    "T_1Up_07",
                   }
     );
+    mLayout.NPaneRegister(
+        &mpN8pPos[0], {
+                          "N_8P_Pos_00", "N_8P_Pos_01", "N_8P_Pos_02", "N_8P_Pos_03",
+
+                          "N_7P_Pos_00", "N_7P_Pos_01", "N_7P_Pos_02",
+
+                          "N_6P_Pos_00", "N_6P_Pos_01",
+
+                          "N_5P_Pos_00",
+
+                          "N_4P_Pos_10", "N_4P_Pos_11", "N_4P_Pos_12", "N_4P_Pos_13",
+
+                          "N_4P_Pos_00", "N_4P_Pos_01", "N_4P_Pos_02", "N_4P_Pos_03",
+
+                          "N_3P_Pos_00", "N_3P_Pos_01", "N_3P_Pos_02",
+
+                          "N_2P_Pos_00", "N_2P_Pos_01",
+
+                          "N_1P_Pos_00",
+
+                          "N_1P_00",     "N_2P_00",     "N_3P_00",     "N_4P_00",
+                          "N_5P_00",     "N_6P_00",     "N_7P_00",     "N_8P_00",
+                      }
+    );
+    mLayout.TPaneRegister(
+        &mpTInfo, {
+                      "T_info_04",
+                  }
+    );
+    mLayout.TPaneRegister(
+        &mpT1up[0], {
+                        "T_1Up_00",
+                        "T_1Up_01",
+                        "T_1Up_02",
+                        "T_1Up_03",
+                        "T_1Up_04",
+                        "T_1Up_05",
+                        "T_1Up_06",
+                        "T_1Up_07",
+                    }
+    );
     mpTInfo->setMessage(dMessage_c::getMesRes(), 301, 7, 0);
-    mLayout.PPaneRegister(&mpPBg, {"P_BG_00", "P_titleBase_00",});
     mLayout.PPaneRegister(
-      &mpPPlayer[0], {
-                       "P_1P_00",
-                       "P_2P_00",
-                       "P_3P_00",
-                       "P_4P_00",
-                       "P_5P_00",
-                       "P_6P_00",
-                       "P_7P_00",
-                       "P_8P_00",
-                     }
+        &mpPBg, {
+                    "P_BG_00",
+                    "P_titleBase_00",
+                }
+    );
+    mLayout.PPaneRegister(
+        &mpPPlayer[0], {
+                           "P_1P_00",
+                           "P_2P_00",
+                           "P_3P_00",
+                           "P_4P_00",
+                           "P_5P_00",
+                           "P_6P_00",
+                           "P_7P_00",
+                           "P_8P_00",
+                       }
     );
     mLayout.WPaneRegister(&mpWGameCannon, {"W_gameCannon_00"});
 
@@ -212,8 +178,7 @@ bool dMiniGameCannon_c::createLayout()
 }
 
 [[nsmbw(0x8078C140)]]
-fBase_c::PACK_RESULT_e dMiniGameCannon_c::preExecute()
-{
+fBase_c::PACK_RESULT_e dMiniGameCannon_c::preExecute() {
     if (dBase_c::preExecute() == PACK_RESULT_e::NOT_READY) {
         return PACK_RESULT_e::NOT_READY;
     }
@@ -222,8 +187,7 @@ fBase_c::PACK_RESULT_e dMiniGameCannon_c::preExecute()
 }
 
 [[nsmbw(0x8078C180)]]
-fBase_c::PACK_RESULT_e dMiniGameCannon_c::execute()
-{
+fBase_c::PACK_RESULT_e dMiniGameCannon_c::execute() {
     if (mReady && mActive) {
         mStateMgr.executeState();
         mLayout.AnimePlay();
@@ -233,8 +197,7 @@ fBase_c::PACK_RESULT_e dMiniGameCannon_c::execute()
 }
 
 [[nsmbw(0x8078C200)]]
-fBase_c::PACK_RESULT_e dMiniGameCannon_c::draw()
-{
+fBase_c::PACK_RESULT_e dMiniGameCannon_c::draw() {
     if (mReady && mActive) {
         mLayout.entry();
     }
@@ -242,30 +205,25 @@ fBase_c::PACK_RESULT_e dMiniGameCannon_c::draw()
 }
 
 [[nsmbw(0x8078C240)]]
-fBase_c::PACK_RESULT_e dMiniGameCannon_c::doDelete()
-{
+fBase_c::PACK_RESULT_e dMiniGameCannon_c::doDelete() {
     return mLayout.doDelete();
 }
 
 [[nsmbw(0x8078C250)]]
-int dMiniGameCannon_c::getPosPaneIdx(int player)
-{
+int dMiniGameCannon_c::getPosPaneIdx(
+    int player
+) {
     int paneIdxArray[PLAYER_COUNT][PLAYER_COUNT] = {
-        {23, 24, 24, 24, 24, 24, 24, 24},
-        {21, 22, 24, 24, 24, 24, 24, 24},
-        {18, 19, 20, 24, 24, 24, 24, 24},
-        {14, 15, 16, 17, 24, 24, 24, 24},
-        {10, 11, 12, 13, 9,  24, 24, 24},
-        {10, 11, 12, 13, 7,  8,  24, 24},
-        {10, 11, 12, 13, 4,  5,  6,  24},
-        {10, 11, 12, 13, 0,  1,  2,  3},
+        {23, 24, 24, 24, 24, 24, 24, 24}, {21, 22, 24, 24, 24, 24, 24, 24},
+        {18, 19, 20, 24, 24, 24, 24, 24}, {14, 15, 16, 17, 24, 24, 24, 24},
+        {10, 11, 12, 13, 9, 24, 24, 24},  {10, 11, 12, 13, 7, 8, 24, 24},
+        {10, 11, 12, 13, 4, 5, 6, 24},    {10, 11, 12, 13, 0, 1, 2, 3},
     };
-    return paneIdxArray[mNumPlayers-1][player];
+    return paneIdxArray[mNumPlayers - 1][player];
 }
 
 [[nsmbw(0x8078C280)]]
-void dMiniGameCannon_c::setPlayerPanePositions()
-{
+void dMiniGameCannon_c::setPlayerPanePositions() {
     for (std::size_t i = 0, j = 0; i < PLAYER_COUNT; i++) {
         int playerType = static_cast<int>(daPyMng_c::mPlayerType[i]);
         if (playerType >= 8) {
@@ -277,7 +235,7 @@ void dMiniGameCannon_c::setPlayerPanePositions()
             j++;
 
             nw4r::lyt::Pane* posPane = mpN8pPos[paneIdx];
-            const auto& gmtx = posPane->GetGlobalMtx();
+            const auto&      gmtx    = posPane->GetGlobalMtx();
             mpNPlayer[i]->SetTranslate(nw4r::math::VEC3(gmtx[0][3], gmtx[1][3], 0.0));
             mpNPlayer[i]->SetScale(nw4r::math::VEC2(gmtx[0][0], gmtx[1][1]));
             mpT1up[i]->SetAlpha(posPane->GetGlobalAlpha());
@@ -287,8 +245,7 @@ void dMiniGameCannon_c::setPlayerPanePositions()
 }
 
 [[nsmbw(0x8078C3F0)]]
-void dMiniGameCannon_c::setAllText()
-{
+void dMiniGameCannon_c::setAllText() {
     MsgRes_c* msgRes = dMessage_c::getMesRes();
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -296,7 +253,7 @@ void dMiniGameCannon_c::setAllText()
             continue;
         }
 
-        int rest = mNumWon[i];
+        int rest   = mNumWon[i];
         int digits = 1;
         for (int r = rest; r >= 10; digits++) {
             r /= 10;
@@ -308,8 +265,7 @@ void dMiniGameCannon_c::setAllText()
 }
 
 [[nsmbw(0x8078C4D0)]]
-bool dMiniGameCannon_c::isWin() const
-{
+bool dMiniGameCannon_c::isWin() const {
     for (std::size_t i = 0; i < std::size(mNumWon); i++) {
         if (mNumWon[i] != 0) {
             return true;
@@ -319,16 +275,14 @@ bool dMiniGameCannon_c::isWin() const
 }
 
 [[nsmbw(0x8078C530)]]
-void dMiniGameCannon_c::initializeState_TitleOpenWait()
-{
+void dMiniGameCannon_c::initializeState_TitleOpenWait() {
     mpRootPane->SetVisible(false);
     mAnimationActive = false;
-    mCloseTitle = false;
+    mCloseTitle      = false;
 }
 
 [[nsmbw(0x8078C550)]]
-void dMiniGameCannon_c::executeState_TitleOpenWait()
-{
+void dMiniGameCannon_c::executeState_TitleOpenWait() {
     if (!mIsTitleOpen) {
         return;
     }
@@ -337,13 +291,10 @@ void dMiniGameCannon_c::executeState_TitleOpenWait()
 }
 
 [[nsmbw(0x8078C590)]]
-void dMiniGameCannon_c::finalizeState_TitleOpenWait()
-{
-}
+void dMiniGameCannon_c::finalizeState_TitleOpenWait() {}
 
 [[nsmbw(0x8078C5A0)]]
-void dMiniGameCannon_c::initializeState_TitleOpenAnimeEndWait()
-{
+void dMiniGameCannon_c::initializeState_TitleOpenAnimeEndWait() {
     mpRootPane->SetVisible(true);
     mpPBg->SetVisible(false);
     mpNInfo->SetVisible(false);
@@ -361,28 +312,24 @@ void dMiniGameCannon_c::initializeState_TitleOpenAnimeEndWait()
 }
 
 [[nsmbw(0x8078C6B0)]]
-void dMiniGameCannon_c::executeState_TitleOpenAnimeEndWait()
-{
+void dMiniGameCannon_c::executeState_TitleOpenAnimeEndWait() {
     if (!mLayout.isAnime(-1)) {
         return mStateMgr.changeState(StateID_TitleDisp);
     }
 }
 
 [[nsmbw(0x8078C710)]]
-void dMiniGameCannon_c::finalizeState_TitleOpenAnimeEndWait()
-{
+void dMiniGameCannon_c::finalizeState_TitleOpenAnimeEndWait() {
     mAnimationActive = false;
 }
 
 [[nsmbw(0x8078C720)]]
-void dMiniGameCannon_c::initializeState_TitleDisp()
-{
+void dMiniGameCannon_c::initializeState_TitleDisp() {
     mLayout.LoopAnimeStartSetup(20);
 }
 
 [[nsmbw(0x8078C730)]]
-void dMiniGameCannon_c::executeState_TitleDisp()
-{
+void dMiniGameCannon_c::executeState_TitleDisp() {
     if (!mCloseTitle) {
         return;
     }
@@ -390,21 +337,18 @@ void dMiniGameCannon_c::executeState_TitleDisp()
 }
 
 [[nsmbw(0x8078C760)]]
-void dMiniGameCannon_c::finalizeState_TitleDisp()
-{
+void dMiniGameCannon_c::finalizeState_TitleDisp() {
     mLayout.AnimeEndSetup(20);
 }
 
 [[nsmbw(0x8078C770)]]
-void dMiniGameCannon_c::initializeState_TitleExitAnimeEndWait()
-{
+void dMiniGameCannon_c::initializeState_TitleExitAnimeEndWait() {
     mLayout.AnimeStartSetup(21, false);
     mAnimationActive = true;
 }
 
 [[nsmbw(0x8078C7B0)]]
-void dMiniGameCannon_c::executeState_TitleExitAnimeEndWait()
-{
+void dMiniGameCannon_c::executeState_TitleExitAnimeEndWait() {
     if (!mLayout.isAnime(-1)) {
         mActive = false;
         return mStateMgr.changeState(StateID_StartWait);
@@ -412,8 +356,7 @@ void dMiniGameCannon_c::executeState_TitleExitAnimeEndWait()
 }
 
 [[nsmbw(0x8078C810)]]
-void dMiniGameCannon_c::finalizeState_TitleExitAnimeEndWait()
-{
+void dMiniGameCannon_c::finalizeState_TitleExitAnimeEndWait() {
     mpRootPane->SetVisible(false);
     mpPBg->SetVisible(true);
     mpNInfo->SetVisible(true);
@@ -421,18 +364,15 @@ void dMiniGameCannon_c::finalizeState_TitleExitAnimeEndWait()
     mpWGameCannon->SetVisible(true);
     mpPTitleBase->SetVisible(false);
     mAnimationActive = false;
-    mCloseOperate = false;
-    mCloseResult = false;
+    mCloseOperate    = false;
+    mCloseResult     = false;
 }
 
 [[nsmbw(0x8078C8A0)]]
-void dMiniGameCannon_c::initializeState_StartWait()
-{
-}
+void dMiniGameCannon_c::initializeState_StartWait() {}
 
 [[nsmbw(0x8078C8B0)]]
-void dMiniGameCannon_c::executeState_StartWait()
-{
+void dMiniGameCannon_c::executeState_StartWait() {
     if (!mIsWindowOpen) {
         return;
     }
@@ -442,8 +382,7 @@ void dMiniGameCannon_c::executeState_StartWait()
 }
 
 [[nsmbw(0x8078C8E0)]]
-void dMiniGameCannon_c::finalizeState_StartWait()
-{
+void dMiniGameCannon_c::finalizeState_StartWait() {
     mNumPlayers = 0;
     for (std::size_t i = 0; i < PLAYER_COUNT; i++) {
         int player = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
@@ -458,8 +397,7 @@ void dMiniGameCannon_c::finalizeState_StartWait()
 }
 
 [[nsmbw(0x8078C970)]]
-void dMiniGameCannon_c::initializeState_OpenAnimeEndWait()
-{
+void dMiniGameCannon_c::initializeState_OpenAnimeEndWait() {
     mLayout.AllAnimeEndSetup();
 
     mpRootPane->SetVisible(true);
@@ -493,8 +431,7 @@ void dMiniGameCannon_c::initializeState_OpenAnimeEndWait()
 }
 
 [[nsmbw(0x8078CB80)]]
-void dMiniGameCannon_c::executeState_OpenAnimeEndWait()
-{
+void dMiniGameCannon_c::executeState_OpenAnimeEndWait() {
     if (mLayout.isAllAnime()) {
         return;
     }
@@ -512,20 +449,17 @@ void dMiniGameCannon_c::executeState_OpenAnimeEndWait()
 }
 
 [[nsmbw(0x8078CC40)]]
-void dMiniGameCannon_c::finalizeState_OpenAnimeEndWait()
-{
+void dMiniGameCannon_c::finalizeState_OpenAnimeEndWait() {
     mAnimationActive = false;
 }
 
 [[nsmbw(0x8078CC50)]]
-void dMiniGameCannon_c::initializeState_NowDisp()
-{
+void dMiniGameCannon_c::initializeState_NowDisp() {
     mLayout.LoopAnimeStartSetup(2);
 }
 
 [[nsmbw(0x8078CC60)]]
-void dMiniGameCannon_c::executeState_NowDisp()
-{
+void dMiniGameCannon_c::executeState_NowDisp() {
     if (!mCloseOperate) {
         return;
     }
@@ -534,14 +468,12 @@ void dMiniGameCannon_c::executeState_NowDisp()
 }
 
 [[nsmbw(0x8078CC90)]]
-void dMiniGameCannon_c::finalizeState_NowDisp()
-{
+void dMiniGameCannon_c::finalizeState_NowDisp() {
     mLayout.AnimeEndSetup(2);
 }
 
 [[nsmbw(0x8078CCA0)]]
-void dMiniGameCannon_c::initializeState_ResultDispAnimeEndWait()
-{
+void dMiniGameCannon_c::initializeState_ResultDispAnimeEndWait() {
     setPlayerPanePositions();
     setAllText();
 
@@ -560,8 +492,7 @@ void dMiniGameCannon_c::initializeState_ResultDispAnimeEndWait()
 }
 
 [[nsmbw(0x8078CE10)]]
-void dMiniGameCannon_c::initializeState_ResultNowDisp()
-{
+void dMiniGameCannon_c::initializeState_ResultNowDisp() {
     if (!isWin()) {
         return;
     }
@@ -577,8 +508,7 @@ void dMiniGameCannon_c::initializeState_ResultNowDisp()
 }
 
 [[nsmbw(0x8078CE90)]]
-void dMiniGameCannon_c::executeState_ResultNowDisp()
-{
+void dMiniGameCannon_c::executeState_ResultNowDisp() {
     if (!mCloseResult) {
         return;
     }
@@ -586,23 +516,20 @@ void dMiniGameCannon_c::executeState_ResultNowDisp()
 }
 
 [[nsmbw(0x8078CEC0)]]
-void dMiniGameCannon_c::finalizeState_ResultNowDisp()
-{
+void dMiniGameCannon_c::finalizeState_ResultNowDisp() {
     if (isWin()) {
         mLayout.AllAnimeEndSetup();
     }
 }
 
 [[nsmbw(0x8078CF00)]]
-void dMiniGameCannon_c::initializeState_ExitAnimeEndWait()
-{
+void dMiniGameCannon_c::initializeState_ExitAnimeEndWait() {
     mLayout.AnimeStartSetup(22, false);
     mAnimationActive = true;
 }
 
 [[nsmbw(0x8078CF40)]]
-void dMiniGameCannon_c::executeState_ExitAnimeEndWait()
-{
+void dMiniGameCannon_c::executeState_ExitAnimeEndWait() {
     setPlayerPanePositions();
     if (!mLayout.isAnime(-1)) {
         mActive = false;
@@ -611,7 +538,6 @@ void dMiniGameCannon_c::executeState_ExitAnimeEndWait()
 }
 
 [[nsmbw(0x8078CFB0)]]
-void dMiniGameCannon_c::finalizeState_ExitAnimeEndWait()
-{
+void dMiniGameCannon_c::finalizeState_ExitAnimeEndWait() {
     mAnimationActive = false;
 }

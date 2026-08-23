@@ -3,8 +3,7 @@
 
 #include "List.h"
 
-namespace nw4r::ut
-{
+namespace nw4r::ut {
 
 [[nsmbw(0x80228F10)]]
 void List_Init(List* list, u16 offset);

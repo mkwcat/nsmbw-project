@@ -6,12 +6,12 @@
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
 #include "d_mj2d_game.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Window.h>
 #include "s_FStateFct.h"
 #include "s_State.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
+#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/Window.h>
 
 class dMultiCourseSelectContents_c;
 
@@ -82,15 +82,15 @@ public:
     struct FavoriteCourse_s {
     public:
         SIZE_ASSERT(0x10);
+
         /* 0x00 */ int mWorldNo;
         /* 0x04 */ int mStageNo;
         /* 0x08 */ u16 mPlayCount;
         /* 0x0C */ int mClearState;
 
-        void initialize()
-        {
-            mWorldNo = WORLD_COUNT;
-            mStageNo = STAGE_COUNT;
+        void initialize() {
+            mWorldNo   = WORLD_COUNT;
+            mStageNo   = STAGE_COUNT;
             mPlayCount = 0;
         }
     };

@@ -1,17 +1,14 @@
 #pragma once
 
 #include "d_lytbase.h"
-
 #include <nw4r/lyt/Pane.h>
 
-class dPreGame_c
-{
+class dPreGame_c {
 public:
     // Structors
     // ^^^^^^
 
-    ~dPreGame_c()
-    {
+    ~dPreGame_c() {
         if (mpExtra != nullptr) {
             delete mpExtra;
             mpExtra = nullptr;
@@ -26,13 +23,11 @@ public:
     static constexpr std::size_t LytPlayerCount = 8;
 
     struct Extra_s {
-        ~Extra_s()
-        {
-        }
+        ~Extra_s() {}
 
-        LytTextBox_c* mpTRemainderOld1;
-        LytTextBox_c* mpTRemainder0[LytPlayerCount - 4];
-        LytTextBox_c* mpTRemainder1[LytPlayerCount - 4];
+        LytTextBox_c*    mpTRemainderOld1;
+        LytTextBox_c*    mpTRemainder0[LytPlayerCount - 4];
+        LytTextBox_c*    mpTRemainder1[LytPlayerCount - 4];
         nw4r::lyt::Pane* mpNPlayer[LytPlayerCount - 4];
     };
 
@@ -55,7 +50,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x000 */ LytBase_c mLayout;
+    /* 0x000 */ LytBase_c        mLayout;
     /* 0x198 */ nw4r::lyt::Pane* mpRootPane;
 
     FILL(0x19C, 0x1B0);
@@ -76,7 +71,7 @@ public:
 
     FILL(0x20C, 0x238);
 
-    /* 0x238 */ nw4r::lyt::Pane* mpOtherPane[20];
+    /* 0x238 */ nw4r::lyt::Pane*    mpOtherPane[20];
 
     /* 0x288 */ nw4r::lyt::Picture* mpPLuigiIcon[2];
 
@@ -94,7 +89,7 @@ public:
     /* 0x2E1 */ bool m0x2E1;
     /* 0x2E2 */ bool m0x2E2;
     /* 0x2E3 */ bool mSuperGuideDispDone;
-    /* 0x2E4 */ int mPhase;
+    /* 0x2E4 */ int  mPhase;
 
     FILL(0x2E2, 0x2F0);
 

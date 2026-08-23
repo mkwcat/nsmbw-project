@@ -1,10 +1,8 @@
 #pragma once
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
-class SoundHeap
-{
+class SoundHeap {
 public:
     // Virtual Functions
     // ^^^^^^

@@ -1,7 +1,6 @@
 #pragma once
 
-class dBeansKuriboMng_c
-{
+class dBeansKuriboMng_c {
 public:
     // Instance Methods
     // ^^^^^^

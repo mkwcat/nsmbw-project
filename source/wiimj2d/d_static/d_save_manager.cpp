@@ -3,13 +3,13 @@
 
 #include "d_save_manager.h"
 
-#include "d_s_world_map.h"
 #include "d_a_player_manager.h"
 #include "d_game_common.h"
 #include "d_info.h"
 #include "d_mj2d_data.h"
 #include "d_mj2d_game.h"
 #include "d_nand_thread.h"
+#include "d_s_world_map.h"
 #include "m_dvd.h"
 #include "m_heap.h"
 #include <cstring>

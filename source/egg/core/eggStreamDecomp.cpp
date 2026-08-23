@@ -3,8 +3,7 @@
 
 #include "eggStreamDecomp.h"
 
-namespace EGG
-{
+namespace EGG {
 
 [[nsmbw(0x802B8560)]]
 bool StreamDecompLZ::init(void* dst, u32 maxCompressedSize);

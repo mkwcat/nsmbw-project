@@ -4,7 +4,7 @@
 
 EXTERN_C_START
 
-#define OS_RESET_RESTART 0
+#define OS_RESET_RESTART  0
 #define OS_RESET_HOTRESET 1
 #define OS_RESET_SHUTDOWN 2
 
@@ -18,8 +18,8 @@ typedef struct OSShutdownFunctionQueue {
 typedef BOOL (*OSShutdownFunction)(BOOL, u32);
 
 struct OSShutdownFunctionInfo {
-    OSShutdownFunction func;
-    u32 priority;
+    OSShutdownFunction      func;
+    u32                     priority;
     OSShutdownFunctionInfo* next;
     OSShutdownFunctionInfo* prev;
 };

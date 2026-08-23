@@ -1,8 +1,7 @@
 #pragma once
 
 // @unofficial
-class cRnd_c
-{
+class cRnd_c {
 public:
     // Instance Methods
     // ^^^^^^
@@ -11,8 +10,7 @@ public:
     u32 next(u32 limit = -1);
 
     // +++
-    float nextFloat()
-    {
+    float nextFloat() {
         return static_cast<float>(next() & 0xFFFFFF) / static_cast<float>(0xFFFFFF);
     }
 

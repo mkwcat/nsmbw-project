@@ -1,10 +1,8 @@
 #pragma once
 
-namespace EGG
-{
+namespace EGG {
 
-class Scene
-{
+class Scene {
     SIZE_ASSERT(0x30);
 
 public:

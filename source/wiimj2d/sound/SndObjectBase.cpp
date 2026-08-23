@@ -5,7 +5,7 @@
 
 [[nsmbw(0x80197440)]]
 NMSndObjectBase::NMSndObjectBase(
-  OBJ_TYPE objType, nw4r::snd::SoundArchivePlayer& soundArchivePlayer
+    OBJ_TYPE objType, nw4r::snd::SoundArchivePlayer& soundArchivePlayer
 );
 
 /* VT+0x08 */

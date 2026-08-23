@@ -12,8 +12,7 @@ class dCharacterChangeSelectArrow_c;
 class dCharacterChangeIndicator_c;
 class da2DPlayer_c;
 
-class dCharacterChangeSelectBase_c : public dBase_c
-{
+class dCharacterChangeSelectBase_c : public dBase_c {
 public:
     // Structors
     // ^^^^^^
@@ -29,37 +28,37 @@ public:
 
     enum class Icon_e {
         // Reserved
-        ICON_NONE = 6,
+        ICON_NONE                   = 6,
 
-        ICON_BLUE_TOAD = 0,
-        ICON_BLUE_TOAD_LOCKED = 3,
-        ICON_YELLOW_TOAD = 1,
-        ICON_YELLOW_TOAD_LOCKED = 4,
-        ICON_LUIGI = 2,
-        ICON_LUIGI_LOCKED = 5,
-        ICON_MARIO = 7,
-        ICON_MARIO_LOCKED = 8,
-        ICON_TOADETTE = 9,
-        ICON_TOADETTE_LOCKED = 10,
-        ICON_PURPLE_TOADETTE = 11,
+        ICON_BLUE_TOAD              = 0,
+        ICON_BLUE_TOAD_LOCKED       = 3,
+        ICON_YELLOW_TOAD            = 1,
+        ICON_YELLOW_TOAD_LOCKED     = 4,
+        ICON_LUIGI                  = 2,
+        ICON_LUIGI_LOCKED           = 5,
+        ICON_MARIO                  = 7,
+        ICON_MARIO_LOCKED           = 8,
+        ICON_TOADETTE               = 9,
+        ICON_TOADETTE_LOCKED        = 10,
+        ICON_PURPLE_TOADETTE        = 11,
         ICON_PURPLE_TOADETTE_LOCKED = 12,
-        ICON_ORANGE_TOAD = 13,
-        ICON_ORANGE_TOAD_LOCKED = 14,
-        ICON_BLACK_TOAD = 15,
-        ICON_BLACK_TOAD_LOCKED = 16,
+        ICON_ORANGE_TOAD            = 13,
+        ICON_ORANGE_TOAD_LOCKED     = 14,
+        ICON_BLACK_TOAD             = 15,
+        ICON_BLACK_TOAD_LOCKED      = 16,
     };
 
     static constexpr Icon_e ICON_FROM_BASE[] = {
-      Icon_e::ICON_MARIO,       Icon_e::ICON_LUIGI,      Icon_e::ICON_YELLOW_TOAD,
-      Icon_e::ICON_BLUE_TOAD,   Icon_e::ICON_TOADETTE,   Icon_e::ICON_PURPLE_TOADETTE,
-      Icon_e::ICON_ORANGE_TOAD, Icon_e::ICON_BLACK_TOAD,
+        Icon_e::ICON_MARIO,       Icon_e::ICON_LUIGI,      Icon_e::ICON_YELLOW_TOAD,
+        Icon_e::ICON_BLUE_TOAD,   Icon_e::ICON_TOADETTE,   Icon_e::ICON_PURPLE_TOADETTE,
+        Icon_e::ICON_ORANGE_TOAD, Icon_e::ICON_BLACK_TOAD,
     };
 
     static constexpr Icon_e ICON_LOCKED_FROM_BASE[] = {
-      Icon_e::ICON_MARIO_LOCKED,       Icon_e::ICON_LUIGI_LOCKED,
-      Icon_e::ICON_YELLOW_TOAD_LOCKED, Icon_e::ICON_BLUE_TOAD_LOCKED,
-      Icon_e::ICON_TOADETTE_LOCKED,    Icon_e::ICON_PURPLE_TOADETTE_LOCKED,
-      Icon_e::ICON_ORANGE_TOAD_LOCKED, Icon_e::ICON_BLACK_TOAD_LOCKED,
+        Icon_e::ICON_MARIO_LOCKED,       Icon_e::ICON_LUIGI_LOCKED,
+        Icon_e::ICON_YELLOW_TOAD_LOCKED, Icon_e::ICON_BLUE_TOAD_LOCKED,
+        Icon_e::ICON_TOADETTE_LOCKED,    Icon_e::ICON_PURPLE_TOADETTE_LOCKED,
+        Icon_e::ICON_ORANGE_TOAD_LOCKED, Icon_e::ICON_BLACK_TOAD_LOCKED,
     };
 
 public:
@@ -97,53 +96,53 @@ public:
     FILL(0x070, 0x074);
 
     /* 0x074 */ dCharacterChangeSelectContents_c* mpCcSelContents;
-    /* 0x078 */ dCharacterChangeSelectArrow_c* mpCcSelArrow;
-    /* 0x07C */ dCharacterChangeIndicator_c* mpCcIndicator;
+    /* 0x078 */ dCharacterChangeSelectArrow_c*    mpCcSelArrow;
+    /* 0x07C */ dCharacterChangeIndicator_c*      mpCcIndicator;
 
     union {
-        /* 0x080 */ da2DPlayer_c* REMOVED(mp2DPlayer)[4];
+        /* 0x080 */ da2DPlayer_c*                                 REMOVED(mp2DPlayer)[4];
         /* 0x080 */ cEnumArrayRef_c<da2DPlayer_c*, PLAYER_TYPE_e> mp2DPlayer;
     };
 
-    /* 0x090 */ LytBase_c mLayout;
+    /* 0x090 */ LytBase_c                                        mLayout;
     /* 0x228 */ sStateMgrDefault_c<dCharacterChangeSelectBase_c> mStateMgr;
 
-    /* 0x264 */ nw4r::lyt::Pane* mpRootPane;
+    /* 0x264 */ nw4r::lyt::Pane*                                 mpRootPane;
 
-    /* 0x268 */ nw4r::lyt::Pane* mp0x268;
-    /* 0x26C */ nw4r::lyt::Pane* mp0x26C;
-    /* 0x270 */ nw4r::lyt::Pane* mp0x270;
-    /* 0x274 */ nw4r::lyt::Pane* mp0x274;
-    /* 0x278 */ nw4r::lyt::Pane* mp0x278;
-    /* 0x27C */ nw4r::lyt::Pane* mp0x27C;
+    /* 0x268 */ nw4r::lyt::Pane*                                 mp0x268;
+    /* 0x26C */ nw4r::lyt::Pane*                                 mp0x26C;
+    /* 0x270 */ nw4r::lyt::Pane*                                 mp0x270;
+    /* 0x274 */ nw4r::lyt::Pane*                                 mp0x274;
+    /* 0x278 */ nw4r::lyt::Pane*                                 mp0x278;
+    /* 0x27C */ nw4r::lyt::Pane*                                 mp0x27C;
 
-    /* 0x280 */ dInfo_c::PlyConnectStage_e* mpNumPyConnectStage;
-    /* 0x284 */ int* mpNumPySetupPlayers;
-    /* 0x288 */ int* mpNumPyEnterCount;
-    /* 0x28C */ PLAYER_TYPE_e* mpNumPyPlyDecidedPlayerType;
-    /* 0x290 */ PLAYER_TYPE_e* mpNumPyCcDecidedPlayerType;
-    /* 0x294 */ bool m0x294;
-    /* 0x295 */ bool m0x295;
-    /* 0x296 */ bool m0x296;
-    /* 0x297 */ bool m0x297;
-    /* 0x298 */ bool m0x298;
-    /* 0x299 */ bool m0x299;
-    /* 0x29A */ bool mDecided;
-    /* 0x29B */ bool m0x29B;
-    /* 0x29C */ bool mEasyPairingWait;
+    /* 0x280 */ dInfo_c::PlyConnectStage_e*                      mpNumPyConnectStage;
+    /* 0x284 */ int*                                             mpNumPySetupPlayers;
+    /* 0x288 */ int*                                             mpNumPyEnterCount;
+    /* 0x28C */ PLAYER_TYPE_e*                                   mpNumPyPlyDecidedPlayerType;
+    /* 0x290 */ PLAYER_TYPE_e*                                   mpNumPyCcDecidedPlayerType;
+    /* 0x294 */ bool                                             m0x294;
+    /* 0x295 */ bool                                             m0x295;
+    /* 0x296 */ bool                                             m0x296;
+    /* 0x297 */ bool                                             m0x297;
+    /* 0x298 */ bool                                             m0x298;
+    /* 0x299 */ bool                                             m0x299;
+    /* 0x29A */ bool                                             mDecided;
+    /* 0x29B */ bool                                             m0x29B;
+    /* 0x29C */ bool                                             mEasyPairingWait;
 
     FILL(0x29D, 0x2A0);
 
-    /* 0x2A0 */ int m0x2A0;
-    /* 0x2A4 */ mVec3_c mAllBasePos[4]; // Changed to just use the first element
+    /* 0x2A0 */ int           m0x2A0;
+    /* 0x2A4 */ mVec3_c       mAllBasePos[4]; // Changed to just use the first element
     /* 0x2D4 */ PLAYER_TYPE_e mDecidedCharacter;
-    /* 0x2D8 */ int mPlayerNo;
-    /* 0x2DC */ int mCcIndex;
-    /* 0x2E0 */ int mOption;
-    /* 0x2E4 */ int m0x2E4;
-    /* 0x2E8 */ int mPlayerCount;
-    /* 0x2EC */ float m0x2EC;
-    /* 0x2F0 */ float m2dPlayerBaseY;
+    /* 0x2D8 */ int           mPlayerNo;
+    /* 0x2DC */ int           mCcIndex;
+    /* 0x2E0 */ int           mOption;
+    /* 0x2E4 */ int           m0x2E4;
+    /* 0x2E8 */ int           mPlayerCount;
+    /* 0x2EC */ float         m0x2EC;
+    /* 0x2F0 */ float         m2dPlayerBaseY;
 
     OFFSET_ASSERT(0x2F4);
 
@@ -295,7 +294,7 @@ public:
      * finalizeState:   0x807717A0
      */
     sState_Extern(
-      0x80990DD8, dCharacterChangeSelectBase_c, ConnectCutEnterWaitWindowOnStageAnimeEndWait
+        0x80990DD8, dCharacterChangeSelectBase_c, ConnectCutEnterWaitWindowOnStageAnimeEndWait
     );
 
     /*

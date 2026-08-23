@@ -4,8 +4,7 @@
 #include "d_a_next_goto_block.h"
 
 [[nsmbw(0x8086E670)]]
-daNextGotoBlock_c* daNextGotoBlock_c_classInit()
-{
+daNextGotoBlock_c* daNextGotoBlock_c_classInit() {
     return new daNextGotoBlock_c();
 }
 
@@ -29,17 +28,17 @@ fBase_c::PACK_RESULT_e daNextGotoBlock_c::execute();
  * do method for the draw operation.
  */
 [[nsmbw(0x8086E8C0)]]
-fBase_c::PACK_RESULT_e daNextGotoBlock_c::draw()
-{
+fBase_c::PACK_RESULT_e daNextGotoBlock_c::draw() {
     return PACK_RESULT_e::SUCCEEDED;
 }
 
 [[nsmbw(0x8086E8D0)]]
-void daNextGotoBlock_c::normal_collcheck(dCc_c* self, dCc_c* other)
-{
+void daNextGotoBlock_c::normal_collcheck(
+    dCc_c* self, dCc_c* other
+) {
     daNextGotoBlock_c* nextGotoBlock = reinterpret_cast<daNextGotoBlock_c*>(self->mpOwner);
 
-    daPlBase_c* player = other->mpOwner->castToPlayerBase();
+    daPlBase_c*        player        = other->mpOwner->castToPlayerBase();
     if (player == nullptr || player->isItemKinopio() || player->isDemo()) {
         return;
     }
@@ -53,10 +52,10 @@ void daNextGotoBlock_c::normal_collcheck(dCc_c* self, dCc_c* other)
         return;
     }
 
-    nextGotoBlock->m0x3FA[index] = 10;
-    nextGotoBlock->m0x406[index] = 1;
+    nextGotoBlock->m0x3FA[index]         = 10;
+    nextGotoBlock->m0x406[index]         = 1;
     nextGotoBlock->mPlayerInBlock[index] = true;
-    nextGotoBlock->mpaPlayers[index] = player;
+    nextGotoBlock->mpaPlayers[index]     = player;
 }
 
 [[nsmbw(0x8086EA10)]]
@@ -178,6 +177,4 @@ UNDEF_8086eb90:;
 
 /* VT+0x48 */
 [[nsmbw(0x8086EBB0)]]
-daNextGotoBlock_c::~daNextGotoBlock_c()
-{
-}
+daNextGotoBlock_c::~daNextGotoBlock_c() {}

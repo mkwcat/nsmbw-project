@@ -132,7 +132,8 @@ UNDEF_8086f058:;
 );
 
 [[nsmbw(0x808710C0)]]
-short daNiceBoat_c::calcLampAngle() ASM_METHOD(
+short daNiceBoat_c::calcLampAngle()
+    ASM_METHOD(
   // clang-format off
 UNDEF_808710c0:;
 /* 808710C0 9421FFE0 */  stwu     r1, -32(r1);
@@ -213,7 +214,8 @@ UNDEF_808711a4:;
   // clang-format on
 )
 
-  [[nsmbw(0x80871440)]] int daNiceBoat_c::calcPlayerOnRide() ASM_METHOD(
+            [[nsmbw(0x80871440)]] int daNiceBoat_c::calcPlayerOnRide()
+                ASM_METHOD(
     // clang-format off
 /* 80871440 9421FFB0 */  stwu     r1, -80(r1);
 /* 80871444 7C0802A6 */  mflr     r0;

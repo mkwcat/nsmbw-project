@@ -3,8 +3,7 @@
 
 #include "eggDisposer.h"
 
-namespace EGG
-{
+namespace EGG {
 
 [[nsmbw(0x802BA410)]]
 Disposer::Disposer();

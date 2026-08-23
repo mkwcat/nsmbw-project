@@ -2,6 +2,4 @@
 
 #include "f_base.h"
 
-class dSequenceBG_c : public fBase_c
-{
-};
+class dSequenceBG_c : public fBase_c {};

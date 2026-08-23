@@ -6,8 +6,7 @@
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
 
-class daMiniGameGunBatteryMgrObj_c : public dBase_c
-{
+class daMiniGameGunBatteryMgrObj_c : public dBase_c {
 public:
     // Structors
     // ^^^^^^
@@ -69,9 +68,9 @@ public:
     struct Player_s {
         SIZE_ASSERT(0xC);
 
-        /* 0x0 */ bool mDone = false;
-        /* 0x4 */ int mNumLives = 0;
-        /* 0x8 */ int mNumHit = -1;
+        /* 0x0 */ bool mDone     = false;
+        /* 0x4 */ int  mNumLives = 0;
+        /* 0x8 */ int  mNumHit   = -1;
     };
 
 public:
@@ -81,12 +80,12 @@ public:
     /* 0x70 */ Player_s REMOVED(mPlayers)[4];
     /* 0xA4 */
     sStateMgrDefault_c<daMiniGameGunBatteryMgrObj_c> mStateMgr;
-    /* 0xDC */ int mMessageState;
-    /* 0xE0 */ s8 m0xE0;
-    /* 0xE4 */ int mNumDone;
-    /* 0xE8 */ int mNumInGame;
-    /* 0xEC */ int mMessageTimer;
-    /* 0xF0 */ int mMessageCloseWaitTimer;
+    /* 0xDC */ int                                   mMessageState;
+    /* 0xE0 */ s8                                    m0xE0;
+    /* 0xE4 */ int                                   mNumDone;
+    /* 0xE8 */ int                                   mNumInGame;
+    /* 0xEC */ int                                   mMessageTimer;
+    /* 0xF0 */ int                                   mMessageCloseWaitTimer;
 
     OFFSET_ASSERT(0xF4);
 

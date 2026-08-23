@@ -7,8 +7,7 @@
 #include "d_mj2d_game.h"
 
 [[nsmbw(0x80156FE0)]]
-fBase_c* dfukidashiManager_c_classInit()
-{
+fBase_c* dfukidashiManager_c_classInit() {
     return new dfukidashiManager_c();
 }
 
@@ -49,8 +48,7 @@ dfukidashiManager_c::dfukidashiManager_c() ASM_METHOD(
 
 /* VT+0x48 */
 [[nsmbw(0x80157080)]]
-dfukidashiManager_c::~dfukidashiManager_c()
-{
+dfukidashiManager_c::~dfukidashiManager_c() {
 #ifndef __has_macintosh_dt_fix
     m_instance = nullptr;
     for (std::size_t i = 0; i < std::size(mInfo); i++) {
@@ -228,8 +226,9 @@ UNDEF_801572c4:;
 );
 
 [[nsmbw(0x80157360)]]
-void dfukidashiManager_c::FUN_80157360(int param1, int param2, int param3)
-{
+void dfukidashiManager_c::FUN_80157360(
+    int param1, int param2, int param3
+) {
     if (param2 == 8) {
         param1 = 1;
     }
@@ -242,8 +241,9 @@ void dfukidashiManager_c::FUN_80157360(int param1, int param2, int param3)
 }
 
 [[nsmbw(0x80157450)]]
-void dfukidashiManager_c::FUN_80157450(int param1, int param2)
-{
+void dfukidashiManager_c::FUN_80157450(
+    int param1, int param2
+) {
     if (param2 < 0 || param2 >= 22) {
         return;
     }
@@ -256,15 +256,16 @@ void dfukidashiManager_c::FUN_80157450(int param1, int param2)
         return;
     }
 
-    dInfo_c* dInfo = dInfo_c::m_instance;
+    dInfo_c* dInfo    = dInfo_c::m_instance;
 
-    u8* afeValue = param1 < 4 ? dInfo->m0xAFE[param1] : dInfo->mEx0xAFE[param1 - 4];
-    *afeValue = 1;
+    u8*      afeValue = param1 < 4 ? dInfo->m0xAFE[param1] : dInfo->mEx0xAFE[param1 - 4];
+    *afeValue         = 1;
 }
 
 [[nsmbw(0x801574A0)]]
-void dfukidashiManager_c::FUN_801574A0(int param1, int param2)
-{
+void dfukidashiManager_c::FUN_801574A0(
+    int param1, int param2
+) {
     if (param2 < 0 || param2 >= 22) {
         return;
     }
@@ -277,8 +278,8 @@ void dfukidashiManager_c::FUN_801574A0(int param1, int param2)
         return;
     }
 
-    dInfo_c* dInfo = dInfo_c::m_instance;
+    dInfo_c* dInfo    = dInfo_c::m_instance;
 
-    u8* afeValue = param1 < 4 ? dInfo->m0xAFE[param1] : dInfo->mEx0xAFE[param1 - 4];
-    *afeValue = 0;
+    u8*      afeValue = param1 < 4 ? dInfo->m0xAFE[param1] : dInfo->mEx0xAFE[param1 - 4];
+    *afeValue         = 0;
 }

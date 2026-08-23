@@ -3,8 +3,7 @@
 
 #include "eggScreen.h"
 
-namespace EGG
-{
+namespace EGG {
 
 [[nsmbw(0x8042B1E8)]]
 Screen::TVMode Screen::sTVMode;

@@ -5,17 +5,17 @@
 #include <nw4r/snd/SoundHandle.h>
 
 template <int TParam>
-class NMSndObjectCmn : public NMSndObjectBase
-{
+class NMSndObjectCmn : public NMSndObjectBase {
     SIZE_ASSERT(0x17C);
 
 public:
     // Structors
     // ^^^^^^
 
-    NMSndObjectCmn(nw4r::snd::SoundArchivePlayer& soundArchivePlayer)
-      : NMSndObjectBase(OBJ_TYPE::TYPE_1, soundArchivePlayer)
-    {
+    NMSndObjectCmn(
+        nw4r::snd::SoundArchivePlayer& soundArchivePlayer
+    )
+        : NMSndObjectBase(OBJ_TYPE::TYPE_1, soundArchivePlayer) {
         mNumHandles = 14;
     }
 
@@ -24,8 +24,7 @@ public:
     // ^^^^^^
 
     /* @unofficial */
-    class SoundHandlePrm : public nw4r::snd::SoundHandle
-    {
+    class SoundHandlePrm : public nw4r::snd::SoundHandle {
         SIZE_ASSERT(0x14);
 
     public:
@@ -34,17 +33,13 @@ public:
 
         /* [0x800699D0 with TParam = 12] */
         SoundHandlePrm()
-          : nw4r::snd::SoundHandle()
-          , m0x04(-1)
-          , m0x0C(1.0)
-          , m0x10(64)
-        {
-        }
+            : nw4r::snd::SoundHandle()
+            , m0x04(-1)
+            , m0x0C(1.0)
+            , m0x10(64) {}
 
         /* [0x80069A00 with TParam = 12] */
-        ~SoundHandlePrm()
-        {
-        }
+        ~SoundHandlePrm() {}
 
     public:
         // Instance Variables
@@ -99,7 +94,7 @@ NMSndObjectCmn<12>::startSound(u32 soundId, const nw4r::math::VEC2& position, u3
 template <>
 [[nsmbw(0x8006B6C0)]]
 nw4r::snd::SoundHandle* NMSndObjectCmn<12>::startSound(
-  u32 soundId, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
+    u32 soundId, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
 );
 
 /* VT+0x28 */
@@ -118,5 +113,5 @@ NMSndObjectCmn<12>::holdSound(u32 soundId, int, const nw4r::math::VEC2& position
 template <>
 [[nsmbw(0x8006BDB0)]]
 nw4r::snd::SoundHandle* NMSndObjectCmn<12>::holdSound(
-  u32 soundId, int, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
+    u32 soundId, int, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
 );

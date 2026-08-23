@@ -4,11 +4,9 @@
 #include "SoundArchivePlayer.h"
 #include "SoundStartable.h"
 
-namespace nw4r::snd
-{
+namespace nw4r::snd {
 
-class SoundActor : public SoundStartable
-{
+class SoundActor : public SoundStartable {
     SIZE_ASSERT(0x54);
 
     /* 0x00 VTABLE 0x8034F3F8 */
@@ -29,7 +27,7 @@ public:
 
     /* VT+0x0C 0x80275710 */
     virtual StartResult detail_SetupSound(
-      SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo
+        SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo
     ) override;
 
     /* VT+0x10 0x80275750 */
@@ -40,8 +38,10 @@ public:
     SetupSound(SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo, void*);
 
     /* VT+0x18 0x802756F0 */
-    virtual StartResult
-    detail_SetupSoundWithAmbientInfo(SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo, detail::BasicSound::AmbientArgInfo* pAmbientArgInfo, void*);
+    virtual StartResult detail_SetupSoundWithAmbientInfo(
+        SoundHandle* pHandle, u32 id, bool hold, const StartInfo* pStartInfo,
+        detail::BasicSound::AmbientArgInfo* pAmbientArgInfo, void*
+    );
 
 public:
     // Instance Methods

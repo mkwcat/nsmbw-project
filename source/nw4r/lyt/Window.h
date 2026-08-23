@@ -2,11 +2,8 @@
 
 #include "Pane.h"
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 
-class Window : public Pane
-{
-};
+class Window : public Pane {};
 
 }; // namespace nw4r::lyt

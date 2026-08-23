@@ -2,11 +2,11 @@
 // NSMBW d_bases.text: 0x808681B0 - 0x8086A040
 
 #include "d_a_mini_game_wire_mesh.h"
+
 #include <cstring>
 
 [[nsmbw(0x808681B0)]]
-daMiniGameWireMesh_c* daMiniGameWireMesh_c_classInit()
-{
+daMiniGameWireMesh_c* daMiniGameWireMesh_c_classInit() {
     return new daMiniGameWireMesh_c();
 }
 
@@ -147,8 +147,7 @@ fBase_c::PACK_RESULT_e daMiniGameWireMesh_c::create() ASM_METHOD(
 
 /* VT+0x20 */
 [[nsmbw(0x80868420)]]
-fBase_c::PACK_RESULT_e daMiniGameWireMesh_c::execute()
-{
+fBase_c::PACK_RESULT_e daMiniGameWireMesh_c::execute() {
     mStateMgr.executeState();
 
     std::memset(mPlayerIDs, -1, sizeof(mPlayerIDs));
@@ -568,8 +567,7 @@ UNDEF_80868fcc:;
 );
 
 [[nsmbw(0x80868FF0)]]
-void daMiniGameWireMesh_c::initializeState_PlayWait()
-{
+void daMiniGameWireMesh_c::initializeState_PlayWait() {
     m0x8BA = 0;
     std::memset(&mPlayer0x8C4, 0, sizeof(mPlayer0x8C4));
 }
@@ -788,8 +786,7 @@ UNDEF_80869328:;
 );
 
 [[nsmbw(0x80869680)]]
-void daMiniGameWireMesh_c::initializeState_ForceTurnUp()
-{
+void daMiniGameWireMesh_c::initializeState_ForceTurnUp() {
     m0x8B4 = 0;
     m0x8B0 = 0;
     std::memset(mPlayer0x8BC, 0, sizeof(mPlayer0x8BC));

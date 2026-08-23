@@ -3,8 +3,7 @@
 
 #include "nw4r/g3d/g3d_resfile.h"
 
-namespace nw4r::g3d
-{
+namespace nw4r::g3d {
 
 [[nsmbw(0x80239F70)]]
 ResMdl ResFile::GetResMdl(const char* name) const;

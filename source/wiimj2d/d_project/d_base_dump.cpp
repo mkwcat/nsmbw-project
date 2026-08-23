@@ -4,8 +4,8 @@
 #include "d_base_dump.h"
 
 #include "d_all_base_headers.h"
-#include "d_profile.h"
 #include "d_base.h"
+#include "d_profile.h"
 #include <cassert>
 #include <cstring>
 #include <string_view>
@@ -323,7 +323,8 @@ struct Structure_s {
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundefined-var-template"
-template <class T> extern const T UNDEF_00000000;
+template <class T>
+extern const T UNDEF_00000000;
 
 template <
     std::size_t SizeStrings, std::size_t SizeTokens, std::size_t SizeOffsets,
@@ -335,7 +336,8 @@ struct AnalysisResult_s {
     std::array<Structure_s, SizeStructures> structures;
 };
 
-template <class... Objects> class StructureProviderIf_c {
+template <class... Objects>
+class StructureProviderIf_c {
 public:
     static constexpr std::size_t cCount = sizeof...(Objects);
 

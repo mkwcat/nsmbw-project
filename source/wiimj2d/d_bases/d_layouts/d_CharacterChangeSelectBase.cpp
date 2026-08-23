@@ -3,25 +3,24 @@
 
 #include "d_CharacterChangeSelectBase.h"
 
+#include "SndAudioMgr.h"
+#include "SndID.h"
+#include "SndSceneMgr.h"
 #include "d_CharacterChangeIndicator.h"
 #include "d_CharacterChangeSelectArrow.h"
 #include "d_CharacterChangeSelectContents.h"
-#include "d_a_wm_2DPlayer.h"
 #include "d_a_player_manager.h"
+#include "d_a_wm_2DPlayer.h"
 #include "d_game_key.h"
 #include "d_game_key_core.h"
 #include "d_mj2d_game.h"
 #include "d_remocon_mng.h"
 #include "d_scene.h"
-#include "SndAudioMgr.h"
-#include "SndID.h"
-#include "SndSceneMgr.h"
 #include <revolution/os.h>
 
-fBase_c* dCharacterChangeSelectBase_c_classInit()
-{
+fBase_c* dCharacterChangeSelectBase_c_classInit() {
     dCharacterChangeSelectBase_c* base = new dCharacterChangeSelectBase_c();
-    base->mCcCount = 4;
+    base->mCcCount                     = 4;
     return base;
 }
 
@@ -29,8 +28,7 @@ fBase_c* dCharacterChangeSelectBase_c_classInit()
 dCharacterChangeSelectBase_c::dCharacterChangeSelectBase_c();
 
 [[nsmbw(0x8076FA40)]]
-void dCharacterChangeSelectBase_c::clearPlayerNo()
-{
+void dCharacterChangeSelectBase_c::clearPlayerNo() {
     if (mPlayerNo < 0) {
         return;
     }
@@ -52,8 +50,7 @@ void dCharacterChangeSelectBase_c::clearPlayerNo()
 }
 
 [[nsmbw(0x8076FAE0)]]
-bool dCharacterChangeSelectBase_c::updateRemocon()
-{
+bool dCharacterChangeSelectBase_c::updateRemocon() {
     if (mPlayerNo >= 0) {
         bool setup = dRemoconMng_c::m_instance->mpConnect[mPlayerNo]->isSetup();
         if (!setup) {
@@ -85,7 +82,7 @@ bool dCharacterChangeSelectBase_c::updateRemocon()
         for (std::size_t cc = 0; cc < mCcCount; cc++) {
             if (mpNumPySetupPlayers[cc] < 0) {
                 mpNumPySetupPlayers[cc] = ply;
-                mPlayerNo = ply;
+                mPlayerNo               = ply;
                 return true;
             }
         }
@@ -94,13 +91,15 @@ bool dCharacterChangeSelectBase_c::updateRemocon()
     return false;
 }
 
-PLAYER_TYPE_e dCharacterChangeSelectBase_c::getCharacterFromBase(int baseIndex)
-{
+PLAYER_TYPE_e dCharacterChangeSelectBase_c::getCharacterFromBase(
+    int baseIndex
+) {
     return dMj2dGame_c::scDefaultPlayerTypes[4 - baseIndex];
 }
 
-int dCharacterChangeSelectBase_c::getBaseFromCharacter(PLAYER_TYPE_e chara)
-{
+int dCharacterChangeSelectBase_c::getBaseFromCharacter(
+    PLAYER_TYPE_e chara
+) {
     for (std::size_t i = 0; i < CHARACTER_LIST_COUNT; i++) {
         if (dMj2dGame_c::scDefaultPlayerTypes[i] == chara) {
             return 4 - static_cast<int>(i);
@@ -109,8 +108,9 @@ int dCharacterChangeSelectBase_c::getBaseFromCharacter(PLAYER_TYPE_e chara)
     return -1;
 }
 
-PLAYER_TYPE_e dCharacterChangeSelectBase_c::getCharacterFromIcon(Icon_e icon)
-{
+PLAYER_TYPE_e dCharacterChangeSelectBase_c::getCharacterFromIcon(
+    Icon_e icon
+) {
     switch (icon) {
     default:
     case Icon_e::ICON_MARIO:
@@ -147,8 +147,9 @@ PLAYER_TYPE_e dCharacterChangeSelectBase_c::getCharacterFromIcon(Icon_e icon)
     }
 }
 
-bool dCharacterChangeSelectBase_c::isLockedIcon(Icon_e icon)
-{
+bool dCharacterChangeSelectBase_c::isLockedIcon(
+    Icon_e icon
+) {
     switch (icon) {
     default:
         return false;
@@ -166,8 +167,9 @@ bool dCharacterChangeSelectBase_c::isLockedIcon(Icon_e icon)
 }
 
 [[nsmbw(0x8076FC80)]]
-bool dCharacterChangeSelectBase_c::isCharacterLocked(PLAYER_TYPE_e character)
-{
+bool dCharacterChangeSelectBase_c::isCharacterLocked(
+    PLAYER_TYPE_e character
+) {
     for (std::size_t ply = 0; ply < PLAYER_COUNT; ply++) {
         if (mPlayerNo == ply) {
             continue;
@@ -182,8 +184,9 @@ bool dCharacterChangeSelectBase_c::isCharacterLocked(PLAYER_TYPE_e character)
 }
 
 [[nsmbw(0x8076FD70)]]
-void dCharacterChangeSelectBase_c::calcContentsIcon(int swapIndex, int baseIndex)
-{
+void dCharacterChangeSelectBase_c::calcContentsIcon(
+    int swapIndex, int baseIndex
+) {
     Icon_e iconIndex = ICON_FROM_BASE[4 - baseIndex];
 
     if (isCharacterLocked(getCharacterFromBase(baseIndex))) {
@@ -198,39 +201,34 @@ void dCharacterChangeSelectBase_c::calcContentsIcon(int swapIndex, int baseIndex
 }
 
 [[nsmbw(0x8076FE40)]]
-void dCharacterChangeSelectBase_c::initDecidedCharacter()
-{
+void dCharacterChangeSelectBase_c::initDecidedCharacter() {
     mDecidedCharacter = getCharacterFromBase(mOption);
 }
 
 [[nsmbw(0x8076FE60)]]
-void dCharacterChangeSelectBase_c::initOption()
-{
+void dCharacterChangeSelectBase_c::initOption() {
     mOption = getBaseFromCharacter(daPyMng_c::mPlayerType[mPlayerNo]);
 }
 
 [[nsmbw(0x8076FE90)]]
-void dCharacterChangeSelectBase_c::resetIndicator()
-{
+void dCharacterChangeSelectBase_c::resetIndicator() {
     mpCcIndicator->setLampPattern(0u);
 }
 
 [[nsmbw(0x8076FEE0)]]
-void dCharacterChangeSelectBase_c::readyContents()
-{
+void dCharacterChangeSelectBase_c::readyContents() {
     mOption = 4 - mPlayerNo;
     mp0x278->SetVisible(true);
     mp0x27C->SetVisible(false);
     calcContentsIcon(0, mOption);
-    mpCcSelContents->m0x29D = true;
+    mpCcSelContents->m0x29D    = true;
     mpCcSelContents->mPlayerNo = mPlayerNo;
-    mpCcIndicator->m0x24C = 2;
-    mpCcIndicator->m0x234 = m0x2EC;
+    mpCcIndicator->m0x24C      = 2;
+    mpCcIndicator->m0x234      = m0x2EC;
 }
 
 [[nsmbw(0x80770090)]]
-void dCharacterChangeSelectBase_c::finalizeState_OnStageWait()
-{
+void dCharacterChangeSelectBase_c::finalizeState_OnStageWait() {
     resetIndicator();
     mp0x278->SetVisible(false);
     mp0x27C->SetVisible(true);
@@ -242,7 +240,7 @@ void dCharacterChangeSelectBase_c::finalizeState_OnStageWait()
         }
 
         mpCcIndicator->mPlayerNo = mPlayerNo;
-        mpCcIndicator->m0x248 = 3;
+        mpCcIndicator->m0x248    = 3;
         mpCcIndicator->setLampPattern(getLampPattern(mPlayerNo));
         mpCcIndicator->m0x24C = 1;
         mpCcIndicator->m0x234 = m0x2EC;
@@ -253,34 +251,33 @@ void dCharacterChangeSelectBase_c::finalizeState_OnStageWait()
         }
 
         mpCcIndicator->mPlayerNo = mPlayerNo;
-        mpCcIndicator->m0x248 = 3;
+        mpCcIndicator->m0x248    = 3;
         mpCcIndicator->setLampPattern(getLampPattern(mPlayerNo));
-        mpCcIndicator->m0x24C = 0;
-        mpCcIndicator->m0x234 = m0x2EC;
+        mpCcIndicator->m0x24C          = 0;
+        mpCcIndicator->m0x234          = m0x2EC;
         mpNumPyConnectStage[mPlayerNo] = dInfo_c::PlyConnectStage_e::SETUP;
         readyContents();
-        mpCcSelArrow->mOption = mOption;
-        mpCcSelArrow->m0x269 = true;
+        mpCcSelArrow->mOption          = mOption;
+        mpCcSelArrow->m0x269           = true;
         mpNumPyConnectStage[mPlayerNo] = dInfo_c::PlyConnectStage_e::SELECT;
     }
 }
 
 [[nsmbw(0x807702A0)]]
-void dCharacterChangeSelectBase_c::executeState_OnStageAnimeEndWait()
-{
+void dCharacterChangeSelectBase_c::executeState_OnStageAnimeEndWait() {
     if (!m0x299) {
         return;
     }
 
-    const auto* state = &StateID_SelectWait;
-    const bool isWorldMap = dScene_c::m_nowScene == dProf::WORLD_MAP;
+    const auto* state      = &StateID_SelectWait;
+    const bool  isWorldMap = dScene_c::m_nowScene == dProf::WORLD_MAP;
     if (isWorldMap && mpNumPyConnectStage[mPlayerNo] == dInfo_c::PlyConnectStage_e::ENTER) {
         initOption();
         initDecidedCharacter();
         da2DPlayer_c* p2dPlayer = mp2DPlayer[mDecidedCharacter];
-        p2dPlayer->mBasePos = mAllBasePos[0];
-        p2dPlayer->mPos = mAllBasePos[0];
-        state = &StateID_PlayerDisp;
+        p2dPlayer->mBasePos     = mAllBasePos[0];
+        p2dPlayer->mPos         = mAllBasePos[0];
+        state                   = &StateID_PlayerDisp;
     } else if (isWorldMap || mPlayerNo < 0) {
         state = &StateID_ConnectWait;
     }
@@ -321,14 +318,13 @@ void dCharacterChangeSelectBase_c::executeState_ButtonExitAnimeEndWait();
 void dCharacterChangeSelectBase_c::finalizeState_ButtonExitAnimeEndWait();
 
 [[nsmbw(0x807706E0)]]
-void dCharacterChangeSelectBase_c::initializeState_ButtonOnStageAnimeEndWait()
-{
+void dCharacterChangeSelectBase_c::initializeState_ButtonOnStageAnimeEndWait() {
     if (mPlayerNo < 0 || mpNumPyConnectStage[mPlayerNo] == dInfo_c::PlyConnectStage_e::OFF) {
         clearPlayerNo();
         mp0x278->SetVisible(false);
         mp0x27C->SetVisible(true);
         mpCcSelContents->m0x29F = true;
-        mpCcSelArrow->m0x26B = true;
+        mpCcSelArrow->m0x26B    = true;
     } else {
         readyContents();
     }
@@ -355,8 +351,7 @@ void dCharacterChangeSelectBase_c::finalizeState_ArrowDispWait();
 void dCharacterChangeSelectBase_c::initializeState_SelectWait();
 
 [[nsmbw(0x807708E0)]]
-void dCharacterChangeSelectBase_c::executeState_SelectWait()
-{
+void dCharacterChangeSelectBase_c::executeState_SelectWait() {
     if (updateRemocon()) {
         mPlayerNo = -1;
         return mStateMgr.changeState(StateID_ButtonExitAnimeEndWait);
@@ -382,7 +377,7 @@ void dCharacterChangeSelectBase_c::executeState_SelectWait()
         }
 
         m0x2A0 = mOption;
-        state = &StateID_HitAnimeEndWait;
+        state  = &StateID_HitAnimeEndWait;
     } else if (core->checkLeft()) {
         if (mOption >= 4) {
             return;
@@ -390,7 +385,7 @@ void dCharacterChangeSelectBase_c::executeState_SelectWait()
         m0x2A0 = 5;
         mOption++;
         mpCcSelArrow->mMoveDir = 1;
-        state = &StateID_MoveAnimeEndWait;
+        state                  = &StateID_MoveAnimeEndWait;
     } else if (core->checkRight()) {
         if (mOption <= 5 - CHARACTER_LIST_COUNT) {
             return;
@@ -398,7 +393,7 @@ void dCharacterChangeSelectBase_c::executeState_SelectWait()
         m0x2A0 = 4;
         mOption--;
         mpCcSelArrow->mMoveDir = 2;
-        state = &StateID_MoveAnimeEndWait;
+        state                  = &StateID_MoveAnimeEndWait;
     }
 
     if (state) {
@@ -518,20 +513,19 @@ void dCharacterChangeSelectBase_c::initializeState_ExitAnimeEndForPlayerOnStageW
 );
 
 [[nsmbw(0x80771090)]]
-void dCharacterChangeSelectBase_c::initializeState_PlayerOnStageWait()
-{
-    std::size_t index = static_cast<std::size_t>(mDecidedCharacter);
+void dCharacterChangeSelectBase_c::initializeState_PlayerOnStageWait() {
+    std::size_t   index  = static_cast<std::size_t>(mDecidedCharacter);
     da2DPlayer_c* player = mp2DPlayer[mDecidedCharacter];
 
-    u16 sound = (u16[][2]) {
-      {SndID::SE_VOC_MA_PLAYER_JOIN, SndID::SE_VOC_MA_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_LU_PLAYER_JOIN, SndID::SE_VOC_LU_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_KO_PLAYER_JOIN, SndID::SE_VOC_KO_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_KO2_PLAYER_JOIN, SndID::SE_VOC_KO2_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_KC_PLAYER_JOIN, SndID::SE_VOC_KC_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_KC_PLAYER_JOIN, SndID::SE_VOC_KC_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_KO_PLAYER_JOIN, SndID::SE_VOC_KO_PLAYER_JOIN_MAME},
-      {SndID::SE_VOC_KO2_PLAYER_JOIN, SndID::SE_VOC_KO2_PLAYER_JOIN_MAME},
+    u16           sound  = (u16[][2]) {
+        {SndID::SE_VOC_MA_PLAYER_JOIN, SndID::SE_VOC_MA_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_LU_PLAYER_JOIN, SndID::SE_VOC_LU_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_KO_PLAYER_JOIN, SndID::SE_VOC_KO_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_KO2_PLAYER_JOIN, SndID::SE_VOC_KO2_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_KC_PLAYER_JOIN, SndID::SE_VOC_KC_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_KC_PLAYER_JOIN, SndID::SE_VOC_KC_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_KO_PLAYER_JOIN, SndID::SE_VOC_KO_PLAYER_JOIN_MAME},
+        {SndID::SE_VOC_KO2_PLAYER_JOIN, SndID::SE_VOC_KO2_PLAYER_JOIN_MAME},
     }[index % 8][player->mPowerup == PLAYER_MODE_e::MINI_MUSHROOM];
 
     SndAudioMgr::sInstance->startSystemSe(sound, 1);
@@ -545,7 +539,7 @@ void dCharacterChangeSelectBase_c::initializeState_PlayerOnStageWait()
     }
     player->mAddY = m2dPlayerBaseY;
 
-    m0x296 = true;
+    m0x296        = true;
 }
 
 [[nsmbw(0x80771220)]]
@@ -592,8 +586,7 @@ void dCharacterChangeSelectBase_c::finalizeState_PlayerOnStageWait() ASM_METHOD(
 );
 
 [[nsmbw(0x807712B0)]]
-void dCharacterChangeSelectBase_c::initializeState_PlayerDisp()
-{
+void dCharacterChangeSelectBase_c::initializeState_PlayerDisp() {
     mp2DPlayer[mDecidedCharacter]->mPlayerNo = mPlayerNo;
     if (dScene_c::isWorldMap() && mCcIndex == 0) {
         mp2DPlayer[mDecidedCharacter]->mForbidJump = true;
@@ -669,9 +662,8 @@ UNDEF_807713b4:;
 );
 
 [[nsmbw(0x807713D0)]]
-void dCharacterChangeSelectBase_c::finalizeState_PlayerDisp()
-{
-    mDecided = false;
+void dCharacterChangeSelectBase_c::finalizeState_PlayerDisp() {
+    mDecided                                   = false;
     mp2DPlayer[mDecidedCharacter]->mForbidJump = false;
 }
 
@@ -770,14 +762,15 @@ void dCharacterChangeSelectBase_c::finalizeState_PlayerExitWait() ASM_METHOD(
   // clang-format on
 );
 
-u32 dCharacterChangeSelectBase_c::getLampPattern(int playerNo)
-{
+u32 dCharacterChangeSelectBase_c::getLampPattern(
+    int playerNo
+) {
     if (unsigned(playerNo) >= PLAYER_COUNT) {
         return 0b0000000;
     }
 
     dRemoconMng_c::dConnect_c* connect = dRemoconMng_c::m_instance->mpConnect[playerNo];
-    mPad::CH_e channel = connect->getChannel();
+    mPad::CH_e                 channel = connect->getChannel();
 
     if (channel >= mPad::CH_e::CHAN_0 && channel <= mPad::CH_e::CHAN_LAST) {
         return 0b1000 >> (channel - mPad::CH_e::CHAN_0);

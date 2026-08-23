@@ -2,6 +2,4 @@
 
 #include "d_base.h"
 
-class dCollectionCoinBase_c : public dBase_c
-{
-};
+class dCollectionCoinBase_c : public dBase_c {};

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Four
-{
+namespace Four {
 
 void Apply();
 

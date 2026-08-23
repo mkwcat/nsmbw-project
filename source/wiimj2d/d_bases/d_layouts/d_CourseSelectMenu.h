@@ -2,8 +2,8 @@
 
 #include "d_base.h"
 #include "d_lytbase.h"
-#include <nw4r/lyt/Picture.h>
 #include "s_StateMgrDefault.h"
+#include <nw4r/lyt/Picture.h>
 
 class dCourseSelectMenu_c : public dBase_c {
     SIZE_ASSERT(0x278);

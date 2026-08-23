@@ -3,16 +3,15 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
-#include <nw4r/lyt/Window.h>
 #include "s_FStateFct.h"
 #include "s_StateInterfaces.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
 #include <nw4r/lyt/Pane.h>
 #include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/Window.h>
 
-class dMiniGameWire_c : public dBase_c
-{
+class dMiniGameWire_c : public dBase_c {
     SIZE_ASSERT(0x384 + 0x20);
 
 public:
@@ -38,16 +37,16 @@ public:
 
     /* 0x070 */ LytBase_c mLayout;
     /* 0x208 */ sStateMgr_c<dMiniGameWire_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c>
-      mStateMgr;
+                                    mStateMgr;
 
-    /* 0x244 */ nw4r::lyt::Pane* mpRootPane;
+    /* 0x244 */ nw4r::lyt::Pane*    mpRootPane;
 
-    /* 0x248 */ nw4r::lyt::Pane* mpNullPanes[40];
-    /* 0x2E8 */ LytTextBox_c* mpTextBoxes[9];
+    /* 0x248 */ nw4r::lyt::Pane*    mpNullPanes[40];
+    /* 0x2E8 */ LytTextBox_c*       mpTextBoxes[9];
     /* 0x30C */ nw4r::lyt::Picture* mpPicturePanes[15];
-    /* 0x348 */ nw4r::lyt::Window* mpWindowPanes[2];
+    /* 0x348 */ nw4r::lyt::Window*  mpWindowPanes[2];
 
-    /* 0x350 */ int mCurrentTurn;
+    /* 0x350 */ int                 mCurrentTurn;
 
     FILL(0x354, 0x378);
 

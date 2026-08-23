@@ -3,13 +3,13 @@
 
 #include "d_s_World9DeMo.h"
 
-#include "d_wm_effectManager.h"
 #include "d_a_player_manager.h"
 #include "d_fader.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
 #include "d_save_manager.h"
 #include "d_system.h"
+#include "d_wm_effectManager.h"
 #include "m_pad.h"
 #include <revolution/vi.h>
 

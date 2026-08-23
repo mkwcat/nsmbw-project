@@ -27,7 +27,8 @@ daMask_c_GetPlayerP_outNull:;
 );
 
 [[nsmbw(0x801260B0)]]
-bool daMask_c_isYoshi(u8* this_)
-{
+bool daMask_c_isYoshi(
+    u8* this_
+) {
     return this_[0x392] >= PLAYER_COUNT && this_[0x392] < PLAYER_COUNT * 2;
 }

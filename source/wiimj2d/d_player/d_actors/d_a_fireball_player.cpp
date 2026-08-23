@@ -48,27 +48,27 @@ void daFireBall_Player_c_createCheck(void* this_) ASM_METHOD(
 );
 
 PATCH_REFERENCES(
-  &daFireBall_Player_c_m_limit1, //
-  {
-    {0x8011A6DA, R_PPC_ADDR16_HA},
-    {0x8011A6F2, R_PPC_ADDR16_LO},
-    {0x8011AC96, R_PPC_ADDR16_HA},
-    {0x8011AC9A, R_PPC_ADDR16_LO},
-    {0x8011B062, R_PPC_ADDR16_HA},
-    {0x8011B06A, R_PPC_ADDR16_LO},
-  }
+    &daFireBall_Player_c_m_limit1, //
+    {
+        {0x8011A6DA, R_PPC_ADDR16_HA},
+        {0x8011A6F2, R_PPC_ADDR16_LO},
+        {0x8011AC96, R_PPC_ADDR16_HA},
+        {0x8011AC9A, R_PPC_ADDR16_LO},
+        {0x8011B062, R_PPC_ADDR16_HA},
+        {0x8011B06A, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  &daFireBall_Player_c_m_limit2, //
-  {
-    {0x8011A6DE, R_PPC_ADDR16_HA},
-    {0x8011A6FA, R_PPC_ADDR16_LO},
-    {0x8011ACCA, R_PPC_ADDR16_HA},
-    {0x8011ACCE, R_PPC_ADDR16_LO},
-    {0x8011AD46, R_PPC_ADDR16_HA},
-    {0x8011AD4A, R_PPC_ADDR16_LO},
-    {0x8011B08A, R_PPC_ADDR16_HA},
-    {0x8011B08E, R_PPC_ADDR16_LO},
-  }
+    &daFireBall_Player_c_m_limit2, //
+    {
+        {0x8011A6DE, R_PPC_ADDR16_HA},
+        {0x8011A6FA, R_PPC_ADDR16_LO},
+        {0x8011ACCA, R_PPC_ADDR16_HA},
+        {0x8011ACCE, R_PPC_ADDR16_LO},
+        {0x8011AD46, R_PPC_ADDR16_HA},
+        {0x8011AD4A, R_PPC_ADDR16_LO},
+        {0x8011B08A, R_PPC_ADDR16_HA},
+        {0x8011B08E, R_PPC_ADDR16_LO},
+    }
 );

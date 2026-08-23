@@ -2,8 +2,7 @@
 
 #include "d_enemy.h"
 
-class daEnGlpole_c : public dEn_c
-{
+class daEnGlpole_c : public dEn_c {
 public:
     // Constants and Types
     // ^^^^^^

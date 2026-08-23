@@ -7,24 +7,27 @@ EXTERN_C_START
 /**
  * Returns the absolute value of x.
  */
-inline double fabs(double x)
-{
+inline double fabs(
+    double x
+) {
     return __builtin_fabs(x);
 }
 
 /**
  * Returns the absolute value of x.
  */
-inline float fabsf(float x)
-{
+inline float fabsf(
+    float x
+) {
     return __builtin_fabs(x);
 }
 
 /* 0x802E8B58 */
 double sqrt(double x);
 
-inline float sqrtf(float x)
-{
+inline float sqrtf(
+    float x
+) {
     return sqrt(x);
 }
 

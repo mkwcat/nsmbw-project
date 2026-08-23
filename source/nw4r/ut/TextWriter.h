@@ -2,7 +2,8 @@
 
 namespace nw4r::ut {
 
-template <class CharT> class TextWriterBase;
+template <class CharT>
+class TextWriterBase;
 
 using TextWriter = TextWriterBase<char>;
 

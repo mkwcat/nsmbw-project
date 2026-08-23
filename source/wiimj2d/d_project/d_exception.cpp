@@ -8,16 +8,16 @@
 #include "d_system.h"
 #include "m_nandfile.h"
 #include "m_pipe.h"
-#include <nw4r/db/db_console.h>
-#include <nw4r/db/db_exception.h>
-#include <revolution/os/OSThread.h>
 #include <algorithm>
 #include <array>
 #include <cstdio>
 #include <egg/util/eggException.h>
 #include <iterator>
+#include <nw4r/db/db_console.h>
+#include <nw4r/db/db_exception.h>
 #include <revolution/nand.h>
 #include <revolution/os/OSError.h>
+#include <revolution/os/OSThread.h>
 #include <revolution/os/OSTime.h>
 #include <variant>
 

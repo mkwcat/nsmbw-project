@@ -1,11 +1,8 @@
 #pragma once
 
+namespace EGG {
 
-namespace EGG
-{
-
-class StreamDecomp
-{
+class StreamDecomp {
     SIZE_ASSERT(0x4);
 
 public:
@@ -13,21 +10,20 @@ public:
     virtual bool init(void* dst, u32 maxCompressedSize) = 0;
 
     /* VT+0x0C */
-    virtual bool decomp(const void* src, u32 size) = 0;
+    virtual bool decomp(const void* src, u32 size)      = 0;
 
     /* VT+0x10 */
-    virtual u32 getHeaderSize() = 0;
+    virtual u32 getHeaderSize()                         = 0;
 
     /* VT+0x14 */
-    virtual u32 getUncompressedSize(const void* src) = 0;
+    virtual u32 getUncompressedSize(const void* src)    = 0;
 };
 
-class StreamDecompLZ : public StreamDecomp
-{
+class StreamDecompLZ : public StreamDecomp {
     SIZE_ASSERT(0x24);
 
 public:
-    StreamDecompLZ() = default;
+    StreamDecompLZ()  = default;
     ~StreamDecompLZ() = default;
 
     /* VT+0x08 0x802B8560 */
@@ -46,12 +42,11 @@ private:
     FILL(0x4, 0x24);
 };
 
-class StreamDecompRL : public StreamDecomp
-{
+class StreamDecompRL : public StreamDecomp {
     SIZE_ASSERT(0x1C);
 
 public:
-    StreamDecompRL() = default;
+    StreamDecompRL()  = default;
     ~StreamDecompRL() = default;
 
     /* VT+0x08 0x802B85C0 */
@@ -70,12 +65,11 @@ private:
     FILL(0x4, 0x1C);
 };
 
-class StreamDecompLH : public StreamDecomp
-{
+class StreamDecompLH : public StreamDecomp {
     SIZE_ASSERT(0x8B4);
 
 public:
-    StreamDecompLH() = default;
+    StreamDecompLH()  = default;
     ~StreamDecompLH() = default;
 
     /* VT+0x08 0x802B8620 */
@@ -94,12 +88,11 @@ private:
     FILL(0x4, 0x8B4);
 };
 
-class StreamDecompLRC : public StreamDecomp
-{
+class StreamDecompLRC : public StreamDecomp {
     SIZE_ASSERT(0x9038);
 
 public:
-    StreamDecompLRC() = default;
+    StreamDecompLRC()  = default;
     ~StreamDecompLRC() = default;
 
     /* VT+0x08 0x802B8680 */
@@ -118,12 +111,11 @@ private:
     FILL(0x4, 0x9038);
 };
 
-class StreamDecompSZS : public StreamDecomp
-{
+class StreamDecompSZS : public StreamDecomp {
     SIZE_ASSERT(0x20);
 
 public:
-    StreamDecompSZS() = default;
+    StreamDecompSZS()  = default;
     ~StreamDecompSZS() = default;
 
     /* VT+0x08 0x802B8AB0 */

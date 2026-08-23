@@ -5,8 +5,7 @@
 #include "d_fukidashiInfo.h"
 #include "d_mj2d_game.h"
 
-class dfukidashiManager_c : public dBase_c
-{
+class dfukidashiManager_c : public dBase_c {
 public:
     // Structors
     // ^^^^^^

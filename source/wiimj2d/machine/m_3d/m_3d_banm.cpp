@@ -3,8 +3,7 @@
 
 #include "m_3d_banm.h"
 
-namespace m3d
-{
+namespace m3d {
 
 [[nsmbw(0x80168220)]]
 void banm_c::setRate(f32);

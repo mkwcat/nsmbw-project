@@ -5,9 +5,7 @@
 
 /* VT+0x08 */
 [[nsmbw(0x80198CF0)]]
-SndObjctCmnMap::~SndObjctCmnMap()
-{
-}
+SndObjctCmnMap::~SndObjctCmnMap() {}
 
 /* VT+0x20 */
 [[nsmbw(0x80198D70)]]
@@ -17,7 +15,7 @@ SndObjctCmnMap::startSound(u32 soundId, const nw4r::math::VEC2& position, u32 re
 /* VT+0x24 */
 [[nsmbw(0x80199100)]]
 nw4r::snd::SoundHandle* SndObjctCmnMap::startSound(
-  u32 soundId, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
+    u32 soundId, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
 );
 
 /* VT+0x2C */
@@ -28,7 +26,7 @@ SndObjctCmnMap::holdSound(u32 soundId, int, const nw4r::math::VEC2& position, u3
 /* VT+0x30 */
 [[nsmbw(0x801996E0)]]
 nw4r::snd::SoundHandle* SndObjctCmnMap::holdSound(
-  u32 soundId, int, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
+    u32 soundId, int, const nw4r::math::VEC2& position, short seqParam, u32 remoteMask
 );
 
 [[nsmbw(0x80199950)]]

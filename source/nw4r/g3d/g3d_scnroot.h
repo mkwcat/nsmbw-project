@@ -15,8 +15,10 @@ public:
     void SetCurrentCamera(int);
     Fog GetFog(int);
 
-    static ScnRoot *Construct(MEMAllocator *pHeap, u32 *pSize, u32 maxNumChildren, u32 maxNumScnObj, u32 numLightObj,
-            u32 numLightSet);
+    static ScnRoot* Construct(
+        MEMAllocator* pHeap, u32* pSize, u32 maxNumChildren, u32 maxNumScnObj, u32 numLightObj,
+        u32 numLightSet
+    );
 
     void UpdateFrame();
     void CalcWorld();
@@ -28,20 +30,16 @@ public:
     void DrawOpa();
     void DrawXlu();
 
-    u8 GetCurrentCameraID() const {
-        return mCameraId;
-    }
+    u8 GetCurrentCameraID() const { return mCameraId; }
 
-    inline LightSetting *getLightSetting() {
-        return &mLightSetting;
-    }
+    inline LightSetting* getLightSetting() { return &mLightSetting; }
 
 private:
-    u32 WORD_0xE8;
-    u32 WORD_0xEC;
-    u32 WORD_0xF0;
-    /* 0x00F4 */ u8 mCameraId;
-    u8 unk1[0x2878 - 0x00F8];
+    u32                       WORD_0xE8;
+    u32                       WORD_0xEC;
+    u32                       WORD_0xF0;
+    /* 0x00F4 */ u8           mCameraId;
+    u8                        unk1[0x2878 - 0x00F8];
     /* 0x2878 */ LightSetting mLightSetting;
 };
 } // namespace g3d

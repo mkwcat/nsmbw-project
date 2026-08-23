@@ -1,13 +1,13 @@
 #pragma once
 
-#include "d_a_yoshi.h"
-#include "d_profile.h"
 #include "d_a_player_base.h"
 #include "d_a_player_manager.h"
+#include "d_a_yoshi.h"
 #include "d_bc.h"
 #include "d_cc.h"
 #include "d_mj2d_game.h"
 #include "d_player_model_manager.h"
+#include "d_profile.h"
 #include "d_quake.h"
 #include "f_base_id.h"
 #include "s_State.h"

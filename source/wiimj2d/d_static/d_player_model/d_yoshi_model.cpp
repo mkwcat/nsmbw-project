@@ -3,8 +3,8 @@
 
 #include "d_yoshi_model.h"
 
-#include "d_s_stage.h"
 #include "d_game_common.h"
+#include "d_s_stage.h"
 #include "f_feature.h"
 
 extern const char* const c_yoshiColorNames[dYoshiMdl_c::COLOR_COUNT] = {

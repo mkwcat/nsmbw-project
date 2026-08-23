@@ -1,55 +1,46 @@
 #pragma once
 
-#define NW4R_G3D_CREATE_RES_NAME_DATA(VAR, VAL)                                                    \
+#define NW4R_G3D_CREATE_RES_NAME_DATA(VAR, VAL) \
     ResNameData ResNameData_##VAR = {sizeof(VAL) - 1, VAL}
 
 #define FIFO_ACCESS_BP 0x61
 #define FIFO_ACCESS_CP 0x8
 #define FIFO_ACCESS_XF 0x10
 
-namespace nw4r::g3d
-{
+namespace nw4r::g3d {
 
 template <typename T>
-class ResCommon
-{
+class ResCommon {
     T* mPtr;
 
 public:
-    inline ResCommon(void* vptr)
-      : mPtr(static_cast<T*>(vptr))
-    {
-    }
+    inline ResCommon(
+        void* vptr
+    )
+        : mPtr(static_cast<T*>(vptr)) {}
 
-    inline ResCommon(const void* vptr)
-      : mPtr(static_cast<T*>(vptr))
-    {
-    }
+    inline ResCommon(
+        const void* vptr
+    )
+        : mPtr(static_cast<T*>(vptr)) {}
 
-    inline T& ref() const
-    {
-        return *mPtr;
-    }
+    inline T& ref() const { return *mPtr; }
 
-    inline T* ptr() const
-    {
-        return mPtr;
-    }
+    inline T* ptr() const { return mPtr; }
 
-    inline bool IsValid() const
-    {
-        return mPtr != nullptr;
-    }
+    inline bool IsValid() const { return mPtr != nullptr; }
 
     template <typename TPtr>
-    inline const TPtr* ofs_to_ptr_raw(s32 ofs) const
-    {
+    inline const TPtr* ofs_to_ptr_raw(
+        s32 ofs
+    ) const {
         return reinterpret_cast<const TPtr*>(reinterpret_cast<u8*>(mPtr) + ofs);
     }
 
     template <typename TPtr>
-    inline TPtr* ofs_to_ptr(s32 ofs)
-    {
+    inline TPtr* ofs_to_ptr(
+        s32 ofs
+    ) {
         if (ofs) {
             return reinterpret_cast<TPtr*>(reinterpret_cast<u8*>(mPtr) + ofs);
         }
@@ -58,8 +49,9 @@ public:
     }
 
     template <typename TPtr>
-    inline const TPtr* ofs_to_ptr(s32 ofs) const
-    {
+    inline const TPtr* ofs_to_ptr(
+        s32 ofs
+    ) const {
         if (ofs) {
             return reinterpret_cast<const TPtr*>(reinterpret_cast<u8*>(mPtr) + ofs);
         }
@@ -68,8 +60,9 @@ public:
     }
 
     template <typename TObj>
-    inline TObj ofs_to_obj(s32 ofs) const
-    {
+    inline TObj ofs_to_obj(
+        s32 ofs
+    ) const {
         if (ofs) {
             return reinterpret_cast<u8*>(mPtr) + ofs;
         }
@@ -79,62 +72,60 @@ public:
 };
 
 struct ResNameData {
-    u32 mLength;
+    u32  mLength;
     char mName[0x1C];
 };
 
 struct ResName {
     ResCommon<const ResNameData> mRes;
 
-    inline ResName(const void* vptr)
-      : mRes(vptr)
-    {
-    }
+    inline ResName(
+        const void* vptr
+    )
+        : mRes(vptr) {}
 
-    inline u32 GetLength() const
-    {
-        return mRes.ref().mLength;
-    }
+    inline u32 GetLength() const { return mRes.ref().mLength; }
 
-    inline const char* GetName() const
-    {
-        return mRes.ref().mName;
-    }
+    inline const char* GetName() const { return mRes.ref().mName; }
 
     bool operator==(ResName) const;
 };
 
-namespace detail
-{
+namespace detail {
 typedef u8 CPCmd[6];
 typedef u8 BPCmd[5];
 
-inline void ResWrite_u8(u8* res, u8 arg)
-{
+inline void ResWrite_u8(
+    u8* res, u8 arg
+) {
     *res = arg;
 }
 
-inline void ResWrite_u16(u8* res, u16 arg)
-{
+inline void ResWrite_u16(
+    u8* res, u16 arg
+) {
     ResWrite_u8(res + 0, arg >> 8);
     ResWrite_u8(res + 1, arg >> 0);
 }
 
-inline void ResWrite_u32(u8* res, u32 arg)
-{
+inline void ResWrite_u32(
+    u8* res, u32 arg
+) {
     ResWrite_u8(res + 0, arg >> 24);
     ResWrite_u8(res + 1, arg >> 16);
     ResWrite_u8(res + 2, arg >> 8);
     ResWrite_u8(res + 3, arg >> 0);
 }
 
-inline u8 ResRead_u8(const u8* res)
-{
+inline u8 ResRead_u8(
+    const u8* res
+) {
     return *res;
 }
 
-inline u32 ResRead_u32(const u8* res)
-{
+inline u32 ResRead_u32(
+    const u8* res
+) {
     int ret = ResRead_u8(res) << 24;
     ret |= ResRead_u8(res + 1) << 16;
     ret |= ResRead_u8(res + 2) << 8;
@@ -142,13 +133,15 @@ inline u32 ResRead_u32(const u8* res)
     return ret;
 }
 
-inline void ResReadBPCmd(const u8* res, u32* out)
-{
+inline void ResReadBPCmd(
+    const u8* res, u32* out
+) {
     *out = ResRead_u32(res + 1);
 }
 
-inline void ResReadCPCmd(const u8* res, u32* out)
-{
+inline void ResReadCPCmd(
+    const u8* res, u32* out
+) {
     *out = ResRead_u32(res + 2);
 }
 

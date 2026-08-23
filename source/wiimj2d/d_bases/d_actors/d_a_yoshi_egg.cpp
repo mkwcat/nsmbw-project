@@ -2,13 +2,14 @@
 // NSMBW d_bases.text: 0x80910F00 - 0x809125E0
 
 #include "d_a_yoshi_egg.h"
+
 #include "d_a_player_manager.h"
 #include "d_game_common.h"
 #include "d_yoshi_model.h"
 #include "m_ef.h"
 
 extern const float c_eggColorFrames[dYoshiMdl_c::COLOR_COUNT] = {
-  0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,
+    0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,
 };
 
 [[nsmbw(0x80911380)]]
@@ -130,31 +131,28 @@ void daYoshiEgg_c::loadModel() ASM_METHOD(
   // clang-format on
 )
 
-  [[nsmbw(0x80911540)]] void daYoshiEgg_c::playAnimation(int);
+        [[nsmbw(0x80911540)]] void daYoshiEgg_c::playAnimation(int);
 
 [[nsmbw(0x80911610)]]
-void daYoshiEgg_c::spawnEggBreakEffect()
-{
+void daYoshiEgg_c::spawnEggBreakEffect() {
     // TODO: Add effects for new egg colors
     const char* eggBreakEffects[dYoshiMdl_c::COLOR_COUNT] = {
-      "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_rd", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl",
-      "Wm_ob_eggbreak_rd", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl", "Wm_ob_eggbreak_bl",
+        "Wm_ob_eggbreak_gr", "Wm_ob_eggbreak_rd", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl",
+        "Wm_ob_eggbreak_rd", "Wm_ob_eggbreak_yw", "Wm_ob_eggbreak_bl", "Wm_ob_eggbreak_bl",
     };
 
     mEf::createEffect(eggBreakEffects[mColor], 0, &mPos, nullptr, nullptr);
 }
 
 [[nsmbw(0x80911680)]]
-void daYoshiEgg_c::hatchYoshi()
-{
+void daYoshiEgg_c::hatchYoshi() {
     spawnEggBreakEffect();
     daPyMng_c::createYoshi(mPos, mColor, nullptr);
     deleteRequest();
 }
 
 [[nsmbw(0x80911AD0)]]
-void daYoshiEgg_c::initializeState_MultiJumpUp()
-{
+void daYoshiEgg_c::initializeState_MultiJumpUp() {
     // Add some variation to the spawning speeds if >4 players
     if (daPyMng_c::getNumInGame() > 4) {
         float randomXSpeed = dGameCom::rndF(1.3) + 0.6;
@@ -177,14 +175,13 @@ void daYoshiEgg_c::initializeState_MultiJumpUp()
         }
     }
     mSpeed.z = 0.0;
-    m0x60C = 1;
-    m0x60C = 0xD;
+    m0x60C   = 1;
+    m0x60C   = 0xD;
     playAnimation(1);
 }
 
 [[nsmbw(0x80911BD0)]]
-void daYoshiEgg_c::initializeState_MultiJumpDown()
-{
+void daYoshiEgg_c::initializeState_MultiJumpDown() {
     // Add some variation to the spawning speeds if >4 players
     if (daPyMng_c::getNumInGame() > 4) {
         float randomXSpeed = dGameCom::rndF(1.3) + 0.6;
@@ -205,7 +202,7 @@ void daYoshiEgg_c::initializeState_MultiJumpDown()
     }
     mSpeed.y = -0.5;
     mSpeed.z = 0.0;
-    m0x60C = 1;
-    m0x60C = 0xD;
+    m0x60C   = 1;
+    m0x60C   = 0xD;
     playAnimation(1);
 }

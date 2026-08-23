@@ -6,8 +6,7 @@
  * @brief Multiplayer manager.
  * Keeps track of statistics for each player, used for Coin Battle and Free Mode.
  */
-class dMultiMng_c
-{
+class dMultiMng_c {
 public:
     // Structors
     // ^^^^^^

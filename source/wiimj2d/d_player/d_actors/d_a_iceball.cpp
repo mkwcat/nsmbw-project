@@ -198,27 +198,27 @@ UNDEF_80123700:;
 );
 
 PATCH_REFERENCES(
-  &daIceBall_c_m_limit1, //
-  {
-    {0x8012348E, R_PPC_ADDR16_HA},
-    {0x80123492, R_PPC_ADDR16_LO},
-    {0x80123816, R_PPC_ADDR16_HA},
-    {0x8012381A, R_PPC_ADDR16_LO},
-    {0x80124702, R_PPC_ADDR16_HA},
-    {0x8012470A, R_PPC_ADDR16_LO},
-  }
+    &daIceBall_c_m_limit1, //
+    {
+        {0x8012348E, R_PPC_ADDR16_HA},
+        {0x80123492, R_PPC_ADDR16_LO},
+        {0x80123816, R_PPC_ADDR16_HA},
+        {0x8012381A, R_PPC_ADDR16_LO},
+        {0x80124702, R_PPC_ADDR16_HA},
+        {0x8012470A, R_PPC_ADDR16_LO},
+    }
 );
 
 PATCH_REFERENCES(
-  &daIceBall_c_m_limit2, //
-  {
-    {0x8012384A, R_PPC_ADDR16_HA},
-    {0x8012384E, R_PPC_ADDR16_LO},
-    {0x8012427E, R_PPC_ADDR16_HA},
-    {0x80124282, R_PPC_ADDR16_LO},
-    {0x801244BE, R_PPC_ADDR16_HA},
-    {0x801244C2, R_PPC_ADDR16_LO},
-    {0x8012472A, R_PPC_ADDR16_HA},
-    {0x8012472E, R_PPC_ADDR16_LO},
-  }
+    &daIceBall_c_m_limit2, //
+    {
+        {0x8012384A, R_PPC_ADDR16_HA},
+        {0x8012384E, R_PPC_ADDR16_LO},
+        {0x8012427E, R_PPC_ADDR16_HA},
+        {0x80124282, R_PPC_ADDR16_LO},
+        {0x801244BE, R_PPC_ADDR16_HA},
+        {0x801244C2, R_PPC_ADDR16_LO},
+        {0x8012472A, R_PPC_ADDR16_HA},
+        {0x8012472E, R_PPC_ADDR16_LO},
+    }
 );

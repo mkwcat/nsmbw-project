@@ -5,7 +5,6 @@
 #include "m_3d_scnleaf.h"
 #include <nw4r/g3d/g3d_resmdl.h>
 
-
 namespace m3d {
 
 class smdl_c : public bmdl_c {
@@ -15,8 +14,12 @@ public:
     smdl_c();
     /* VT+0x08 */ virtual ~smdl_c();
 
-    bool create(nw4r::g3d::ResMdl mdl, mAllocator_c *alloc, u32 bufferOption, int nView, u32 *pSize);
-    bool create(nw4r::g3d::ResMdl mdl, mAllocator_c *alloc, u32 bufferOption) {
+    bool
+    create(nw4r::g3d::ResMdl mdl, mAllocator_c* alloc, u32 bufferOption, int nView, u32* pSize);
+
+    bool create(
+        nw4r::g3d::ResMdl mdl, mAllocator_c* alloc, u32 bufferOption
+    ) {
         return create(mdl, alloc, bufferOption, 1, nullptr);
     }
 };

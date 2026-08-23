@@ -4,23 +4,16 @@
  * A set node with a pointer to the owning container.
  * @unofficial
  */
-class cUnaryTreeNd_c
-{
+class cUnaryTreeNd_c {
     SIZE_ASSERT(0x8);
 
 public:
-    void* getOwner() const
-    {
-        return mpOwner;
-    }
+    void* getOwner() const { return mpOwner; }
 
-    cUnaryTreeNd_c* getNext() const
-    {
-        return mpNext;
-    }
+    cUnaryTreeNd_c* getNext() const { return mpNext; }
 
 private:
-    /* 0x0 */ void* mpOwner;
+    /* 0x0 */ void*           mpOwner;
     /* 0x4 */ cUnaryTreeNd_c* mpNext;
 
     friend class cOwnerSetMg_c;
@@ -30,20 +23,14 @@ private:
  * A set container implemented as a singly-linked list.
  * @unofficial
  */
-class cUnaryTreeMg_c
-{
+class cUnaryTreeMg_c {
     SIZE_ASSERT(0x4);
 
 public:
     cUnaryTreeMg_c()
-      : mpRoot(nullptr)
-    {
-    }
+        : mpRoot(nullptr) {}
 
-    ~cUnaryTreeMg_c()
-    {
-        clear();
-    }
+    ~cUnaryTreeMg_c() { clear(); }
 
     /**
      * 0x80161890

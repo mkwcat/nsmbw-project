@@ -3,13 +3,12 @@
 #include "d_a_player_manager.h"
 #include "d_base.h"
 
-class daLastActorStage_c : public dBase_c
-{
+class daLastActorStage_c : public dBase_c {
 public:
     // Structors
     // ^^^^^^
 
-    daLastActorStage_c() = default;
+    daLastActorStage_c()                   = default;
 
     virtual ~daLastActorStage_c() override = default;
 
@@ -51,6 +50,6 @@ public:
     // /* 0x80 */ bool mIsShaking[4];
     // OFFSET_ASSERT(0x84);
 
-    u32 mBtnPressed[PLAYER_COUNT];
+    u32  mBtnPressed[PLAYER_COUNT];
     bool mIsShaking[PLAYER_COUNT];
 };

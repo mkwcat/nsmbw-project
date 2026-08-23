@@ -3,10 +3,10 @@
 
 #include "d_enemy_manager.h"
 
-#include "d_profile.h"
+#include "SndID.h"
 #include "d_actor.h"
 #include "d_audio.h"
-#include "SndID.h"
+#include "d_profile.h"
 
 [[nsmbw_data(0x8042A1F0)]]
 dEnemyMng_c* dEnemyMng_c::m_instance;

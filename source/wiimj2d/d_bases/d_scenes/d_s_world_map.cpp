@@ -3,8 +3,6 @@
 
 #include "d_s_world_map.h"
 
-#include "d_a_wm_KoopaShip.h"
-#include "d_a_wm_Map.h"
 #include "d_CharacterChangeIndicator.h"
 #include "d_CharacterChangeSelectArrow.h"
 #include "d_CharacterChangeSelectBase.h"
@@ -13,6 +11,7 @@
 #include "d_CollectionCoinBase.h"
 #include "d_CollectionCoinDate.h"
 #include "d_Continue.h"
+#include "d_CourseSelectManager.h"
 #include "d_CourseSelectMenu.h"
 #include "d_EasyPairing.h"
 #include "d_InfoWindow.h"
@@ -20,15 +19,16 @@
 #include "d_MessageWindow.h"
 #include "d_ModelPlayArrow.h"
 #include "d_NumberOfPeopleChange.h"
+#include "d_SelectCursor.h"
 #include "d_StockItem.h"
 #include "d_StockItemShadow.h"
 #include "d_YesNoWindow.h"
+#include "d_a_wm_KoopaShip.h"
+#include "d_a_wm_Map.h"
+#include "d_mj2d_game.h"
+#include "d_profile.h"
 #include "d_wm_WorldSelect.h"
 #include "d_wm_WorldSelectGuide.h"
-#include "d_SelectCursor.h"
-#include "d_profile.h"
-#include "d_CourseSelectManager.h"
-#include "d_mj2d_game.h"
 #include "d_wm_actor.h"
 #include <iterator>
 

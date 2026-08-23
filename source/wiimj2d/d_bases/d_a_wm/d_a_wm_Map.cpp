@@ -3,10 +3,10 @@
 
 #include "d_a_wm_Map.h"
 
-#include "d_s_world_map.h"
 #include "d_gamerule.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
+#include "d_s_world_map.h"
 #include "d_wm_connect.h"
 #include "d_wm_lib.h"
 

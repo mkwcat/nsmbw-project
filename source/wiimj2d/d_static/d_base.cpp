@@ -8,8 +8,7 @@
 #include <revolution/os.h>
 
 [[nsmbw(0x8006C420)]]
-dBase_c::dBase_c()
-{
+dBase_c::dBase_c() {
     mpKindString = getKindString();
     mpNameString = dProf::getName(mProfName);
 
@@ -23,8 +22,7 @@ dBase_c::dBase_c()
  * Destroys the base.
  */
 [[nsmbw(0x8006C490)]]
-dBase_c::~dBase_c()
-{
+dBase_c::~dBase_c() {
     if (fFeat::print_base_creation) {
         OS_REPORT("Delete: %s, %08lx ->%p\n", mpNameString, mParam, static_cast<void*>(this));
     }

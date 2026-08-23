@@ -9,8 +9,7 @@
 #include <bit>
 
 [[nsmbw(0x80A096E0)]]
-daEnGlpole_c* daEnGlpole_c_classInit()
-{
+daEnGlpole_c* daEnGlpole_c_classInit() {
     return new daEnGlpole_c();
 }
 
@@ -210,8 +209,9 @@ UNDEF_80a09c4c:;
 );
 
 [[nsmbw(0x80A0A550)]]
-void daEnGlpole_c::ccCallBackForPole2(dCc_c* self, dCc_c* other)
-{
+void daEnGlpole_c::ccCallBackForPole2(
+    dCc_c* self, dCc_c* other
+) {
     if (other->mCcData.mAttack == CC_ATTACK_YOSHI_EAT) {
         return;
     }
@@ -225,8 +225,9 @@ void daEnGlpole_c::ccCallBackForPole2(dCc_c* self, dCc_c* other)
 }
 
 [[nsmbw(0x80A0A5E0)]]
-void daEnGlpole_c::ccCallBackForPole(dCc_c* self, dCc_c* other)
-{
+void daEnGlpole_c::ccCallBackForPole(
+    dCc_c* self, dCc_c* other
+) {
     if (other->mCcData.mAttack == CC_ATTACK_YOSHI_EAT) {
         return;
     }
@@ -240,13 +241,14 @@ void daEnGlpole_c::ccCallBackForPole(dCc_c* self, dCc_c* other)
 }
 
 [[nsmbw(0x80A0A700)]]
-bool daEnGlpole_c::isTopOfFlagPole(u32 mask, int player)
-{
+bool daEnGlpole_c::isTopOfFlagPole(
+    u32 mask, int player
+) {
     return mask & (1u << player);
 }
 
 float l_POLE_PLAYER_BASE_POS[PLAYER_COUNT] = {
-  8.0 * 1, 8.0 * 2, 8.0 * 3, 8.0 * 4, 8.0 * 5, 8.0 * 6, 8.0 * 7,
+    8.0 * 1, 8.0 * 2, 8.0 * 3, 8.0 * 4, 8.0 * 5, 8.0 * 6, 8.0 * 7,
 };
 
 [[nsmbw(0x80A0AB10)]]
@@ -547,7 +549,6 @@ UNDEF_80a0ab00:;
 );
 
 [[nsmbw(0x80A0B020)]]
-bool daEnGlpole_c::isAllPlayerOnPole()
-{
+bool daEnGlpole_c::isAllPlayerOnPole() {
     return std::popcount(mPlrOnPoleFlag) == daPyMng_c::mNum;
 }

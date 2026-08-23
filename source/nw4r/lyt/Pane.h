@@ -3,41 +3,37 @@
 #include "DrawInfo.h"
 #include "Resources.h"
 #include "Types.h"
+#include <nw4r/lyt/Material.h>
 #include <nw4r/math/types.h>
 #include <nw4r/ut/Color.h>
 #include <nw4r/ut/LinkList.h>
 #include <nw4r/ut/RuntimeTypeInfo.h>
-#include <nw4r/lyt/Material.h>
 
-namespace nw4r::lyt
-{
+namespace nw4r::lyt {
 
-namespace res
-{
+namespace res {
 
 struct Pane {
-    static constexpr char SIGNATURE[4] = {'p', 'a', 'n', '1'};
+    static constexpr char      SIGNATURE[4] = {'p', 'a', 'n', '1'};
 
     /* 0x00 */ DataBlockHeader blockHeader;
-    /* 0x08 */ u8 flag;
-    /* 0x09 */ u8 basePosition;
-    /* 0x0A */ u8 alpha;
-    /* 0x0B */ u8 padding = 0;
-    /* 0x0C */ char name[PANE_NAME_SIZE];
-    /* 0x1C */ char userData[PANE_USERDATA_SIZE];
-    /* 0x24 */ math::VEC3 translate;
-    /* 0x30 */ math::VEC3 rotate;
-    /* 0x3C */ math::VEC2 scale;
-    /* 0x44 */ Size size;
+    /* 0x08 */ u8              flag;
+    /* 0x09 */ u8              basePosition;
+    /* 0x0A */ u8              alpha;
+    /* 0x0B */ u8              padding = 0;
+    /* 0x0C */ char            name[PANE_NAME_SIZE];
+    /* 0x1C */ char            userData[PANE_USERDATA_SIZE];
+    /* 0x24 */ math::VEC3      translate;
+    /* 0x30 */ math::VEC3      rotate;
+    /* 0x3C */ math::VEC2      scale;
+    /* 0x44 */ Size            size;
 };
 
 } // namespace res
 
-namespace detail
-{
+namespace detail {
 
-class PaneBase
-{
+class PaneBase {
 public:
     // Structors
     // ^^^^^^
@@ -58,8 +54,7 @@ public:
 
 class AnimResource;
 
-class Pane : detail::PaneBase
-{
+class Pane : detail::PaneBase {
     SIZE_ASSERT(0xD8);
 
 public:
@@ -75,124 +70,86 @@ public:
 
     // For use with TestBit<Uc>
     enum PaneBits {
-        VISIBLE = 0,
+        VISIBLE          = 0,
         INFLUENCED_ALPHA = 1,
-        LOCATION_ADJUST = 2,
+        LOCATION_ADJUST  = 2,
     };
 
 public:
     // Inline Functions
     // ^^^^^^
 
-    bool IsVisible() const
-    {
-        return detail::TestBit<u8>(mFlag, VISIBLE);
-    }
+    bool IsVisible() const { return detail::TestBit<u8>(mFlag, VISIBLE); }
 
-    void SetVisible(bool bVisible)
-    {
+    void SetVisible(
+        bool bVisible
+    ) {
         detail::SetBit(&mFlag, VISIBLE, bVisible);
     }
 
-    bool IsInfluencedAlpha() const
-    {
-        return detail::TestBit<u8>(mFlag, INFLUENCED_ALPHA);
-    }
+    bool IsInfluencedAlpha() const { return detail::TestBit<u8>(mFlag, INFLUENCED_ALPHA); }
 
-    bool IsLocationAdjust() const
-    {
-        return detail::TestBit<u8>(mFlag, LOCATION_ADJUST);
-    }
+    bool IsLocationAdjust() const { return detail::TestBit<u8>(mFlag, LOCATION_ADJUST); }
 
-    bool IsUserAllocated() const
-    {
-        return mbUserAllocated;
-    }
+    bool IsUserAllocated() const { return mbUserAllocated; }
 
-    ut::LinkList<Pane, 4>* GetChildList()
-    {
-        return &mChildList;
-    }
+    ut::LinkList<Pane, 4>* GetChildList() { return &mChildList; }
 
-    ut::LinkList<AnimationLink, 0>* GetAnimationList()
-    {
-        return &mAnimList;
-    }
+    ut::LinkList<AnimationLink, 0>* GetAnimationList() { return &mAnimList; }
 
-    const math::VEC3& GetTranslate() const
-    {
-        return mTranslate;
-    }
+    const math::VEC3& GetTranslate() const { return mTranslate; }
 
-    void SetTranslate(const nw4r::math::VEC3& value)
-    {
+    void SetTranslate(
+        const nw4r::math::VEC3& value
+    ) {
         mTranslate = value;
     }
 
-    const math::MTX34& GetGlobalMtx() const
-    {
-        return mGlbMtx;
-    }
+    const math::MTX34& GetGlobalMtx() const { return mGlbMtx; }
 
-    Pane* GetParent() const
-    {
-        return mpParent;
-    }
+    Pane* GetParent() const { return mpParent; }
 
-    const math::VEC2& GetScale() const
-    {
-        return mScale;
-    }
+    const math::VEC2& GetScale() const { return mScale; }
 
-    void SetScale(const math::VEC2& value)
-    {
+    void SetScale(
+        const math::VEC2& value
+    ) {
         mScale = value;
     }
 
-    u8 GetAlpha() const
-    {
-        return mAlpha;
-    }
+    u8 GetAlpha() const { return mAlpha; }
 
-    void SetAlpha(u8 value)
-    {
+    void SetAlpha(
+        u8 value
+    ) {
         mAlpha = value;
     }
 
-    u8 GetGlobalAlpha() const
-    {
-        return mGlbAlpha;
-    }
+    u8 GetGlobalAlpha() const { return mGlbAlpha; }
 
-    const Size& GetSize() const
-    {
-        return mSize;
-    }
+    const Size& GetSize() const { return mSize; }
 
-    void SetSize(const Size& value)
-    {
+    void SetSize(
+        const Size& value
+    ) {
         mSize = value;
     }
 
-    void SetSRTElement(u32 idx, f32 f)
-    {
+    void SetSRTElement(
+        u32 idx, f32 f
+    ) {
         (&mTranslate.x)[idx] = f;
     }
 
-    const res::ExtUserDataList* GetExtUserDataList() const
-    {
-        return mpExtUserDataList;
-    }
+    const res::ExtUserDataList* GetExtUserDataList() const { return mpExtUserDataList; }
 
-    void SetExtUserDataList(const res::ExtUserDataList* pBlock)
-    {
+    void SetExtUserDataList(
+        const res::ExtUserDataList* pBlock
+    ) {
         mpExtUserDataList = pBlock;
     }
 
-    const char* GetName() const
-    {
-        return mName;
-    }
+    const char* GetName() const { return mName; }
 
 public:
     // Instance Methods
@@ -284,25 +241,25 @@ protected:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x0C */ Pane* mpParent;
-    /* 0x10 */ ut::LinkList<Pane, 4> mChildList;
+    /* 0x0C */ Pane*                          mpParent;
+    /* 0x10 */ ut::LinkList<Pane, 4>          mChildList;
     /* 0x1C */ ut::LinkList<AnimationLink, 0> mAnimList;
-    /* 0x28 */ Material* mpMaterial;
-    /* 0x2C */ math::VEC3 mTranslate;
-    /* 0x38 */ math::VEC3 mRotate;
-    /* 0x44 */ math::VEC2 mScale;
-    /* 0x4C */ Size mSize;
-    /* 0x54 */ math::MTX34 mMtx;
-    /* 0x84 */ math::MTX34 mGlbMtx;
-    /* 0xB4 */ const res::ExtUserDataList* mpExtUserDataList;
-    /* 0xB8 */ u8 mAlpha;
-    /* 0xB9 */ u8 mGlbAlpha;
-    /* 0xBA */ u8 mBasePosition;
-    /* 0xBB */ u8 mFlag;
-    /* 0xBC */ char mName[res::PANE_NAME_SIZE + 1];
-    /* 0xCD */ char mUserData[res::PANE_USERDATA_SIZE + 1];
-    /* 0xD6 */ bool mbUserAllocated;
-    /* 0xD7 */ u8 mPadding;
+    /* 0x28 */ Material*                      mpMaterial;
+    /* 0x2C */ math::VEC3                     mTranslate;
+    /* 0x38 */ math::VEC3                     mRotate;
+    /* 0x44 */ math::VEC2                     mScale;
+    /* 0x4C */ Size                           mSize;
+    /* 0x54 */ math::MTX34                    mMtx;
+    /* 0x84 */ math::MTX34                    mGlbMtx;
+    /* 0xB4 */ const res::ExtUserDataList*    mpExtUserDataList;
+    /* 0xB8 */ u8                             mAlpha;
+    /* 0xB9 */ u8                             mGlbAlpha;
+    /* 0xBA */ u8                             mBasePosition;
+    /* 0xBB */ u8                             mFlag;
+    /* 0xBC */ char                           mName[res::PANE_NAME_SIZE + 1];
+    /* 0xCD */ char                           mUserData[res::PANE_USERDATA_SIZE + 1];
+    /* 0xD6 */ bool                           mbUserAllocated;
+    /* 0xD7 */ u8                             mPadding;
 };
 
 }; // namespace nw4r::lyt

@@ -2,11 +2,9 @@
 
 #include <nw4r/snd/SoundHeap.h>
 
-namespace EGG
-{
+namespace EGG {
 
-class SoundHeapMgr
-{
+class SoundHeapMgr {
 public:
     FILL(0x0, 0x4);
     /* 0x4 */ nw4r::snd::SoundHeap mHeap;

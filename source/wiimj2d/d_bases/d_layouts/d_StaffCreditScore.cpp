@@ -2,17 +2,17 @@
 // NSMBW   d_bases.text:  0x807ADAD0 - 0x807AF370
 
 #include "d_StaffCreditScore.h"
+
+#include "SndSceneMgr.h"
 #include "d_a_player.h"
 #include "d_a_player_demo_manager.h"
 #include "d_game_common.h"
 #include "d_lyttextbox.h"
 #include "d_message.h"
 #include "d_mj2d_game.h"
-#include "SndSceneMgr.h"
 
 [[nsmbw(0x807ADAD0)]]
-dStaffCreditScore_c* dStaffCreditScore_c_classInit()
-{
+dStaffCreditScore_c* dStaffCreditScore_c_classInit() {
     return new dStaffCreditScore_c();
 }
 
@@ -20,8 +20,7 @@ dStaffCreditScore_c* dStaffCreditScore_c_classInit()
 dStaffCreditScore_c::dStaffCreditScore_c();
 
 [[nsmbw(0x807ADF10)]]
-bool dStaffCreditScore_c::createLayout()
-{
+bool dStaffCreditScore_c::createLayout() {
     if (!mLayout.ReadResource("staffCredit/staffCredit.arc", false)) {
         return false;
     }
@@ -29,68 +28,68 @@ bool dStaffCreditScore_c::createLayout()
     mLayout.build("staffCredit_00.brlyt", nullptr);
 
     using StringArray = const char*[];
-    using IntArray = const int[];
+    using IntArray    = const int[];
 
     mLayout.AnimeResRegister(
-      StringArray{
-        "staffCredit_00_inPlayerScore.brlan",
-        "staffCredit_00_loopPlayerScore.brlan",
-        "staffCredit_00_inHighScore.brlan",
-        "staffCredit_00_winPlayer.brlan",
-        "staffCredit_00_newHighScore.brlan",
-      },
-      5
+        StringArray{
+            "staffCredit_00_inPlayerScore.brlan",
+            "staffCredit_00_loopPlayerScore.brlan",
+            "staffCredit_00_inHighScore.brlan",
+            "staffCredit_00_winPlayer.brlan",
+            "staffCredit_00_newHighScore.brlan",
+        },
+        5
     );
 
     mLayout.GroupRegister(
-      StringArray{
-        "A00_1P", "A01_2P", "A02_3P",    "A03_4P", "A04_5P",    "A05_6P", "A06_7P",
-        "A07_8P", "A00_1P", "A01_2P",    "A02_3P", "A03_4P",    "A04_5P", "A05_6P",
-        "A06_7P", "A07_8P", "B00_score", "A00_1P", "A01_2P",
-        "A03_4P", // Swapped to match character order
-        "A02_3P", // ^
-        "A04_5P", "A05_6P", "A06_7P",    "A07_8P", "B00_score",
-      },
-      IntArray{
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4,
-      },
-      26
+        StringArray{
+            "A00_1P", "A01_2P", "A02_3P",    "A03_4P", "A04_5P",    "A05_6P", "A06_7P",
+            "A07_8P", "A00_1P", "A01_2P",    "A02_3P", "A03_4P",    "A04_5P", "A05_6P",
+            "A06_7P", "A07_8P", "B00_score", "A00_1P", "A01_2P",
+            "A03_4P", // Swapped to match character order
+            "A02_3P", // ^
+            "A04_5P", "A05_6P", "A06_7P",    "A07_8P", "B00_score",
+        },
+        IntArray{
+            0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4,
+        },
+        26
     );
 
     mpRootPane = mLayout.getRootPane();
 
     mLayout.TPaneRegister(
-      mpTCoin, {
-                 "T_coin_00",
-                 "T_coin_01",
-                 "T_coin_03", // Swapped to match character order
-                 "T_coin_02", // ^
-                 "T_coin_05",
-                 "T_coin_06",
-                 "T_coin_07",
-                 "T_coin_08",
-               }
+        mpTCoin, {
+                     "T_coin_00",
+                     "T_coin_01",
+                     "T_coin_03", // Swapped to match character order
+                     "T_coin_02", // ^
+                     "T_coin_05",
+                     "T_coin_06",
+                     "T_coin_07",
+                     "T_coin_08",
+                 }
     );
 
     mLayout.TPaneRegister(
-      &mpTCoin04, {
-                    "T_coin_04",
-                    "T_highScore_00",
-                  }
+        &mpTCoin04, {
+                        "T_coin_04",
+                        "T_highScore_00",
+                    }
     );
 
     MsgRes_c* msgRes = dMessage_c::getMesRes();
     mpTHighScore->setMessage(msgRes, 0x131, 1, 0);
 
     mLayout.NPaneRegister(
-      mpNPlayer, {
-                   "N_mario_00",
-                   "N_luigi_00",
-                   "N_kinoY_00",
-                   "N_kinoB_00",
-                   "N_proportionL_00",
-                   "N_proportionR_00",
-                 }
+        mpNPlayer, {
+                       "N_mario_00",
+                       "N_luigi_00",
+                       "N_kinoY_00",
+                       "N_kinoB_00",
+                       "N_proportionL_00",
+                       "N_proportionR_00",
+                   }
     );
 
     // Reset winPlayerCount anims
@@ -102,15 +101,15 @@ bool dStaffCreditScore_c::createLayout()
 }
 
 [[nsmbw(0x807AE140)]]
-void dStaffCreditScore_c::setCoinCount(int player)
-{
+void dStaffCreditScore_c::setCoinCount(
+    int player
+) {
     int playerType = static_cast<int>(daPyMng_c::mPlayerType[player]);
     dGameCom::LayoutDispNumber(mCoinNum[player], 3, mpTCoin[playerType], true);
 }
 
 [[nsmbw(0x807AE1C0)]]
-void dStaffCreditScore_c::updateCoinCounts()
-{
+void dStaffCreditScore_c::updateCoinCounts() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mPrevCoinNum[i] != mCoinNum[i]) {
             mPrevCoinNum[i] = mCoinNum[i];
@@ -120,13 +119,12 @@ void dStaffCreditScore_c::updateCoinCounts()
 }
 
 [[nsmbw(0x807AE230)]]
-void dStaffCreditScore_c::initializeState_OnStageWait()
-{
+void dStaffCreditScore_c::initializeState_OnStageWait() {
     mLayout.AllAnimeEndSetup();
     mpRootPane->SetVisible(false);
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        mCoinNum[i] = 0;
+        mCoinNum[i]     = 0;
         mPrevCoinNum[i] = -1; // Set to -1 so the coin counters can be set
     }
     updateCoinCounts();
@@ -136,8 +134,7 @@ void dStaffCreditScore_c::initializeState_OnStageWait()
 }
 
 [[nsmbw(0x807AE300)]]
-void dStaffCreditScore_c::initializeState_OnStageAnimeEndWait()
-{
+void dStaffCreditScore_c::initializeState_OnStageAnimeEndWait() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         // Fixing a retail bug here:
         // The credits seems to have originally only included active players. Some leftover code
@@ -152,17 +149,16 @@ void dStaffCreditScore_c::initializeState_OnStageAnimeEndWait()
 }
 
 [[nsmbw(0x807AE520)]]
-void dStaffCreditScore_c::initializeState_HighScoreCheck()
-{
+void dStaffCreditScore_c::initializeState_HighScoreCheck() {
     daPyDemoMng_c::mspInstance->onLandStopReq();
     mDoDemoLandPlayer = true;
 
-    int winPlyID = -1;
+    int winPlyID      = -1;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         mIsWinPlayer[i] = false;
         if (mMaxCoinNum <= mCoinNum[i]) {
             mMaxCoinNum = mCoinNum[i];
-            winPlyID = i;
+            winPlyID    = i;
         }
     }
 
@@ -187,8 +183,7 @@ void dStaffCreditScore_c::initializeState_HighScoreCheck()
 }
 
 [[nsmbw(0x807AE750)]]
-void dStaffCreditScore_c::initializeState_HighScoreAnimeEndWait()
-{
+void dStaffCreditScore_c::initializeState_HighScoreAnimeEndWait() {
     if ((mWinPlayerID > -1) && (mMaxCoinNum != 0)) {
         dGameCom::LayoutDispNumber(mHighScore, 3, mpTCoin04, true);
         mLayout.AnimeStartSetup(25, false);
@@ -196,8 +191,7 @@ void dStaffCreditScore_c::initializeState_HighScoreAnimeEndWait()
 }
 
 [[nsmbw(0x807AE900)]]
-void dStaffCreditScore_c::initializeState_No1PlayerKiMe()
-{
+void dStaffCreditScore_c::initializeState_No1PlayerKiMe() {
     if (mWinPlayerID > -1) {
         for (int i = 0; i < PLAYER_COUNT; i++) {
             dAcPy_c* ply = daPyMng_c::getPlayer(i);
@@ -209,8 +203,7 @@ void dStaffCreditScore_c::initializeState_No1PlayerKiMe()
 }
 
 [[nsmbw(0x807AE980)]]
-void dStaffCreditScore_c::executeState_No1PlayerKiMe()
-{
+void dStaffCreditScore_c::executeState_No1PlayerKiMe() {
     bool delayEndWait = false;
     if (mWinPlayerID > -1) {
         for (int i = 0; i < PLAYER_COUNT; i++) {

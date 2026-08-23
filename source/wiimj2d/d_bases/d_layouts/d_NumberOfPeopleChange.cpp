@@ -3,24 +3,24 @@
 
 #include "d_NumberOfPeopleChange.h"
 
+#include "SndAudioMgr.h"
+#include "SndID.h"
 #include "d_CharacterChangeIndicator.h"
 #include "d_CharacterChangeSelectArrow.h"
 #include "d_CharacterChangeSelectBase.h"
 #include "d_CharacterChangeSelectContents.h"
-#include "d_a_wm_2DPlayer.h"
 #include "d_WarningManager.h"
-#include "d_profile.h"
 #include "d_a_player_manager.h"
+#include "d_a_wm_2DPlayer.h"
 #include "d_game_common.h"
 #include "d_game_key.h"
 #include "d_game_key_core.h"
 #include "d_info.h"
 #include "d_message.h"
 #include "d_mj2d_game.h"
+#include "d_profile.h"
 #include "d_remocon_mng.h"
 #include "d_scene.h"
-#include "SndAudioMgr.h"
-#include "SndID.h"
 
 static const float l_2d_player_offset = 50.0f;
 

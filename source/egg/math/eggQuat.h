@@ -2,46 +2,43 @@
 
 #include "egg/math/eggVector.h"
 
-namespace EGG
-{
+namespace EGG {
 
 struct Quatf : public Vector3f {
-    Quatf()
-    {
-    }
+    Quatf() {}
 
-    Quatf(f32 f, Vector3f v)
-      : Vector3f(v)
-      , w(f)
-    {
-    }
+    Quatf(
+        f32 f, Vector3f v
+    )
+        : Vector3f(v)
+        , w(f) {}
 
-    Quatf(f32 f, f32 x, f32 y, f32 z)
-      : Vector3f(Vector3f(x, y, z))
-      , w(f)
-    {
-    }
+    Quatf(
+        f32 f, f32 x, f32 y, f32 z
+    )
+        : Vector3f(Vector3f(x, y, z))
+        , w(f) {}
 
-    ~Quatf()
-    {
-    }
+    ~Quatf() {}
 
-    friend Quatf operator*(const Quatf& q, const Vector3f& vec)
-    {
+    friend Quatf operator*(
+        const Quatf& q, const Vector3f& vec
+    ) {
         Vector3f crossed = q.cross(vec);
-        Vector3f scaled = vec * q.w;
-        Quatf ret = Quatf(-q.Vector3f::dot(vec), crossed + scaled);
+        Vector3f scaled  = vec * q.w;
+        Quatf    ret     = Quatf(-q.Vector3f::dot(vec), crossed + scaled);
         return ret;
     }
 
     // TODO: Implement
-    friend Quatf operator*(const Quatf& u, const Quatf& v)
-    {
-        Vector3f cross = u.cross(v);
+    friend Quatf operator*(
+        const Quatf& u, const Quatf& v
+    ) {
+        Vector3f cross   = u.cross(v);
         Vector3f v_mul_w = u.w * v;
         Vector3f u_mul_w = v.w * v;
         Vector3f added_2 = u_mul_w + (cross + v_mul_w);
-        Quatf out = Quatf(u.w * v.w - u.Vector3f::dot(v), added_2);
+        Quatf    out     = Quatf(u.w * v.w - u.Vector3f::dot(v), added_2);
         return out;
     };
 
@@ -62,28 +59,24 @@ struct Quatf : public Vector3f {
     /*          */ void makeVectorRotationLimit(Vector3f&, Vector3f&, f32);
     /*          */ void makeVectorRotation(Vector3f&, Vector3f&);
 
-    f32 dot(const Quatf& q) const
-    {
+    f32 dot(
+        const Quatf& q
+    ) const {
         return w * w + q.x * q.x + q.y * q.y + q.z * q.z;
     }
 
-    f32 length() const
-    {
-        return Math<f32>::sqrt(dot(*this));
-    }
+    f32 length() const { return Math<f32>::sqrt(dot(*this)); }
 
-    void multScalar(f32 s)
-    {
+    void multScalar(
+        f32 s
+    ) {
         w *= s;
         x *= s;
         y *= s;
         z *= s;
     }
 
-    void setUnit()
-    {
-        set(1.0f, 0.0f, 0.0f, 0.0f);
-    }
+    void setUnit() { set(1.0f, 0.0f, 0.0f, 0.0f); }
 
     // union {
     //     Vector3f v;

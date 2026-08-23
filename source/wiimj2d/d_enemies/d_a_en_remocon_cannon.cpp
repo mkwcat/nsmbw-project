@@ -2,18 +2,20 @@
 // NSMBW .text: 0x80A94D90 - 0x80A97B30
 
 #include "d_a_en_remocon_cannon.h"
+
+#include "SndID.h"
 #include "d_a_player.h"
 #include "d_a_player_manager.h"
 #include "d_game_common.h"
 #include "d_mj2d_game.h"
-#include <egg/util/eggEffect.h>
 #include "m_ef.h"
 #include "m_vec.h"
+#include <egg/util/eggEffect.h>
 #include <nw4r/math/types.h>
-#include "SndID.h"
 
-float remoCannonGuideColorSet(int playerNo)
-{
+float remoCannonGuideColorSet(
+    int playerNo
+) {
     return static_cast<float>(playerNo);
 }
 
@@ -198,11 +200,10 @@ void daEnRemoconCannon_c::createModel() ASM_METHOD(
 );
 
 [[nsmbw(0x80A95890)]]
-void daEnRemoconCannon_c::setBodyColor()
-{
+void daEnRemoconCannon_c::setBodyColor() {
     if (mPlayerNo > -1) {
         dAcPy_c* player = daPyMng_c::getPlayer(mPlayerNo);
-        float frame = 0.0;
+        float    frame  = 0.0;
         if (player != nullptr) {
             frame = static_cast<float>(static_cast<int>(player->mPlayerType) + 1);
             mAnmTexPat.setFrame(frame, 0);
@@ -217,38 +218,37 @@ void daEnRemoconCannon_c::setBodyColor()
 }
 
 static constinit const nw4r::ut::Color PLY_TRAIL_EFF_COLOR_1[] = {
-  "#FFCCDD", // Mario
-  "#CCFFCE", // Luigi
-  "#FFFFFF", // Blue Toad
-  "#FFFFAC", // Yellow Toad
-  "#FFCEFF", // Toadette
-  "#CCACFF", // Purple Toadette
-  "#FFCCAC", // Orange Toad
-  "#ACACAC", // Black Toad
+    "#FFCCDD", // Mario
+    "#CCFFCE", // Luigi
+    "#FFFFFF", // Blue Toad
+    "#FFFFAC", // Yellow Toad
+    "#FFCEFF", // Toadette
+    "#CCACFF", // Purple Toadette
+    "#FFCCAC", // Orange Toad
+    "#ACACAC", // Black Toad
 };
 
 static constinit const nw4r::ut::Color PLY_TRAIL_EFF_COLOR_2[] = {
-  "#FF2970", // Mario
-  "#29FF33", // Luigi
-  "#6CFFFF", // Blue Toad
-  "#FFFF00", // Yellow Toad
-  "#FF6CFF", // Toadette
-  "#AC6CFF", // Purple Toadette
-  "#FFAC70", // Orange Toad
-  "#6C6C6C", // Black Toad
+    "#FF2970", // Mario
+    "#29FF33", // Luigi
+    "#6CFFFF", // Blue Toad
+    "#FFFF00", // Yellow Toad
+    "#FF6CFF", // Toadette
+    "#AC6CFF", // Purple Toadette
+    "#FFAC70", // Orange Toad
+    "#6C6C6C", // Black Toad
 };
 
 [[nsmbw(0x80A95990)]]
-void daEnRemoconCannon_c::EffectDischargeTail()
-{
+void daEnRemoconCannon_c::EffectDischargeTail() {
     GXColor color0, color1;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
         dAcPy_c* ply = daPyMng_c::getPlayer(i);
         if (((ply != nullptr) && !ply->isStatus(0x7D)) && mCannonFired[i]) {
-            mVec3_c effPos = {ply->mPos.x, ply->mPos.y, 5500.0};
+            mVec3_c effPos     = {ply->mPos.x, ply->mPos.y, 5500.0};
 
-            int playerType = static_cast<int>(ply->mPlayerType);
+            int     playerType = static_cast<int>(ply->mPlayerType);
             if (playerType >= PLAYER_COUNT) {
                 color0 = {0xFF, 0xFF, 0xFF, 0xFF};
                 color1 = {0xFF, 0xFF, 0xFF, 0xFF};
@@ -259,18 +259,18 @@ void daEnRemoconCannon_c::EffectDischargeTail()
 
             mEffectTrail[0].createEffect("Wm_mg_dischargetail01", 0, &effPos, nullptr, nullptr);
             mEffectTrail[0].setRegisterColor(
-              color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
+                color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
             );
             mEffectTrail[0].setRegisterAlpha(
-              color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
+                color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
             );
 
             mEffectTrail[1].createEffect("Wm_mg_dischargetail02", 0, &effPos, nullptr, nullptr);
             mEffectTrail[1].setRegisterColor(
-              color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
+                color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
             );
             mEffectTrail[1].setRegisterAlpha(
-              color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
+                color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
             );
         }
     }
@@ -321,14 +321,15 @@ UNDEF_80a95c68:;
 );
 
 [[nsmbw(0x80A960A0)]]
-void daEnRemoconCannon_c::firePlayer(int playerType)
-{
-    float modifiers[4] = {15.0, 7.0, 7.0, 7.0};
+void daEnRemoconCannon_c::firePlayer(
+    int playerType
+) {
+    float    modifiers[4] = {15.0, 7.0, 7.0, 7.0};
 
-    dAcPy_c* player = daPyMng_c::getPlayer(playerType);
+    dAcPy_c* player       = daPyMng_c::getPlayer(playerType);
     if (player != nullptr) {
         player->endDemoDokanCannon(mStagePos);
-        float mod = modifiers[mParam & 3];
+        float mod    = modifiers[mParam & 3];
         float accelF = nw4r::math::SinFIdx(mTargetAngle * 1.875 * 0.00390625);
         float speedY = nw4r::math::CosFIdx(mTargetAngle * 1.875 * 0.00390625);
 
@@ -343,8 +344,9 @@ void daEnRemoconCannon_c::firePlayer(int playerType)
 mVec3_c daEnRemoconCannon_c::calcTiltPos();
 
 [[nsmbw(0x80A964E0)]]
-bool daEnRemoconCannon_c::UNDEF_80a964e0(short target)
-{
+bool daEnRemoconCannon_c::UNDEF_80a964e0(
+    short target
+) {
     return dGameCom::CalculateTiltShoulder(&mTargetAngle, target, 400, mPlayerNo, 0x3520);
 }
 
@@ -413,25 +415,24 @@ void daEnRemoconCannon_c::initializeState_Fire() ASM_METHOD(
 );
 
 // Originally part of initializeState_Fire()
-void daEnRemoconCannon_c::EffectDischarge()
-{
+void daEnRemoconCannon_c::EffectDischarge() {
     const char* PLY_EFFECT_NAME[] = {
-      "Wm_mg_discharge03_r",
-      "Wm_mg_discharge03_g",
-      "Wm_mg_discharge03_b",
-      "Wm_mg_discharge03_y",
-      // TODO: figure out how to handle these
-      "Wm_mg_discharge03_r",
-      "Wm_mg_discharge03_r",
-      "Wm_mg_discharge03_r",
-      "Wm_mg_discharge03_r",
+        "Wm_mg_discharge03_r",
+        "Wm_mg_discharge03_g",
+        "Wm_mg_discharge03_b",
+        "Wm_mg_discharge03_y",
+        // TODO: figure out how to handle these
+        "Wm_mg_discharge03_r",
+        "Wm_mg_discharge03_r",
+        "Wm_mg_discharge03_r",
+        "Wm_mg_discharge03_r",
     };
 
     mVec3_c tiltPos = calcTiltPos();
-    mVec3_c effPos = {tiltPos.x, tiltPos.y, 5500.0};
+    mVec3_c effPos  = {tiltPos.x, tiltPos.y, 5500.0};
 
-    s16 angZ = -_7A6;
-    mAng3_c effAng = {0, 0, angZ};
+    s16     angZ    = -_7A6;
+    mAng3_c effAng  = {0, 0, angZ};
 
     mEf::createEffect("Wm_mg_discharge01", 0, &effPos, &effAng, nullptr);
     mEf::createEffect("Wm_mg_discharge02", 0, &effPos, &effAng, nullptr);

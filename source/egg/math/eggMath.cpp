@@ -3,8 +3,7 @@
 
 #include "eggMath.h"
 
-namespace EGG
-{
+namespace EGG {
 
 EXTERN_SYMBOL(0x802BE760, "sqrt__Q23EGG7Math<f>Ff");
 

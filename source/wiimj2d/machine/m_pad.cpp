@@ -3,9 +3,9 @@
 
 #include "m_pad.h"
 
-#include <mkwcat/ToString.hpp>
 #include <egg/core/eggController.h>
 #include <mkwcat/Relocate.hpp>
+#include <mkwcat/ToString.hpp>
 #include <revolution/pad.h>
 #include <revolution/wpad.h>
 

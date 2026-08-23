@@ -3,8 +3,7 @@
 
 #include "eggDvdFile.h"
 
-namespace EGG
-{
+namespace EGG {
 
 [[nsmbw_data(0x8042B0E0)]]
 bool DvdFile::sIsInitialized;

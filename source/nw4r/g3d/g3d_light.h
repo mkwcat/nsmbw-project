@@ -5,99 +5,60 @@
 #include <nw4r/math/vec.h>
 #include <revolution/gx/GXLight.h>
 
-namespace nw4r
-{
-namespace g3d
-{
+namespace nw4r {
+namespace g3d {
 struct LightSetData {
     static const int NUM_LIGHTS = 8;
 
-    s8 mLights[NUM_LIGHTS]; // at 0x0
-    s8 mAmbient; // at 0x8
-    char UNK_0x8[3]; // at 0x9
+    s8               mLights[NUM_LIGHTS]; // at 0x0
+    s8               mAmbient;            // at 0x8
+    char             UNK_0x8[3];          // at 0x9
 };
 
 struct AmbLightObj {
     u8 r, g, b, a;
 };
 
-struct AmbLightAnmResult {
-};
+struct AmbLightAnmResult {};
 
-class LightObj
-{
+class LightObj {
 private:
     enum LightObjFlag {
-        SPOT_LIGHT = 0x1,
+        SPOT_LIGHT     = 0x1,
         SPECULAR_LIGHT = 0x2,
-        ENABLED = 0x4,
-        SPECULAR_DIR = 0x8,
-        COLOR_ENABLE = 0x10,
-        ALPHA_ENABLE = 0x20
+        ENABLED        = 0x4,
+        SPECULAR_DIR   = 0x8,
+        COLOR_ENABLE   = 0x10,
+        ALPHA_ENABLE   = 0x20,
     };
 
 public:
     LightObj()
-      : mFlags()
-    {
-    }
+        : mFlags() {}
 
-    operator GXLightObj*()
-    {
-        return &mLightObj;
-    }
+    operator GXLightObj*() { return &mLightObj; }
 
-    operator const GXLightObj*() const
-    {
-        return &mLightObj;
-    }
+    operator const GXLightObj*() const { return &mLightObj; }
 
     LightObj& operator=(const LightObj& rhs);
 
-    bool IsSpotLight() const
-    {
-        return mFlags & SPOT_LIGHT;
-    }
+    bool IsSpotLight() const { return mFlags & SPOT_LIGHT; }
 
-    bool IsSpecularLight() const
-    {
-        return mFlags & SPECULAR_LIGHT;
-    }
+    bool IsSpecularLight() const { return mFlags & SPECULAR_LIGHT; }
 
-    bool IsEnable() const
-    {
-        return mFlags & ENABLED;
-    }
+    bool IsEnable() const { return mFlags & ENABLED; }
 
-    bool IsSpecularDir() const
-    {
-        return mFlags & SPECULAR_DIR;
-    }
+    bool IsSpecularDir() const { return mFlags & SPECULAR_DIR; }
 
-    bool IsColorEnable() const
-    {
-        return mFlags & COLOR_ENABLE;
-    }
+    bool IsColorEnable() const { return mFlags & COLOR_ENABLE; }
 
-    bool IsAlphaEnable() const
-    {
-        return mFlags & ALPHA_ENABLE;
-    }
+    bool IsAlphaEnable() const { return mFlags & ALPHA_ENABLE; }
 
-    bool IsDiffuseLight() const
-    {
-        return !IsSpotLight() && !IsSpecularLight();
-    }
+    bool IsDiffuseLight() const { return !IsSpotLight() && !IsSpecularLight(); }
 
-    void Enable()
-    {
-        mFlags |= ENABLED;
-    }
+    void Enable() { mFlags |= ENABLED; }
 
-    void Disable()
-    {
-        mFlags &= ~ENABLED;
-    }
+    void Disable() { mFlags &= ~ENABLED; }
 
     void Clear();
     void InitLightColor(GXColor);
@@ -114,68 +75,49 @@ public:
     void ApplyViewMtx(const math::MTX34& rMtx);
 
 private:
-    u32 mFlags; // at 0x0
+    u32        mFlags;    // at 0x0
     GXLightObj mLightObj; // at 0x4
 };
 
-struct LightAnmResult {
-};
+struct LightAnmResult {};
 
 class LightSetting;
 
 struct LightSet {
-    LightSet(LightSetting* setting, LightSetData* data)
-      : mSetting(setting)
-      , mLightSetData(data)
-    {
-    }
+    LightSet(
+        LightSetting* setting, LightSetData* data
+    )
+        : mSetting(setting)
+        , mLightSetData(data) {}
 
-    bool IsValid() const
-    {
-        return mSetting != nullptr && mLightSetData != nullptr;
-    }
+    bool IsValid() const { return mSetting != nullptr && mLightSetData != nullptr; }
 
     bool SelectLightObj(u32, int);
     bool SelectAmbLightObj(int);
 
-    LightSetting* mSetting; // at 0x0
+    LightSetting* mSetting;      // at 0x0
     LightSetData* mLightSetData; // at 0x4
 };
 
-class LightSetting
-{
+class LightSetting {
 public:
     LightSetting(LightObj*, AmbLightObj*, u32, LightSetData*, u32);
     bool Import(const LightSetting&);
     void ApplyViewMtx(const math::MTX34&, u32);
 
-    u16 GetNumLightObj() const
-    {
-        return mNumLightObj;
-    }
+    u16 GetNumLightObj() const { return mNumLightObj; }
 
-    u16 GetNumLightSet() const
-    {
-        return mNumLightSet;
-    }
+    u16 GetNumLightSet() const { return mNumLightSet; }
 
-    LightObj* GetLightObjArray() const
-    {
-        return mLightObjArray;
-    }
+    LightObj* GetLightObjArray() const { return mLightObjArray; }
 
-    AmbLightObj* GetAmbLightObjArray() const
-    {
-        return mAmbLightObjArray;
-    }
+    AmbLightObj* GetAmbLightObjArray() const { return mAmbLightObjArray; }
 
-    LightSetData* GetLightSetDataArray() const
-    {
-        return mLightSetDataArray;
-    }
+    LightSetData* GetLightSetDataArray() const { return mLightSetDataArray; }
 
-    LightSet GetLightSet(int i)
-    {
+    LightSet GetLightSet(
+        int i
+    ) {
         if (i < mNumLightSet && i > 0) {
             return LightSet(this, &mLightSetDataArray[i]);
         }
@@ -184,10 +126,10 @@ public:
     }
 
 private:
-    u16 mNumLightObj; // at 0x0
-    u16 mNumLightSet; // at 0x2
-    LightObj* mLightObjArray; // at 0x4
-    AmbLightObj* mAmbLightObjArray; // at 0x8
+    u16           mNumLightObj;       // at 0x0
+    u16           mNumLightSet;       // at 0x2
+    LightObj*     mLightObjArray;     // at 0x4
+    AmbLightObj*  mAmbLightObjArray;  // at 0x8
     LightSetData* mLightSetDataArray; // at 0xC
 };
 } // namespace g3d

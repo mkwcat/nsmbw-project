@@ -1,7 +1,6 @@
 #pragma once
 
-namespace nw4r::ut
-{
+namespace nw4r::ut {
 
 struct Rect {
     /* 0x00 */ f32 left;

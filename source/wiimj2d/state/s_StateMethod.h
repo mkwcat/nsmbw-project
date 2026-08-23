@@ -6,8 +6,7 @@
  * A class that handles state execution and transition. [Presumably, sStateMethod_c actually means
  * "methods for state interaction", or something like that].
  */
-class sStateMethod_c
-{
+class sStateMethod_c {
 public:
     /**
      * 0x8015FAE0
@@ -17,7 +16,7 @@ public:
      * @param initialState The initial state ID of this instance.
      */
     sStateMethod_c(
-      sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
+        sStateIDChkIf_c& checker, sStateFctIf_c& factory, const sStateIDIf_c& initialState
     );
 
     /**
@@ -55,46 +54,31 @@ public:
      * VT+0x1C
      * Marks the current state to be executed again.
      */
-    virtual void refreshStateMethod()
-    {
-        mRefreshStateMethod = true;
-    }
+    virtual void refreshStateMethod() { mRefreshStateMethod = true; }
 
     /**
      * VT+0x20
      * Returns the current state.
      */
-    virtual sStateIf_c* getState() const
-    {
-        return mpState;
-    }
+    virtual sStateIf_c* getState() const { return mpState; }
 
     /**
      * VT+0x24
      * Returns the next state ID.
      */
-    virtual const sStateIDIf_c* getNewStateID() const
-    {
-        return mpNewStateID;
-    }
+    virtual const sStateIDIf_c* getNewStateID() const { return mpNewStateID; }
 
     /**
      * VT+0x28
      * Returns the current state ID.
      */
-    virtual const sStateIDIf_c* getStateID() const
-    {
-        return mpStateID;
-    }
+    virtual const sStateIDIf_c* getStateID() const { return mpStateID; }
 
     /**
      * VT+0x2C
      * Returns the previous state ID.
      */
-    virtual const sStateIDIf_c* getOldStateID() const
-    {
-        return mpOldStateID;
-    }
+    virtual const sStateIDIf_c* getOldStateID() const { return mpOldStateID; }
 
     /**
      * VT+0x30

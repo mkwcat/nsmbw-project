@@ -14,9 +14,9 @@ struct DVDFileInfo {
     SIZE_ASSERT(0x3C);
 
     DVDCommandBlock cb;
-    u32 startAddr;
-    u32 length;
-    void* callback;
+    u32             startAddr;
+    u32             length;
+    void*           callback;
 };
 
 EXTERN_C_START
@@ -35,7 +35,7 @@ bool DVDConvertEntrynumToPath(s32 entrynum, char* path, u32 maxlen);
 
 s32 DVDReadPrio(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, s32 prio);
 
-#define DVDRead(fileInfo, addr, length, offset)                                                    \
+#define DVDRead(fileInfo, addr, length, offset) \
     DVDReadPrio((fileInfo), (addr), (length), (offset), 2)
 
 s32 DVDConvertPathToEntrynum(const char* fileName);

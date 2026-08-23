@@ -1,7 +1,6 @@
 #pragma once
 
-class dBlockMng_c
-{
+class dBlockMng_c {
 public:
     // Instance Methods
     // ^^^^^^

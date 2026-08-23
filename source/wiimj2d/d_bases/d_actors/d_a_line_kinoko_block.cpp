@@ -4,8 +4,9 @@
 #include "d_a_player_manager.h"
 
 [[nsmbw(0x80857770)]]
-int daLineKinokoBlock_c_numPlayersInMask(u32 mask)
-{
+int daLineKinokoBlock_c_numPlayersInMask(
+    u32 mask
+) {
     int count = 0;
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (mask & (1 << i)) {

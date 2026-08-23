@@ -4,7 +4,7 @@
 
 EXTERN_C_START
 
-#define abs(x) __builtin_abs(x)
+#define abs(x)  __builtin_abs(x)
 #define labs(x) __builtin_abs(x)
 
 /* 0x802E1FE4 */

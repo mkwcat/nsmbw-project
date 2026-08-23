@@ -7,24 +7,21 @@
 /**
  * A 3x4 matrix.
  */
-class mMtx_c
-{
+class mMtx_c {
     SIZE_ASSERT(0x30);
 
 public:
     /**
      * Constructs an empty matrix.
      */
-    mMtx_c()
-    {
-    }
+    mMtx_c() {}
 
     /**
      * Constructs a matrix with the given components.
      */
     mMtx_c(
-      float _00, float _01, float _02, float _03, float _10, float _11, float _12, float _13,
-      float _20, float _21, float _22, float _23
+        float _00, float _01, float _02, float _03, float _10, float _11, float _12, float _13,
+        float _20, float _21, float _22, float _23
     );
 
     /**
@@ -83,38 +80,44 @@ public:
      */
     void zero();
 
-    static mMtx_c createTrans(const mVec3_c& v)
-    {
+    static mMtx_c createTrans(
+        const mVec3_c& v
+    ) {
         return createTrans(v.x, v.y, v.z);
     }
 
-    static mMtx_c createTrans(float x, float y, float z)
-    {
+    static mMtx_c createTrans(
+        float x, float y, float z
+    ) {
         mMtx_c mtx;
         PSMTXTrans(&mtx.mData, x, y, z);
         return mtx;
     }
 
-    mMtx_c& concat(const mMtx_c& other)
-    {
+    mMtx_c& concat(
+        const mMtx_c& other
+    ) {
         PSMTXConcat(&mData, &other.mData, &mData);
         return *this;
     }
 
-    mMtx_c& trans(const mVec3_c& v)
-    {
+    mMtx_c& trans(
+        const mVec3_c& v
+    ) {
         PSMTXTrans(&mData, v.x, v.y, v.z);
         return *this;
     }
 
-    mMtx_c& trans(float x, float y, float z)
-    {
+    mMtx_c& trans(
+        float x, float y, float z
+    ) {
         PSMTXTrans(&mData, x, y, z);
         return *this;
     }
 
-    mMtx_c& ZXYrotM(const mAng3_c& ang)
-    {
+    mMtx_c& ZXYrotM(
+        const mAng3_c& ang
+    ) {
         ZXYrotM(ang.x, ang.y, ang.z);
         return *this;
     }

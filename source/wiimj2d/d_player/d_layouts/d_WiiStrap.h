@@ -2,8 +2,7 @@
 
 #include "d_base.h"
 
-class dWiiStrap_c : public dBase_c
-{
+class dWiiStrap_c : public dBase_c {
     SIZE_ASSERT(0x20A);
 
 public:

@@ -2,8 +2,7 @@
 
 #include "d_base_actor.h"
 
-class daWmItem_c : public dBaseActor_c
-{
+class daWmItem_c : public dBaseActor_c {
     SIZE_ASSERT(0x210);
 
 public:

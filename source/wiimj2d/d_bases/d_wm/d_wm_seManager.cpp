@@ -3,22 +3,21 @@
 
 #include "d_wm_seManager.h"
 
-#include "d_a_player_manager.h"
-#include "d_audio.h"
-#include "d_mj2d_game.h"
 #include "SndAudioMgr.h"
 #include "SndID.h"
 #include "SndObjectEnemy.h"
 #include "SndObjectMap.h"
 #include "SndObjectPlayer.h"
+#include "d_a_player_manager.h"
+#include "d_audio.h"
+#include "d_mj2d_game.h"
 #include <iterator>
 
 [[nsmbw_data(0x8042A55C)]]
 dWmSeManager_c* dWmSeManager_c::m_pInstance;
 
 [[nsmbw(0x80103F50)]]
-dWmSeManager_c* dWmSeManager_c::construct()
-{
+dWmSeManager_c* dWmSeManager_c::construct() {
     dWmSeManager_c* seManager = new dWmSeManager_c();
     seManager->initialize();
     return m_pInstance = seManager;
@@ -32,13 +31,10 @@ dWmSeManager_c::SeParam_t::~SeParam_t();
 
 /* VT+0x8 */
 [[nsmbw(0x801041E0)]]
-dWmSeManager_c::~dWmSeManager_c()
-{
-}
+dWmSeManager_c::~dWmSeManager_c() {}
 
 [[nsmbw(0x80104250)]]
-void dWmSeManager_c::initialize()
-{
+void dWmSeManager_c::initialize() {
     for (int i = 0; i < std::size(mSeParam); i++) {
         mSeParam[i].m0x00 = 121;
         mSeParam[i].m0x04 = 0;
@@ -61,12 +57,12 @@ void dWmSeManager_c::initialize()
         mpObjCSPlyArray[i]->mPlayerSndIndex = static_cast<SndObjctPly::PLAYER_SOUND_INDEX_e>(i);
     }
 
-    mpObjCSPly = new dAudio::SndObjctCSPly_c();
+    mpObjCSPly                  = new dAudio::SndObjctCSPly_c();
     mpObjCSPly->mPlayerSndIndex = SndObjctPly::PLAYER_SOUND_INDEX_e::MA;
 
-    mpObjEmy = new SndObjctEmy(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
-    mpObjCmnEmy = new SndObjctCmnEmy(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
-    mpObjCmnMap = new SndObjctCmnMap(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
+    mpObjEmy                    = new SndObjctEmy(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
+    mpObjCmnEmy                 = new SndObjctCmnEmy(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
+    mpObjCmnMap                 = new SndObjctCmnMap(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
 }
 
 [[nsmbw(0x801046B0)]]
@@ -802,37 +798,35 @@ UNDEF_801050a0:;
 
 [[nsmbw(0x801050E0)]]
 void dWmSeManager_c::playPlyVoice(
-  WmPlyVoice_e voice, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode
-)
-{
+    WmPlyVoice_e voice, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode
+) {
     SndObjctPly::PLAYER_VOICE_e voiceId = getPlyVoiceId(voice);
     if (voiceId == SndObjctPly::PLAYER_VOICE_e::COUNT) {
         return;
     }
 
-    int plyIndex = static_cast<int>(daPyMng_c::getModelPlayerType(player));
+    int                      plyIndex    = static_cast<int>(daPyMng_c::getModelPlayerType(player));
     dAudio::SndObjctCSPly_c* playerSound = mpObjCSPlyArray[plyIndex];
 
-    playerSound->mSoundPlyMode = getSoundPlyMode(playerMode);
+    playerSound->mSoundPlyMode           = getSoundPlyMode(playerMode);
     playerSound->startVoiceSound(voiceId, 0);
 }
 
 [[nsmbw(0x80105170)]]
 void dWmSeManager_c::playPlySound(
-  WmSound_e sound, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode, f32 param4
-)
-{
+    WmSound_e sound, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode, f32 param4
+) {
     SndID::Type soundId = getSoundId(sound);
     if (soundId == SndID::SE_DEMO_OP_DUMMY_U) {
         return;
     }
 
-    int plyIndex = static_cast<int>(daPyMng_c::getModelPlayerType(player));
+    int                      plyIndex    = static_cast<int>(daPyMng_c::getModelPlayerType(player));
     dAudio::SndObjctCSPly_c* playerSound = mpObjCSPlyArray[plyIndex];
 
-    playerSound->mSoundPlyMode = getSoundPlyMode(playerMode);
+    playerSound->mSoundPlyMode           = getSoundPlyMode(playerMode);
 
-    WmSoundType_e soundType = getSoundType(sound);
+    WmSoundType_e soundType              = getSoundType(sound);
     if (soundType == WmSoundType_e::PLAYER) {
         if (sound == WmSound_e::PLY_JUMP) {
             if (playerMode == PLAYER_MODE_e::NONE) {

@@ -3,17 +3,17 @@
 
 #include "d_a_player_base.h"
 
-#include "d_s_stage.h"
 #include "d_a_player.h"
-#include "d_a_yoshi.h"
-#include "d_gamedisplay.h"
-#include "d_profile.h"
-#include "d_gamerule.h"
 #include "d_a_player_hio_ADJ.h"
 #include "d_a_player_manager.h"
+#include "d_a_yoshi.h"
 #include "d_course_data.h"
 #include "d_game_common.h"
+#include "d_gamedisplay.h"
+#include "d_gamerule.h"
 #include "d_mj2d_game.h"
+#include "d_profile.h"
+#include "d_s_stage.h"
 #include "f_manager.h"
 #include "s_Lib.h"
 #include <cassert>

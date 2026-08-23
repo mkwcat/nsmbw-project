@@ -11,4 +11,4 @@ public:
     static void GXSetViewport_(f32, f32, f32, f32, f32, f32);
 };
 
-}
+} // namespace EGG

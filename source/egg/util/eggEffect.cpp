@@ -3,8 +3,7 @@
 
 #include "eggEffect.h"
 
-namespace EGG
-{
+namespace EGG {
 
 [[nsmbw(0x802D7D90)]]
 Effect::Effect();
@@ -13,7 +12,9 @@ Effect::Effect();
 Effect::~Effect();
 
 [[nsmbw(0x802D8470)]]
-void Effect::setRegisterColor(const GXColor& regColor0, const GXColor& regColor1, u8 regIdx, ERecursive);
+void Effect::setRegisterColor(
+    const GXColor& regColor0, const GXColor& regColor1, u8 regIdx, ERecursive
+);
 
 [[nsmbw(0x802D84B0)]]
 void Effect::setRegisterAlpha(u8 regAlpha0, u8 regAlpha1, u8 regIdx, ERecursive);

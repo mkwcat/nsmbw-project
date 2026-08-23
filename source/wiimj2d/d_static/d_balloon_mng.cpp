@@ -3,22 +3,22 @@
 
 #include "d_balloon_mng.h"
 
+#include "d_a_boss_demo.h"
 #include "d_a_en_hatena_balloon.h"
 #include "d_a_player.h"
-#include "d_profile.h"
-#include "d_gamerule.h"
-#include "d_a_boss_demo.h"
 #include "d_a_player_manager.h"
 #include "d_actor.h"
 #include "d_actor_mng.h"
 #include "d_actorcreate_mng.h"
 #include "d_enemy_boss.h"
+#include "d_gamerule.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
-#include <egg/math/eggMath.h>
+#include "d_profile.h"
 #include "f_manager.h"
 #include "f_param.h"
 #include <cstddef>
+#include <egg/math/eggMath.h>
 #include <iterator>
 
 [[nsmbw_data(0x8042A068)]]
