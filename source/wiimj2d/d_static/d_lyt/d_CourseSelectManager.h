@@ -1,7 +1,7 @@
 #pragma once
 
-#include "d_bases/d_Continue.h"
-#include "d_bases/d_MessageWindow.h"
+#include "d_bases/d_layouts/d_Continue.h"
+#include "d_bases/d_layouts/d_MessageWindow.h"
 #include "d_static/d_base.h"
 #include "d_static/d_lyt/d_CourseSelectGuide.h"
 #include "d_static/d_mj2d/d_mj2d_game.h"

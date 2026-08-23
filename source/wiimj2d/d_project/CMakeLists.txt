@@ -1,3 +1,5 @@
+target_include_directories(project PRIVATE .)
+
 target_sources(project PRIVATE
     d_a_bg_carry.cpp
     d_a_en_sample_enemy.cpp

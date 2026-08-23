@@ -1,3 +1,5 @@
+target_include_directories(project PRIVATE .)
+
 #
 # WIIMJ2D.dol
 # NSMBW          .text:  0x80161A60 - 0x801632B0

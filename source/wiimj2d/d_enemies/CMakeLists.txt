@@ -1,3 +1,5 @@
+target_include_directories(project PRIVATE .)
+
 #
 # d_enemies.rel
 #

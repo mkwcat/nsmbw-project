@@ -10,6 +10,8 @@ add_subdirectory(state)
 
 # Add for current directory
 
+target_include_directories(project PRIVATE .)
+
 # WIIMJ2D.dol
 # NSMBW          .text:  0x8015FF80 - 0x80160C10
 target_sources(project PRIVATE

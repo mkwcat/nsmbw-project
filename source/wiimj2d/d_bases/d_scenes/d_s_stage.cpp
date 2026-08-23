@@ -3,11 +3,11 @@
 
 #include "d_s_stage.h"
 
-#include "d_bases/d_MessageWindow.h"
-#include "d_bases/d_MiniGameCannon.h"
-#include "d_bases/d_MiniGameWire.h"
-#include "d_bases/d_ModelPlayManager.h"
-#include "d_bases/d_StaffCreditScore.h"
+#include "d_bases/d_layouts/d_MessageWindow.h"
+#include "d_bases/d_layouts/d_MiniGameCannon.h"
+#include "d_bases/d_layouts/d_MiniGameWire.h"
+#include "d_bases/d_layouts/d_ModelPlayManager.h"
+#include "d_bases/d_layouts/d_StaffCreditScore.h"
 #include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_cyuukan.h"
 #include "d_static/d_info.h"

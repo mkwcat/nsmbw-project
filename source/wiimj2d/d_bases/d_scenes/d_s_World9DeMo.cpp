@@ -3,7 +3,7 @@
 
 #include "d_s_World9DeMo.h"
 
-#include "d_bases/d_wm_effectManager.h"
+#include "d_bases/d_wm/d_wm_effectManager.h"
 #include "d_static/d_a_player/d_a_player_manager.h"
 #include "d_static/d_fader.h"
 #include "d_static/d_info.h"
@@ -18,8 +18,7 @@
  * do method for the create operation.
  */
 [[nsmbw(0x8091D350)]]
-fBase_c::PACK_RESULT_e dScWorld9DeMo_c::create()
-{
+fBase_c::PACK_RESULT_e dScWorld9DeMo_c::create() {
     dFader_c::setFader(dFader_c::fader_type_e::FADE);
 
     dSys_c::setClearColor(nw4r::ut::Color{0, 0, 0, 255});
@@ -32,8 +31,8 @@ fBase_c::PACK_RESULT_e dScWorld9DeMo_c::create()
     dWmEffectManager_c::construct();
 
     dMj2dGame_c* saveGame = dSaveMng_c::m_instance->getSaveGame();
-    mIsWorld9AlreadyOpen = !!saveGame->isWorldDataFlag(
-      WORLD_e::WORLD_9, dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED
+    mIsWorld9AlreadyOpen  = !!saveGame->isWorldDataFlag(
+        WORLD_e::WORLD_9, dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED
     );
 
     saveGame->onWorldDataFlag(WORLD_e::WORLD_9, dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED);

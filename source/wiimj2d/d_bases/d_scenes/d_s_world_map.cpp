@@ -3,29 +3,29 @@
 
 #include "d_s_world_map.h"
 
-#include "d_bases/d_CharacterChangeIndicator.h"
-#include "d_bases/d_CharacterChangeSelectArrow.h"
-#include "d_bases/d_CharacterChangeSelectBase.h"
-#include "d_bases/d_CharacterChangeSelectContents.h"
-#include "d_bases/d_CollectionCoin.h"
-#include "d_bases/d_CollectionCoinBase.h"
-#include "d_bases/d_CollectionCoinDate.h"
-#include "d_bases/d_Continue.h"
-#include "d_bases/d_CourseSelectMenu.h"
-#include "d_bases/d_EasyPairing.h"
-#include "d_bases/d_InfoWindow.h"
-#include "d_bases/d_LetterWindow.h"
-#include "d_bases/d_MessageWindow.h"
-#include "d_bases/d_ModelPlayArrow.h"
-#include "d_bases/d_NumberOfPeopleChange.h"
-#include "d_bases/d_StockItem.h"
-#include "d_bases/d_StockItemShadow.h"
-#include "d_bases/d_YesNoWindow.h"
-#include "d_bases/d_a_wm_KoopaShip.h"
-#include "d_bases/d_a_wm_Map.h"
-#include "d_bases/d_wm_WorldSelect.h"
-#include "d_bases/d_wm_WorldSelectGuide.h"
-#include "d_player/d_SelectCursor.h"
+#include "d_bases/d_a_wm/d_a_wm_KoopaShip.h"
+#include "d_bases/d_a_wm/d_a_wm_Map.h"
+#include "d_bases/d_layouts/d_CharacterChangeIndicator.h"
+#include "d_bases/d_layouts/d_CharacterChangeSelectArrow.h"
+#include "d_bases/d_layouts/d_CharacterChangeSelectBase.h"
+#include "d_bases/d_layouts/d_CharacterChangeSelectContents.h"
+#include "d_bases/d_layouts/d_CollectionCoin.h"
+#include "d_bases/d_layouts/d_CollectionCoinBase.h"
+#include "d_bases/d_layouts/d_CollectionCoinDate.h"
+#include "d_bases/d_layouts/d_Continue.h"
+#include "d_bases/d_layouts/d_CourseSelectMenu.h"
+#include "d_bases/d_layouts/d_EasyPairing.h"
+#include "d_bases/d_layouts/d_InfoWindow.h"
+#include "d_bases/d_layouts/d_LetterWindow.h"
+#include "d_bases/d_layouts/d_MessageWindow.h"
+#include "d_bases/d_layouts/d_ModelPlayArrow.h"
+#include "d_bases/d_layouts/d_NumberOfPeopleChange.h"
+#include "d_bases/d_layouts/d_StockItem.h"
+#include "d_bases/d_layouts/d_StockItemShadow.h"
+#include "d_bases/d_layouts/d_YesNoWindow.h"
+#include "d_bases/d_layouts/d_wm_WorldSelect.h"
+#include "d_bases/d_layouts/d_wm_WorldSelectGuide.h"
+#include "d_player/d_layouts/d_SelectCursor.h"
 #include "d_profile/d_profile.h"
 #include "d_static/d_lyt/d_CourseSelectManager.h"
 #include "d_static/d_mj2d/d_mj2d_game.h"
@@ -34,7 +34,7 @@
 
 [[nsmbw(0x80926E10)]]
 bool dScWMap_c::createLayoutPhase() {
-#define NEW(_TYPE, _PROFILE, _PARAM)                                                               \
+#define NEW(_TYPE, _PROFILE, _PARAM) \
     static_cast<_TYPE>(fBase_c::createChild(dProf::_PROFILE, this, _PARAM, 0))
 
     mpSelectCursor                       = NEW(dSelectCursor_c*, SELECT_CURSOR, 0);

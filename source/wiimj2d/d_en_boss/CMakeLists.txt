@@ -1,3 +1,5 @@
+target_include_directories(project PRIVATE .)
+
 #
 # d_en_boss.rel
 #

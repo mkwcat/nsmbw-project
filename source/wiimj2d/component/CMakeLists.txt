@@ -1,3 +1,4 @@
+target_include_directories(project PRIVATE .)
 
 #
 # WIIMJ2D.dol

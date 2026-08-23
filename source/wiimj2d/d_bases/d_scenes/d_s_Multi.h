@@ -1,16 +1,15 @@
 #pragma once
 
-#include "d_bases/d_MultiCourseSelect.h"
+#include "d_bases/d_layouts/d_MultiCourseSelect.h"
 #include "d_static/d_scene.h"
 #include "state/s_FStateFct.h"
+#include "state/s_State.h"
 #include "state/s_StateMethodUsr_FI.h"
 #include "state/s_StateMgr.h"
-#include "state/s_State.h"
 
 class dMultiCourseSelect_c;
 
-class dScMulti_c : public dScene_c
-{
+class dScMulti_c : public dScene_c {
     SIZE_ASSERT(0x1DC);
 
 public:
@@ -25,11 +24,12 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x074 */ sStateMgr_c<dScMulti_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c> mStateMgr;
+    /* 0x074 */ sStateMgr_c<dScMulti_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c>
+        mStateMgr;
 
     FILL(0xB0, 0xBC);
 
-    /* 0xBC */ dMultiCourseSelect_c *mpCourseSelect;
+    /* 0xBC */ dMultiCourseSelect_c* mpCourseSelect;
 
     FILL(0xC0, 0xD4);
 

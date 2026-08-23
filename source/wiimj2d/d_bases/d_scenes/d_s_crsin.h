@@ -1,6 +1,6 @@
 #pragma once
 
-#include "d_bases/d_PreGame.h"
+#include "d_bases/d_layouts/d_PreGame.h"
 #include "d_static/d_scene.h"
 #include "state/s_State.h"
 #include "state/s_StateMgrDefault.h"
@@ -28,7 +28,7 @@ public:
     // ^^^^^^
 
     /* 0x074 */ sStateMgrDefault_c<dScCrsin_c> mStateMgr;
-    /* 0x0B0 */ dPreGame_c mPreGameLyt;
+    /* 0x0B0 */ dPreGame_c                     mPreGameLyt;
 
 public:
     // Static Variables
@@ -36,7 +36,7 @@ public:
 
     /* 0x8042A494 */ static dScCrsin_c* m_instance;
 
-    /* 0x8042A490 */ static bool m_isDispOff;
+    /* 0x8042A490 */ static bool        m_isDispOff;
 
 public:
     // State IDs

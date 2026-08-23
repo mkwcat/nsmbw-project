@@ -4,11 +4,10 @@
 #include "d_s_crsin.h"
 
 #include "component/c_random.h"
-#include "d_bases/d_s_stage.h"
-#include "d_player/d_WarningManager.h"
+#include "d_bases/d_scenes/d_s_stage.h"
+#include "d_player/d_layouts/d_WarningManager.h"
 #include "d_project/d_nextgoto_list.h"
 #include "d_static/d_a_player/d_a_player_manager.h"
-#include "d_static/d_fader.h"
 #include "d_static/d_game_common.h"
 #include "d_static/d_game_key/d_game_key.h"
 #include "d_static/d_info.h"
@@ -16,67 +15,64 @@
 #include "d_static/d_remocon_mng.h"
 #include "d_static/d_resource_mng.h"
 #include "d_static/d_save_manager.h"
-#include "d_static/d_scene.h"
 #include "d_static/d_stage.h"
 #include "machine/m_fader.h"
 
 [[nsmbw(0x8091EC50)]]
-int dScCrsin_c::loadDefaultObjectResPhase()
-{
+int dScCrsin_c::loadDefaultObjectResPhase() {
     static const char* l_objectRes[] = {
-      "Mario",
-      "Luigi",
-      "Kinopio",
-      "Kinopico", // Added
-      "Yoshi",
-      "P_rcha",
-      "L_rcha",
-      "K_rcha",
-      "C_rcha", // Added
-      "Y_rcha",
-      "Y_TexGreen",
-      "Y_TexRed",
-      "Y_TexYellow",
-      "Y_TexBlue",
-      "Y_TexCrimson", // Added
-      "Y_TexOrange", // Added
-      "Y_TexPurple", // Added
-      "Y_TexAzure", // Added
-      "obj_coin",
-      "balloon",
-      "I_kinoko",
-      "I_fireflower",
-      "I_iceflower",
-      "I_star",
-      "I_propeller",
-      "I_penguin",
-      "I_yoshi_egg",
-      "block_tsuta",
-      "teresa",
-      "jump_step",
-      "ice",
-      "ice_piece",
-      "obj_dokan",
-      "obj_door",
-      "obj_kusa",
-      "obj_hana",
-      "obj_hana_daishizen",
-      "block_jump",
-      "obj_chikuwa_block",
-      "lift_rakka_ashiba",
-      "Mask",
+        "Mario",
+        "Luigi",
+        "Kinopio",
+        "Kinopico", // Added
+        "Yoshi",
+        "P_rcha",
+        "L_rcha",
+        "K_rcha",
+        "C_rcha", // Added
+        "Y_rcha",
+        "Y_TexGreen",
+        "Y_TexRed",
+        "Y_TexYellow",
+        "Y_TexBlue",
+        "Y_TexCrimson", // Added
+        "Y_TexOrange",  // Added
+        "Y_TexPurple",  // Added
+        "Y_TexAzure",   // Added
+        "obj_coin",
+        "balloon",
+        "I_kinoko",
+        "I_fireflower",
+        "I_iceflower",
+        "I_star",
+        "I_propeller",
+        "I_penguin",
+        "I_yoshi_egg",
+        "block_tsuta",
+        "teresa",
+        "jump_step",
+        "ice",
+        "ice_piece",
+        "obj_dokan",
+        "obj_door",
+        "obj_kusa",
+        "obj_hana",
+        "obj_hana_daishizen",
+        "block_jump",
+        "obj_chikuwa_block",
+        "lift_rakka_ashiba",
+        "Mask",
     };
 
     dResMng_c::m_instance->setRes(
-      "Object", l_objectRes, sizeof(l_objectRes) / sizeof(l_objectRes[0]), nullptr
+        "Object", l_objectRes, sizeof(l_objectRes) / sizeof(l_objectRes[0]), nullptr
     );
 
     return 1;
 }
 
 [[nsmbw(0x8091EFD0)]]
-dScCrsin_c::~dScCrsin_c()
-{
+dScCrsin_c::~dScCrsin_c() {
     mPreGameLyt.~dPreGame_c();
 }
 
@@ -84,14 +80,12 @@ dScCrsin_c::~dScCrsin_c()
 bool dScCrsin_c::isDoneLoading();
 
 [[nsmbw(0x8091F940)]]
-void dScCrsin_c::initializeState_loadCourseProc()
-{
+void dScCrsin_c::initializeState_loadCourseProc() {
     dYoshiMdl_c::setDefaultColors();
 }
 
 [[nsmbw(0x8091FE20)]]
-void dScCrsin_c::executeState_resWaitProc2()
-{
+void dScCrsin_c::executeState_resWaitProc2() {
     if (!isDoneLoading()) {
         return;
     }
@@ -101,10 +95,10 @@ void dScCrsin_c::executeState_resWaitProc2()
         // Setup players for title screen
         int powerupMode = dGameCom::rndInt(128);
         for (int i = 0; i < 8; i++) {
-            daPyMng_c::mPlayerType[i] = dMj2dGame_c::scDefaultPlayerTypes[i];
+            daPyMng_c::mPlayerType[i]  = dMj2dGame_c::scDefaultPlayerTypes[i];
             daPyMng_c::mPlayerEntry[i] = true;
 
-            PLAYER_TYPE_e plrType = dMj2dGame_c::scDefaultPlayerTypes[i];
+            PLAYER_TYPE_e plrType      = dMj2dGame_c::scDefaultPlayerTypes[i];
 
             if (powerupMode < 4) {
                 daPyMng_c::mPlayerMode[plrType] = PLAYER_MODE_e::NONE;
@@ -127,7 +121,7 @@ void dScCrsin_c::executeState_resWaitProc2()
 
             dRemoconMng_c::m_instance->mpConnect[i]->setAllowConnect(true);
 
-            PLAYER_TYPE_e plrType = daPyMng_c::mPlayerType[i];
+            PLAYER_TYPE_e plrType           = daPyMng_c::mPlayerType[i];
 
             daPyMng_c::mPlayerMode[plrType] = PLAYER_MODE_e::MUSHROOM;
             if (daPyMng_c::mRest[plrType] < daPyMng_c::START_REST) {
@@ -147,7 +141,7 @@ void dScCrsin_c::executeState_resWaitProc2()
             }
         } else if (mode == dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::PER_COURSE) {
             u32 seed = static_cast<u32>(game.getPipeRandomizerSeed());
-            u32 add = static_cast<u32>(startGameInfo.stage1.stage) << 24;
+            u32 add  = static_cast<u32>(startGameInfo.stage1.stage) << 24;
             add += static_cast<u32>(startGameInfo.stage1.world) << 16;
             cRnd_c rnd(seed);
             (void) rnd.next();
@@ -169,8 +163,7 @@ void dScCrsin_c::executeState_resWaitProc2()
 }
 
 [[nsmbw(0x80920550)]]
-void dScCrsin_c::executeState_DispEndCheck()
-{
+void dScCrsin_c::executeState_DispEndCheck() {
     if (m_isDispOff) {
         mFader_c::mFader->setStatus(mFader_c::EStatus::OPAQUE);
         return dStage_c::setNextStage(0, mParam);
