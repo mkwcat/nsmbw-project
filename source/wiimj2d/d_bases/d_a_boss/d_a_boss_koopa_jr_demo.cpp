@@ -11,7 +11,7 @@
 #include "d_bg_parameter.h"
 #include "d_cc.h"
 #include "d_profile.h"
-#include "d_util.h"
+#include "d_util_disp.h"
 #include <algorithm>
 #include <mkwcat/Relocate.hpp>
 

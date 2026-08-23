@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_a_boss_demo.h"
-#include "d_util.h"
+#include "d_util_disp.h"
 
 class dAcPy_c;
 

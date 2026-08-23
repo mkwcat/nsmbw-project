@@ -7,10 +7,12 @@ target_include_directories(project PRIVATE
     d_enemy
     d_game_key
     d_lyt
+    d_managers
     d_mask
     d_mj2d
     d_Panel
     d_player_model
+    d_util
     d_wm
 )
 
@@ -151,16 +153,16 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80066FB0 - 0x80068040
     d_actor/d_actor_state.cpp
 # NSMBW          .text:  0x80068040 - 0x80069020
-    d_actorcreate_mng.cpp
+    d_managers/d_actorcreate_mng.cpp
 # NSMBW          .text:  0x80069020 - 0x800690F0
     d_allocator.cpp
 # NSMBW          .text:  0x800690F0 - 0x80069500
-    d_attention.cpp
+    d_managers/d_attention.cpp
 # NSMBW          .text:  0x80069500 - 0x8006C0B0
 # NSMBW          .bss:   0x803561E8 - 0x80356208
     d_audio.cpp
 # NSMBW          .text:  0x8006C0B0 - 0x8006C420
-    d_balloon_mng.cpp
+    d_managers/d_balloon_mng.cpp
 # NSMBW          .text:  0x8006C420 - 0x8006C6D0
     d_base.cpp
 # NSMBW          .text:  0x8006C6D0 - 0x8006CF40
@@ -168,7 +170,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8006CF40 - 0x80076BC0
     d_bc.cpp
 # NSMBW          .text:  0x80076BC0 - 0x80076FD0
-    d_beans_kuribo_mng.cpp
+    d_managers/d_beans_kuribo_mng.cpp
 # NSMBW          .text:  0x80076FD0 - 0x8007E180
     d_bg/d_bg.cpp
 # NSMBW          .text:  0x8007E180 - 0x8007F7A0
@@ -186,25 +188,25 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80083490 - 0x800872E0
   # d_bg/d_bg_unit.cpp
 # NSMBW          .text:  0x800872E0 - 0x80087F40
-  # d_bgtex_mng.cpp
+  # d_managers/d_bgtex_mng.cpp
 # NSMBW          .text:  0x80087F40 - 0x80088D90
-    d_block_mng.cpp
+    d_managers/d_block_mng.cpp
 # NSMBW          .text:  0x80088D90 - 0x80088FD0
   # d_boat_log.cpp
 # NSMBW          .text:  0x80088FD0 - 0x8008A230
-  # d_capture_mng.cpp
+  # d_managers/d_capture_mng.cpp
 # NSMBW          .text:  0x8008A230 - 0x8008C200
-  # d_capturecoin.cpp
+  # d_managers/d_capturecoin.cpp
 # NSMBW          .text:  0x8008C200 - 0x8008DC80
     d_cc.cpp
 # NSMBW          .text:  0x8008DC80 - 0x8008DED0
-  # d_center_save_mng.cpp
+  # d_managers/d_center_save_mng.cpp
 # NSMBW          .text:  0x8008DED0 - 0x8008DFF0
     d_coin.cpp
 # NSMBW          .text:  0x8008DFF0 - 0x8008ECC0
     d_course_data.cpp
 # NSMBW          .text:  0x8008ECC0 - 0x8008ED70
-  # d_curtain_mng.cpp
+  # d_managers/d_curtain_mng.cpp
 # NSMBW          .text:  0x8008ED70 - 0x8008F110
     d_cyuukan.cpp
 # NSMBW          .text:  0x8008F110 - 0x8008F460
@@ -258,7 +260,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800B0EA0 - 0x800B11D0
     d_flag_ctrl.cpp
 # NSMBW          .text:  0x800B11D0 - 0x800B14E0
-  # d_font_manager.cpp
+  # d_managers/d_font_manager.cpp
 # NSMBW          .text:  0x800B14E0 - 0x800B2D20
     d_lyt/d_fukidashiInfo.cpp
 # NSMBW          .text:  0x800B2D20 - 0x800B2E70
@@ -307,7 +309,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800C0B30 - 0x800C0DC0
   # d_light.cpp
 # NSMBW          .text:  0x800C0DC0 - 0x800C89A0
-  # d_line_mng.cpp
+  # d_managers/d_line_mng.cpp
 # NSMBW          .text:  0x800C89A0 - 0x800C9B50
     d_lyt/d_lytbase.cpp
 # NSMBW          .text:  0x800C9B50 - 0x800CA000
@@ -333,17 +335,17 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800CE7F0 - 0x800CE8F0
   # d_lyt/d_msgres.cpp
 # NSMBW          .text:  0x800CE8F0 - 0x800CED00
-    d_multi_manager.cpp
+    d_managers/d_multi_manager.cpp
 # NSMBW          .text:  0x800CED00 - 0x800CFCE0
-    d_nand_thread.cpp
+    d_managers/d_nand_thread.cpp
 # NSMBW          .text:  0x800CFCE0 - 0x800D03C0
     d_next.cpp
 # NSMBW          .text:  0x800D03C0 - 0x800D0700
-  # d_objblock_mng.cpp
+  # d_managers/d_objblock_mng.cpp
 # NSMBW          .text:  0x800D0700 - 0x800D0A90
   # d_pad.cpp
 # NSMBW          .text:  0x800D0A90 - 0x800D15F0
-    d_pause_manager.cpp
+    d_managers/d_pause_manager.cpp
 # NSMBW          .text:  0x800D15F0 - 0x800D2480
   # d_pole/d_pc.cpp
 # NSMBW          .text:  0x800D2480 - 0x800D2600
@@ -369,7 +371,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800D81A0 - 0x800D86C0
   # d_propel_parts.cpp
 # NSMBW          .text:  0x800D86C0 - 0x800D8940
-  # d_pswitch_manager.cpp
+  # d_managers/d_pswitch_manager.cpp
 # NSMBW          .text:  0x800D8940 - 0x800D91B0
     d_quake.cpp
 # NSMBW          .text:  0x800D91B0 - 0x800D9850
@@ -381,25 +383,25 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800DBDB0 - 0x800DBFD0
   # d_remocon_fukidashi.cpp
 # NSMBW          .text:  0x800DBFD0 - 0x800DDA40
-    d_remocon_mng.cpp
+    d_managers/d_remocon_mng.cpp
 # NSMBW          .text:  0x800DDA40 - 0x800DEA30
-  # d_replay_play.cpp
+  # d_managers/d_replay_play.cpp
 # NSMBW          .text:  0x800DDA40 - 0x800DF770
     d_res.cpp
 # NSMBW          .text:  0x800DF770 - 0x800DF950
 # NSMBW          .sbss:  0x8042A318 - 0x8042A31C
-    d_resource_mng.cpp
+    d_managers/d_resource_mng.cpp
 # NSMBW          .text:  0x800DF950 - 0x800DFA80
     d_rot_shake.cpp
 # NSMBW          .text:  0x800DFA80 - 0x800E0270
   # d_rs_node.cpp
 # NSMBW          .text:  0x800E0270 - 0x800E1AA0
-    d_save_manager.cpp
+    d_managers/d_save_manager.cpp
 # NSMBW          .text:  0x800E1AA0 - 0x800E2070
 # NSMBW          .sdata: 0x80428A40 - 0x80428A50
     d_scene.cpp
 # NSMBW          .text:  0x800E2070 - 0x800E2670
-    d_score_mng.cpp
+    d_managers/d_score_mng.cpp
 # NSMBW          .text:  0x800E2670 - 0x800E2BC0
   # d_screen.cpp
 # NSMBW          .text:  0x800E2BC0 - 0x800E3370
@@ -409,19 +411,25 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800E3730 - 0x800E38E0
     d_stage.cpp
 # NSMBW          .text:  0x800E38E0 - 0x800E3BA0
-    d_stage_timer.cpp
+    d_managers/d_stage_timer.cpp
 # NSMBW          .text:  0x800E3BA0 - 0x800E3BD0
     d_start_info.cpp
 # NSMBW          .text:  0x800E3BD0 - 0x800E46E0
-    d_switchflag_mng.cpp
+    d_managers/d_switchflag_mng.cpp
 # NSMBW          .text:  0x800E46E0 - 0x800E5510
     d_system.cpp
 # NSMBW          .text:  0x800E5510 - 0x800E75D0
   # d_tag_processor.cpp
 # NSMBW          .text:  0x800E75D0 - 0x800E78D0
-    d_tencoin_mng.cpp
-# NSMBW          .text:  0x800E78D0 - 0x800E8BC0
-    d_util.cpp
+    d_managers/d_tencoin_mng.cpp
+# NSMBW          .text:  0x800E78D0 - 0x800E7CB0
+  # d_util/d_util.cpp
+# NSMBW          .text:  0x800E7CB0 - 0x800E8240
+    d_util/d_util_disp.cpp
+# NSMBW          .text:  0x800E8240 - 0x800E8410
+  # d_util/d_util_frame_counter.cpp
+# NSMBW          .text:  0x800E8410 - 0x800E8BC0
+  # d_util/d_util_hermite_key.cpp
 # NSMBW          .text:  0x800E8BC0 - 0x800E8C40
   # d_video.cpp
 # NSMBW          .text:  0x800E8C40 - 0x800EA740

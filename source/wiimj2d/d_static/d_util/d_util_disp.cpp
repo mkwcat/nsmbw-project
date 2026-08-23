@@ -1,7 +1,7 @@
-// d_util.cpp
-// NSMBW .text: 0x800E78D0 - 0x800E8BC0
+// d_util_disp.cpp
+// NSMBW .text: 0x800E78D0 - 0x800E7CB0
 
-#include "d_util.h"
+#include "d_util_disp.h"
 
 namespace Util {
 
