@@ -150,6 +150,9 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80837370 - 0x80838020
     d_a_lift_fall.cpp
 
+# NSMBW   d_bases.text:  0x8083C020 - 0x8083EAF0
+    d_a_lift_remocon_balance.cpp
+
 # NSMBW   d_bases.text:  0x8083EBC0 - 0x8083FEC0
     d_a_lift_remocon_seesaw.cpp
 
@@ -180,6 +183,7 @@ target_sources(project PRIVATE
 
 # NSMBW   d_bases.text:  0x808760E0 - 0x80877510
     d_a_obj_grass.cpp
+
 
 # NSMBW   d_bases.text:  0x80897F60 - 0x808984D0
     d_a_reverse_block.cpp

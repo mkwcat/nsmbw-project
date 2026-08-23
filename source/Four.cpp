@@ -180,8 +180,7 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     {0x800D8EA4 + 2, 2},
 
     // UNDEF_800e2070 - Not sure what this is for or if it's ever used, player ID 5 will always
-    // score
-    // a 1-up for everyone in this function fsr
+    // score a 1-up for everyone in this function fsr
     {0x800E2098 + 2, 2, +1},
 
     // dWaterWave_c::waveExecute

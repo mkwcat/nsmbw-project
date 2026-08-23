@@ -59,3 +59,13 @@ u8 daLiftRemoconMain_c::UpdateControlPlayerNo(
     *rideCheck = PlayerNoRideCheck(playerMask);
     return playerMask;
 }
+
+[[nsmbw(0x80043A30)]]
+void daLiftRemoconMain_c::VT_0xE0();
+
+[[nsmbw(0x80044390)]]
+daLiftRemoconMain_c::~daLiftRemoconMain_c() {
+#ifndef __has_macintosh_dt_fix
+    mRideRoll.~dRideRoll_c();
+#endif
+}

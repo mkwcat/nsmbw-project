@@ -361,7 +361,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800D9850 - 0x800D9950
   # d_random.cpp
 # NSMBW          .text:  0x800D9950 - 0x800DBDB0
-  # d_rc.cpp
+    d_rc.cpp
 # NSMBW          .text:  0x800DBDB0 - 0x800DBFD0
   # d_remocon_fukidashi.cpp
 # NSMBW          .text:  0x800DBFD0 - 0x800DDA40
@@ -374,7 +374,7 @@ target_sources(project PRIVATE
 # NSMBW          .sbss:  0x8042A318 - 0x8042A31C
     d_resource_mng.cpp
 # NSMBW          .text:  0x800DF950 - 0x800DFA80
-  # d_rot_shake.cpp
+    d_rot_shake.cpp
 # NSMBW          .text:  0x800DFA80 - 0x800E0270
   # d_rs_node.cpp
 # NSMBW          .text:  0x800E0270 - 0x800E1AA0

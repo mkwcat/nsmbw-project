@@ -66,6 +66,8 @@ public:
     /* 0x441 */ u8          m0x441;
     /* 0x442 */ s8          mPlayerNo[8];
     /* 0x44C */ u32         m0x44C;
-    // /* 0x450 */ s8 mControlPlayerTimer[4];
-    /* 0x450 */ s8* mpControlPlayerTimer;
+    union {
+        /* 0x450 */ s8  REMOVED(mControlPlayerTimer)[4];
+        /* 0x450 */ s8* mpControlPlayerTimer{};
+    };
 };
