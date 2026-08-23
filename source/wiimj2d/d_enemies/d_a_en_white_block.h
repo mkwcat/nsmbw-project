@@ -2,7 +2,7 @@
 
 #include "d_static/d_enemy/d_a_en_blockmain.h"
 #include "d_static/d_allocator.h"
-#include "machine/m_3d_mdl.h"
+#include "machine/m_3d/m_3d_mdl.h"
 #include <array>
 
 class daEnWhiteBlock_c : public daEnBlockMain_c {

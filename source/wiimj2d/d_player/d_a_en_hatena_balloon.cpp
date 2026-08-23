@@ -12,7 +12,7 @@
 #include "d_static/d_quake.h"
 #include "d_static/d_resource_mng.h"
 #include "framework/f_param.h"
-#include "machine/m_3d_fanm.h"
+#include "machine/m_3d/m_3d_fanm.h"
 #include "machine/m_heap.h"
 #include "machine/m_vec.h"
 #include "sound/SndID.h"

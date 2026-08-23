@@ -4,10 +4,10 @@
 #include "d_static/d_actor/d_actor.h"
 #include "d_static/d_allocator.h"
 #include "d_static/d_enemy/d_enemy.h"
-#include "machine/m_3d_anmchr.h"
-#include "machine/m_3d_anmtexpat.h"
-#include "machine/m_3d_anmtexsrt.h"
-#include "machine/m_3d_mdl.h"
+#include "machine/m_3d/m_3d_anmchr.h"
+#include "machine/m_3d/m_3d_anmtexpat.h"
+#include "machine/m_3d/m_3d_anmtexsrt.h"
+#include "machine/m_3d/m_3d_mdl.h"
 
 class daEnHatenaBalloon_c : public dEn_c,
                             public dProf::Info<daEnHatenaBalloon_c, dProf::EN_HATENA_BALLOON>

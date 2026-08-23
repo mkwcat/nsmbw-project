@@ -2,7 +2,7 @@
 
 #include "d_static/d_allocator.h"
 #include "d_static/d_wm/d_wm_actor.h"
-#include "machine/m_3d_smdl.h"
+#include "machine/m_3d/m_3d_smdl.h"
 
 class dWmSVMdl_c;
 

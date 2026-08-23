@@ -3,7 +3,7 @@
 #include "d_static/d_allocator.h"
 #include "d_static/d_ka_draw.h"
 #include "d_static/d_mj2d/d_mj2d_game.h"
-#include "machine/m_3d_mdl.h"
+#include "machine/m_3d/m_3d_mdl.h"
 #include "machine/m_vec.h"
 #include "state/s_State.h"
 #include <d_static/d_enemy/d_enemy.h>

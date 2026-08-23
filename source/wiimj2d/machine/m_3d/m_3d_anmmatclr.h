@@ -1,8 +1,8 @@
 #ifndef M3D_M_ANMMATCLR_H
 #define M3D_M_ANMMATCLR_H
 
-#include "machine/m_3d_bmdl.h"
-#include "machine/m_3d_fanm.h"
+#include "machine/m_3d/m_3d_bmdl.h"
+#include "machine/m_3d/m_3d_fanm.h"
 #include <nw4r/g3d/g3d_anmclr.h>
 
 namespace m3d {

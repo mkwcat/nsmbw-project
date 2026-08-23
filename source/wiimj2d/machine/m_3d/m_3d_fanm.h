@@ -1,7 +1,7 @@
 #ifndef M3D_M_FANM_H
 #define M3D_M_FANM_H
 
-#include "machine/m_3d_banm.h"
+#include "machine/m_3d/m_3d_banm.h"
 
 namespace m3d {
 

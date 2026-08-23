@@ -2,8 +2,8 @@
 
 #include "d_static/d_ef/d_ef.h"
 #include "d_static/d_enemy/d_enemy.h"
-#include "machine/m_3d_anmchr.h"
-#include "machine/m_3d_anmtexpat.h"
+#include "machine/m_3d/m_3d_anmchr.h"
+#include "machine/m_3d/m_3d_anmtexpat.h"
 #include "machine/m_vec.h"
 #include <nw4r/g3d/g3d_resfile.h>
 

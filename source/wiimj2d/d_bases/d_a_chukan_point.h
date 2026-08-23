@@ -1,8 +1,8 @@
 #pragma once
 
 #include "d_static/d_actor/d_actor_state.h"
-#include "machine/m_3d_anmtexpat.h"
-#include "machine/m_3d_mdl.h"
+#include "machine/m_3d/m_3d_anmtexpat.h"
+#include "machine/m_3d/m_3d_mdl.h"
 
 class daChukanPoint_c : public dActorState_c {
 public:

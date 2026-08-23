@@ -5,8 +5,8 @@
 
 #include "d_static/d_player_model/d_player_model.h"
 #include "d_static/d_player_model/d_player_model_manager.h"
-#include "machine/m_3d_anmtexpat.h"
-#include "machine/m_3d_mdl.h"
+#include "machine/m_3d/m_3d_anmtexpat.h"
+#include "machine/m_3d/m_3d_mdl.h"
 #include <nw4r/g3d/g3d_resmdl.h>
 
 dKinopicoMdl_c::dKinopicoMdl_c(
