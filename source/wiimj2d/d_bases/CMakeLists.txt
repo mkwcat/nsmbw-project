@@ -194,9 +194,11 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x808760E0 - 0x80877510
     d_actors/d_a_obj_grass.cpp
 
-
 # NSMBW   d_bases.text:  0x80897F60 - 0x808984D0
     d_actors/d_a_reverse_block.cpp
+
+# NSMBW   d_bases.text:  0x808ADFC0 - 0x808AF830
+    d_actors/d_a_tarzan_ivy.cpp
 
 # NSMBW   d_bases.text:  0x808C5100 - 0x808C7D10
     d_a_wm/d_a_wm_2DPlayer.cpp

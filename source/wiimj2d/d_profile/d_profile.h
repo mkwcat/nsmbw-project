@@ -105,7 +105,7 @@ constexpr T* cast(
     if constexpr (std::is_same_v<T, dBase_c>) {
         // Everything is a dBase_c
         return static_cast<T*>(base);
-    } else {
+    } else if (base) {
         if (hasProfile<T>(base->mProfName, static_cast<const T*>(nullptr))) {
             return static_cast<T*>(base);
         }

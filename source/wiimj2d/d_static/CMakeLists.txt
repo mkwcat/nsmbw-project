@@ -16,7 +16,6 @@ target_include_directories(project PRIVATE
     d_wm
 )
 
-
 #
 # WIIMJ2D.dol
 # NSMBW          .text:  0x80006790 - 0x800FFF80
@@ -346,12 +345,8 @@ target_sources(project PRIVATE
   # d_pad.cpp
 # NSMBW          .text:  0x800D0A90 - 0x800D15F0
     d_managers/d_pause_manager.cpp
-# NSMBW          .text:  0x800D15F0 - 0x800D2480
-  # d_pole/d_pc.cpp
-# NSMBW          .text:  0x800D2480 - 0x800D2600
-  # d_pole/d_pole_ctr.cpp
-# NSMBW          .text:  0x800D2600 - 0x800D2AE0
-  # d_pole/d_pole_rope.cpp
+# NSMBW          .text:  0x800D15F0 - 0x800D2D10
+    d_pc.cpp
 # NSMBW          .text:  0x800D2AE0 - 0x800D2D10
     d_ef/d_player_effect.cpp
 # NSMBW          .text:  0x800D2D10 - 0x800D2EC0

@@ -433,7 +433,14 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     // UNDEF_808a5780
     {0x808A57EC + 2, 2},
 
-    // TODO 0x808AF330 daTarzanIvy_c::create
+    // daTarzanIvy_c::UNDEF_808ae550
+    {0x808AE568 + 2, 2},
+    // daTarzanIvy_c::UNDEF_808aea00
+    {0x808AEA24 + 2, 2},
+    // daTarzanIvy_c::UNDEF_808aeb90
+    {0x808AECE4 + 2, 2},
+    // daTarzanIvy_c::create
+    {0x808AF484 + 2, 2},
 
     // UNDEF_808b3a80
     {0x808B3B6C + 2, 2},
