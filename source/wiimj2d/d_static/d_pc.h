@@ -1,6 +1,7 @@
 #pragma once
 
 #include "d_mj2d_game.h"
+#include "d_rot_shake.h"
 #include "m_vec.h"
 
 class dActor_c;
@@ -120,7 +121,7 @@ public:
 };
 
 class dPoleRope_c : public dPole_ctr_c {
-    SIZE_ASSERT(0x3D);
+    SIZE_ASSERT(0x54);
 
 public:
     // Structors
@@ -157,4 +158,10 @@ public:
         bool v0x22, u8 flags
     );
     /* 0x800D2780 */ void calc();
+
+public:
+    // Instance Variables
+    // ^^^^^^
+
+    /* 0x40 */ dRotShake_c mRotShake;
 };

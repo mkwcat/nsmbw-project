@@ -109,7 +109,6 @@ public:
     /* 0x418 */ m3d::anmChr_c    m_anmChr;
     /* 0x450 */ m3d::mdl_c       m_model;
     /* 0x490 */ dPoleRope_c      m_pole{m_plrAngle};
-    /* 0x4D0 */ dRotShake_c      m_RotShake;
     /* 0x4E4 */ plrInfo2_s       REMOVED(m_plrInfo2)[4];
     /* 0x514 */ rotData_s        m_rotData[16];
     /* 0x714 */ rotData_s*       m_selectRotData[16];

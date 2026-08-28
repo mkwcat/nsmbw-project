@@ -120,18 +120,18 @@ void daTarzanIvy_c::FUN_808AE690() {
         }
 
         if (m_isRideAny && !m_isRideAnyPrev) {
-            if (std::fabs(m_rotData[0].m_RotShake.m_angle0) <= 64.0) {
+            if (std::fabs(m_rotData[0].m_RotShake.m_value[0]) <= 64.0) {
                 m_0x3DC = 4;
             }
         }
 
         if (pi.m_0x0C >= 0.0 && pi.m_0x0C <= 0.1) {
-            m_rotData[0].m_RotShake.m_angle0 += 16;
+            m_rotData[0].m_RotShake.m_value[0] += 16;
         } else if (pi.m_0x0C < 0.0 && pi.m_0x0C >= -0.1) {
-            m_rotData[0].m_RotShake.m_angle0 -= 16;
+            m_rotData[0].m_RotShake.m_value[0] -= 16;
         } else {
             float add = pi.m_0x0C * (pi.m_0x08 / 100.0) * 160.0;
-            m_rotData[0].m_RotShake.m_angle0 += static_cast<short>(std::min(add, 480.0f));
+            m_rotData[0].m_RotShake.m_value[0] += static_cast<short>(std::min(add, 480.0f));
         }
     }
 }
@@ -140,7 +140,7 @@ void daTarzanIvy_c::FUN_808AE690() {
 void daTarzanIvy_c::FUN_808AEF90() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         if (plrInfo_s& pi = m_plrInfo[i]; pi && pi.m_isRide) {
-            m_pole.mPlrAngle[i] = m_rotData[0].m_RotShake.m_angle0;
+            m_pole.mPlrAngle[i] = m_rotData[0].m_RotShake.m_value[0];
         } else {
             m_pole.mPlrAngle[i] = 0;
         }

@@ -50,6 +50,6 @@ void daRemoconBalance_c::FUN_8083D380() {
     }
 
     if (change) {
-        m_RotShake.m_angle0 = m_RotShake.m_angle7;
+        m_RotShake.m_value[0] = m_RotShake.m_value[7];
     }
 }
