@@ -18,6 +18,7 @@
 #include "d_s_stage.h"
 #include "f_base.h"
 #include "f_manager.h"
+#include <type_traits>
 
 [[nsmbw(0x801267F0)]]
 bool dAcPy_c::setHipAttackAction();
@@ -128,6 +129,28 @@ bool dAcPy_c::cancelCarry(dActor_c* carriedActor);
 
 [[nsmbw(0x8012E6E0)]]
 void dAcPy_c::releaseCarryActor();
+
+[[nsmbw(0x80136790)]]
+bool dAcPy_c::updateRopeAngle() {
+    mPrevPcAngle   = mPcAngle;
+    mPcAngle       = mPc.getAngle();
+    mPrevRopeAngle = mRopeAngle;
+    if (mPc.mCtr != nullptr) {
+        if (mPc.mCtr->mMode == 1 || mPc.mCtr->mMode == 2) {
+            short angle = 0;
+            if constexpr (std::is_pointer_v<std::remove_cvref_t<decltype(mPc.mCtr->mPlrAngle)>>) {
+                if (mPc.mCtr->mPlrAngle) {
+                    angle = mPc.mCtr->mPlrAngle[mPlrNo];
+                }
+            } else {
+                angle = mPc.mCtr->mPlrAngle[mPlrNo];
+            }
+            mRopeAngle = angle;
+            return true;
+        }
+    }
+    return false;
+}
 
 [[nsmbw(0x80138890)]]
 bool dAcPy_c::isNotBalloonCourse();

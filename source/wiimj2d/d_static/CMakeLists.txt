@@ -358,13 +358,13 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800D6DB0 - 0x800D7190
     d_player_model/d_player_model_manager.cpp
 # NSMBW          .text:  0x800D7190 - 0x800D7440
-  # d_player_orchestra.cpp
+  # d_a_player/d_player_orchestra.cpp
 # NSMBW          .text:  0x800D7440 - 0x800D81A0
   # d_pos_go_and_come_exe_frm.cpp
 # NSMBW          .text:  0x800D81A0 - 0x800D82D0
   # d_pos_shake.cpp
 # NSMBW          .text:  0x800D81A0 - 0x800D86C0
-  # d_propel_parts.cpp
+  # d_a_player/d_propel_parts.cpp
 # NSMBW          .text:  0x800D86C0 - 0x800D8940
   # d_managers/d_pswitch_manager.cpp
 # NSMBW          .text:  0x800D8940 - 0x800D91B0

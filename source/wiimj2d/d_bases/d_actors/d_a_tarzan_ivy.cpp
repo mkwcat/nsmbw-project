@@ -138,15 +138,11 @@ void daTarzanIvy_c::FUN_808AE690() {
 
 [[nsmbw(0x808AEF90)]]
 void daTarzanIvy_c::FUN_808AEF90() {
-#ifdef POLE_CTR_EXPAND
     for (int i = 0; i < PLAYER_COUNT; i++) {
-#else
-    for (int i = 0; i < 4; i++) {
-#endif
         if (plrInfo_s& pi = m_plrInfo[i]; pi && pi.m_isRide) {
-            m_pole.m0x34[i] = m_rotData[0].m_RotShake.m_angle0;
+            m_pole.mPlrAngle[i] = m_rotData[0].m_RotShake.m_angle0;
         } else {
-            m_pole.m0x34[i] = 0;
+            m_pole.mPlrAngle[i] = 0;
         }
     }
 }

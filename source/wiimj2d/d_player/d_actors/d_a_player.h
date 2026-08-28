@@ -3,100 +3,108 @@
 #include "d_a_player_base.h"
 #include "d_a_player_manager.h"
 #include "d_a_yoshi.h"
+#include "d_actor.h"
 #include "d_bc.h"
 #include "d_cc.h"
+#include "d_ef.h"
 #include "d_mj2d_game.h"
+#include "d_pc.h"
 #include "d_player_model_manager.h"
+#include "d_player_orchestra.h"
 #include "d_profile.h"
+#include "d_propel_parts.h"
 #include "d_quake.h"
 #include "f_base_id.h"
+#include "m_ef.h"
 #include "s_State.h"
 
 /**
  * The player class for Mario, Luigi and the Toads.
  */
 class dAcPy_c : public daPlBase_c, public dProf::Info<dAcPy_c, dProf::PLAYER> {
+    SIZE_ASSERT(0x2D08);
+
 public:
     // Constants
     // ^^^^^^
 
-    /// @unofficial
+    // @unofficial
     enum SpinHipAttackSubstate_e {
         SPIN_HIP_ATTACK_ACTION_0,
         SPIN_HIP_ATTACK_ACTION_1,
     };
 
-    /// @unofficial
+    // @unofficial
     enum FallSubstate_e {
         FALL_ACTION_0,
         FALL_ACTION_1,
     };
 
-    /// @unofficial
+    // @unofficial
     enum JumpSubstate_e {
         JUMP_TAKE_OFF,
         JUMP_AIR,
     };
 
-    /// @unofficial
+    // @unofficial
     enum LandSubstate_e {
         LAND_ACTION_0,
         LAND_ACTION_1,
     };
 
-    /// @unofficial
+    // @unofficial
     enum SpinJumpSubstate_e {
         SPIN_JUMP_ACTION_0,
         SPIN_JUMP_ACTION_1,
     };
 
-    /// @unofficial
+    // @unofficial
     enum SitJumpSubstate_e {
         SIT_JUMP_ACTION_0,
         SIT_JUMP_ACTION_1,
     };
 
-    /// @unofficial
+    // @unofficial
     enum CannonJumpSubstate_e {
         CANNON_JUMP_ACTION_0,
         CANNON_JUMP_ACTION_1,
         CANNON_JUMP_ACTION_2,
     };
 
-    /// @unofficial
+    // @unofficial
     enum BlockJumpSubstate_e {
         BLOCK_JUMP_ACTION_0,
         BLOCK_JUMP_ACTION_1,
     };
 
-    /// @unofficial
+    // @unofficial
     enum RollSlipSubstate_e {
         ROLL_SLIP_ACTION_0,
         ROLL_SLIP_ACTION_1,
         ROLL_SLIP_ACTION_2,
     };
 
-    /// @unofficial
+    // @unofficial
     enum PenguinSlideSubstate_e {
         PENGUIN_SLIDE_ACTION_0,
         PENGUIN_SLIDE_ACTION_1,
         PENGUIN_SLIDE_ACTION_2,
     };
 
-    /// @unofficial
+    // @unofficial
     enum CrouchSubstate_e {
         CROUCH_GROUND,
         CROUCH_WATER,
     };
 
-    /// @unofficial
+    // @unofficial
     enum ThrowSubstate_e {
         THROW_ACTION_0,
         THROW_ACTION_1,
         THROW_ACTION_2,
     };
 
-    /// @unofficial
+    // @unofficial
     enum SwimSubstate_e {
         SWIM_ACTION_0,
         SWIM_ACTION_1,
@@ -104,7 +112,7 @@ public:
         SWIM_ACTION_3,
     };
 
-    /// @unofficial
+    // @unofficial
     enum VineSubstate_e {
         VINE_ACTION_IVY,
         VINE_ACTION_NET,
@@ -112,14 +120,14 @@ public:
         VINE_ACTION_ROLL,
     };
 
-    /// @unofficial
+    // @unofficial
     enum HangSubstate_e {
         HANG_ACTION_START,
         HANG_ACTION_WAIT,
         HANG_ACTION_MOVE,
     };
 
-    /// @unofficial
+    // @unofficial
     enum KaniSubstate_e {
         KANI_ACTION_WALK,
         KANI_ACTION_HANG_INIT,
@@ -130,7 +138,7 @@ public:
         KANI_ACTION_HANG_UP_VINE,
     };
 
-    /// @unofficial
+    // @unofficial
     enum RopeSwingState_e {
         ROPE_SWING_0,
         ROPE_SWING_1,
@@ -145,7 +153,7 @@ public:
         ROPE_SWING_10,
     };
 
-    /// @unofficial
+    // @unofficial
     enum DemoOutDoorState_e {
         DEMO_OUT_DOOR_OPEN_DOOR,
         DEMO_OUT_DOOR_MOVE_CENTER,
@@ -346,9 +354,9 @@ public:
 
     /* 0x80139A90 */ daYoshi_c* getRideYoshi();
     /* 0x80138890 */ bool isNotBalloonCourse();
-    bool fn_801477c0(); ///< @unofficial
+    bool fn_801477c0(); // @unofficial
     /* 0x80144C60 */ void setSceneChangeInfo();
-    bool updateRopeAngle();
+    /* 0x80136790 */ bool updateRopeAngle();
     void setRopeSwingAnm(float, float);
     bool checkStartSwingUp();
     bool checkStartSwingDown();
@@ -1069,30 +1077,152 @@ public:
 
     /* 0x14D4 */ PLAYER_TYPE_e mPlayerType;
 
-    FILL(0x14D8, 0x14E0);
+    FILL(0x14D8, 0x14DC);
 
+    /* 0x14DC */ int           mIsRescueKinopio;
     /* 0x14E0 */ PLAYER_MODE_e mNextMode;
-
-    FILL(0x14E4, 0x153C);
-
-    /* 0x153C */ u8 mScrollType;
-
-    FILL(0x153D, 0x1554);
-
-    /* 0x1554 */ int m0x1554;
-
-    FILL(0x1558, 0x27D4);
-
+    /* 0x14E4 */ PLAYER_MODE_e mMode;
+    /* 0x14E8 */ mVec2_c       m0x14E8;
+    /* 0x14F0 */ sBcPointData  mVineBcData;
+    /* 0x1500 */ dPc_c         mPc;
+    /* 0x153C */ s8            mScrollType;
+    /* 0x153D */ s8            mChangeType;
+    /* 0x153E */ s8            mChangeTimer;
+    /* 0x153F */ s8            m0x153F;
+    /* 0x1540 */ int           m0x1540;
+    /* 0x1544 */ float         m0x1544;
+    /* 0x1548 */ int           mDoorSize;
+    /* 0x154C */ int           m0x154C;
+    /* 0x1550 */ int           m0x1550;
+    /* 0x1554 */ int           m0x1554;
+    /* 0x1558 */ int           m0x1558;
+    /* 0x155C */ int           mWaitFrameCount;
+    /* 0x1560 */ int           m0x1560;
+    /* 0x1564 */ int           mJumpCounter;
+    /* 0x1568 */ u8 mJumpComboTimer; // Timer for allowing a slight delay between jumps to still
+                                     // count as a combo.
+    /* 0x1569 */ u8    mWallSlideCooldown; // Timer to disable wall sliding while active.
+    /* 0x156C */ float m0x156C;
+    /* 0x1570 */ mEf::levelEffect_c  mLevelEf1;
+    /* 0x1698 */ mEf::levelEffect_c  mLevelEf2;
+    /* 0x17C0 */ mAng                m0x17C0;
+    /* 0x17C4 */ int                 m0x17C4;
+    /* 0x17C8 */ int                 m0x17C8;
+    /* 0x17CC */ s16                 m0x17CC;
+    /* 0x17CE */ s16                 mPropelRollSpeed;
+    /* 0x17D0 */ s16                 mIsPropelFall;
+    /* 0x17D4 */ mEf::levelEffect_c  mLevelEf3;
+    /* 0x18FC */ dEf::followEffect_c mFollowEf;
+    /* 0x1A10 */ int                 m0x1A10;
+    /* 0x1A14 */ int                 m0x1A14;
+    /* 0x1A18 */ int                 m0x1A18;
+    /* 0x1A1C */ int                 m0x1A1C;
+    /* 0x1A20 */ int                 m0x1A20;
+    /* 0x1A24 */ float               m0x1A24;
+    /* 0x1A28 */ mEf::levelEffect_c  mLevelEf4;
+    /* 0x1B50 */ mEf::levelEffect_c  mLevelEf5;
+    /* 0x1C78 */ int                 m0x1C78;
+    /* 0x1C7C */ mVec3_c             mAmiRollPos;
+    /* 0x1C88 */ float               mAmiXDiff;
+    /* 0x1C8C */ float               mAmiRelated;
+    /* 0x1C90 */ s16                 mAmiAng;
+    /* 0x1C94 */ int                 m0x1C94;
+    /* 0x1C98 */ u16                 m0x1C98;
+    /* 0x1C9C */ u32                 m0x1C9C;
+    /* 0x1CA0 */ mEf::levelEffect_c  mLevelEf6;
+    /* 0x1DC8 */ u8                  m0x1DC8;
+    /* 0x1DCC */ mVec2_c             m0x1DCC;
+    /* 0x1DD4 */ int   mPoleGrabCooldown; // Timer to disable grabbing a pole while active.
+    /* 0x1DD8 */ short mRopeAngle;
+    /* 0x1DDA */ short mPrevRopeAngle;
+    /* 0x1DDC */ short mPcAngle;
+    /* 0x1DDE */ short mPrevPcAngle;
+    /* 0x1DE0 */ int   m0x1DE0;
+    /* 0x1DE4 */ RopeSwingState_e m0x1DE4;
+    /* 0x1DE8 */ int   mTarzanRopeCooldown; // Timer to disable swinging on a vine while active.
+    /* 0x1DEC */ int   m0x1DEC;
+    /* 0x1DF0 */ float m0x1DF0;
+    /* 0x1DF4 */ int   m0x1DF4;
+    /* 0x1DF8 */ mEf::levelEffect_c mLevelEf7;
+    /* 0x1F20 */ mEf::levelEffect_c mLevelEf8;
+    /* 0x2048 */ int                m0x2048;
+    /* 0x204C */ int                m0x204C;
+    /* 0x2050 */ float              m0x2050;
+    /* 0x2054 */ int                m0x2054;
+    /* 0x2058 */ int                m0x2058;
+    /* 0x205C */ int                m0x205C;
+    /* 0x2060 */ u8                 m0x2060;
+    /* 0x2061 */ u8                 m0x2061;
+    /* 0x2064 */ float              m0x2064;
+    /* 0x2068 */ mVec2_c            mUzuSwimSpeed;
+    /* 0x2070 */ int                m0x2070;
+    /* 0x2074 */ mEf::levelEffect_c mLevelEf9;
+    /* 0x219C */ mEf::levelEffect_c mLevelEf10;
+    /* 0x22C4 */ mEf::levelEffect_c mLevelEf11;
+    /* 0x23EC */ mEf::levelEffect_c mLevelEf12;
+    /* 0x2514 */ int                m0x2514;
+    /* 0x2518 */ int                m0x2518;
+    /* 0x251C */ int                mSpinTimer; // Timer for the duration of a spin jump.
+    /* 0x2520 */ s16                m0x2520;
+    FILL(0x2522, 0x2528);
+    /* 0x2528 */ float mSpinHoldReqTarget;  // The target X position to
+                                            // move to while doing a spin in place.
+    /* 0x252C */ u32 mSpinFireBallCooldown; // Timer to control how often fireballs the player
+                                            // automatically shoots while spinning.
+    /* 0x2530 */ u32 mStartSpinCooldown;    // Timer to disable spin jumps and
+                                            // propeller spins while active.
+    /* 0x2534 */ s16                 m0x2534;
+    /* 0x2538 */ dEf::followEffect_c mFollowEf2;
+    /* 0x264C */ dEf::followEffect_c mFollowEf3;
+    /* 0x2760 */ u32                 m0x2760;
+    /* 0x2764 */ u32                 m0x2764;
+    FILL(0x2768, 0x2770);
+    /* 0x2770 */ int     m0x2770;
+    /* 0x2774 */ mVec2_c m0x2774;
+    FILL(0x277C, 0x2780);
+    /* 0x2780 */ mVec3_c   m0x2780;
+    /* 0x278C */ u32       m0x278C;
+    /* 0x2790 */ int       m0x2790;
+    /* 0x2794 */ u32       mAllBalloonFadeTimer;
+    /* 0x2798 */ mMtx_c    mRideJrClownMtx;
+    /* 0x27C8 */ int       mSpinCooldown; // Timer to disable another spin action while active.
+    /* 0x27CC */ u8        m0x27CC;
+    /* 0x27D0 */ float     m0x27D0;
     /* 0x27D4 */ fBaseID_e m0x27D4;
     /* 0x27D8 */ float     m0x27D8;
     /* 0x27DC */ float     m0x27DC;
     /* 0x27E0 */ int       m0x27E0;
-
-    FILL(0x27E4, 0x2A60);
-
-    /* 0x2A60 */ dPyMdlMng_c mPyMdlMng;
-    /* 0x2A6C */ float       m0x2A6C;
-    /* 0x2A70 */ float       m0x2A70;
-    /* 0x2A74 */ u32         m0x2A74;
-    /* 0x2A78 */ fBaseID_e   mCarryActorID;
+    /* 0x27E4 */ int       m0x27E4;
+    /* 0x27E8 */ int       m0x27E8[2];
+    /* 0x27F0 */ int       m0x27F0[2];
+    /* 0x27F8 */ int       mFollowType;
+    /* 0x27FC */ int       mPowerUpEffectTimer; // Timer controlling the powerup effect duration and
+                                                // opacity.
+    /* 0x2800 */ int mPowerUpType; // 0: Touching an item, 1: Touching the midway point.
+    /* 0x2804 */ dEf::dLevelEffect_c mItemGetEffect1;
+    /* 0x292C */ dEf::dLevelEffect_c mItemGetEffect2;
+    /* 0x2A54 */ int                 m0x2A54;
+    /* 0x2A58 */ int                 m0x2A58;
+    /* 0x2A5C */ int                 m0x2A5C;
+    /* 0x2A60 */ dPyMdlMng_c         mPyMdlMng;
+    /* 0x2A6C */ float               m0x2A6C;
+    /* 0x2A70 */ float               m0x2A70;
+    /* 0x2A74 */ float               m0x2A74;
+    /* 0x2A78 */ fBaseID_e           mCarryActorID;
+    /* 0x2A7C */ int                 mFastRunFrames; // How many frames the player has been running
+                                                     // at over 1 unit/frame.
+    /* 0x2A80 */ int   m0x2A80;
+    /* 0x2A84 */ short mNoInteractTimer; // Disables interaction with other players and enemies
+                                         // while the timer is non-zero.
+    /* 0x2A86 */ short m0x2A86;
+    /* 0x2A88 */ short m0x2A88;
+    /* 0x2A8A */ short m0x2A8A;
+    /* 0x2A8C */ short mWaterWalkTimer;
+    /* 0x2A8E */ short m0x2A8E;
+    /* 0x2A90 */ short m0x2A90;
+    /* 0x2A92 */ short mBalloonHelpVoiceCooldown; // Timer to only allow the help voice to
+                                                  // play every 2 seconds.
+    /* 0x2A94 */ dEf::followEffect_c mFollowEf4;
+    /* 0x2BA8 */ dPropelParts_c      mPropelParts;
+    /* 0x2CE8 */ dPlayerOrchestra_c  mPlayerOrchestra;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "d_mj2d_game.h"
 #include "m_vec.h"
 
 class dActor_c;
@@ -64,6 +65,16 @@ public:
     /* VT+0x8 0x8082E2F0 (weak) */
     virtual ~dPole_ctr_c() { release(); }
 
+    // Structors
+    // ++++++
+
+    dPole_ctr_c(
+        short (&plrAngle)[PLAYER_COUNT]
+    ) {
+        init();
+        mPlrAngle = plrAngle;
+    }
+
 public:
     // Instance Methods
     // ^^^^^^
@@ -87,17 +98,25 @@ public:
     /* 0x08 */ dPole_ctr_c* mPrev;
     /* 0x0C */ dPole_ctr_c* mNext;
     /* 0x10 */ dPc_c*       mPc;
-    FILL(0x14, 0x20);
+
+    FILL(0x14, 0x1E);
+
+    /* 0x1E */ short        m0x1E;
     /* 0x20 */ u8           mMode;
-    /* 0x21 */ bool         m0x21;
+    /* 0x21 */ bool         mIsLink;
     /* 0x22 */ bool         m0x22;
     /* 0x23 */ u8           mFlags;
     /* 0x24 */ int          m0x24;
     /* 0x28 */ mVec3_c*     m0x28;
     /* 0x2C */ const float* mAngFlt;
     /* 0x30 */ short*       mAngle;
-    /* 0x34 */ short        m0x34[4];
-    /* 0x3C */ u8           mFltCount;
+
+    union {
+        /* 0x34 */ short  REMOVED(mPlrAngle)[4];
+        /* 0x34 */ short* mPlrAngle;
+    };
+
+    /* 0x3C */ u8 mAngCount;
 };
 
 class dPoleRope_c : public dPole_ctr_c {
@@ -111,6 +130,14 @@ public:
 
     /* VT+0x8 0x8082E350 (weak) */
     virtual ~dPoleRope_c() override {}
+
+    // Structors
+    // ++++++
+
+    dPoleRope_c(
+        short (&plrAngle)[PLAYER_COUNT]
+    )
+        : dPole_ctr_c(plrAngle) {}
 
 public:
     // Virtual Methods
@@ -126,7 +153,8 @@ public:
     /* 0x800D2600 */ void calcLength();
     /* 0x800D2700 @unofficial */
     void init(
-        dActor_c* parent, u8 count, mVec3_c* v0x28, const float* floats, short* angles, int type,
+        dActor_c* parent, u8 count, mVec3_c* v0x28, const float* floats, short* angles, int mode,
         bool v0x22, u8 flags
     );
+    /* 0x800D2780 */ void calc();
 };

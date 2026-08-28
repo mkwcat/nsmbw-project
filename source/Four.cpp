@@ -435,6 +435,8 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
 
     // daTarzanIvy_c::UNDEF_808ae550
     {0x808AE568 + 2, 2},
+    // daTarzanIvy_c::UNDEF_808ae920
+    {0x808AE958 + 2, 2},
     // daTarzanIvy_c::UNDEF_808aea00
     {0x808AEA24 + 2, 2},
     // daTarzanIvy_c::UNDEF_808aeb90

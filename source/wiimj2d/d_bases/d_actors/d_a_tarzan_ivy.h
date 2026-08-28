@@ -108,7 +108,7 @@ public:
     /* 0x414 */ void*            m_pResFile{};
     /* 0x418 */ m3d::anmChr_c    m_anmChr;
     /* 0x450 */ m3d::mdl_c       m_model;
-    /* 0x490 */ dPoleRope_c      m_pole;
+    /* 0x490 */ dPoleRope_c      m_pole{m_plrAngle};
     /* 0x4D0 */ dRotShake_c      m_RotShake;
     /* 0x4E4 */ plrInfo2_s       REMOVED(m_plrInfo2)[4];
     /* 0x514 */ rotData_s        m_rotData[16];
@@ -127,4 +127,5 @@ public:
 
     plrInfo_s  m_plrInfo[PLAYER_COUNT];
     plrInfo2_s m_plrInfo2[PLAYER_COUNT];
+    short      m_plrAngle[PLAYER_COUNT];
 };
