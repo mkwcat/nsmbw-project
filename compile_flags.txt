@@ -35,8 +35,11 @@ c++
 -Isource/wiimj2d
 -Isource/wiimj2d/component
 -Isource/wiimj2d/d_bases/d_a_boss
+-Isource/wiimj2d/d_bases/d_a_floor
 -Isource/wiimj2d/d_bases/d_a_lift
 -Isource/wiimj2d/d_bases/d_a_mini_game
+-Isource/wiimj2d/d_bases/d_a_obj
+-Isource/wiimj2d/d_bases/d_a_tarzan
 -Isource/wiimj2d/d_bases/d_a_wm
 -Isource/wiimj2d/d_bases/d_actors
 -Isource/wiimj2d/d_bases/d_layouts
@@ -60,6 +63,7 @@ c++
 -Isource/wiimj2d/d_static/d_enemy
 -Isource/wiimj2d/d_static/d_game_key
 -Isource/wiimj2d/d_static/d_lyt
+-Isource/wiimj2d/d_static/d_managers
 -Isource/wiimj2d/d_static/d_mask
 -Isource/wiimj2d/d_static/d_mj2d
 -Isource/wiimj2d/d_static/d_Panel

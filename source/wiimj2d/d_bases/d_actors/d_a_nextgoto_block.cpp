@@ -1,32 +1,19 @@
-// d_a_next_goto_block.cpp
+// d_a_nextgoto_block.cpp
 // NSMBW d_bases.text: 0x8086E670 - 0x8086EEA0
 
-#include "d_a_next_goto_block.h"
+#include "d_a_nextgoto_block.h"
 
 [[nsmbw(0x8086E670)]]
 daNextGotoBlock_c* daNextGotoBlock_c_classInit() {
-    return new daNextGotoBlock_c();
+    return new daNextGotoBlock_c;
 }
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 [[nsmbw(0x8086E6C0)]]
 fBase_c::PACK_RESULT_e daNextGotoBlock_c::create();
 
-/**
- * VT+0x14
- * do method for the delete operation. This method was renamed due to conflict with the delete
- * C++ keyword.
- */
 [[nsmbw(0x8086E870)]]
 fBase_c::PACK_RESULT_e daNextGotoBlock_c::execute();
 
-/**
- * VT+0x2C
- * do method for the draw operation.
- */
 [[nsmbw(0x8086E8C0)]]
 fBase_c::PACK_RESULT_e daNextGotoBlock_c::draw() {
     return PACK_RESULT_e::SUCCEEDED;
@@ -175,6 +162,5 @@ UNDEF_8086eb90:;
   // clang-format on
 );
 
-/* VT+0x48 */
 [[nsmbw(0x8086EBB0)]]
 daNextGotoBlock_c::~daNextGotoBlock_c() {}

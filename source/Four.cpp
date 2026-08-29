@@ -391,24 +391,18 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     // daMiniGameWireMeshMgrObj_c::executeState_ShowResult
     {0x8086BF5C + 2, 2},
 
-    // TODO 0x8086EA10 daNextGotoBlock_c::executeState_Move
-
     // daNiceBoat_c::FUN_8086F390
     {0x8086F398 + 2, 2},
     {0x8086F3C8 + 2, 2},
     {0x8086F3F8 + 2, 2},
-
     // daNiceBoat_c::setPlayerEmblem?
     {0x80870990 + 2, 2},
     {0x808709AC + 2, 2},
-
     // daNiceBoat_c::FUN_80870EC0
     {0x80870F2C + 2, 2},
     {0x80870F84 + 2, 2},
-
     // daNiceBoat_c::FUN_80870FC0
     {0x80870FD4 + 2, 2},
-
     // daNiceBoat_c::FUN_80871320
     {0x808713C4 + 2, 2},
 

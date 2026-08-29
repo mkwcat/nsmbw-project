@@ -1,7 +1,7 @@
-// d_a_floor_jr_C.cpp
+// d_a_floor_jr_c.cpp
 // NSMBW d_bases.text: 0x807F1A00 - 0x807F2D30
 
-#include "d_a_floor_jr_C.h"
+#include "d_a_floor_jr_c.h"
 
 #include <mkwcat/Relocate.hpp>
 

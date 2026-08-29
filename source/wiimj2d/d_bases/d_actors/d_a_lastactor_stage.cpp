@@ -1,7 +1,7 @@
-// d_a_last_actor_stage.cpp
+// d_a_lastactor_stage.cpp
 // NSMBW d_bases.text: 0x80830690 - 0x80830C40
 
-#include "d_a_last_actor_stage.h"
+#include "d_a_lastactor_stage.h"
 
 #include "SndAudioMgr.h"
 #include "d_WarningManager.h"
@@ -36,10 +36,6 @@ daLastActorStage_c* daLastActorStage_c_classInit() {
     return new daLastActorStage_c();
 }
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 [[nsmbw(0x808306E0)]]
 fBase_c::PACK_RESULT_e daLastActorStage_c::create() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
@@ -50,18 +46,9 @@ fBase_c::PACK_RESULT_e daLastActorStage_c::create() {
     return PACK_RESULT_e::SUCCEEDED;
 }
 
-/**
- * VT+0x14
- * do method for the delete operation. This method was renamed due to conflict with the delete
- * C++ keyword.
- */
 [[nsmbw(0x80830710)]]
 fBase_c::PACK_RESULT_e daLastActorStage_c::doDelete();
 
-/**
- * VT+0x20
- * do method for the execute operation.
- */
 [[nsmbw(0x80830720)]]
 fBase_c::PACK_RESULT_e daLastActorStage_c::execute() {
     if (!dGameCom::isGameStop(0xFFFFFFFF)) {
@@ -163,9 +150,5 @@ fBase_c::PACK_RESULT_e daLastActorStage_c::execute() {
     return PACK_RESULT_e::SUCCEEDED;
 }
 
-/**
- * VT+0x2C
- * do method for the draw operation.
- */
 [[nsmbw(0x80830BB0)]]
 fBase_c::PACK_RESULT_e daLastActorStage_c::draw();
