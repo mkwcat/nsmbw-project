@@ -31,6 +31,9 @@ Make sure to enable `Core (Required)` under the mkwcat section in Riivolution, a
 features to work. Please disable everything in every other section, as the mod makes plenty of changes and
 is likely incompatible with any other mods you have enabled.
 
+When setting up GameCube controllers for players 5-8, make sure the **Y** button is mapped. Y is their run
+button and is required to pick up another player; B also runs, but pickups only work from Y.
+
 ## Credits & Attribution
 
 Various credits go to many wonderful people in the New Super Mario Bros. Wii community who have made and shared tools and documentation.
