@@ -1,7 +1,9 @@
 // w_sqrt.c
 // NSMBW .text: 0x802E8B58 - 0x802E8B5C
 
-#include <math.h>
+#include <cmath>
+
+namespace std {
 
 EXTERN_C_START
 
@@ -9,3 +11,5 @@ EXTERN_C_START
 double sqrt(double x);
 
 EXTERN_C_END
+
+} // namespace std

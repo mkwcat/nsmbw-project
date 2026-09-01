@@ -422,7 +422,8 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     // daPowBlock_c::UNDEF_80891a70
     {0x80891A9C + 2, 2},
 
-    // TODO daShipGear_c::UNDEF_808a2180
+    // daShipGear_c::UNDEF_808a2180
+    {0x808A2230 + 2, 2},
 
     // UNDEF_808a5780
     {0x808A57EC + 2, 2},

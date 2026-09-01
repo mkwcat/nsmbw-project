@@ -1,25 +1,503 @@
 #pragma once
 
-#include <math.h>
+namespace std {
 
-namespace std
-{
+EXTERN_C_START
 
-using ::fabs;
-using ::fabsf;
-using ::sqrt;
-using ::sqrtf;
+#define FP_NAN       1
+#define FP_INFINITE  2
+#define FP_ZERO      3
+#define FP_NORMAL    4
+#define FP_SUBNORMAL 5
 
-constexpr float lerp(float a, float b, float t) noexcept
-{
+#define HUGE_VAL  __builtin_huge_val()
+#define HUGE_VALF __builtin_huge_vall()
+#define HUGE_VALL __builtin_huge_valf()
+#define INFINITY  __builtin_inff()
+#define NAN       __builtin_nanf("")
+
+#define FP_ILOGB0   2147483647
+#define FP_ILOGBNAN 2147483647
+
+#define MATH_ERRNO     1
+#define MATH_ERREXCEPT 2
+// #define math_errhandling // TODO
+
+#define M_PI    3.141592653589793f
+#define M_SQRT3 1.73205f
+
+using float_t  = float;
+using double_t = double;
+
+double acos(double x);
+float acosf(float x);
+long double acosl(long double x);
+
+double asin(double x);
+float asinf(float x);
+long double asinl(long double x);
+
+double atan(double x);
+float atanf(float x);
+long double atanl(long double x);
+
+double atan2(double y, double x);
+float atan2f(float y, float x);
+long double atan2l(long double y, long double x);
+
+double cos(double x);
+float cosf(float x);
+long double cosl(long double x);
+
+double sin(double x);
+float sinf(float x);
+long double sinl(long double x);
+
+double tan(double x);
+float tanf(float x);
+long double tanl(long double x);
+
+double acosh(double x);
+float acoshf(float x);
+long double acoshl(long double x);
+
+double asinh(double x);
+float asinhf(float x);
+long double asinhl(long double x);
+
+double atanh(double x);
+float atanhf(float x);
+long double atanhl(long double x);
+
+double cosh(double x);
+float coshf(float x);
+long double coshl(long double x);
+
+double sinh(double x);
+float sinhf(float x);
+long double sinhl(long double x);
+
+double tanh(double x);
+float tanhf(float x);
+long double tanhl(long double x);
+
+double exp(double x);
+float expf(float x);
+long double expl(long double x);
+
+double exp2(double x);
+float exp2f(float x);
+long double exp2l(long double x);
+
+double expm1(double x);
+float expm1f(float x);
+long double expm1l(long double x);
+
+constexpr double frexp(double value, int* exp);
+constexpr float frexpf(float value, int* exp);
+constexpr long double frexpl(long double value, int* exp);
+
+constexpr int ilogb(double x);
+constexpr int ilogbf(float x);
+constexpr int ilogbl(long double x);
+
+constexpr double ldexp(double x, int exp);
+constexpr float ldexpf(float x, int exp);
+constexpr long double ldexpl(long double x, int exp);
+
+double log(double x);
+float logf(float x);
+long double logl(long double x);
+
+double log10(double x);
+float log10f(float x);
+long double log10l(long double x);
+
+double log1p(double x);
+float log1pf(float x);
+long double log1pl(long double x);
+
+double log2(double x);
+float log2f(float x);
+long double log2l(long double x);
+
+constexpr double logb(double x);
+constexpr float logbf(float x);
+constexpr long double logbl(long double x);
+
+constexpr double modf(
+    double value, double* iptr
+) {
+    /* @(#)s_modf.c 1.3 95/01/18 */
+    /*
+     * ====================================================
+     * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+     *
+     * Developed at SunSoft, a Sun Microsystems, Inc. business.
+     * Permission to use, copy, modify, and distribute this
+     * software is freely granted, provided that this notice
+     * is preserved.
+     * ====================================================
+     */
+    const double    x   = value;
+    const long long xi  = __builtin_bit_cast(long long, x);
+    const int       exp = ((xi >> 52) & 0x7ff) - 0x3ff; /* exponent of x */
+    const double    mpz = xi < 0.0 ? -0.0 : 0.0;
+
+    if (exp > 51) {
+        // No fraction part
+        *iptr = x * 1.0;
+        return mpz;
+    }
+    if (exp < 0) { // |x|<1
+        *iptr = mpz;
+        return x;
+    }
+
+    unsigned long long i = -1ull >> (12 + exp);
+    if ((xi & i) == 0) {
+        // X is integral
+        *iptr = x;
+        return mpz;
+    }
+
+    *iptr = __builtin_bit_cast(double, xi & ~static_cast<long long>(i));
+    return x - *iptr;
+}
+
+constexpr float modff(
+    float value, float* iptr
+) {
+    float  frac;
+    double intg;
+
+    frac  = modf(value, &intg);
+    *iptr = intg;
+
+    return frac;
+}
+
+constexpr long double modfl(long double value, long double* iptr);
+
+constexpr double scalbn(double x, int n);
+constexpr float scalbnf(float x, int n);
+constexpr long double scalbnl(long double x, int n);
+
+constexpr double scalbln(double x, long int n);
+constexpr float scalblnf(float x, long int n);
+constexpr long double scalblnl(long double x, long int n);
+
+double cbrt(double x);
+float cbrtf(float x);
+long double cbrtl(long double x);
+
+EXTERN_C_END
+
+constexpr int abs(
+    int j
+) {
+    return j < 0 ? -j : j;
+}
+
+constexpr long int abs(
+    long int j
+) {
+    return j < 0 ? -j : j;
+}
+
+constexpr long long int abs(
+    long long int j
+) {
+    return j < 0 ? -j : j;
+}
+
+constexpr double abs(
+    double j
+) {
+    return __builtin_fabs(j);
+}
+
+EXTERN_C_START
+
+constexpr double fabs(
+    double x
+) {
+    return __builtin_fabs(x);
+}
+
+constexpr float fabsf(
+    float x
+) {
+    return __builtin_fabsf(x);
+}
+
+constexpr long double fabsl(
+    long double x
+) {
+    return __builtin_fabsl(x);
+}
+
+double hypot(double x, double y);
+float hypotf(float x, float y);
+long double hypotl(long double x, long double y);
+
+EXTERN_C_END
+
+float hypot(double x, double y, double z);
+
+EXTERN_C_START
+
+double pow(double x, double y);
+float powf(float x, float y);
+long double powl(long double x, long double y);
+
+double sqrt(double x);
+float sqrtf(float x);
+long double sqrtl(long double x);
+
+double erf(double x);
+float erff(float x);
+long double erfl(long double x);
+
+double erfc(double x);
+float erfcf(float x);
+long double erfcl(long double x);
+
+double lgamma(double x);
+float lgammaf(float x);
+long double lgammal(long double x);
+
+double tgamma(double x);
+float tgammaf(float x);
+long double tgammal(long double x);
+
+constexpr double ceil(
+    double x
+) {
+    return __builtin_ceil(x);
+}
+
+constexpr float ceilf(
+    float x
+) {
+    return __builtin_ceilf(x);
+}
+
+constexpr long double ceill(
+    long double x
+) {
+    return __builtin_ceill(x);
+}
+
+constexpr double floor(
+    double x
+) {
+    return __builtin_floor(x);
+}
+
+constexpr float floorf(
+    float x
+) {
+    return __builtin_floorf(x);
+}
+
+constexpr long double floorl(
+    long double x
+) {
+    return __builtin_floorl(x);
+}
+
+double nearbyint(double x);
+float nearbyintf(float x);
+long double nearbyintl(long double x);
+
+double rint(double x);
+float rintf(float x);
+long double rintl(long double x);
+
+long int lrint(double x);
+long int lrintf(float x);
+long int lrintl(long double x);
+
+long long int llrint(double x);
+long long int llrintf(float x);
+long long int llrintl(long double x);
+
+constexpr double round(double x);
+constexpr float roundf(float x);
+constexpr long double roundl(long double x);
+
+constexpr long int lround(double x);
+constexpr long int lroundf(float x);
+constexpr long int lroundl(long double x);
+
+constexpr long long int llround(double x);
+constexpr long long int llroundf(float x);
+constexpr long long int llroundl(long double x);
+
+constexpr double trunc(double x);
+constexpr float truncf(float x);
+constexpr long double truncl(long double x);
+
+constexpr double fmod(double x, double y);
+
+constexpr float fmodf(
+    float x, float y
+) {
+    if (fabsf(y) > fabsf(x)) {
+        return x;
+    }
+    return x - y * static_cast<long long>(x / y);
+}
+
+constexpr long double fmodl(long double x, long double y);
+
+constexpr double remainder(double x, double y);
+constexpr float remainderf(float x, float y);
+constexpr long double remainderl(long double x, long double y);
+
+constexpr double remquo(double x, double y, int* quo);
+constexpr float remquof(float x, float y, int* quo);
+constexpr long double remquol(long double x, long double y, int* quo);
+
+constexpr double copysign(
+    double x, double y
+) {
+    return __builtin_copysign(x, y);
+}
+
+constexpr float copysignf(
+    float x, float y
+) {
+    return __builtin_copysignf(x, y);
+}
+
+constexpr long double copysignl(
+    long double x, long double y
+) {
+    return __builtin_copysignl(x, y);
+}
+
+double nan(const char* tagp);
+float nanf(const char* tagp);
+long double nanl(const char* tagp);
+
+constexpr double nextafter(double x, double y);
+constexpr float nextafterf(float x, float y);
+constexpr long double nextafterl(long double x, long double y);
+
+constexpr double nexttoward(double x, long double y);
+constexpr float nexttowardf(float x, long double y);
+constexpr long double nexttowardl(long double x, long double y);
+
+constexpr double nextup(double x, double y);
+constexpr float nextupf(float x, float y);
+constexpr long double nextupl(long double x, long double y);
+
+constexpr double nextdown(double x, double y);
+constexpr float nextdownf(float x, float y);
+constexpr long double nextdownl(long double x, long double y);
+
+constexpr double fdim(double x, double y);
+constexpr float fdimf(float x, float y);
+constexpr long double fdiml(long double x, long double y);
+
+constexpr double fmax(double x, double y);
+constexpr float fmaxf(float x, float y);
+constexpr long double fmaxl(long double x, long double y);
+
+constexpr double fmin(double x, double y);
+constexpr float fminf(float x, float y);
+constexpr long double fminl(long double x, long double y);
+
+constexpr double fma(double x, double y, double z);
+constexpr float fmaf(float x, float y, float z);
+constexpr long double fmal(long double x, long double y, long double z);
+
+EXTERN_C_END
+
+constexpr double lerp(
+    double a, double b, double t
+) noexcept {
     if (t <= 0.0f) {
         return a;
     }
     if (t >= 1.0f) {
         return b;
     }
-
     return a + t * (b - a);
 }
+
+constexpr float lerp(
+    float a, float b, float t
+) noexcept {
+    if (t <= 0.0f) {
+        return a;
+    }
+    if (t >= 1.0f) {
+        return b;
+    }
+    return a + t * (b - a);
+}
+
+constexpr long double lerp(
+    long double a, long double b, long double t
+) noexcept {
+    if (t <= 0.0f) {
+        return a;
+    }
+    if (t >= 1.0f) {
+        return b;
+    }
+    return a + t * (b - a);
+}
+
+EXTERN_C_START
+
+constexpr int fpclassify(double x);
+
+constexpr bool isfinite(
+    double x
+) {
+    return __builtin_isfinite(x);
+}
+
+constexpr bool isinf(
+    double x
+) {
+    return __builtin_isinf(x);
+}
+
+constexpr bool isnan(
+    double x
+) {
+    return __builtin_isnan(x);
+}
+
+constexpr bool isnormal(
+    double x
+) {
+    return __builtin_isnormal(x);
+}
+
+constexpr bool signbit(
+    double x
+) {
+    return __builtin_signbit(x);
+}
+
+constexpr bool isgreater(double x, double y);
+
+constexpr bool isgreaterequal(double x, double y);
+
+constexpr bool isless(double x, double y);
+
+constexpr bool islessequal(double x, double y);
+
+constexpr bool islessgreater(double x, double y);
+
+constexpr bool isunordered(double x, double y);
+
+EXTERN_C_END
 
 } // namespace std

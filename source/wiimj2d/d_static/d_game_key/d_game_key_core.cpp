@@ -363,9 +363,9 @@ void dGameKeyCore_c::setShakeY() {
         return;
     }
 
-    float accXDiff = fabsf(mAccel.x - mAccelOld.x);
-    float accYDiff = fabsf(mAccel.y - mAccelOld.y);
-    float accZDiff = fabsf(mAccel.z - mAccelOld.z);
+    float accXDiff = std::fabsf(mAccel.x - mAccelOld.x);
+    float accYDiff = std::fabsf(mAccel.y - mAccelOld.y);
+    float accZDiff = std::fabsf(mAccel.z - mAccelOld.z);
 
     if (accYDiff >= 0.28) {
         mShakeTimer1++;

@@ -3,6 +3,7 @@
 #include "os/OSCache.h"
 #include "os/OSContext.h"
 #include "os/OSError.h"
+#include "os/OSFastCast.h"
 #include "os/OSFatal.h"
 #include "os/OSInterrupt.h"
 #include "os/OSLink.h"

@@ -6,6 +6,8 @@
 #include "s_StateMethodUsr_FI.h"
 
 class dActorState_c : public dActor_c {
+    SIZE_ASSERT(0x3D0);
+
 public:
     // Structors
     // ^^^^^^
