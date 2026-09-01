@@ -545,6 +545,8 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
 
     // daEnMechaKoopa_c::doDelete
     {0x80A64F14 + 2, 2},
+    // daEnMechaKoopa_c::Normal_VsPlHitCheck
+    {0x80A65250 + 2, 2},
     // daEnMechaKoopa_c::hitCallback_Ice
     {0x80A65958 + 2, 2},
     {0x80A659D8 + 2, 2},
