@@ -11,7 +11,7 @@
 [[nsmbw(0x8001D090)]]
 void daBossDemo_c::initializeState_BattleIn() {
     daPyDemoMng_c::mspInstance->releaseDemoMode(1);
-    dEnBoss_c* boss = static_cast<dEnBoss_c*>(fManager_c::searchBaseByID(mBossId));
+    dEnBoss_c* boss = static_cast<dEnBoss_c*>(fManager_c::searchBaseByID(mBossID));
     if (boss) {
         boss->setBattleReady();
 
@@ -22,5 +22,5 @@ void daBossDemo_c::initializeState_BattleIn() {
             boss->deadProc();
         }
     }
-    mIsBattleEndDemo = false;
+    mBattleEnd = false;
 }

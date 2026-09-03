@@ -289,10 +289,16 @@ constinit FourPatch FOUR_PATCH_LIST[] = {
     {0x807DC510 + 2, 2},
     {0x807DC560 + 2, 2},
 
-    // TODO:
-    // - 0x807dd090, daCastleKokoopaDemo2nd_c::UNDEF_807dd090
-    // - 0x807dd430, daCastleKokoopaDemo2nd_c::UNDEF_807dd430
-    // - 0x807dd6b0, daCastleKokoopaDemo2nd_c::UNDEF_807dd6b0
+    // daCastleKokoopaDemo2nd_c::UNDEF_807dd090
+    {0x807DD124 + 2, 2},
+    {0x807DD130 + 2, 2},
+    {0x807DD184 + 2, 2, -1},
+    // daCastleKokoopaDemo2nd_c::UNDEF_807dd430
+    {0x807DD484 + 2, 2},
+    {0x807DD4C0 + 2, 2},
+    // daCastleKokoopaDemo2nd_c::UNDEF_807dd6b0
+    {0x807DD704 + 2, 2},
+    {0x807DD740 + 2, 2},
 
     // daChukanPoint_c::FUN_807e2710
     {0x807E27AC + 2, 2},

@@ -4,20 +4,8 @@
 #include "d_util_disp.h"
 
 class dAcPy_c;
-
-// TODO
-class daKameckForAirshipDemo_c : public dActor_c {
-public:
-    // Instance Variables
-    // ^^^^^^
-
-    FILL(0x392, 0x858);
-
-    /* 0x858 */ float mBossDemoX;
-};
-
-// TODO
-class daPeachForAirshipDemo_c : public dActor_c {};
+class daKameckForAirshipDemo_c;
+class daPeachForAirshipDemo_c;
 
 class daBossKoopaJrDemo_c : public daBossDemo_c {
 public:

@@ -17,10 +17,10 @@ public:
     // ^^^^^^
 
     /* 0x807DACB0 */
-    /* virtual */ bool checkBattleStDemo();
+    BOOL checkBattleStDemo() override;
 
     /* 0x807DB2E0 */
-    /* virtual */ bool demoScroll();
+    bool demoScroll() override;
 
 public:
     // Instance Methods
@@ -56,7 +56,6 @@ public:
     /* 0x408 */ s32      mCheckBattleStDemoStep;
     /* 0x40C */ int      REMOVED(m0x40C)[4];
     /* 0x41C */ int      REMOVED(m0x41C)[4];
-
     /* 0x42C */ dAcPy_c* REMOVED(mpPlayersInOrder)[4];
 
     FILL(0x43C, 0x460);

@@ -66,7 +66,7 @@ void dBalloonMng_c::execute() {
 
     if (daBossDemo_c* bossDemo = dActorMng_c::m_instance->mpBossDemo) {
         if (dEnBoss_c* boss =
-                static_cast<dEnBoss_c*>(fManager_c::searchBaseByID(bossDemo->mBossId));
+                static_cast<dEnBoss_c*>(fManager_c::searchBaseByID(bossDemo->mBossID));
             boss && boss->mpBossLife->mLife <= 0) {
             mBossDead = true;
             return;

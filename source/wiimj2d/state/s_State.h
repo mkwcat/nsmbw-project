@@ -5,8 +5,8 @@
 #define __sState_Functions(_virtual, _name) \
     PRAGMA(clang diagnostic push) \
     PRAGMA(clang diagnostic ignored "-Winconsistent-missing-override") \
-    _virtual void executeState_##_name(); \
     _virtual void initializeState_##_name(); \
+    _virtual void executeState_##_name(); \
     _virtual void finalizeState_##_name(); \
     PRAGMA(clang diagnostic pop)
 

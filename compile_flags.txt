@@ -34,8 +34,9 @@ c++
 -Isource/msl/cpp
 -Isource/wiimj2d
 -Isource/wiimj2d/component
--Isource/wiimj2d/d_bases/d_a_boss
+-Isource/wiimj2d/d_bases/d_a_boss_demo
 -Isource/wiimj2d/d_bases/d_a_floor
+-Isource/wiimj2d/d_bases/d_a_jr
 -Isource/wiimj2d/d_bases/d_a_lift
 -Isource/wiimj2d/d_bases/d_a_mini_game
 -Isource/wiimj2d/d_bases/d_a_obj
@@ -68,6 +69,7 @@ c++
 -Isource/wiimj2d/d_static/d_mj2d
 -Isource/wiimj2d/d_static/d_Panel
 -Isource/wiimj2d/d_static/d_player_model
+-Isource/wiimj2d/d_static/d_util
 -Isource/wiimj2d/d_static/d_wm
 -Isource/wiimj2d/d_static/framework
 -Isource/wiimj2d/d_static/machine

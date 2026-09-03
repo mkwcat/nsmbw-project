@@ -65,7 +65,7 @@ daCastleKokoopaDemo1st_c::daCastleKokoopaDemo1st_c() ASM_METHOD(
 );
 
 [[nsmbw(0x807DACB0)]]
-bool daCastleKokoopaDemo1st_c::checkBattleStDemo() {
+BOOL daCastleKokoopaDemo1st_c::checkBattleStDemo() {
     switch (mCheckBattleStDemoStep) {
     case 1: {
         f32 checkPos = mPos.x - 32.0;

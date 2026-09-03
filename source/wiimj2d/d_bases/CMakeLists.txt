@@ -1,6 +1,7 @@
 target_include_directories(project PRIVATE
-    d_a_boss
+    d_a_boss_demo
     d_a_floor
+    d_a_jr
     d_a_lift
     d_a_mini_game
     d_a_obj
@@ -180,13 +181,13 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x807C6AE0 - 0x807C7EF0
   # d_actors/d_a_boomerang.cpp
 # NSMBW   d_bases.text:  0x807C7EF0 - 0x807C8BA0
-  # d_actors/d_a_boss_kameck_demo.cpp
+  # d_a_boss_demo/d_a_boss_kameck_demo.cpp
 # NSMBW   d_bases.text:  0x807C8BA0 - 0x807C9500
   # d_actors/d_a_boss_koopa_bg_effect.cpp
 # NSMBW   d_bases.text:  0x807C9500 - 0x807D0070
-    d_a_boss/d_a_boss_koopa_demo.cpp
+    d_a_boss_demo/d_a_boss_koopa_demo.cpp
 # NSMBW   d_bases.text:  0x807D0070 - 0x807D2AC0
-    d_a_boss/d_a_boss_koopa_jr_demo.cpp
+    d_a_boss_demo/d_a_boss_koopa_jr_demo.cpp
 # NSMBW   d_bases.text:  0x807D2AC0 - 0x807D40E0
   # d_actors/d_a_boss_koopa_rubble.cpp
 # NSMBW   d_bases.text:  0x807D40E0 - 0x807D4E60
@@ -206,9 +207,9 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x807D94F0 - 0x807DAC10
   # d_actors/d_a_castle_boss_key.cpp
 # NSMBW   d_bases.text:  0x807DAC10 - 0x807DCD80
-    d_actors/d_a_castle_kokoopa_demo_1st.cpp
+    d_a_boss_demo/d_a_castle_kokoopa_demo_1st.cpp
 # NSMBW   d_bases.text:  0x807DCD80 - 0x807DDCC0
-    d_actors/d_a_castle_kokoopa_demo_2nd.cpp
+    d_a_boss_demo/d_a_castle_kokoopa_demo_2nd.cpp
 # NSMBW   d_bases.text:  0x807DDCC0 - 0x807E06A0
   # d_actors/d_a_castle_lemmy_ball.cpp
 # NSMBW   d_bases.text:  0x807E06A0 - 0x807E1420
@@ -302,23 +303,23 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80804D50 - 0x80804E70
   # d_actors/d_a_iwao_rock.cpp
 # NSMBW   d_bases.text:  0x80804E70 - 0x80806930
-  # d_actors/d_a_jr_clown_a.cpp
+  # d_a_jr/d_a_jr_clown_a.cpp
 # NSMBW   d_bases.text:  0x80806930 - 0x8080B210
-  # d_actors/d_a_jr_clown_b.cpp
+  # d_a_jr/d_a_jr_clown_b.cpp
 # NSMBW   d_bases.text:  0x8080B210 - 0x8080EC40
-  # d_actors/d_a_jr_clown_c.cpp
+  # d_a_jr/d_a_jr_clown_c.cpp
 # NSMBW   d_bases.text:  0x8080EC40 - 0x8080F910
-  # d_actors/d_a_jr_clown_for_jr_c_demo.cpp
+  # d_a_jr/d_a_jr_clown_for_jr_c_demo.cpp
 # NSMBW   d_bases.text:  0x8080F910 - 0x80813760
-    d_actors/d_a_jr_clown_for_player.cpp
+    d_a_jr/d_a_jr_clown_for_player.cpp
 # NSMBW   d_bases.text:  0x80813760 - 0x80815BE0
-  # d_actors/d_a_jr_fire.cpp
+  # d_a_jr/d_a_jr_fire.cpp
 # NSMBW   d_bases.text:  0x80815BE0 - 0x80816D50
-  # d_actors/d_a_jr_floor_fire.cpp
+  # d_a_jr/d_a_jr_floor_fire.cpp
 # NSMBW   d_bases.text:  0x80816D50 - 0x80818D00
-  # d_actors/d_a_kameck_for_airship_demo.cpp
+  # d_a_boss_demo/d_a_kameck_for_airship_demo.cpp
 # NSMBW   d_bases.text:  0x80818D00 - 0x8081B7B0
-  # d_actors/d_a_kameck_for_castle_demo.cpp
+  # d_a_boss_demo/d_a_kameck_for_castle_demo.cpp
 # NSMBW   d_bases.text:  0x8081B7B0 - 0x8081C830
   # d_actors/d_a_kameck_magic.cpp
 # NSMBW   d_bases.text:  0x8081C830 - 0x8081CF40
@@ -348,11 +349,11 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x80828020 - 0x80829C90
   # d_actors/d_a_koopa_fire.cpp
 # NSMBW   d_bases.text:  0x80829C90 - 0x8082C1B0
-  # d_actors/d_a_koopa_jr_for_castle_demo.cpp
+  # d_a_boss_demo/d_a_koopa_jr_for_castle_demo.cpp
 # NSMBW   d_bases.text:  0x8082C1B0 - 0x8082CCB0
-  # d_actors/d_a_koopa_ship_for_airship_demo.cpp
+  # d_a_boss_demo/d_a_koopa_ship_for_airship_demo.cpp
 # NSMBW   d_bases.text:  0x8082CCB0 - 0x8082E1F0
-  # d_actors/d_a_koopa_ship_for_castle_demo.cpp
+  # d_a_boss_demo/d_a_koopa_ship_for_castle_demo.cpp
 # NSMBW   d_bases.text:  0x8082E1F0 - 0x8082ED60
   # d_actors/d_a_ladder.cpp
 # NSMBW   d_bases.text:  0x8082ED60 - 0x80830690
@@ -554,9 +555,9 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x8088DC50 - 0x8088E670
   # d_actors/d_a_peach_castle_sequence_mgr.cpp
 # NSMBW   d_bases.text:  0x8088E670 - 0x8088FF80
-  # d_actors/d_a_peach_for_airship_demo.cpp
+  # d_a_boss_demo/d_a_peach_for_airship_demo.cpp
 # NSMBW   d_bases.text:  0x8088FF80 - 0x808912B0
-  # d_actors/d_a_peach_for_castle_demo.cpp
+  # d_a_boss_demo/d_a_peach_for_castle_demo.cpp
 # NSMBW   d_bases.text:  0x808912B0 - 0x80893940
   # d_actors/d_a_pow_block.cpp
 # NSMBW   d_bases.text:  0x80893940 - 0x808958E0
@@ -658,7 +659,7 @@ target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x808B0C20 - 0x808B15D0
   # d_actors/d_a_torchilight.cpp
 # NSMBW   d_bases.text:  0x808B15D0 - 0x808B2190
-  # d_actors/d_a_toride_kokoopa_demo.cpp
+  # d_a_boss_demo/d_a_toride_kokoopa_demo.cpp
 # NSMBW   d_bases.text:  0x808B2190 - 0x808B2670
   # d_actors/d_a_unit_chikuwa.cpp
 # NSMBW   d_bases.text:  0x808B2670 - 0x808B3100

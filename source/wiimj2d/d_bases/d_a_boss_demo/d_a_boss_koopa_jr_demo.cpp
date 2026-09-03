@@ -4,6 +4,8 @@
 #include "d_a_boss_koopa_jr_demo.h"
 
 #include "d_a_jr_clown_for_player.h"
+#include "d_a_kameck_for_airship_demo.h"
+#include "d_a_peach_for_airship_demo.h"
 #include "d_a_player.h"
 #include "d_a_player_manager.h"
 #include "d_bg.h"
