@@ -103,7 +103,7 @@ private: \
     static consteval unsigned __VTableOffset(const _BASE_CLASS*) { return _OFFSET; }
 };
 
-#define MACINTOSH_ABSTRACT \
+#define ABSTRACT \
     { \
         __builtin_trap(); \
         __builtin_unreachable(); \

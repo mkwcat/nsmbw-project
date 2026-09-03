@@ -84,26 +84,26 @@ public:
      * VT+0x30
      * Performs the actual state initialization.
      */
-    virtual int initializeStateLocalMethod() MACINTOSH_ABSTRACT;
+    virtual int initializeStateLocalMethod() ABSTRACT;
 
     /**
      * VT+0x34
      * Performs the actual state execution.
      */
-    virtual void executeStateLocalMethod() MACINTOSH_ABSTRACT;
+    virtual void executeStateLocalMethod() ABSTRACT;
 
     /**
      * VT+0x38
      * Performs the actual state termination.
      */
-    virtual void finalizeStateLocalMethod() MACINTOSH_ABSTRACT;
+    virtual void finalizeStateLocalMethod() ABSTRACT;
 
     /**
      * VT+0x3C
      * Performs the actual state transition.
      * @param newStateID The new state ID to transition to.
      */
-    virtual void changeStateLocalMethod(const sStateIDIf_c& newStateID) MACINTOSH_ABSTRACT;
+    virtual void changeStateLocalMethod(const sStateIDIf_c& newStateID) ABSTRACT;
 
 protected:
     /**

@@ -60,7 +60,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8001C690 - 0x8001CBB0
   # d_lyt/d_WipeMario.cpp
 # NSMBW          .text:  0x8001CBB0 - 0x8001DA50
-  # d_actor/d_a_boss_demo.cpp
+    d_actor/d_a_boss_demo.cpp
 # NSMBW          .text:  0x8001DA50 - 0x8001F6C0
   # d_actor/d_a_bullet.cpp
 # NSMBW          .text:  0x8001F6C0 - 0x800208B0

@@ -4,6 +4,66 @@
 #include "d_actor_state.h"
 #include "s_State.h"
 
+/* @unofficial */
+struct sDeathInfoData {
+    float               mXSpeed;
+    float               mYSpeed;
+    float               mMaxYSpeed;
+    float               mYAccel;
+    const sStateIDIf_c* mDeathState;
+    int                 mScore;
+    int                 m0x18;
+    u8                  mDirection;
+    u8                  mKilledBy;
+};
+
+/* @unofficial */
+class dDeathInfo_c {
+    SIZE_ASSERT(0x1F);
+
+public:
+    dDeathInfo_c()
+        : mIsDead(false) {}
+
+    dDeathInfo_c& operator=(
+        const sDeathInfoData& other
+    ) {
+        mIsDead     = true;
+        mSpeed      = {other.mXSpeed, other.mYSpeed};
+        mMaxYSpeed  = other.mMaxYSpeed;
+        mYAccel     = other.mYAccel;
+        mDeathState = other.mDeathState;
+        mScore      = other.mScore;
+        m0x18       = other.m0x18;
+        mDirection  = other.mDirection;
+        mKilledBy   = other.mKilledBy;
+        return *this;
+    }
+
+    float getXSpeed() const { return mSpeed.x; }
+
+    float getYSpeed() const { return mSpeed.y; }
+
+    float getMaxYSpeed() const { return mMaxYSpeed; }
+
+    float getYAccel() const { return mYAccel; }
+
+    static const u8 smc_UNKNOWN_HIT = 50; // @unofficial
+
+private:
+    /* 0x00 */ mVec2_c mSpeed;
+    /* 0x08 */ float   mMaxYSpeed;
+    /* 0x0C */ float   mYAccel;
+
+public:
+    /* 0x10 */ const sStateIDIf_c* mDeathState;
+    /* 0x14 */ int                 mScore;
+    /* 0x18 */ int                 m0x18;
+    /* 0x1C */ u8                  mDirection;
+    /* 0x1D */ s8                  mKilledBy;
+    /* 0x1E */ bool                mIsDead;
+};
+
 class dCc_c;
 
 class dEn_c : public dActorMultiState_c {
@@ -386,7 +446,9 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x414, 0x504);
+    /* 0x414 */ dDeathInfo_c mDeathInfo;
+
+    FILL(0x434, 0x504);
 
     // Change from u16 to u8 to fit more players
     /* 0x504 */ u8 mCollTimer[8];

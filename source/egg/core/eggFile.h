@@ -8,19 +8,19 @@ public:
     virtual ~File() {}
 
     /* VT+0x0C */
-    virtual bool open(const char* path) MACINTOSH_ABSTRACT;
+    virtual bool open(const char* path) ABSTRACT;
 
     /* VT+0x0C */
-    virtual void close() MACINTOSH_ABSTRACT;
+    virtual void close() ABSTRACT;
 
     /* VT+0x10 */
-    virtual s32 readData(void* data, s32, s32) MACINTOSH_ABSTRACT;
+    virtual s32 readData(void* data, s32, s32) ABSTRACT;
 
     /* VT+0x14 */
-    virtual s32 writeData(const void* data, s32, s32) MACINTOSH_ABSTRACT;
+    virtual s32 writeData(const void* data, s32, s32) ABSTRACT;
 
     /* VT+0x18 */
-    virtual s32 getFileSize() const MACINTOSH_ABSTRACT;
+    virtual s32 getFileSize() const ABSTRACT;
 };
 
 } // namespace EGG

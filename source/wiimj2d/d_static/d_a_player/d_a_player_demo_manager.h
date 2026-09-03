@@ -1,5 +1,6 @@
 #pragma once
 
+#include "d_a_player_base.h"
 #include "d_mj2d_game.h"
 #include "m_vec.h"
 
@@ -54,6 +55,9 @@ public:
     /* 0x8005B5C0 */
     void setDemoMode(Mode_e mode, int state);
 
+    /* 0x8005B5D0 */
+    void releaseDemoMode(int);
+
     /* 0x8005B6A0 */
     void calcNotGoalPlayer();
 
@@ -105,6 +109,9 @@ public:
     /* 0x8005CAD0 */
     int getControlDemoPlayerNum();
 
+    /* 0x8005cb60 */
+    void setBossDownPlayerNo(int plrNo);
+
     /* 0x8005CB70 */
     void onLandStopReq();
 
@@ -131,6 +138,16 @@ public:
 
     /* 0x8005D280 */
     void genCourseInList();
+
+public:
+    // Inline Instance Methods
+    // ^^^^^^
+
+    void setBossDown(
+        daPlBase_c* player
+    ) {
+        setBossDownPlayerNo(player->getPlrNo());
+    }
 
 public:
     // Static Variables

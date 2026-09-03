@@ -20,6 +20,7 @@ public:
 
     static constexpr int START_REST = 5;
 
+public:
     // Static Methods
     // ^^^^^^
 
@@ -217,6 +218,20 @@ public:
     /* 0x80061160 */
     static void checkCorrectCreateInfo();
 
+public:
+    // Static Inline Methods
+    // ++++++
+
+    static dAcPy_c* getFirstPlayer() {
+        for (int plr = 0; plr < PLAYER_COUNT; plr++) {
+            if (dAcPy_c* player = getPlayer(plr)) {
+                return player;
+            }
+        }
+        return nullptr;
+    }
+
+public:
     // Static Variables
     // ^^^^^^
 

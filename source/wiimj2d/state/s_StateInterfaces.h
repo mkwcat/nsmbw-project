@@ -16,43 +16,43 @@ public:
      * VT+0x0C
      * Returns whether this is a null state.
      */
-    virtual bool isNull() const MACINTOSH_ABSTRACT;
+    virtual bool isNull() const ABSTRACT;
 
     /**
      * VT+0x10
      * Returns whether both states have the same number.
      */
-    virtual bool isEqual(const sStateIDIf_c& other) const MACINTOSH_ABSTRACT;
+    virtual bool isEqual(const sStateIDIf_c& other) const ABSTRACT;
 
     /**
      * VT+0x14
      * Overloaded equality operator, using ::isEqual.
      */
-    virtual bool operator==(const sStateIDIf_c& other) const MACINTOSH_ABSTRACT;
+    virtual bool operator==(const sStateIDIf_c& other) const ABSTRACT;
 
     /**
      * VT+0x18
      * Overloaded inequality operator, using ::isEqual.
      */
-    virtual bool operator!=(const sStateIDIf_c& other) const MACINTOSH_ABSTRACT;
+    virtual bool operator!=(const sStateIDIf_c& other) const ABSTRACT;
 
     /**
      * VT+0x1C
      * Returns whether this state ID is called @p name.
      */
-    virtual bool isSameName(const char* name) const MACINTOSH_ABSTRACT;
+    virtual bool isSameName(const char* name) const ABSTRACT;
 
     /**
      * VT+0x20
      * Returns the name of this state ID.
      */
-    virtual const char* name() const MACINTOSH_ABSTRACT;
+    virtual const char* name() const ABSTRACT;
 
     /**
      * VT+0x24
      * Returns the number of this state ID.
      */
-    virtual unsigned int number() const MACINTOSH_ABSTRACT;
+    virtual unsigned int number() const ABSTRACT;
 };
 
 /**
@@ -70,19 +70,19 @@ public:
      * VT+0x0C
      * Initializes the state.
      */
-    virtual void initialize() MACINTOSH_ABSTRACT;
+    virtual void initialize() ABSTRACT;
 
     /**
      * VT+0x10
      * Executes the state.
      */
-    virtual void execute() MACINTOSH_ABSTRACT;
+    virtual void execute() ABSTRACT;
 
     /**
      * VT+0x14
      * Prepares the state for termination.
      */
-    virtual void finalize() MACINTOSH_ABSTRACT;
+    virtual void finalize() ABSTRACT;
 };
 
 /**
@@ -100,13 +100,13 @@ public:
      * VT+0x0C
      * Returns a new state with a given state ID.
      */
-    virtual sStateIf_c* build(const sStateIDIf_c& id) MACINTOSH_ABSTRACT;
+    virtual sStateIf_c* build(const sStateIDIf_c& id) ABSTRACT;
 
     /**
      * VT+0x10
      * Clears out the pointer to a state.
      */
-    virtual void dispose(sStateIf_c*& id) MACINTOSH_ABSTRACT;
+    virtual void dispose(sStateIf_c*& id) ABSTRACT;
 };
 
 /**
@@ -124,7 +124,7 @@ public:
      * VT+0x0C
      * Returns whether a state ID is normal.
      */
-    virtual bool isNormalID(const sStateIDIf_c& id) const MACINTOSH_ABSTRACT;
+    virtual bool isNormalID(const sStateIDIf_c& id) const ABSTRACT;
 };
 
 /**
@@ -161,55 +161,55 @@ public:
      * VT+0x0C
      * Initializes the current state.
      */
-    virtual void initializeState() MACINTOSH_ABSTRACT;
+    virtual void initializeState() ABSTRACT;
 
     /**
      * VT+0x10
      * Executes the current state.
      */
-    virtual void executeState() MACINTOSH_ABSTRACT;
+    virtual void executeState() ABSTRACT;
 
     /**
      * VT+0x14
      * Prepares the current state for termination.
      */
-    virtual void finalizeState() MACINTOSH_ABSTRACT;
+    virtual void finalizeState() ABSTRACT;
 
     /**
      * VT+0x18
      * Transitions to a new state ID.
      */
-    virtual void changeState(const sStateIDIf_c& newStateID) MACINTOSH_ABSTRACT;
+    virtual void changeState(const sStateIDIf_c& newStateID) ABSTRACT;
 
     /**
      * VT+0x1C
      * Marks the current state to be executed again.
      */
-    virtual void refreshState() MACINTOSH_ABSTRACT;
+    virtual void refreshState() ABSTRACT;
 
     /**
      * VT+0x20
      * Returns the state holder.
      */
-    virtual sStateIf_c* getState() const MACINTOSH_ABSTRACT;
+    virtual sStateIf_c* getState() const ABSTRACT;
 
     /**
      * VT+0x24
      * Returns the next state ID.
      */
-    virtual const sStateIDIf_c* getNewStateID() const MACINTOSH_ABSTRACT;
+    virtual const sStateIDIf_c* getNewStateID() const ABSTRACT;
 
     /**
      * VT+0x28
      * Returns the current state ID.
      */
-    virtual const sStateIDIf_c* getStateID() const MACINTOSH_ABSTRACT;
+    virtual const sStateIDIf_c* getStateID() const ABSTRACT;
 
     /**
      * VT+0x2C
      * Returns the previous state ID.
      */
-    virtual const sStateIDIf_c* getOldStateID() const MACINTOSH_ABSTRACT;
+    virtual const sStateIDIf_c* getOldStateID() const ABSTRACT;
 };
 
 /**
@@ -226,23 +226,23 @@ public:
      * VT+0x30
      * Changes to a sub state.
      */
-    virtual void changeToSubState(const sStateIDIf_c& newStateID) MACINTOSH_ABSTRACT;
+    virtual void changeToSubState(const sStateIDIf_c& newStateID) ABSTRACT;
 
     /**
      * VT+0x34
      * Finalizes the sub state and changes to the main state.
      */
-    virtual void returnState() MACINTOSH_ABSTRACT;
+    virtual void returnState() ABSTRACT;
 
     /**
      * VT+0x38
      * Returns true if the current state manager is the sub manager.
      */
-    virtual bool isSubState() const MACINTOSH_ABSTRACT;
+    virtual bool isSubState() const ABSTRACT;
 
     /**
      * VT+0x3C
      * Returns the main state ID.
      */
-    virtual const sStateIDIf_c* getMainStateID() const MACINTOSH_ABSTRACT;
+    virtual const sStateIDIf_c* getMainStateID() const ABSTRACT;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SndAudioMgr.h"
+#include "SndObjectEnemy.h"
 #include "SndObjectMap.h"
 #include "SndObjectPlayer.h"
 #include "m_vec.h"
@@ -11,6 +12,8 @@ namespace dAudio {
 // ^^^^^^
 
 class SndObjctCmnEmy_c;
+
+class SndObjctEmy_c : public SndObjctEmy {};
 
 class SndObjctCmnMap_c final : public SndObjctCmnMap {};
 

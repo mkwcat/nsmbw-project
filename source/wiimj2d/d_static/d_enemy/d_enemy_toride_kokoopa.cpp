@@ -1,6 +1,8 @@
 // d_enemy_toride_kokoopa.cpp
 // NSMBW .text: 0x800A8710 - 0x800B0A20
 
+#include "d_enemy_toride_kokoopa.h"
+
 [[nsmbw(0x800B0840)]]
 void UNDEF_800B0840() ASM_METHOD(
   // clang-format off

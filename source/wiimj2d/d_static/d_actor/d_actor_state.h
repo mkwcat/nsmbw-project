@@ -40,6 +40,8 @@ public:
 };
 
 class dActorMultiState_c : public dActor_c {
+    SIZE_ASSERT(0x414);
+
 public:
     // Structors
     // ^^^^^^

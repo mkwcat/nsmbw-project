@@ -72,4 +72,6 @@ inline bool one_player_special_hip_attack_quake = false;
 inline bool print_base_creation                 = true;
 inline bool print_state_changes                 = true;
 
+inline bool end_battles_immediately             = false;
+
 } // namespace fFeat

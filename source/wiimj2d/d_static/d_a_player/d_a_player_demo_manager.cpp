@@ -44,6 +44,9 @@ void daPyDemoMng_c::update();
 [[nsmbw(0x8005B5C0)]]
 void daPyDemoMng_c::setDemoMode(Mode_e mode, int state);
 
+[[nsmbw(0x8005B5D0)]]
+void daPyDemoMng_c::releaseDemoMode(int);
+
 [[nsmbw(0x8005B6A0)]]
 void daPyDemoMng_c::calcNotGoalPlayer() ASM_METHOD(
   // clang-format off
@@ -837,6 +840,9 @@ int daPyDemoMng_c::getControlDemoPlayerNum() {
 
     return count;
 }
+
+[[nsmbw(0x8005CB60)]]
+void daPyDemoMng_c::setBossDownPlayerNo(int plrNo);
 
 [[nsmbw(0x8005CB70)]]
 void daPyDemoMng_c::onLandStopReq() {
