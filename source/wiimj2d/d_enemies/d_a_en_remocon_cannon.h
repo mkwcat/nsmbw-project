@@ -7,7 +7,6 @@
 #include "m_vec.h"
 #include <nw4r/g3d/g3d_resfile.h>
 
-/* @unofficial */
 class dRemoconCannonGuide_c {
     SIZE_ASSERT(0xAC);
 
@@ -23,7 +22,17 @@ public:
 };
 
 class daEnRemoconCannon_c : public dEn_c {
-    SIZE_ASSERT(0xB60 + 0x8);
+    // Original size: 0xB60
+    VTABLE(0x060, fBase_c, 0x80B05958);
+    // 0x80B05808 g_profile_EN_REMOCON_CANNON
+    // 0x80A94D90 daEnRemoconCannon_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* Inlined */
+    daEnRemoconCannon_c();
 
 public:
     // Instance Methods
@@ -53,7 +62,9 @@ public:
     /* 0x80A964E0 */
     bool UNDEF_80a964e0(short target);
 
-    /* unofficial */
+    // Instance Methods
+    // ++++++
+
     void EffectDischarge();
 
 public:
@@ -95,12 +106,56 @@ public:
     /* 0xB54 */ int mPlayerNo2;
 
     FILL(0xB58, 0xB60);
+    OFFSET_ASSERT(0xB60);
 
-    /* 0xB60 */ bool mCannonFired[8];
+    // Instance Variables
+    // ++++++
+
+    /* 0xB60 */ bool mCannonFired[PLAYER_COUNT];
 
 public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x80A966F0
+     * executeState:    0x80A96730
+     * finalizeState:   0x80A96720
+     */
+    sState_Extern(0x80B1A910, daEnRemoconCannon_c, Wait);
+
+    /*
+     * initializeState: 0x80A967E0
+     * executeState:    0x80A968A0
+     * finalizeState:   0x80A96890
+     */
+    sState_Extern(0x80B1A950, daEnRemoconCannon_c, Waken);
+
+    /*
+     * initializeState: 0x80A96920
+     * executeState:    0x80A96A00
+     * finalizeState:   0x80A969F0
+     */
+    sState_Extern(0x80B1A990, daEnRemoconCannon_c, Control);
+
+    /*
+     * initializeState: 0x80A96C10
+     * executeState:    0x80A96DF0
+     * finalizeState:   0x80A96DE0
+     */
     sState_Extern(0x80B1A9D0, daEnRemoconCannon_c, Fire);
+
+    /*
+     * initializeState: 0x80A96EB0
+     * executeState:    0x80A96F60
+     * finalizeState:   0x80A96F50
+     */
+    sState_Extern(0x80B1AA10, daEnRemoconCannon_c, FireEnd);
+
+    /*
+     * initializeState: 0x80A96FF0
+     * executeState:    0x80A97060
+     * finalizeState:   0x80A97050
+     */
+    sState_Extern(0x80B1AA50, daEnRemoconCannon_c, Recover);
 };

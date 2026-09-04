@@ -23,8 +23,14 @@
 [[nsmbw(0x801267F0)]]
 bool dAcPy_c::setHipAttackAction();
 
+[[nsmbw(0x801420B0)]]
+void dAcPy_c::getCcBounds(sRangeDataF* bounds);
+
 [[nsmbw(0x801275B0)]]
 float dAcPy_c::getJumpSpeed();
+
+[[nsmbw(0x80147CA0)]]
+bool dAcPy_c::isDrawingCarryFukidashi();
 
 [[nsmbw(0x80128600)]]
 int dAcPy_c::checkWallSlideEnable(int);

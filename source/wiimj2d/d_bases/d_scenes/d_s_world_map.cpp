@@ -138,3 +138,6 @@ bool dScWMap_c::createActorsPhase() {
 
     return true;
 }
+
+[[nsmbw(0x80928590)]]
+void dScWMap_c::setPrevCollectionCoinNum();

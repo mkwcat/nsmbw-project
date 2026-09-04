@@ -35,6 +35,9 @@ f32 getDispCenterX();
 /* 0x800B2FB0 */
 void initGame();
 
+/* 0x800B3100 @unofficial */
+bool checkRectangleOverlap(const mVec3_c&, const mVec3_c&, const mVec3_c&, const mVec3_c&, float);
+
 /* 0x800B32E0 @unofficial */
 mVec3_c ScalePosForAspectRatio(const mVec3_c&);
 
@@ -56,6 +59,18 @@ void CreateSmallAll1up(const mVec3_c&);
 /* 0x800B35D0 */
 void GoalScoreExecute(const mVec3_c&, int);
 
+/* 0x800B3600 @unofficial */
+void showFukidashi(int plrNo, int fukidashiAction);
+
+/* 0x800B3720 @unofficial */
+void hideFukidashiForLevel(int plrNo, int fukidashiAction, int param3);
+
+/* 0x800B3750 @unofficial */
+void hideFukidashiTemporarily(int plrNo, int fukidashiAction, int param3);
+
+/* 0x800B3780 @unofficial */
+void hideFukidashiForSession(int plrNo, int fukidashiAction);
+
 /* 0x800B37E0 @unofficial */
 void ScalePosForLayoutEffect(const mVec3_c&, bool);
 
@@ -65,9 +80,6 @@ short CalculateTilt(int, float, float);
 bool CalculateTiltShoulder(
     short* target_var, short target_value, short increment, int playerNo, short max
 );
-
-/* 0x800B3600 */
-void FUN_800B3600(int, int);
 
 /* 0x800B4CF0 @unofficial */
 void MiniGameWireFacePosEffect(const mVec3_c&);

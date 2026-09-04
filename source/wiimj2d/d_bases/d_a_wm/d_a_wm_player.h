@@ -150,7 +150,7 @@ public:
     void initActiveCharaFlags();
 
     /* 0x8090CE10 */
-    bool startGame(WORLD_e world, STAGE_e stage, u8 entrance);
+    bool startGame(dWmLib::WorldNo world, dWmLib::CourseNo stage, u8 nextGotoNo);
 
     // Instance Methods
     // ++++++

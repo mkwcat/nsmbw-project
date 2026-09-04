@@ -4,6 +4,8 @@
 #include "d_a_player_manager.h"
 #include "d_info.h"
 
+KEEP(dInfo_c::getFukidashiActionPerformed);
+
 [[nsmbw(0x80A39660)]]
 void UNDEF_80A39660() ASM_METHOD(
   // clang-format off
@@ -12,9 +14,9 @@ void UNDEF_80A39660() ASM_METHOD(
 /* 80A39668 3CC08043 */  lis      r6, m_instance__10dScStage_c@ha;
 /* 80A3966C 900100D4 */  stw      r0, 212(r1);
 /* 80A39670 DBE100C0 */  stfd     f31, 192(r1);
-/* 80A39674 F3E100C8 */  .long    0xF3E100C8; // psq_st   f31, 200(r1), 0, 0;
+/* 80A39674 F3E100C8 */  psq_st   31, 200, 1, 0, 0;
 /* 80A39678 DBC100B0 */  stfd     f30, 176(r1);
-/* 80A3967C F3C100B8 */  .long    0xF3C100B8; // psq_st   f30, 184(r1), 0, 0;
+/* 80A3967C F3C100B8 */  psq_st   30, 184, 1, 0, 0;
 /* 80A39680 93E100AC */  stw      r31, 172(r1);
 /* 80A39684 7C9F2378 */  mr       r31, r4;
 /* 80A39688 93C100A8 */  stw      r30, 168(r1);
@@ -48,23 +50,16 @@ UNDEF_80a396b4:;
 /* 80A396F4          */  cmplwi   r0, PLAYER_COUNT - 1;
 /* 80A396F8 4181002C */  bgt-     UNDEF_80a39724;
 /* 80A396FC 3CA08043 */  lis      r5, m_instance__7dInfo_c@ha;
-                         cmpwi    r0, 4;
-/* 80A39700 1C000016 */  mulli    r0, r0, 22;
-/* 80A39704 80A5A25C */  lwz      r5, m_instance__7dInfo_c@l(r5);
-/* 80A39708 7C050214 */  add      r0, r5, r0;
-/* 80A3970C 7C802214 */  add      r4, r0, r4;
-
-                         blt-     L_UNDEF_80A39660_SkipAFEAdjust;
-                         addi     r4, r4, ADJUST_dInfo_c_mEx0xAFE;
-L_UNDEF_80A39660_SkipAFEAdjust:;
-
-/* 80A39710 88040AFE */  lbz      r0, 0xAFE(r4);
-/* 80A39714 2C000000 */  cmpwi    r0, 0;
+/* 80A39704          */  lwz      r3, m_instance__7dInfo_c@l(r5);
+                         mr       r5, r4;
+                         mr       r4, r0;
+                         bl       getFukidashiActionPerformed__7dInfo_cFii;
+/* 80A39714          */  cmpwi    r3, 0;
 /* 80A39718 4182000C */  beq-     UNDEF_80a39724;
 /* 80A3971C 3800FFFF */  li       r0, -1;
-/* 80A39720 90030128 */  stw      r0, 296(r3);
+/* 80A39720          */  stw      r0, 296(r30);
 UNDEF_80a39724:;
-/* 80A39724 80630128 */  lwz      r3, 296(r3);
+/* 80A39724 80630128 */  lwz      r3, 296(r30);
 /* 80A39728          */  cmplwi   r3, PLAYER_COUNT - 1;
 /* 80A3972C 4181012C */  bgt-     UNDEF_80a39858;
 /* 80A39730 4B6261D1 */  bl       getPlayer__9daPyMng_cFi;
@@ -83,7 +78,7 @@ UNDEF_80a39724:;
 /* 80A39764 EFE3102A */  fadds    f31, f3, f2;
 /* 80A39768 C3DC00B4 */  lfs      f30, 180(r28);
 /* 80A3976C EC21002A */  fadds    f1, f1, f0;
-/* 80A39770 4B6C8441 */  bl       UNDEF_80101bb0; // getLoopPosX__10dScStage_cFf
+/* 80A39770 4B6C8441 */  bl       getLoopPosX__10dScStage_cFf;
 /* 80A39774 FC800818 */  frsp     f4, f1;
 /* 80A39778 C0010078 */  lfs      f0, 120(r1);
 /* 80A3977C 3C8080AD */  lis      r4, UNDEF_80ad19e4@ha;
@@ -162,18 +157,10 @@ UNDEF_80a39858:;
 /* 80A3988C 88030000 */  lbz      r0, 0(r3);
 /* 80A39890 3C608043 */  lis      r3, m_instance__7dInfo_c@ha;
 /* 80A39894 8063A25C */  lwz      r3, m_instance__7dInfo_c@l(r3);
-/* 80A39898 7C000774 */  extsb    r0, r0;
-                         cmpwi    r0, 4;
-/* 80A3989C 1C000016 */  mulli    r0, r0, 22;
-/* 80A398A0 7C030214 */  add      r0, r3, r0;
-/* 80A398A4 7C60FA14 */  add      r3, r0, r31;
-
-                         blt-     L_UNDEF_80A39858_SkipAFEAdjust2;
-                         addi     r3, r3, ADJUST_dInfo_c_mEx0xAFE;
-L_UNDEF_80A39858_SkipAFEAdjust2:;
-
-/* 80A398A8 88030AFE */  lbz      r0, 0xAFE(r3);
-/* 80A398AC 2C000000 */  cmpwi    r0, 0;
+/* 80A39898 7C000774 */  extsb    r4, r0;
+                         mr       r5, r31;
+                         bl       getFukidashiActionPerformed__7dInfo_cFii;
+/* 80A398AC          */  cmpwi    r3, 0;
 /* 80A398B0 408200C8 */  bne-     UNDEF_80a39978;
 /* 80A398B4 7F83E378 */  mr       r3, r28;
 /* 80A398B8 4B70E3E9 */  bl       UNDEF_80147ca0; // isDrawingCarryFukidashi__7dAcPy_cFv
@@ -188,7 +175,7 @@ L_UNDEF_80A39858_SkipAFEAdjust2:;
 /* 80A398DC EFC3102A */  fadds    f30, f3, f2;
 /* 80A398E0 C3FC00B4 */  lfs      f31, 180(r28);
 /* 80A398E4 EC21002A */  fadds    f1, f1, f0;
-/* 80A398E8 4B6C82C9 */  bl       UNDEF_80101bb0; // getLoopPosX__10dScStage_cFf
+/* 80A398E8 4B6C82C9 */  bl       getLoopPosX__10dScStage_cFf;
 /* 80A398EC FC400818 */  frsp     f2, f1;
 /* 80A398F0 C0610044 */  lfs      f3, 68(r1);
 /* 80A398F4 C0010040 */  lfs      f0, 64(r1);
@@ -228,9 +215,9 @@ UNDEF_80a39978:;
 /* 80A39978 38600000 */  li       r3, 0;
 UNDEF_80a3997c:;
 /* 80A3997C 800100D4 */  lwz      r0, 212(r1);
-/* 80A39980 E3E100C8 */  .long    0xE3E100C8; // psq_l    f31, 200(r1), 0, 0;
+/* 80A39980 E3E100C8 */  psq_l    31, 200, 1, 0, 0;
 /* 80A39984 CBE100C0 */  lfd      f31, 192(r1);
-/* 80A39988 E3C100B8 */  .long    0xE3C100B8; // psq_l    f30, 184(r1), 0, 0;
+/* 80A39988 E3C100B8 */  psq_l    30, 184, 1, 0, 0;
 /* 80A3998C CBC100B0 */  lfd      f30, 176(r1);
 /* 80A39990 83E100AC */  lwz      r31, 172(r1);
 /* 80A39994 83C100A8 */  lwz      r30, 168(r1);

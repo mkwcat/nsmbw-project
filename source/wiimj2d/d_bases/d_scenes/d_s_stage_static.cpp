@@ -128,6 +128,9 @@ UNDEF_80101b94:;
   // clang-format on
 );
 
+[[nsmbw(0x80101BB0)]]
+float dScStage_c::getLoopPosX(float x);
+
 [[nsmbw(0x801020E0)]]
 void dScStage_c::setCollectionCoin(int coin, PLAYER_TYPE_e player);
 

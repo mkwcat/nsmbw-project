@@ -10,23 +10,20 @@
 #include "d_mj2d_game.h"
 #include "m_ef.h"
 #include "m_vec.h"
+#include "mkwcat/Macro.hpp"
 #include <egg/util/eggEffect.h>
+#include <nw4r/math/arithmetic.h>
 #include <nw4r/math/types.h>
 
-float remoCannonGuideColorSet(
-    int playerNo
-) {
-    return static_cast<float>(playerNo);
-}
+KEEP(nw4r::math::U16ToF32);
 
 [[nsmbw(0x80A950A0)]]
 void daEnRemoconCannon_c::setupGuide(dRemoconCannonGuide_c** guide, int mPlayerNo) ASM_METHOD(
-  // clang-format off
 /* 80A950A0 9421FFD0 */  stwu     r1, -48(r1);
 /* 80A950A4 7C0802A6 */  mflr     r0;
 /* 80A950A8 90010034 */  stw      r0, 52(r1);
 /* 80A950AC DBE10020 */  stfd     f31, 32(r1);
-/* 80A950B0 F3E10028 */  .long    0xF3E10028; // psq_st   f31, 40(r1), 0, 0;
+/* 80A950B0 F3E10028 */  psq_st   31, 40, 1, 0, 0;
 /* 80A950B4 93E1001C */  stw      r31, 28(r1);
 /* 80A950B8 3FE080AD */  lis      r31, UNDEF_80ad4018@ha;
 /* 80A950BC 3BFF4018 */  addi     r31, r31, UNDEF_80ad4018@l;
@@ -38,7 +35,7 @@ void daEnRemoconCannon_c::setupGuide(dRemoconCannonGuide_c** guide, int mPlayerN
 /* 80A950D4 C3FF0028 */  lfs      f31, 40(r31);
 /* 80A950D8 41820084 */  beq-     UNDEF_80a9515c;
 /* 80A950DC          */  lwz      r3, 5332(r3);
-                         bl       remoCannonGuideColorSet__Fi;
+                         bl       U16ToF32__Q24nw4r4mathFUs;
                          fmr      f31, f0;
 /* 80A9511C 387E0080 */  addi     r3, r30, 128;
 /* 80A95120 38800001 */  li       r4, 1;
@@ -75,19 +72,17 @@ UNDEF_80a9515c:;
 /* 80A95198 389E0044 */  addi     r4, r30, 68;
 /* 80A9519C 4B6D4F25 */  bl       UNDEF_8016a0c0;
 /* 80A951A0 80010034 */  lwz      r0, 52(r1);
-/* 80A951A4 E3E10028 */  .long    0xE3E10028; // psq_l    f31, 40(r1), 0, 0;
+/* 80A951A4 E3E10028 */  psq_l    31, 40, 1, 0, 0;
 /* 80A951A8 CBE10020 */  lfd      f31, 32(r1);
 /* 80A951AC 83E1001C */  lwz      r31, 28(r1);
 /* 80A951B0 83C10018 */  lwz      r30, 24(r1);
 /* 80A951B4 7C0803A6 */  mtlr     r0;
 /* 80A951B8 38210030 */  addi     r1, r1, 48;
-/* 80A951BC 4E800020 */  blr      ;
-  // clang-format on
+/* 80A951BC 4E800020 */  blr;
 );
 
 [[nsmbw(0x80A954B0)]]
 void daEnRemoconCannon_c::createModel() ASM_METHOD(
-  // clang-format off
 /* 80A954B0 9421FFD0 */  stwu     r1, -48(r1);
 /* 80A954B4 7C0802A6 */  mflr     r0;
 /* 80A954B8 3C808037 */  lis      r4, UNDEF_80377f48@ha;
@@ -162,7 +157,7 @@ void daEnRemoconCannon_c::createModel() ASM_METHOD(
 /* 80A955CC 389D0898 */  addi     r4, r29, 2200;
 /* 80A955D0 818C0018 */  lwz      r12, 24(r12);
 /* 80A955D4 7D8903A6 */  mtctr    r12;
-/* 80A955D8 4E800421 */  bctrl    ;
+/* 80A955D8 4E800421 */  bctrl;
 /* 80A955DC 3FE080AD */  lis      r31, UNDEF_80ad4040@ha;
 /* 80A955E0 387D0898 */  addi     r3, r29, 2200;
 /* 80A955E4 C03F4040 */  lfs      f1, UNDEF_80ad4040@l(r31);
@@ -194,9 +189,7 @@ void daEnRemoconCannon_c::createModel() ASM_METHOD(
 /* 80A9563C 83A10024 */  lwz      r29, 36(r1);
 /* 80A95640 7C0803A6 */  mtlr     r0;
 /* 80A95644 38210030 */  addi     r1, r1, 48;
-/* 80A95648 4E800020 */  blr      ;
-/* 80A9564C 00000000 */  .word    0x00000000;
-  // clang-format on
+/* 80A95648 4E800020 */  blr;
 );
 
 [[nsmbw(0x80A95890)]]
@@ -213,7 +206,7 @@ void daEnRemoconCannon_c::setBodyColor() {
         setupGuide(&mpGuide, mPlayerNo);
         mHasPlayer = true;
         mPlayerNo2 = mPlayerNo;
-        dGameCom::FUN_800B3600(mPlayerNo, 0xF);
+        dGameCom::showFukidashi(mPlayerNo, 15);
     }
 }
 
@@ -241,44 +234,40 @@ static constinit const nw4r::ut::Color PLY_TRAIL_EFF_COLOR_2[] = {
 
 [[nsmbw(0x80A95990)]]
 void daEnRemoconCannon_c::EffectDischargeTail() {
-    GXColor color0, color1;
+    nw4r::ut::Color color0, color1;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
         dAcPy_c* ply = daPyMng_c::getPlayer(i);
-        if (((ply != nullptr) && !ply->isStatus(0x7D)) && mCannonFired[i]) {
-            mVec3_c effPos     = {ply->mPos.x, ply->mPos.y, 5500.0};
-
-            int     playerType = static_cast<int>(ply->mPlayerType);
-            if (playerType >= PLAYER_COUNT) {
-                color0 = {0xFF, 0xFF, 0xFF, 0xFF};
-                color1 = {0xFF, 0xFF, 0xFF, 0xFF};
-            } else {
-                color0 = PLY_TRAIL_EFF_COLOR_1[playerType];
-                color1 = PLY_TRAIL_EFF_COLOR_2[playerType];
-            }
-
-            mEffectTrail[0].createEffect("Wm_mg_dischargetail01", 0, &effPos, nullptr, nullptr);
-            mEffectTrail[0].setRegisterColor(
-                color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
-            );
-            mEffectTrail[0].setRegisterAlpha(
-                color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
-            );
-
-            mEffectTrail[1].createEffect("Wm_mg_dischargetail02", 0, &effPos, nullptr, nullptr);
-            mEffectTrail[1].setRegisterColor(
-                color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3
-            );
-            mEffectTrail[1].setRegisterAlpha(
-                color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
-            );
+        if (!(ply && !ply->isStatus(125) && mCannonFired[i])) {
+            continue;
         }
+        mVec3_c effPos = {ply->mPos.x, ply->mPos.y, 5500.0};
+
+        if (ply->mPlayerType < PLAYER_TYPE_e::MARIO || ply->mPlayerType >= PLAYER_TYPE_e::COUNT) {
+            color0 = "#FFFFFFFF";
+            color1 = "#FFFFFFFF";
+        } else {
+            const auto& hio = dPyStatic_HIO_c::get(ply->mPlayerType);
+            color0          = hio.mRemoconCannonTrailEffColor[0];
+            color1          = hio.mRemoconCannonTrailEffColor[1];
+        }
+
+        mEffectTrail[0].createEffect("Wm_mg_dischargetail01", 0, &effPos, nullptr, nullptr);
+        mEffectTrail[0].setRegisterColor(color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3);
+        mEffectTrail[0].setRegisterAlpha(
+            color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
+        );
+
+        mEffectTrail[1].createEffect("Wm_mg_dischargetail02", 0, &effPos, nullptr, nullptr);
+        mEffectTrail[1].setRegisterColor(color0, color1, 0, EGG::Effect::ERecursive::RECURSIVE_3);
+        mEffectTrail[1].setRegisterAlpha(
+            color0.a, color1.a, 0, EGG::Effect::ERecursive::RECURSIVE_3
+        );
     }
 }
 
 [[nsmbw(0x80A95C00)]]
 void daEnRemoconCannon_c::UNDEF_80a95c00() ASM_METHOD(
-  // clang-format off
 /* 80A95C00 9421FFE0 */  stwu     r1, -32(r1);
 /* 80A95C04 7C0802A6 */  mflr     r0;
 /* 80A95C08 90010024 */  stw      r0, 36(r1);
@@ -316,8 +305,7 @@ UNDEF_80a95c68:;
 /* 80A95C80 83A10014 */  lwz      r29, 20(r1);
 /* 80A95C84 7C0803A6 */  mtlr     r0;
 /* 80A95C88 38210020 */  addi     r1, r1, 32;
-/* 80A95C8C 4E800020 */  blr      ;
-  // clang-format on
+/* 80A95C8C 4E800020 */  blr;
 );
 
 [[nsmbw(0x80A960A0)]]
@@ -358,17 +346,17 @@ void daEnRemoconCannon_c::initializeState_Fire() ASM_METHOD(
   /* 80A96C1C 39610060 */ addi r11, r1, 96;
   /* 80A96C20 4B846445 */ bl UNDEF_802dd064;
   /* 80A96C24 7C7B1B78 */ mr r27, r3;
-  /* 80A96C28 3FA080AD */ lis r29, UNDEF_80ad4018 @ha;
-  /* 80A96C2C 3FC080B0 */ lis r30, UNDEF_80b05808 @ha;
+  /* 80A96C28 3FA080AD */ lis r29, UNDEF_80ad4018@ha;
+  /* 80A96C2C 3FC080B0 */ lis r30, UNDEF_80b05808@ha;
   /* 80A96C30 3BE00000 */ li r31, 0;
   /* 80A96C34 B3E30500 */ sth r31, 1280(r3);
   /* 80A96C38 7F64DB78 */ mr r4, r27;
-  /* 80A96C3C 3BBD4018 */ addi r29, r29, UNDEF_80ad4018 @l;
-  /* 80A96C40 3BDE5808 */ addi r30, r30, UNDEF_80b05808 @l;
+  /* 80A96C3C 3BBD4018 */ addi r29, r29, UNDEF_80ad4018@l;
+  /* 80A96C40 3BDE5808 */ addi r30, r30, UNDEF_80b05808@l;
   /* 80A96C44 3861002C */ addi r3, r1, 44;
   /* 80A96C48 4BFFF5C9 */ bl UNDEF_80a96210;
   /* 80A96C4C C001002C */ lfs f0, 44(r1);
-  /* 80A96C50 3CA08043 */ lis r5, g_pSndObjMap__6dAudio @ha;
+  /* 80A96C50 3CA08043 */ lis r5, g_pSndObjMap__6dAudio@ha;
   /* 80A96C54 D01B078C */ stfs f0, 1932(r27);
   /* 80A96C58 38610010 */ addi r3, r1, 16;
   /* 80A96C5C 389B078C */ addi r4, r27, 1932;
@@ -376,7 +364,7 @@ void daEnRemoconCannon_c::initializeState_Fire() ASM_METHOD(
   /* 80A96C64 D01B0790 */ stfs f0, 1936(r27);
   /* 80A96C68 C0010034 */ lfs f0, 52(r1);
   /* 80A96C6C D01B0794 */ stfs f0, 1940(r27);
-  /* 80A96C70 8385A040 */ lwz r28, g_pSndObjMap__6dAudio @l(r5);
+  /* 80A96C70 8385A040 */ lwz r28, g_pSndObjMap__6dAudio@l(r5);
   /* 80A96C74 4B5D383D */ bl UNDEF_8006a4b0;
   /* 80A96C78 7F83E378 */ mr r3, r28;
   /* 80A96C7C 38A10010 */ addi r5, r1, 16;
@@ -437,8 +425,7 @@ void daEnRemoconCannon_c::EffectDischarge() {
     mEf::createEffect("Wm_mg_discharge01", 0, &effPos, &effAng, nullptr);
     mEf::createEffect("Wm_mg_discharge02", 0, &effPos, &effAng, nullptr);
 
-    dAcPy_c* player = daPyMng_c::getPlayer(mPlayerNo);
-    if (player != nullptr) {
+    if (dAcPy_c* player = daPyMng_c::getPlayer(mPlayerNo); player) {
         const char* effName = PLY_EFFECT_NAME[player->getPlrNo()];
         mEf::createEffect(effName, 0, &effPos, &effAng, nullptr);
     }

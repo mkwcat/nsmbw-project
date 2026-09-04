@@ -31,11 +31,11 @@ public:
 
     /* @unofficial */
     enum class MultiClearState_e {
-        NONE           = 0, ///< Course is uncleared
-        NOW_CLEAR      = 1, ///< Cleared by some players, activates the button frame
-        CLEAR          = 2, ///< Cleared by some players, button frame is already active
-        NOW_TEAM_CLEAR = 3, ///< Cleared by all players, activates the button frame
-        TEAM_CLEAR     = 4, ///< Cleared by all players, button frame is already active
+        NONE           = 0, // Course is uncleared
+        NOW_CLEAR      = 1, // Cleared by some players, activates the button frame
+        CLEAR          = 2, // Cleared by some players, button frame is already active
+        NOW_TEAM_CLEAR = 3, // Cleared by all players, activates the button frame
+        TEAM_CLEAR     = 4, // Cleared by all players, button frame is already active
     };
 
     enum class IbaraMode_e {};
@@ -54,7 +54,7 @@ public:
         COIN_BATTLE  = 6_bit,
     };
 
-    // Backwards compatibility
+    // Code compatibility
     using StageNo_s = ::StageNo_s;
 
     struct StartGameInfo_s {
@@ -183,10 +183,38 @@ public:
     IbaraMode_e GetIbaraOld(int i);
 
 public:
-    // Inline Nethods
+    // Static Inline Methods
     // ^^^^^^
 
-    inline PlyConnectStage_e getPlyConnectStage(
+    /* 0x807823C0 */
+    static void clearGameFlag(
+        GameFlag_e flag
+    ) {
+        mGameFlag = static_cast<GameFlag_e>(static_cast<u32>(mGameFlag) & ~static_cast<u32>(flag));
+    }
+
+    static bool isGameFlag(
+        GameFlag_e flag
+    ) {
+        return (static_cast<u32>(mGameFlag) & static_cast<u32>(flag)) != 0;
+    }
+
+    /* 0x800B2350 */
+    static WORLD_e getWorldNo() { return m_startGameInfo.stage1.world; }
+
+    /* 0x800B2360 */
+    static STAGE_e getCourseNo() { return m_startGameInfo.stage1.stage; }
+
+    // Static Inline Methods
+    // ++++++
+
+    static StageNo_s getStageNo() { return m_startGameInfo.stage1; }
+
+public:
+    // Inline Instance Methods
+    // ++++++
+
+    PlyConnectStage_e getPlyConnectStage(
         u32 index
     ) {
         if (index < 4) {
@@ -196,7 +224,7 @@ public:
         }
     }
 
-    inline PlyConnectStage_e& setPlyConnectStage(
+    PlyConnectStage_e& setPlyConnectStage(
         u32 index, PlyConnectStage_e value
     ) {
         if (index < 4) {
@@ -206,22 +234,49 @@ public:
         }
     }
 
-    static inline bool isPipeRandomizer() {
+    bool getFukidashiActionPerformed(
+        int plrNo, int action
+    ) {
+        if (plrNo < 4) {
+            return mFukidashiActionPerformed[plrNo][action];
+        } else {
+            return mExFukidashiActionPerformed[plrNo - 4][action];
+        }
+    }
+
+    bool& setFukidashiActionPerformed(
+        int plrNo, int action, bool set
+    ) {
+        if (plrNo < 4) {
+            return mFukidashiActionPerformed[plrNo][action] = set;
+        } else {
+            return mExFukidashiActionPerformed[plrNo - 4][action] = set;
+        }
+    }
+
+    bool isFukidashiHidePropeller(
+        int plrNo
+    ) {
+        if (plrNo < 4) {
+            return mFukidashiHidePropeller[plrNo];
+        } else {
+            return mExFukidashiHidePropeller[plrNo - 4];
+        }
+    }
+
+    bool& setFukidashiHidePropeller(
+        int plrNo, bool set
+    ) {
+        if (plrNo < 4) {
+            return mFukidashiHidePropeller[plrNo] = set;
+        } else {
+            return mExFukidashiHidePropeller[plrNo - 4] = set;
+        }
+    }
+
+    static bool isPipeRandomizer() {
         return dSaveMng_c::m_instance->getSaveGame()->getPipeRandomizerMode() !=
                dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED;
-    }
-
-    /* 0x807823C0 */
-    static void clearGameFlag(
-        GameFlag_e flag
-    ) {
-        mGameFlag = static_cast<GameFlag_e>(static_cast<u32>(mGameFlag) & ~static_cast<u32>(flag));
-    }
-
-    static inline bool isGameFlag(
-        GameFlag_e flag
-    ) {
-        return (static_cast<u32>(mGameFlag) & static_cast<u32>(flag)) != 0;
     }
 
 public:
@@ -246,8 +301,9 @@ public:
     /* 0x064 */ int        m_zoromeTime;
     /* 0x068 */ int        m_fireworksKind;
     /* 0x06C */ bool       m_isKinopioInChukan;
+    /* 0x06D */ bool       m_isOtasuke; // Is Super Guide
 
-    FILL(0x06D, 0x380);
+    FILL(0x06E, 0x380);
 
     /**
      * The status of the World 3 switch.
@@ -287,25 +343,17 @@ public:
 
     FILL(0xAFD, 0xAFE);
 
-    /* 0xAFE */ u8 m0xAFE[4][22];
+    /* 0xAFE */ bool mFukidashiActionPerformed[4][22];
+    /* 0xB56 */ bool mFukidashiHidePropeller[4];
+    /* 0xB57 */ bool mOtehonClearDisablePause;
+    /* 0xB58 */ bool mEasyPairingActive;
 
-    /* 0xB56 */ u8 m0xB56[4];
-
-    FILL(0xB5A, 0xB5C);
     OFFSET_ASSERT(0xB5C);
 
-#define OFFSET_dInfo_c_mExPlayerActiveMode 0xB5C
-    /* 0xB5C */ PlyConnectStage_e mExPlyConnectStage[PLAYER_COUNT - 4] = {};
-
-#define OFFSET_dInfo_c_mEx0xAFE (OFFSET_dInfo_c_mExPlayerActiveMode + (PLAYER_COUNT - 4) * 4)
-#define ADJUST_dInfo_c_mEx0xAFE (OFFSET_dInfo_c_mEx0xAFE - 0xAFE - 4 * 22)
-    /* 0xB6C? */ u8 mEx0xAFE[PLAYER_COUNT - 4][22] = {};
-
-#define OFFSET_dInfo_c_mEx0xB56 (OFFSET_dInfo_c_mEx0xAFE + (PLAYER_COUNT - 4) * 22)
-#define ADJUST_dInfo_c_mEx0xB56 (OFFSET_dInfo_c_mEx0xB56 - 0xB56 - 4)
-    /* 0xBC4? */ u8 mEx0xB56[PLAYER_COUNT - 4] = {};
-
-    /* 0xBC8 */ int mExCoinBattleWin[PLAYER_COUNT - 4];
+    PlyConnectStage_e mExPlyConnectStage[PLAYER_COUNT - 4] = {};
+    int               mExCoinBattleWin[PLAYER_COUNT - 4];
+    bool              mExFukidashiActionPerformed[PLAYER_COUNT - 4][22] = {};
+    bool              mExFukidashiHidePropeller[PLAYER_COUNT - 4]       = {};
 
 public:
     // Static Variables

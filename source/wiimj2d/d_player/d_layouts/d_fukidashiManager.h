@@ -49,14 +49,26 @@ public:
     // Instance Methods
     // ^^^^^^
 
+    /* 0x801572E0 */
+    void showAction(int plrNo, int action);
+
     /* 0x80157360 */
     void FUN_80157360(int param1, int param2, int param3);
 
     /* 0x80157450 */
-    void FUN_80157450(int param1, int param2);
+    void setActionPerformed(int param1, int param2);
 
     /* 0x801574A0 */
-    void FUN_801574A0(int param1, int param2);
+    void clearActionPerformed(int param1, int param2);
+
+    // Instance Inline Methods
+    // ++++++
+
+    dfukidashiInfo_c* getInfo(
+        int plrNo
+    ) {
+        return &mInfo[plrNo];
+    }
 
 public:
     // Instance Variables

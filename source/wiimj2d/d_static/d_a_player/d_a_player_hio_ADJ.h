@@ -1,6 +1,7 @@
 #pragma once
 
 #include "d_mj2d_game.h"
+#include <nw4r/ut/Color.h>
 
 class dPyAnm_HIO_c {
 public:
@@ -107,16 +108,22 @@ class dPyStatic_HIO_c {
 public:
     // Instance Variables
     // ^^^^^^
-    float mDokanUDOffsetYoshiSmall, mDokanUDOffsetYoshiBig, mDokanUDOffsetYoshiMini;
-    float mDokanUDOffsetSmall, mDokanUDOffsetMini;
-    float mDokanUDAdjustBig, mDokanUDAdjustPropeller;
+
+    float           mDokanUDOffsetYoshiSmall, mDokanUDOffsetYoshiBig, mDokanUDOffsetYoshiMini;
+    float           mDokanUDOffsetSmall, mDokanUDOffsetMini;
+    float           mDokanUDAdjustBig, mDokanUDAdjustPropeller;
+
+    float           mFukidashiYOffset[PLAYER_MODE_COUNT];
+    nw4r::ut::Color mFukidashiColor[3];
+
+    nw4r::ut::Color mRemoconCannonTrailEffColor[2];
 
 public:
     static const dPyStatic_HIO_c& get(
         PLAYER_TYPE_e pt
     ) {
         // TODO: Make this configurable via JSON
-        static constexpr const dPyStatic_HIO_c l_MARIO = {
+        static constexpr const dPyStatic_HIO_c lMario = {
             .mDokanUDOffsetYoshiSmall = 34.0f,
             .mDokanUDOffsetYoshiBig   = 40.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -124,9 +131,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    32.0, // Mushroom
+                    32.0, // Fire Flower
+                    12.0, // Mini Mushroom
+                    38.0, // Propeller Shroom
+                    33.0, // Penguin Suit
+                    32.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#FAE6E6", "#F06E6E", "#FFB4B4"},
+            .mRemoconCannonTrailEffColor = {"#FFCCDD", "#FF2970"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_LUIGI = {
+        static constexpr const dPyStatic_HIO_c lLuigi = {
             .mDokanUDOffsetYoshiSmall = 36.0f,
             .mDokanUDOffsetYoshiBig   = 42.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -134,9 +153,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    34.0, // Mushroom
+                    34.0, // Fire Flower
+                    12.0, // Mini Mushroom
+                    39.0, // Propeller Shroom
+                    35.0, // Penguin Suit
+                    34.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#F0FFF0", "#64C864", "#64FF64"},
+            .mRemoconCannonTrailEffColor = {"#CCFFCE", "#29FF33"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_YELLOW_TOAD = {
+        static constexpr const dPyStatic_HIO_c lYellowToad = {
             .mDokanUDOffsetYoshiSmall = 38.0f,
             .mDokanUDOffsetYoshiBig   = 44.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -144,9 +175,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    29.0, // Mushroom
+                    29.0, // Fire Flower
+                    11.0, // Mini Mushroom
+                    34.0, // Propeller Shroom
+                    29.0, // Penguin Suit
+                    29.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#FAFAE6", "#FFDC50", "#FFF06E"},
+            .mRemoconCannonTrailEffColor = {"#FFFFAC", "#FFFF00"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_BLUE_TOAD = {
+        static constexpr const dPyStatic_HIO_c lBlueToad = {
             .mDokanUDOffsetYoshiSmall = 38.0f,
             .mDokanUDOffsetYoshiBig   = 44.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -154,9 +197,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    29.0, // Mushroom
+                    29.0, // Fire Flower
+                    11.0, // Mini Mushroom
+                    34.0, // Propeller Shroom
+                    29.0, // Penguin Suit
+                    29.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#F0FAFA", "#648CDC", "#8CFAFF"},
+            .mRemoconCannonTrailEffColor = {"#FFFFFF", "#6CFFFF"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_TOADETTE = {
+        static constexpr const dPyStatic_HIO_c lToadette = {
             .mDokanUDOffsetYoshiSmall = 38.0f,
             .mDokanUDOffsetYoshiBig   = 44.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -164,9 +219,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    29.0, // Mushroom
+                    29.0, // Fire Flower
+                    11.0, // Mini Mushroom
+                    34.0, // Propeller Shroom
+                    29.0, // Penguin Suit
+                    29.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#FAE1EC", "#FF8DB7", "#FFB2D6"},
+            .mRemoconCannonTrailEffColor = {"#FFCEFF", "#FF6CFF"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_PURPLE_TOADETTE = {
+        static constexpr const dPyStatic_HIO_c lPurpleToadette = {
             .mDokanUDOffsetYoshiSmall = 38.0f,
             .mDokanUDOffsetYoshiBig   = 44.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -174,9 +241,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    29.0, // Mushroom
+                    29.0, // Fire Flower
+                    11.0, // Mini Mushroom
+                    34.0, // Propeller Shroom
+                    29.0, // Penguin Suit
+                    29.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#E3D5EB", "#DA89FA", "#E6C2FB"},
+            .mRemoconCannonTrailEffColor = {"#CCACFF", "#AC6CFF"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_ORANGE_TOAD = {
+        static constexpr const dPyStatic_HIO_c lOrangeToad = {
             .mDokanUDOffsetYoshiSmall = 38.0f,
             .mDokanUDOffsetYoshiBig   = 44.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -184,9 +263,21 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    29.0, // Mushroom
+                    29.0, // Fire Flower
+                    11.0, // Mini Mushroom
+                    34.0, // Propeller Shroom
+                    29.0, // Penguin Suit
+                    29.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#F6E7D9", "#EA7F4F", "#F3C489"},
+            .mRemoconCannonTrailEffColor = {"#FFCCAC", "#FFAC70"},
         };
 
-        static constexpr const dPyStatic_HIO_c l_BLACK_TOAD = {
+        static constexpr const dPyStatic_HIO_c lBlackToad = {
             .mDokanUDOffsetYoshiSmall = 38.0f,
             .mDokanUDOffsetYoshiBig   = 44.0f,
             .mDokanUDOffsetYoshiMini  = 30.0f,
@@ -194,14 +285,26 @@ public:
             .mDokanUDOffsetMini       = 12.0f,
             .mDokanUDAdjustBig        = 0.0f,
             .mDokanUDAdjustPropeller  = 8.0f,
+            .mFukidashiYOffset =
+                {
+                    20.0, // Small
+                    29.0, // Mushroom
+                    29.0, // Fire Flower
+                    11.0, // Mini Mushroom
+                    34.0, // Propeller Shroom
+                    29.0, // Penguin Suit
+                    29.0, // Ice Flower
+                },
+            .mFukidashiColor             = {"#86798B", "#2D2A2E", "#5C5560"},
+            .mRemoconCannonTrailEffColor = {"#ACACAC", "#6C6C6C"},
         };
 
         if (pt >= PLAYER_TYPE_e::COUNT || pt < PLAYER_TYPE_e::MARIO) {
             pt = PLAYER_TYPE_e::YELLOW_TOAD;
         }
         return *(const dPyStatic_HIO_c*[]) {
-            &l_MARIO,    &l_LUIGI,           &l_BLUE_TOAD,   &l_YELLOW_TOAD, &l_BLUE_TOAD,
-            &l_TOADETTE, &l_PURPLE_TOADETTE, &l_ORANGE_TOAD, &l_BLACK_TOAD,
+            &lMario,    &lLuigi,          &lBlueToad,   &lYellowToad,
+            &lToadette, &lPurpleToadette, &lOrangeToad, &lBlackToad,
         }[+pt];
     }
 };

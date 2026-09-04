@@ -241,13 +241,13 @@ public:
     bool checkOutOfArea(const mVec3_c& pos, const nw4r::ut::Rect& rect, u8 area);
 
     /* 0x800651C0 */
-    void carryFukidashiCheck(int param1, mVec2_c param2);
+    bool carryFukidashiCheck(int fukidashiAction, mVec2_c fukidashiTriggerSize);
 
     /* 0x80065480 */
-    void carryFukidashiCancel(int param1, int param2);
+    void carryFukidashiCancel(int fukidashiAction, int plrNo);
 
     /* 0x80065520 */
-    dAcPy_c* searchCarryFukidashiPlayer(int param1);
+    dAcPy_c* searchCarryFukidashiPlayer(int fukidashiAction);
 
     /* 0x80064F50 */
     void ActorScrOutCheck(u16);

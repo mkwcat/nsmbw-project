@@ -27,6 +27,9 @@ public:
     /* 0x800105B0, 0x808DEB70 */
     static WORLD_e getWorldNo() { return m_WorldNo; }
 
+    /* 0x80928590 */
+    static void setPrevCollectionCoinNum();
+
 public:
     // Static Methods
     // ++++++

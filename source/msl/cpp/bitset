@@ -4,12 +4,10 @@
 #include <cassert>
 #include <iterator>
 
-namespace std
-{
+namespace std {
 
 template <std::size_t N>
-class bitset
-{
+class bitset {
 private:
     static constexpr u32 test_size_type()
         requires(N > 16);
@@ -24,25 +22,22 @@ public:
     // Nested Types
     // ^^^^^^
 
-    class reference
-    {
+    class reference {
     public:
-        bitset& m_bitset;
+        bitset&           m_bitset;
         const std::size_t m_pos;
 
-        constexpr reference(bitset& b, std::size_t pos) noexcept
-          : m_bitset(b)
-          , m_pos(pos)
-        {
-        }
+        constexpr reference(
+            bitset& b, std::size_t pos
+        ) noexcept
+            : m_bitset(b)
+            , m_pos(pos) {}
 
-        constexpr operator bool() const noexcept
-        {
-            return m_bitset.test(m_pos);
-        }
+        constexpr operator bool() const noexcept { return m_bitset.test(m_pos); }
 
-        constexpr reference& operator=(bool value) noexcept
-        {
+        constexpr reference& operator=(
+            bool value
+        ) noexcept {
             if (value) {
                 m_bitset.set(m_pos);
             } else {
@@ -55,8 +50,23 @@ public:
     using value_type = decltype(test_size_type());
 
 public:
-    bool operator==(const bitset& rhs) const noexcept
-    {
+    // Structors
+    // ^^^^^^
+
+    constexpr bitset() noexcept {}
+
+    constexpr bitset(
+        unsigned long long val
+    ) noexcept
+        : m_bits(val) {}
+
+public:
+    // Operator Overloads
+    // ^^^^^^
+
+    bool operator==(
+        const bitset& rhs
+    ) const noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             if (m_bits[i] != rhs.m_bits[i]) {
                 return false;
@@ -65,19 +75,26 @@ public:
         return true;
     }
 
-    constexpr bool operator[](std::size_t pos) const
-    {
+    constexpr bool operator[](
+        std::size_t pos
+    ) const {
         return test(pos);
     }
 
-    reference operator[](std::size_t pos)
-    {
+    reference operator[](
+        std::size_t pos
+    ) {
         assert(pos < N);
         return reference(*this, pos);
     }
 
-    constexpr bool test(std::size_t pos) const
-    {
+public:
+    // Instance Methods
+    // ^^^^^^
+
+    constexpr bool test(
+        std::size_t pos
+    ) const {
         assert(pos < N);
 
         if constexpr (N <= 32) {
@@ -97,23 +114,13 @@ public:
         }
     }
 
-    constexpr bool all() const noexcept
-    {
-        return count() == N;
-    }
+    constexpr bool all() const noexcept { return count() == N; }
 
-    constexpr bool any() const noexcept
-    {
-        return count() > 0;
-    }
+    constexpr bool any() const noexcept { return count() > 0; }
 
-    constexpr bool none() const noexcept
-    {
-        return count() == 0;
-    }
+    constexpr bool none() const noexcept { return count() == 0; }
 
-    constexpr std::size_t count() const noexcept
-    {
+    constexpr std::size_t count() const noexcept {
         std::size_t count = 0;
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             count += std::popcount(m_bits[i]);
@@ -121,37 +128,36 @@ public:
         return count;
     }
 
-    constexpr std::size_t size() const noexcept
-    {
-        return N;
-    }
+    constexpr std::size_t size() const noexcept { return N; }
 
-    constexpr bitset& operator&=(const bitset& other) noexcept
-    {
+    constexpr bitset& operator&=(
+        const bitset& other
+    ) noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             m_bits[i] &= other.m_bits[i];
         }
         return *this;
     }
 
-    constexpr bitset& operator|=(const bitset& other) noexcept
-    {
+    constexpr bitset& operator|=(
+        const bitset& other
+    ) noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             m_bits[i] |= other.m_bits[i];
         }
         return *this;
     }
 
-    constexpr bitset& operator^=(const bitset& other) noexcept
-    {
+    constexpr bitset& operator^=(
+        const bitset& other
+    ) noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             m_bits[i] ^= other.m_bits[i];
         }
         return *this;
     }
 
-    constexpr bitset operator~() const noexcept
-    {
+    constexpr bitset operator~() const noexcept {
         bitset result;
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             result.m_bits[i] = ~m_bits[i];
@@ -163,8 +169,7 @@ public:
         return result;
     }
 
-    constexpr bitset& set() noexcept
-    {
+    constexpr bitset& set() noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             m_bits[i] = static_cast<value_type>(~0u);
         }
@@ -175,8 +180,9 @@ public:
         return *this;
     }
 
-    constexpr bitset& set(std::size_t pos, bool value = true)
-    {
+    constexpr bitset& set(
+        std::size_t pos, bool value = true
+    ) {
         assert(pos < N);
 
         if constexpr (N <= 32) {
@@ -202,16 +208,16 @@ public:
         return *this;
     }
 
-    constexpr bitset& reset() noexcept
-    {
+    constexpr bitset& reset() noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
             m_bits[i] = 0;
         }
         return *this;
     }
 
-    constexpr bitset& reset(std::size_t pos)
-    {
+    constexpr bitset& reset(
+        std::size_t pos
+    ) {
         assert(pos < N);
 
         if constexpr (N <= 32) {

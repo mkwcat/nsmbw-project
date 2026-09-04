@@ -4,6 +4,7 @@
 #include "mkwcat/Assert.hpp"
 #include "mkwcat/Attribute.hpp"
 #include "mkwcat/BaseTypes.hpp"
+#include "mkwcat/Instructions.hpp"
 #include "mkwcat/Literals.hpp"
 #include "mkwcat/Macro.hpp"
 #include "mkwcat/VTable.hpp"

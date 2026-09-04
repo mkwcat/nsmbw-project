@@ -46,7 +46,6 @@ dfukidashiManager_c::dfukidashiManager_c() ASM_METHOD(
   // clang-format on
 );
 
-/* VT+0x48 */
 [[nsmbw(0x80157080)]]
 dfukidashiManager_c::~dfukidashiManager_c() {
 #ifndef __has_macintosh_dt_fix
@@ -58,10 +57,6 @@ dfukidashiManager_c::~dfukidashiManager_c() {
 #endif // !__has_macintosh_dt_fix
 }
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 [[nsmbw(0x80157110)]]
 fBase_c::PACK_RESULT_e dfukidashiManager_c::create() ASM_METHOD(
   // clang-format off
@@ -148,10 +143,6 @@ UNDEF_801571f4:;
   // clang-format on
 );
 
-/**
- * VT+0x2C
- * do method for the draw operation.
- */
 [[nsmbw(0x80157210)]]
 fBase_c::PACK_RESULT_e dfukidashiManager_c::draw() ASM_METHOD(
   // clang-format off
@@ -179,11 +170,6 @@ UNDEF_8015722c:;
   // clang-format on
 );
 
-/**
- * VT+0x14
- * do method for the delete operation. This method was renamed due to conflict with the delete
- * C++ keyword.
- */
 [[nsmbw(0x80157260)]]
 fBase_c::PACK_RESULT_e dfukidashiManager_c::doDelete() ASM_METHOD(
   // clang-format off
@@ -225,61 +211,52 @@ UNDEF_801572c4:;
   // clang-format on
 );
 
+[[nsmbw(0x801572E0)]]
+void dfukidashiManager_c::showAction(int plrNo, int action);
+
 [[nsmbw(0x80157360)]]
 void dfukidashiManager_c::FUN_80157360(
-    int param1, int param2, int param3
+    int plrNo, int action, int param3
 ) {
-    if (param2 == 8) {
-        param1 = 1;
+    if (action == 8) {
+        plrNo = 1;
     }
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        if (mInfo[i].mDisplayed && mInfo[i].m0x220 == param2 && mInfo[i].mPlayerID == param1) {
+        if (mInfo[i].mDispOn && mInfo[i].mAction == action && mInfo[i].mPlrNo == plrNo) {
             mInfo[i].m0x230 = param3;
         }
     }
 }
 
 [[nsmbw(0x80157450)]]
-void dfukidashiManager_c::FUN_80157450(
-    int param1, int param2
+void dfukidashiManager_c::setActionPerformed(
+    int plrNo, int action
 ) {
-    if (param2 < 0 || param2 >= 22) {
+    if (action < 0 || action >= 22) {
         return;
     }
-
-    if (param2 == 8) {
-        param1 = 1;
+    if (action == 8) {
+        plrNo = 1;
     }
-
-    if (param1 < 0 || param2 >= PLAYER_COUNT) {
+    if (plrNo < 0 || plrNo >= PLAYER_COUNT) {
         return;
     }
-
-    dInfo_c* dInfo    = dInfo_c::m_instance;
-
-    u8*      afeValue = param1 < 4 ? dInfo->m0xAFE[param1] : dInfo->mEx0xAFE[param1 - 4];
-    *afeValue         = 1;
+    dInfo_c::m_instance->setFukidashiActionPerformed(plrNo, action, true);
 }
 
 [[nsmbw(0x801574A0)]]
-void dfukidashiManager_c::FUN_801574A0(
-    int param1, int param2
+void dfukidashiManager_c::clearActionPerformed(
+    int plrNo, int action
 ) {
-    if (param2 < 0 || param2 >= 22) {
+    if (action < 0 || action >= 22) {
         return;
     }
-
-    if (param2 == 8) {
-        param1 = 1;
+    if (action == 8) {
+        plrNo = 1;
     }
-
-    if (param1 < 0 || param2 >= PLAYER_COUNT) {
+    if (plrNo < 0 || plrNo >= PLAYER_COUNT) {
         return;
     }
-
-    dInfo_c* dInfo    = dInfo_c::m_instance;
-
-    u8*      afeValue = param1 < 4 ? dInfo->m0xAFE[param1] : dInfo->mEx0xAFE[param1 - 4];
-    *afeValue         = 0;
+    dInfo_c::m_instance->setFukidashiActionPerformed(plrNo, action, false);
 }

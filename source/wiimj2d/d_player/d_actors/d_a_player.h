@@ -492,8 +492,8 @@ public:
 
     void setOffYoshiInGoal(daPlBase_c* yoshi);
 
-    bool isDrawingCarryFukidashi();
-    void getCcBounds(sRangeDataF* bounds); // @unofficial
+    /* 0x80147CA0 */ bool isDrawingCarryFukidashi();
+    /* 0x801420B0 */ void getCcBounds(sRangeDataF* bounds); // @unofficial
     /* 0x8012E650 */ bool cancelCarry(dActor_c* carriedActor);
 
     void setFireBallDamage(u8 type);

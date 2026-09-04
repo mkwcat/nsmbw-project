@@ -87,6 +87,9 @@ public:
     /* 0x80101AA0 */
     static void setLoopType();
 
+    /* 0x80101bb0 */
+    static float getLoopPosX(float x);
+
     /* 0x801020E0 @unofficial */
     static void setCollectionCoin(int coin, PLAYER_TYPE_e player);
 
