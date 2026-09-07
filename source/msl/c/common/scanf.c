@@ -26,8 +26,8 @@ enum argument_options {
 typedef long long intmax_t;
 
 #define conversion_buff_size 512
-#define conversion_max 509
-#define bad_conversion 0xFF
+#define conversion_max       509
+#define bad_conversion       0xFF
 
 typedef size_t rsize_t;
 

@@ -9,6 +9,11 @@
 class dCharacterChangeIndicator_c;
 
 class dCharacterChangeSelectContents_c : public dBase_c {
+    // Original size: 0x2B8
+    VTABLE(0x060, fBase_c, 0x8093F530);
+    // 0x8093F3B0 g_profile_CHARACTER_CHANGE_SELECT_CONTENTS
+    // 0x80772A50 dCharacterChangeSelectContents_c_classInit
+
 public:
     // Constants and Types
     // ^^^^^^
@@ -60,13 +65,12 @@ public:
     /* 0x2A1 */ bool                mEasyPairingWait;
 
     /* 0x2A4 */ u32                 mLives[4];
-
     /* 0x2B4 */ float               m0x2B4;
 
-public:
+    OFFSET_ASSERT(0x2B8);
+
     // Instance Variables
     // ++++++
-    OFFSET_ASSERT(0x2B8);
 
     /* 0x2B8 */ nw4r::lyt::Picture* mpaMarioPictures[2];
 

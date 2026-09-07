@@ -3,7 +3,6 @@
 
 #include "d_a_chukan_point.h"
 
-#include "d_a_player.h"
 #include "d_a_player_manager.h"
 #include "d_cyuukan.h"
 #include "d_flag_ctrl.h"

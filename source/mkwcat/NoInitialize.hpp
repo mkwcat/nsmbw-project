@@ -5,12 +5,10 @@
 
 #pragma once
 
-namespace mkwcat
-{
+namespace mkwcat {
 
 template <class T>
-constexpr T NoInitialize()
-{
+constexpr T NoInitialize() {
     return __builtin_bit_cast(T, (char[sizeof(T)]) {});
 }
 

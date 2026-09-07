@@ -3,14 +3,15 @@
 #include "d_enemy.h"
 #include "s_State.h"
 
-class dEnemyCarry_c : dEn_c {
+class dEnemyCarry_c : public dEn_c {
+    SIZE_ASSERT(0x526);
+
 public:
     // Instance Variables
     // ^^^^^^
 
-    OFFSET_ASSERT(0x524);
-
     /* 0x524 */ bool m0x524;
+    /* 0x525 */ bool m0x525;
 
 public:
     // State IDs

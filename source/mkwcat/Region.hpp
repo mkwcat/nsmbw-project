@@ -5,8 +5,7 @@
 
 #pragma once
 
-namespace mkwcat
-{
+namespace mkwcat {
 
 enum class Region {
     P1, // PAL revision 1
@@ -15,9 +14,9 @@ enum class Region {
     E2, // USA revision 2
     J1, // JPN revision 1
     J2, // JPN revision 2
-    K, // KOR
-    W, // TWN
-    C, // CHN (Nvidia Shield TV release)
+    K,  // KOR
+    W,  // TWN
+    C,  // CHN (Nvidia Shield TV release)
     Error,
 };
 

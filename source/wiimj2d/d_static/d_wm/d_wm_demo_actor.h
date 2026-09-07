@@ -44,7 +44,7 @@ public:
      * VT+0x20
      * do method for the execute operation.
      */
-    virtual PACK_RESULT_e execute() override = 0;
+    virtual PACK_RESULT_e execute() override ABSTRACT;
 
     /**
      * VT+0x2C 0x800F6F20

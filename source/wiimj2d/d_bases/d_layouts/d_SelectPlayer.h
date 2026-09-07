@@ -10,6 +10,11 @@
 #include <nw4r/lyt/Picture.h>
 
 class dSelectPlayer_c : public dBase_c {
+    // Original size: 0x280
+    VTABLE(0x060, fBase_c, 0x8094E818);
+    // 0x8094E418 g_profile_SELECT_PLAYER
+    // 0x807ABE10 dSelectPlayer_c_classInit
+
 public:
     // Structors
     // ^^^^^^
@@ -46,6 +51,9 @@ public:
 
     OFFSET_ASSERT(0x280);
 
+    // Instance Variables
+    // ++++++
+
     /* 0x280 */ nw4r::lyt::Picture* mpaButtons[8 + 3];
 
     bool                            mMultiMode;
@@ -54,12 +62,59 @@ public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x807AC3C0
+     * executeState:    0x807AC3D0
+     * finalizeState:   0x807AC490
+     */
     sState_Extern(0x809953A0, dSelectPlayer_c, StartWait);
+
+    /*
+     * initializeState: 0x807AC4A0
+     * executeState:    0x807AC510
+     * finalizeState:   0x807AC570
+     */
     sState_Extern(0x809953E0, dSelectPlayer_c, OnStageAnimeEndWait);
+
+    /*
+     * initializeState: 0x807AC580
+     * executeState:    0x807AC590
+     * finalizeState:   0x807AC5F0
+     */
     sState_Extern(0x80995420, dSelectPlayer_c, InfoOnStageAnimeEndWait);
+
+    /*
+     * initializeState: 0x807AC610
+     * executeState:    0x807AC6E0
+     * finalizeState:   0x807AC770
+     */
     sState_Extern(0x80995460, dSelectPlayer_c, ButtonChangeAnimeEndWait);
+
+    /*
+     * initializeState: 0x807AC780
+     * executeState:    0x807AC7A0
+     * finalizeState:   0x807AC950
+     */
     sState_Extern(0x809954A0, dSelectPlayer_c, StartMemberSelect);
+
+    /*
+     * initializeState: 0x807AC960
+     * executeState:    0x807AC980
+     * finalizeState:   0x807ACAC0
+     */
     sState_Extern(0x809954E0, dSelectPlayer_c, MultiStartMemberSelect);
+
+    /*
+     * initializeState: 0x807ACAD0
+     * executeState:    0x807ACB60
+     * finalizeState:   0x807ACBC0
+     */
     sState_Extern(0x80995520, dSelectPlayer_c, StartMemberButtonAnime);
+
+    /*
+     * initializeState: 0x807ACBD0
+     * executeState:    0x807ACC40
+     * finalizeState:   0x807ACCD0
+     */
     sState_Extern(0x80995560, dSelectPlayer_c, ExitAnimeEndWait);
 };

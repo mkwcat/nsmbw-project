@@ -6,7 +6,10 @@
 #include "s_StateMgrDefault.h"
 
 class dMiniGameCannon_c : public dBase_c {
-    SIZE_ASSERT(0x2E8 + 0xE8);
+    // Original size: 0x2E8
+    VTABLE(0x060, fBase_c, 0x80946268);
+    // 0x80945DF8 g_profile_MINI_GAME_CANNON
+    // 0x8078BC60 dMiniGameCannon_c_classInit
 
 public:
     // Structors
@@ -148,14 +151,73 @@ public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x8078C530
+     * executeState:    0x8078C550
+     * finalizeState:   0x8078C590
+     */
     sState_Extern(0x80992DC0, dMiniGameCannon_c, TitleOpenWait);
+
+    /*
+     * initializeState: 0x8078C5A0
+     * executeState:    0x8078C6B0
+     * finalizeState:   0x8078C710
+     */
     sState_Extern(0x80992E00, dMiniGameCannon_c, TitleOpenAnimeEndWait);
+
+    /*
+     * initializeState: 0x8078C720
+     * executeState:    0x8078C730
+     * finalizeState:   0x8078C760
+     */
     sState_Extern(0x80992E40, dMiniGameCannon_c, TitleDisp);
+
+    /*
+     * initializeState: 0x8078C770
+     * executeState:    0x8078C7B0
+     * finalizeState:   0x8078C810
+     */
     sState_Extern(0x80992E80, dMiniGameCannon_c, TitleExitAnimeEndWait);
+
+    /*
+     * initializeState: 0x8078C8A0
+     * executeState:    0x8078C8B0
+     * finalizeState:   0x8078C8E0
+     */
     sState_Extern(0x80992EC0, dMiniGameCannon_c, StartWait);
+
+    /*
+     * initializeState: 0x8078C970
+     * executeState:    0x8078CB80
+     * finalizeState:   0x8078CC40
+     */
     sState_Extern(0x80992F00, dMiniGameCannon_c, OpenAnimeEndWait);
+
+    /*
+     * initializeState: 0x8078CC50
+     * executeState:    0x8078CC60
+     * finalizeState:   0x8078CC90
+     */
     sState_Extern(0x80992F40, dMiniGameCannon_c, NowDisp);
+
+    /*
+     * initializeState: 0x8078CCA0
+     * executeState:    0x8078CD70
+     * finalizeState:   0x8078CDD0
+     */
     sState_Extern(0x80992F80, dMiniGameCannon_c, ResultDispAnimeEndWait);
+
+    /*
+     * initializeState: 0x8078CE10
+     * executeState:    0x8078CE90
+     * finalizeState:   0x8078CEC0
+     */
     sState_Extern(0x80992FC0, dMiniGameCannon_c, ResultNowDisp);
+
+    /*
+     * initializeState: 0x8078CF00
+     * executeState:    0x8078CF40
+     * finalizeState:   0x8078CFB0
+     */
     sState_Extern(0x80993000, dMiniGameCannon_c, ExitAnimeEndWait);
 };

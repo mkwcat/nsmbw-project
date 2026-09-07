@@ -3,6 +3,8 @@
 
 #include "d_a_nextgoto_block.h"
 
+#include "d_a_player.h"
+
 [[nsmbw(0x8086E670)]]
 daNextGotoBlock_c* daNextGotoBlock_c_classInit() {
     return new daNextGotoBlock_c;

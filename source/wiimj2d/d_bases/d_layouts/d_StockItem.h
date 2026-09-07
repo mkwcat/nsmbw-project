@@ -15,6 +15,11 @@ class daWmItem_c;
 class dStockItemShadow_c;
 
 class dStockItem_c : public dBase_c {
+    // Original size: 0x8E0
+    VTABLE(0x060, fBase_c, 0x8094FCE0);
+    // 0x8094F788 g_profile_STOCK_ITEM
+    // 0x807AF370 dStockItem_c_classInit
+
 public:
     // Structors
     // ^^^^^^
@@ -134,6 +139,9 @@ public:
     FILL(0x8DE, 0x8E0);
     OFFSET_ASSERT(0x8E0);
 
+    // Instance Variables
+    // ++++++
+
 #define dStockItem_c_OFFSET_mpa2DPlayer 0x8E0
     /* 0x8E0 */ da2DPlayer_c* mpa2DPlayer[PLAYER_COUNT];
 
@@ -157,21 +165,58 @@ public:
     // ^^^^^^
 
     /*
-     * executeState: 0x807B09D0
+     * initializeState: 0x807B0980
+     * executeState:    0x807B09D0
+     * finalizeState:   0x807B0AE0
      */
     sState_Extern(0x809957E8, dStockItem_c, WindowOpenInit);
 
+    /*
+     * initializeState: 0x807B0AF0
+     * executeState:    0x807B0BE0
+     * finalizeState:   0x807B0D70
+     */
     sState_Extern(0x80995828, dStockItem_c, WindowOpenAnimeEndWait);
 
+    /*
+     * initializeState: 0x807B0D90
+     * executeState:    0x807B0E30
+     * finalizeState:   0x807B0EC0
+     */
     sState_Extern(0x80995868, dStockItem_c, ButtonChangeAnimeEndWait);
 
+    /*
+     * initializeState: 0x807B0EF0
+     * executeState:    0x807B0F00
+     * finalizeState:   0x807B1110
+     */
     sState_Extern(0x809958A8, dStockItem_c, ItemSelectWait);
 
+    /*
+     * initializeState: 0x807B1130
+     * executeState:    0x807B1140
+     * finalizeState:   0x807B12F0
+     */
     sState_Extern(0x809958E8, dStockItem_c, SuccessionItemSelectWait);
 
+    /*
+     * initializeState: 0x807B1310
+     * executeState:    0x807B1350
+     * finalizeState:   0x807B13C0
+     */
     sState_Extern(0x80995928, dStockItem_c, WindowCloseAnimeEndWait);
 
+    /*
+     * initializeState: 0x807B14D0
+     * executeState:    0x807B1520
+     * finalizeState:   0x807B1580
+     */
     sState_Extern(0x80995968, dStockItem_c, HitAnimeEndWait);
 
-    sState_Extern(0x809959A8, dStockItem_c, WindowCloseInit);
+    /*
+     * initializeState: 0x807B15A0
+     * executeState:    0x807B15B0
+     * finalizeState:   0x807B1680
+     */
+    sState_Extern(0x809959A8, dStockItem_c, WindowCloseWait);
 };

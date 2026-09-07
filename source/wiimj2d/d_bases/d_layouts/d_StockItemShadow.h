@@ -5,6 +5,16 @@
 
 class dStockItemShadow_c : public dBase_c {
     SIZE_ASSERT(0x280);
+    VTABLE(0x060, fBase_c, 0x809503D8);
+    // 0x809501B0 g_profile_STOCK_ITEM_SHADOW
+    // 0x807B2030 dStockItemShadow_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x807B2060 */
+    dStockItemShadow_c();
 
 public:
     // Instance Variables

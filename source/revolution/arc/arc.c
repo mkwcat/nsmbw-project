@@ -18,8 +18,9 @@ s32 ARCConvertPathToEntrynum(ARCHandle* handle, const char* pathPtr);
 [[nsmbw(0x8019FDC0)]]
 u32 entryToPath(ARCHandle* handle, s32 entrynum, char* path, u32 maxlen);
 
-bool ARCConvertEntrynumToPath(ARCHandle* handle, s32 entrynum, char* path, u32 maxlen)
-{
+bool ARCConvertEntrynumToPath(
+    ARCHandle* handle, s32 entrynum, char* path, u32 maxlen
+) {
     if (entrynum < 0 || entrynum >= handle->entryNum) {
         return false;
     }
@@ -27,8 +28,9 @@ bool ARCConvertEntrynumToPath(ARCHandle* handle, s32 entrynum, char* path, u32 m
     return entryToPath(handle, entrynum, path, maxlen) != 0;
 }
 
-bool ARCEntrynumIsDir(ARCHandle* handle, s32 entrynum)
-{
+bool ARCEntrynumIsDir(
+    ARCHandle* handle, s32 entrynum
+) {
     if (entrynum < 0 || entrynum >= handle->entryNum) {
         return false;
     }
@@ -55,8 +57,9 @@ bool ARCChangeDir(ARCHandle* handle, const char* dirName);
 
 // UNUSED: ARCGetCurrentDir
 
-bool ARCFastOpenDir(ARCHandle* handle, s32 entrynum, ARCDir* dir)
-{
+bool ARCFastOpenDir(
+    ARCHandle* handle, s32 entrynum, ARCDir* dir
+) {
     if (entrynum < 0 || entrynum >= handle->entryNum) {
         return false;
     }
@@ -67,10 +70,10 @@ bool ARCFastOpenDir(ARCHandle* handle, s32 entrynum, ARCDir* dir)
         return false;
     }
 
-    dir->handle = handle;
+    dir->handle   = handle;
     dir->entryNum = entrynum;
     dir->location = entrynum + 1;
-    dir->next = entry->dir.next;
+    dir->next     = entry->dir.next;
 
     return true;
 }

@@ -9,6 +9,9 @@
 
 class dPointResultDateFile_c : public dBase_c {
     SIZE_ASSERT(0x8E0);
+    VTABLE(0x060, fBase_c, 0x8094CAF0);
+    // 0x8094C050 g_profile_POINT_RESULT_DATE_FILE
+    // 0x807A3F50 dPointResultDateFile_c_classInit
 
 public:
     // Structors
@@ -81,7 +84,115 @@ public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x807A5330
+     * executeState:    0x807A53A0
+     * finalizeState:   0x807A5540
+     */
+    sState_Extern(0x809949A0, dPointResultDateFile_c, Initial);
+
+    /*
+     * initializeState: 0x807A5550
+     * executeState:    0x807A5640
+     * finalizeState:   0x807A5670
+     */
+    sState_Extern(0x809949E0, dPointResultDateFile_c, OnSatgeWait);
+
+    /*
+     * initializeState: 0x807A5680
+     * executeState:    0x807A56D0
+     * finalizeState:   0x807A5730
+     */
+    sState_Extern(0x80994A20, dPointResultDateFile_c, OnSatgeAnimeEndCheck);
+
+    /*
+     * initializeState: 0x807A5740
+     * executeState:    0x807A5750
+     * finalizeState:   0x807A5780
+     */
+    sState_Extern(0x80994A60, dPointResultDateFile_c, ScoreCalcStartWait);
+
+    /*
+     * initializeState: 0x807A5790
+     * executeState:    0x807A57A0
+     * finalizeState:   0x807A5A30
+     */
+    sState_Extern(0x80994AA0, dPointResultDateFile_c, CoinAdd);
+
+    /*
+     * initializeState: 0x807A5A60
+     * executeState:    0x807A5A70
+     * finalizeState:   0x807A5AA0
+     */
+    sState_Extern(0x80994AE0, dPointResultDateFile_c, StarCoinToScoreStartWait);
+
+    /*
+     * initializeState: 0x807A5AB0
+     * executeState:    0x807A5AC0
+     * finalizeState:   0x807A5BF0
+     */
+    sState_Extern(0x80994B20, dPointResultDateFile_c, StarCoinAdd);
+
+    /*
+     * initializeState: 0x807A5C00
+     * executeState:    0x807A5C20
+     * finalizeState:   0x807A5CE0
+     */
+    sState_Extern(0x80994B60, dPointResultDateFile_c, StarCoinAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A5CF0
+     * executeState:    0x807A5D00
+     * finalizeState:   0x807A5D90
+     */
+    sState_Extern(0x80994BA0, dPointResultDateFile_c, RankChangeStartWait);
+
+    /*
+     * initializeState: 0x807A5DA0
+     * executeState:    0x807A5E20
+     * finalizeState:   0x807A5E90
+     */
+    sState_Extern(0x80994BE0, dPointResultDateFile_c, RankExitAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A5EA0
+     * executeState:    0x807A5FE0
+     * finalizeState:   0x807A6140
+     */
+    sState_Extern(0x80994C20, dPointResultDateFile_c, RankChange);
+
+    /*
+     * initializeState: 0x807A6150
+     * executeState:    0x807A61F0
+     * finalizeState:   0x807A62F0
+     */
+    sState_Extern(0x80994C60, dPointResultDateFile_c, BigSmallAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A6300
+     * executeState:    0x807A6410
+     * finalizeState:   0x807A6510
+     */
+    sState_Extern(0x80994CA0, dPointResultDateFile_c, RankOnStageAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A6520
+     * executeState:    0x807A6530
+     * finalizeState:   0x807A6570
+     */
+    sState_Extern(0x80994CE0, dPointResultDateFile_c, StarDispWait);
+
+    /*
+     * initializeState: 0x807A6580
+     * executeState:    0x807A6680
+     * finalizeState:   0x807A6860
+     */
     sState_Extern(0x80994D20, dPointResultDateFile_c, StarOnStage);
 
+    /*
+     * initializeState: 0x807A6870
+     * executeState:    0x807A6880
+     * finalizeState:   0x807A6890
+     */
     sState_Extern(0x80994D60, dPointResultDateFile_c, GoalDeMoEndWait);
 };

@@ -7,6 +7,16 @@ class dSelectCursor_c;
 
 class dScWMap_c : public dScene_c {
     SIZE_ASSERT(0xEC);
+    VTABLE(0x60, fBase_c, 0x8098E228);
+    // 0x8098DCF0 g_profile_WORLD_MAP
+    // 0x80926740 dScWMap_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x809274C0 */
+    dScWMap_c();
 
 public:
     // Static Methods

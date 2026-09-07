@@ -1,11 +1,7 @@
 add_subdirectory(d_static)
 add_subdirectory(d_error)
 add_subdirectory(d_stage)
-add_subdirectory(d_profile)
 add_subdirectory(d_bases)
-add_subdirectory(d_player)
-add_subdirectory(d_enemies)
-add_subdirectory(d_en_boss)
 add_subdirectory(state)
 
 # Add for current directory

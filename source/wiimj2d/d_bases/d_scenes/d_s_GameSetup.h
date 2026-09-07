@@ -15,6 +15,18 @@ class dDateFile_c;
 class dInfoWindow_c;
 
 class dScGameSetup_c : public dScene_c {
+    SIZE_ASSERT(0x210);
+    VTABLE(0x060, fBase_c, 0x8098B1A0);
+    // 0x8098B0D0 g_profile_GAME_SETUP
+    // 0x80917960 dScGameSetup_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x80918020 */
+    dScGameSetup_c();
+
 public:
     // Instance Methods
     // ^^^^^^
@@ -83,19 +95,86 @@ public:
 
     /* 0x108 */ bool mInPlayerSelect;
 
+    FILL(0x109, 0x210);
+
 public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x80918680
+     * executeState:    0x80918690
+     * finalizeState:   0x80918710
+     */
     sState_Extern(0x809A14E0, dScGameSetup_c, FadeInEndWait);
+
+    /*
+     * initializeState: 0x80918720
+     * executeState:    0x80918780
+     * finalizeState:   0x809188E0
+     */
     sState_Extern(0x809A1520, dScGameSetup_c, FileSelect);
+
+    /*
+     * initializeState: 0x80918910
+     * executeState:    0x80918950
+     * finalizeState:   0x809189C0
+     */
     sState_Extern(0x809A1560, dScGameSetup_c, FadeOut);
+
+    /*
+     * initializeState: 0x809189F0
+     * executeState:    0x80918A20
+     * finalizeState:   0x80918AC0
+     */
     sState_Extern(0x809A15A0, dScGameSetup_c, FadeIn);
+
+    /*
+     * initializeState: 0x80918AD0
+     * executeState:    0x80918B00
+     * finalizeState:   0x80918C00
+     */
     sState_Extern(0x809A15E0, dScGameSetup_c, StartMember);
+
+    /*
+     * initializeState: 0x80918C10
+     * executeState:    0x80918D10
+     * finalizeState:   0x80918DB0
+     */
     sState_Extern(0x809A1620, dScGameSetup_c, ConnectionCheck);
+
+    /*
+     * initializeState: 0x80918DC0
+     * executeState:    0x80918E40
+     * finalizeState:   0x80918E70
+     */
     sState_Extern(0x809A1660, dScGameSetup_c, EasyPairingWait);
+
+    /*
+     * initializeState: 0x80918EE0
+     * executeState:    0x80918EF0
+     * finalizeState:   0x80918F80
+     */
     sState_Extern(0x809A16A0, dScGameSetup_c, LowBatteryCheck);
+
+    /*
+     * initializeState: 0x80918FF0
+     * executeState:    0x80919050
+     * finalizeState:   0x809190E0
+     */
     sState_Extern(0x809A16E0, dScGameSetup_c, NandAccess);
+
+    /*
+     * initializeState: 0x80919120
+     * executeState:    0x80919130
+     * finalizeState:   0x80919190
+     */
     sState_Extern(0x809A1720, dScGameSetup_c, VoiceEndWait);
+
+    /*
+     * initializeState: 0x80919210
+     * executeState:    0x80919220
+     * finalizeState:   0x80919230
+     */
     sState_Extern(0x809A1760, dScGameSetup_c, NextSceneWait);
 };

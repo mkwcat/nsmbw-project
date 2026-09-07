@@ -9,8 +9,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace mkwcat
-{
+namespace mkwcat {
 
 constexpr char AddressMapFile[] = {
 #pragma clang diagnostic push
@@ -26,24 +25,24 @@ static constexpr const AddressMapper& GetAddressMapper(Region region);
 /**
  * Compile-time address mapper.
  */
-class AddressMapper
-{
+class AddressMapper {
 #ifndef CLANGD
 private:
     struct AddressRange {
         std::uint32_t low;
         std::uint32_t high;
-        std::int32_t offset;
+        std::int32_t  offset;
     };
 
-    Region m_region = Region::Error;
-    Region m_extend = Region::Error;
+    Region       m_region       = Region::Error;
+    Region       m_extend       = Region::Error;
     AddressRange m_ranges[1024] = {};
-    std::size_t m_rangeCount = 0;
+    std::size_t  m_rangeCount   = 0;
 
 public:
-    constexpr AddressMapper(Region region)
-    {
+    constexpr AddressMapper(
+        Region region
+    ) {
         // Cycle through the address map file to find the region
         std::size_t index = 0;
         for (; index < sizeof(AddressMapFile); index = NextLine(index)) {
@@ -69,7 +68,7 @@ public:
             }
 
             std::size_t currentLine = index;
-            index = SkipWhitespace(index);
+            index                   = SkipWhitespace(index);
             if (IsHexDigit(AddressMapFile[index])) {
                 firstLine = currentLine;
                 break;
@@ -94,7 +93,7 @@ public:
 
             // Parse the low range address
             AddressRange& range = m_ranges[m_rangeCount++];
-            range.low = ParseUint(index);
+            range.low           = ParseUint(index);
 
             Assert(AddressMapFile[index++] == '-');
 
@@ -108,7 +107,7 @@ public:
 
             index = SkipWhitespace(index);
             Assert(AddressMapFile[index++] == ':');
-            index = SkipWhitespace(index);
+            index         = SkipWhitespace(index);
 
             // Parse the offset
             bool negative = false;
@@ -131,20 +130,23 @@ public:
 private:
     static void AssertFail();
 
-    static constexpr void Assert(bool condition)
-    {
+    static constexpr void Assert(
+        bool condition
+    ) {
         if (!condition) {
             AssertFail();
         }
     }
 
-    static constexpr bool IsHexDigit(char c)
-    {
+    static constexpr bool IsHexDigit(
+        char c
+    ) {
         return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
     }
 
-    static constexpr std::uint32_t ParseUint(std::size_t& index)
-    {
+    static constexpr std::uint32_t ParseUint(
+        std::size_t& index
+    ) {
         std::uint32_t value = 0;
         for (; IsHexDigit(AddressMapFile[index]); index++) {
             value <<= 4;
@@ -160,8 +162,9 @@ private:
         return value;
     }
 
-    static constexpr std::size_t NextLine(std::size_t index)
-    {
+    static constexpr std::size_t NextLine(
+        std::size_t index
+    ) {
         for (std::size_t i = index; i < sizeof(AddressMapFile); i++) {
             if (AddressMapFile[i] == '\n') {
                 return i + 1;
@@ -171,8 +174,9 @@ private:
         return sizeof(AddressMapFile);
     }
 
-    static constexpr std::size_t SkipWhitespace(std::size_t index)
-    {
+    static constexpr std::size_t SkipWhitespace(
+        std::size_t index
+    ) {
         for (std::size_t i = index; i < sizeof(AddressMapFile); i++) {
             if (AddressMapFile[i] != ' ' && AddressMapFile[i] != '\t') {
                 return i;
@@ -182,8 +186,9 @@ private:
         return sizeof(AddressMapFile);
     }
 
-    static constexpr Region ConsumeRegion(std::size_t index)
-    {
+    static constexpr Region ConsumeRegion(
+        std::size_t index
+    ) {
         switch (AddressMapFile[index]) {
         case 'P':
             return AddressMapFile[index + 1] == '1' ? Region::P1 : Region::P2;
@@ -202,8 +207,9 @@ private:
         }
     }
 
-    static constexpr Region ConsumeRegionMarker(std::size_t index)
-    {
+    static constexpr Region ConsumeRegionMarker(
+        std::size_t index
+    ) {
         index = SkipWhitespace(index);
         if (AddressMapFile[index] != '[') {
             return Region::Error;
@@ -212,8 +218,9 @@ private:
         return ConsumeRegion(index + 1);
     }
 
-    static constexpr Region ConsumeExtend(std::size_t index)
-    {
+    static constexpr Region ConsumeExtend(
+        std::size_t index
+    ) {
         index = SkipWhitespace(index);
         for (std::size_t i = 0; i < sizeof("extend ") - 1; i++) {
             if (AddressMapFile[index++] != "extend "[i]) {
@@ -225,17 +232,18 @@ private:
     }
 
 public:
-    constexpr std::uint32_t MapAddress(std::uint32_t srcAddr) const
-    {
+    constexpr std::uint32_t MapAddress(
+        std::uint32_t srcAddr
+    ) const {
         if (m_extend != Region::Error && m_extend != Region::P1) {
             srcAddr = GetAddressMapper(m_extend).MapAddress(srcAddr);
         }
 
         // Binary search for the address range
-        std::size_t low = 0;
+        std::size_t low  = 0;
         std::size_t high = m_rangeCount;
         while (low < high) {
-            std::size_t mid = (low + high) / 2;
+            std::size_t         mid   = (low + high) / 2;
             const AddressRange& range = m_ranges[mid];
             if (srcAddr >= range.low && srcAddr <= range.high) {
                 return srcAddr + range.offset;
@@ -252,12 +260,13 @@ public:
     }
 #else
 public:
-    constexpr AddressMapper(Region region)
-    {
-    }
+    constexpr AddressMapper(
+        Region region
+    ) {}
 
-    constexpr std::uint32_t MapAddress(std::uint32_t srcAddr) const
-    {
+    constexpr std::uint32_t MapAddress(
+        std::uint32_t srcAddr
+    ) const {
         return srcAddr;
     }
 #endif
@@ -272,8 +281,9 @@ constexpr AddressMapper AddressMapperK(Region::K);
 constexpr AddressMapper AddressMapperW(Region::W);
 constexpr AddressMapper AddressMapperC(Region::C);
 
-static constexpr const AddressMapper& GetAddressMapper(Region region)
-{
+static constexpr const AddressMapper& GetAddressMapper(
+    Region region
+) {
     switch (region) {
     case Region::P2:
         return AddressMapperP2;
@@ -297,16 +307,17 @@ static constexpr const AddressMapper& GetAddressMapper(Region region)
 }
 
 template <uint32_t P1Addr>
-static constexpr uint32_t AutoPort(Region region)
-{
+static constexpr uint32_t AutoPort(
+    Region region
+) {
     static constexpr uint32_t P2Addr = GetAddressMapper(Region::P2).MapAddress(P1Addr);
     static constexpr uint32_t E1Addr = GetAddressMapper(Region::E1).MapAddress(P1Addr);
     static constexpr uint32_t E2Addr = GetAddressMapper(Region::E2).MapAddress(P1Addr);
     static constexpr uint32_t J1Addr = GetAddressMapper(Region::J1).MapAddress(P1Addr);
     static constexpr uint32_t J2Addr = GetAddressMapper(Region::J2).MapAddress(P1Addr);
-    static constexpr uint32_t KAddr = GetAddressMapper(Region::K).MapAddress(P1Addr);
-    static constexpr uint32_t WAddr = GetAddressMapper(Region::W).MapAddress(P1Addr);
-    static constexpr uint32_t CAddr = GetAddressMapper(Region::C).MapAddress(P1Addr);
+    static constexpr uint32_t KAddr  = GetAddressMapper(Region::K).MapAddress(P1Addr);
+    static constexpr uint32_t WAddr  = GetAddressMapper(Region::W).MapAddress(P1Addr);
+    static constexpr uint32_t CAddr  = GetAddressMapper(Region::C).MapAddress(P1Addr);
 
     switch (region) {
     case Region::P1:
@@ -333,8 +344,9 @@ static constexpr uint32_t AutoPort(Region region)
     }
 }
 
-static constexpr uint32_t GetR2Address(Region region)
-{
+static constexpr uint32_t GetR2Address(
+    Region region
+) {
     switch (region) {
     case Region::P1:
     case Region::P2:
@@ -362,8 +374,9 @@ static constexpr uint32_t GetR2Address(Region region)
     }
 }
 
-static constexpr uint32_t GetR13Address(Region region)
-{
+static constexpr uint32_t GetR13Address(
+    Region region
+) {
     switch (region) {
     case Region::P1:
     case Region::P2:

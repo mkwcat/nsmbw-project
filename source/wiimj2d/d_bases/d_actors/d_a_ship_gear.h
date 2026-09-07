@@ -8,6 +8,8 @@
 class daShipGear_c : public dActorState_c {
     // Original size: 0x540
     VTABLE(0x060, fBase_c, 0x8097AF78);
+    // 0x8097AF18 g_profile_AC_SHIP_GEAR
+    // 0x808A1FD0 daShipGear_c_classInit
 
 public:
     // Structors

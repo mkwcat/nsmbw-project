@@ -10,10 +10,12 @@
 
 namespace mkwcat {
 
-template <class... T> struct TypePack {
-    using size_type                 = Misc::UIntOfLimit<sizeof...(T)>;
+template <class... T>
+struct TypePack {
+    using size_type = Misc::UIntOfLimit<sizeof...(T)>;
 
-    template <size_type I> using at = T...[I];
+    template <size_type I>
+    using at                        = T...[I];
 
     static constexpr size_type size = sizeof...(T);
 
@@ -26,7 +28,8 @@ template <class... T> struct TypePack {
     }();
 };
 
-template <class... T> struct TypeSwitch : TypePack<T...> {
+template <class... T>
+struct TypeSwitch : TypePack<T...> {
     TypePack<T...>::size_type index;
 };
 

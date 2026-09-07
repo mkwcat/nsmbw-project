@@ -98,7 +98,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8003DBD0 - 0x80040920
   # d_enemy/d_a_en_togezo_base.cpp
 # NSMBW          .text:  0x80040920 - 0x80041C00
-  # d_enemy/d_a_en_fireball_base.cpp
+  # d_enemy/d_a_fireball_base.cpp
 # NSMBW          .text:  0x80041C00 - 0x80042480
   # d_actor/d_a_fly_dokan.cpp
 # NSMBW          .text:  0x80042480 - 0x80042A70
@@ -322,7 +322,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800CD290 - 0x800CD800
     d_mask/d_mask_mng.cpp
 # NSMBW          .text:  0x800CD800 - 0x800CDB60
-  # d_md_actor.cpp
+  # d_actor/d_md_actor.cpp
 # NSMBW          .text:  0x800CDB60 - 0x800CDFB0
     d_lyt/d_message.cpp
 # NSMBW          .text:  0x800CDFB0 - 0x800CE660
@@ -482,4 +482,10 @@ target_sources(project PRIVATE
 target_sources(project PRIVATE
 # NSMBW   d_bases.text:  0x8092F020 - 0x80932F60
     d_lyt/d_CourseSelectManager.cpp
+# NSMBW   d_bases.text:  0x80932F60 - 0x80933420
+  # d_actor/d_a_dtest.cpp
+# NSMBW   d_bases.text:  0x80933420 - 0x80933480
+  # d_actor/d_a_wm_test.cpp
+# NSMBW   d_bases.text:  0x80933480 - 0x80932F60
+  # d_actor/d_a_wm_test2.cpp
 )

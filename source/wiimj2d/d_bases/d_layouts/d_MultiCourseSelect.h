@@ -16,7 +16,10 @@
 class dMultiCourseSelectContents_c;
 
 class dMultiCourseSelect_c : public dBase_c {
-    SIZE_ASSERT(0x524 + 0xD0);
+    // Original size: 0x524
+    VTABLE(0x060, fBase_c, 0x80949BD0);
+    // 0x80949450 g_profile_MULTI_COURSE_SELECT
+    // 0x80798920 dMultiCourseSelect_c_classInit
 
 public:
     // Structors
@@ -166,9 +169,135 @@ public:
     /* 0x5B4 */ nw4r::lyt::Pane* mpNPos8P[8];
     /* 0x5D4 */ LytTextBox_c*    mpTRankStar[8];
 
+    FILL(0x070, 0x524);
+
 public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x80799F60
+     * executeState:    0x8079A670
+     * finalizeState:   0x8079A7A0
+     */
     sState_Extern(0x80993E88, dMultiCourseSelect_c, DispWait);
+
+    /*
+     * initializeState: 0x8079A840
+     * executeState:    0x8079A880
+     * finalizeState:   0x8079A960
+     */
+    sState_Extern(0x80993EC8, dMultiCourseSelect_c, OpenAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079A980
+     * executeState:    0x8079A9A0
+     * finalizeState:   0x8079A9E0
+     */
+    sState_Extern(0x80993F08, dMultiCourseSelect_c, ClearWaKuAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079A9F0
+     * executeState:    0x8079ABC0
+     * finalizeState:   0x8079ACE0
+     */
+    sState_Extern(0x80993F48, dMultiCourseSelect_c, ArrowOnStageExitAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079AE60
+     * executeState:    0x8079AEE0
+     * finalizeState:   0x8079AF40
+     */
+    sState_Extern(0x80993F88, dMultiCourseSelect_c, ChangeAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079AF50
+     * executeState:    0x8079AF70
+     * finalizeState:   0x8079B190
+     */
+    sState_Extern(0x80993FC8, dMultiCourseSelect_c, keyWait);
+
+    /*
+     * initializeState: 0x8079B1B0
+     * executeState:    0x8079B1C0
+     * finalizeState:   0x8079B320
+     */
+    sState_Extern(0x80994008, dMultiCourseSelect_c, SuccessionKeyWait);
+
+    /*
+     * initializeState: 0x8079B340
+     * executeState:    0x8079B450
+     * finalizeState:   0x8079B510
+     */
+    sState_Extern(0x80994048, dMultiCourseSelect_c, WorldSelectBeforeButtonReturn);
+
+    /*
+     * initializeState: 0x8079B5C0
+     * executeState:    0x8079B5D0
+     * finalizeState:   0x8079B730
+     */
+    sState_Extern(0x80994088, dMultiCourseSelect_c, WorldSelect);
+
+    /*
+     * initializeState: 0x8079B750
+     * executeState:    0x8079B760
+     * finalizeState:   0x8079B920
+     */
+    sState_Extern(0x809940C8, dMultiCourseSelect_c, SuccessionWorldSelect);
+
+    /*
+     * initializeState: 0x8079B930
+     * executeState:    0x8079BA20
+     * finalizeState:   0x8079BAC0
+     */
+    sState_Extern(0x80994108, dMultiCourseSelect_c, CrossMarkToReturnArrow);
+
+    /*
+     * initializeState: 0x8079BB50
+     * executeState:    0x8079BB80
+     * finalizeState:   0x8079BBF0
+     */
+    sState_Extern(0x80994148, dMultiCourseSelect_c, WorldSelectArrowAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079BC00
+     * executeState:    0x8079BC70
+     * finalizeState:   0x8079BD10
+     */
+    sState_Extern(0x80994188, dMultiCourseSelect_c, NextPageBeforeButtonReturn);
+
+    /*
+     * initializeState: 0x8079BD20
+     * executeState:    0x8079BDC0
+     * finalizeState:   0x8079BEB0
+     */
+    sState_Extern(0x809941C8, dMultiCourseSelect_c, NextPageScroll);
+
+    /*
+     * initializeState: 0x8079BF80
+     * executeState:    0x8079BFB0
+     * finalizeState:   0x8079BFF0
+     */
+    sState_Extern(0x80994208, dMultiCourseSelect_c, HitAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079C000
+     * executeState:    0x8079C010
+     * finalizeState:   0x8079C100
+     */
+    sState_Extern(0x80994248, dMultiCourseSelect_c, ExitAnimeEndWait);
+
+    /*
+     * initializeState: 0x8079C110
+     * executeState:    0x8079C1E0
+     * finalizeState:   0x8079C1F0
+     */
+    sState_Extern(0x80994288, dMultiCourseSelect_c, NextSceneWait);
+
+    /*
+     * initializeState: 0x8079C200
+     * executeState:    0x8079C2B0
+     * finalizeState:   0x8079C3D0
+     */
+    sState_Extern(0x809942C8, dMultiCourseSelect_c, PauseWait);
 };

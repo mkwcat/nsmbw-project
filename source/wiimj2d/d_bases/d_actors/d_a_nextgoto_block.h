@@ -1,6 +1,5 @@
 #pragma once
 
-#include "d_a_player.h"
 #include "d_a_player_manager.h"
 #include "d_actor_state.h"
 #include "d_cc.h"
@@ -8,6 +7,11 @@
 #include "s_State.h"
 
 class daNextGotoBlock_c : public dActorState_c {
+    // Original size: 0x418
+    VTABLE(0x060, fBase_c, 0x80971588);
+    // 0x80971578 g_profile_AC_NEXTGOTO_BLOCK
+    // 0x8086E670 daNextGotoBlock_c_classInit
+
 public:
     // Structors
     // ^^^^^^
@@ -84,7 +88,7 @@ public:
     // State IDs
     // ^^^^^^
 
-    /**
+    /*
      * initializeState: 0x8086E9D0
      * executeState:    0x8086EA10
      * finalizeState:   0x8086EA00

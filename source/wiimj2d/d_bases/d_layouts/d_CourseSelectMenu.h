@@ -2,13 +2,22 @@
 
 #include "d_base.h"
 #include "d_lytbase.h"
+#include "s_State.h"
 #include "s_StateMgrDefault.h"
 #include <nw4r/lyt/Picture.h>
 
 class dCourseSelectMenu_c : public dBase_c {
     SIZE_ASSERT(0x278);
+    VTABLE(0x060, fBase_c, 0x809415D8);
+    // 0x809412C0 g_profile_COURSE_SELECT_MENU
+    // 0x8077A750 dCourseSelectMenu_c_classInit
 
-    /* 0x060 VTABLE 0x809415D8 */
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x8077A780 */
+    dCourseSelectMenu_c();
 
 public:
     // Virtual Methods
@@ -44,4 +53,50 @@ public:
     /* 0x273 */ bool m0x273;
 
     FILL(0x274, 0x278);
+
+public:
+    // State IDs
+    // ^^^^^^
+
+    /*
+     * initializeState: 0x8077ADB0
+     * executeState:    0x8077ADC0
+     * finalizeState:   0x8077AE70
+     */
+    sState_Extern(0x809915D0, dCourseSelectMenu_c, InitWait);
+
+    /*
+     * initializeState: 0x8077AE80
+     * executeState:    0x8077AE90
+     * finalizeState:   0x8077AEF0
+     */
+    sState_Extern(0x80991610, dCourseSelectMenu_c, OpenAnimeEndWait);
+
+    /*
+     * initializeState: 0x8077AF10
+     * executeState:    0x8077AF90
+     * finalizeState:   0x8077AFF0
+     */
+    sState_Extern(0x80991650, dCourseSelectMenu_c, ButtonChangeAnimeEndWait);
+
+    /*
+     * initializeState: 0x8077B000
+     * executeState:    0x8077B010
+     * finalizeState:   0x8077B190
+     */
+    sState_Extern(0x80991690, dCourseSelectMenu_c, PauseDisp);
+
+    /*
+     * initializeState: 0x8077B1A0
+     * executeState:    0x8077B1C0
+     * finalizeState:   0x8077B220
+     */
+    sState_Extern(0x809916D0, dCourseSelectMenu_c, HitAnimeEndWait);
+
+    /*
+     * initializeState: 0x8077B230
+     * executeState:    0x8077B290
+     * finalizeState:   0x8077B300
+     */
+    sState_Extern(0x80991710, dCourseSelectMenu_c, ClouseAnimeEndWait);
 };

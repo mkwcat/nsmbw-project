@@ -1,16 +1,21 @@
 #pragma once
 
-#include "d_a_player_manager.h"
 #include "d_base.h"
+#include "d_mj2d_game.h"
 
 class daLastActorStage_c : public dBase_c {
+    // Original size: 0x84
+    VTABLE(0x60, fBase_c, 0x809656E8);
+    // 0x809656E0 g_profile_LASTACTOR_STAGE
+    // 0x80830690 daLastActorStage_c_classInit
+
 public:
     // Structors
     // ^^^^^^
 
-    daLastActorStage_c()                   = default;
+    daLastActorStage_c() {}
 
-    virtual ~daLastActorStage_c() override = default;
+    virtual ~daLastActorStage_c() override {}
 
 public:
     // Virtual Functions

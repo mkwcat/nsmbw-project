@@ -10,11 +10,12 @@ struct DestructorChain {
 DestructorChain* __global_destructor_chain = nullptr;
 
 /* 0x000DA178 - override for rel */
-extern "C" void* __register_global_object(void* object, void* dtor, DestructorChain* entry)
-{
-    entry->next = __global_destructor_chain;
-    entry->destructor = dtor;
-    entry->object = object;
+extern "C" void* __register_global_object(
+    void* object, void* dtor, DestructorChain* entry
+) {
+    entry->next               = __global_destructor_chain;
+    entry->destructor         = dtor;
+    entry->object             = object;
     __global_destructor_chain = entry;
 
     return object;

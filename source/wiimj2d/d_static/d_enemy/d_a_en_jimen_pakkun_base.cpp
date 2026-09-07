@@ -45,7 +45,7 @@ UNDEF_8002f8f4:;
 );
 
 [[nsmbw(0x8002F970)]]
-int daEnJimenPakkunBase_c::hitCallback_YoshiHipAttk(
+bool daEnJimenPakkunBase_c::hitCallback_YoshiHipAttk(
     dCc_c* main, dCc_c* other
 ) ASM_METHOD(
 /* 8002F970 9421FFE0 */  stwu     r1, -32(r1);

@@ -12,7 +12,10 @@
 #include <nw4r/lyt/Picture.h>
 
 class dContinue_c : public dBase_c {
-    SIZE_ASSERT(0x2E4 + 0xF0);
+    // Original size: 0x2E4
+    VTABLE(0x060, fBase_c, 0x80940770);
+    // 0x80940388 g_profile_CONTINUE
+    // 0x807775E0 dContinue_c_classInit
 
 public:
     // Structors
@@ -128,25 +131,80 @@ public:
     // State IDs
     // ^^^^^^
 
+    /*
+     * initializeState: 0x80778150
+     * executeState:    0x80778160
+     * finalizeState:   0x80778220
+     */
     sState_Extern(0x809911C0, dContinue_c, StartWait);
 
+    /*
+     * initializeState: 0x80778230
+     * executeState:    0x80778240
+     * finalizeState:   0x807782A0
+     */
     sState_Extern(0x80991200, dContinue_c, BlackInAnimeEndWait);
 
+    /*
+     * initializeState: 0x807782B0
+     * executeState:    0x80778310
+     * finalizeState:   0x80778370
+     */
     sState_Extern(0x80991240, dContinue_c, OpenAnimeEndWait);
 
+    /*
+     * initializeState: 0x80778380
+     * executeState:    0x80778390
+     * finalizeState:   0x807783D0
+     */
     sState_Extern(0x80991280, dContinue_c, ContinueCountUpWait);
 
+    /*
+     * initializeState: 0x807783E0
+     * executeState:    0x807784C0
+     * finalizeState:   0x80778520
+     */
     sState_Extern(0x809912C0, dContinue_c, ContinueCountUp);
 
+    /*
+     * initializeState: 0x80778530
+     * executeState:    0x80778540
+     * finalizeState:   0x80778580
+     */
     sState_Extern(0x80991300, dContinue_c, RestCountUpWait);
 
+    /*
+     * initializeState: 0x80778590
+     * executeState:    0x807785A0
+     * finalizeState:   0x807786A0
+     */
     sState_Extern(0x80991340, dContinue_c, RestCountUp);
 
+    /*
+     * initializeState: 0x807787C0
+     * executeState:    0x807787D0
+     * finalizeState:   0x80778830
+     */
     sState_Extern(0x80991380, dContinue_c, ColorRecover);
 
+    /*
+     * initializeState: 0x80778840
+     * executeState:    0x80778860
+     * finalizeState:   0x807789B0
+     */
     sState_Extern(0x809913C0, dContinue_c, EndWait);
 
+    /*
+     * initializeState: 0x80778A30
+     * executeState:    0x80778A40
+     * finalizeState:   0x80778AA0
+     */
     sState_Extern(0x80991400, dContinue_c, ExitAnimeEndWait);
 
+    /*
+     * initializeState: 0x80778AB0
+     * executeState:    0x80778AC0
+     * finalizeState:   0x80778B20
+     */
     sState_Extern(0x80991440, dContinue_c, BlackExitAnimeEndWait);
 };

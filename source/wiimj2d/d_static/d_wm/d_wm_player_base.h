@@ -30,12 +30,12 @@ public:
     /**
      * VT+0x70
      */
-    virtual void VT_0x70() = 0;
+    virtual void VT_0x70() ABSTRACT;
 
     /**
      * VT+0x74
      */
-    virtual void VT_0x74() = 0;
+    virtual void VT_0x74() ABSTRACT;
 
     /**
      * VT+0x78 0x800FDE50
@@ -50,7 +50,7 @@ public:
     /**
      * VT+0x80
      */
-    virtual void VT_0x80() = 0;
+    virtual void VT_0x80() ABSTRACT;
 
     /**
      * VT+0x84 0x800FE020

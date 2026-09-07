@@ -98,12 +98,17 @@ public:
 
     /* 0x8005FA60 */
     [[nodiscard]]
-    static daYoshi_c* getYoshi(int index);
+    static daYoshi_c* getYoshi(int plrNo);
 
     /* 0x8005FB00 */
     static int getYoshiNum();
 
+    /* 0x8005FB70 */
+    [[nodiscard]]
+    static daYoshi_c* getYoshiDirectP(int index);
+
     /* 0x8005FB90 */
+    [[nodiscard]]
     static daPlBase_c* getCtrlPlayer(int plrNo);
 
     static PLAYER_TYPE_e getModelPlayerType(dPyMdlMng_c::ModelType_e modelType);

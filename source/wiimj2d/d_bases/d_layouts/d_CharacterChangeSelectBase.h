@@ -13,6 +13,11 @@ class dCharacterChangeIndicator_c;
 class da2DPlayer_c;
 
 class dCharacterChangeSelectBase_c : public dBase_c {
+    // Original size: 0x2F4
+    VTABLE(0x060, fBase_c, 0x8093EAB0);
+    // 0x8093E8E8 g_profile_CHARACTER_CHANGE_SELECT_BASE
+    // 0x8076F3D0 dCharacterChangeSelectBase_c_classInit
+
 public:
     // Structors
     // ^^^^^^
@@ -150,7 +155,7 @@ public:
 
 public:
     // Static Methods
-    // ^^^^^^
+    // ++++++
 
     static PLAYER_TYPE_e getCharacterFromBase(int baseIndex);
     static int getBaseFromCharacter(PLAYER_TYPE_e chara);

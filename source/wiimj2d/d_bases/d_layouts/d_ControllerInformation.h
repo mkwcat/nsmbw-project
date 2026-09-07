@@ -7,7 +7,17 @@
  * sideways".
  */
 class dControllerInformation_c : public dBase_c {
-    SIZE_ASSERT(0x20A);
+    SIZE_ASSERT(0x210);
+    VTABLE(0x060, fBase_c, 0x8076B420);
+    // 0x8076B300 g_profile_CONTROLLER_INFORMATION
+    // 0x807686D0 dControllerInformation_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x80768700 */
+    dControllerInformation_c();
 
 public:
     /* 0x60 VTABLE 0x80323118 */
@@ -66,4 +76,6 @@ public:
 
     /* 0x208 */ bool mReady;
     /* 0x209 */ bool mVisible;
+
+    FILL(0x20A, 0x210);
 };

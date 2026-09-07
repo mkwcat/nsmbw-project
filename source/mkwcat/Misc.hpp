@@ -22,7 +22,8 @@ public:
         std::conditional_t<
             N <= 16, u16, std::conditional_t<N <= 32, u32, std::conditional<N <= 64, u64, void>>>>;
 
-    template <unsigned long long N> using UIntOfLimit = UIntOfBits<std::bit_width(N)>;
+    template <unsigned long long N>
+    using UIntOfLimit = UIntOfBits<std::bit_width(N)>;
 };
 
 template <class T>

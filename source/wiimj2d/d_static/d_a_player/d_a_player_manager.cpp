@@ -519,15 +519,14 @@ void daPyMng_c::releaseYoshi(
 
 [[nsmbw(0x8005FA60)]]
 daYoshi_c* daPyMng_c::getYoshi(
-    int index
+    int plrNo
 ) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
-        if (yoshi != nullptr && yoshi->getPlrNo() == index) {
+        if (yoshi != nullptr && yoshi->getPlrNo() == plrNo) {
             return yoshi;
         }
     }
-
     return nullptr;
 }
 
@@ -540,6 +539,13 @@ int daPyMng_c::getYoshiNum() {
         }
     }
     return yoshiNum;
+}
+
+[[nsmbw(0x8005FB70)]]
+daYoshi_c* daPyMng_c::getYoshiDirectP(
+    int index
+) {
+    return static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[index]));
 }
 
 [[nsmbw(0x8005FB90)]]
@@ -1055,10 +1061,10 @@ PATCH_REFERENCES(
         {0x8005F9D6, R_PPC_ADDR16_LO}, {0x8005FA0A, R_PPC_ADDR16_HA}, {0x8005FA12, R_PPC_ADDR16_LO},
         {0x8005FA32, R_PPC_ADDR16_HA}, {0x8005FA3A, R_PPC_ADDR16_LO}, {0x8005FA72, R_PPC_ADDR16_HA},
         {0x8005FA76, R_PPC_ADDR16_LO}, {0x8005FB12, R_PPC_ADDR16_HA}, {0x8005FB16, R_PPC_ADDR16_LO},
-        {0x8005FB72, R_PPC_ADDR16_HA}, {0x8005FB7A, R_PPC_ADDR16_LO}, {0x80060982, R_PPC_ADDR16_HA},
-        {0x80060986, R_PPC_ADDR16_LO}, {0x80060A22, R_PPC_ADDR16_HA}, {0x80060A26, R_PPC_ADDR16_LO},
-        {0x80060AD2, R_PPC_ADDR16_HA}, {0x80060AD6, R_PPC_ADDR16_LO}, {0x80060F3A, R_PPC_ADDR16_HA},
-        {0x80060F46, R_PPC_ADDR16_LO}, {0x80060FFA, R_PPC_ADDR16_HA}, {0x80060FFE, R_PPC_ADDR16_LO},
+        {0x80060982, R_PPC_ADDR16_HA}, {0x80060986, R_PPC_ADDR16_LO}, {0x80060A22, R_PPC_ADDR16_HA},
+        {0x80060A26, R_PPC_ADDR16_LO}, {0x80060AD2, R_PPC_ADDR16_HA}, {0x80060AD6, R_PPC_ADDR16_LO},
+        {0x80060F3A, R_PPC_ADDR16_HA}, {0x80060F46, R_PPC_ADDR16_LO}, {0x80060FFA, R_PPC_ADDR16_HA},
+        {0x80060FFE, R_PPC_ADDR16_LO},
     }
 );
 

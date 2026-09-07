@@ -4,6 +4,18 @@
 #include "d_scene.h"
 
 class dScRestartCrsin_c : public dScene_c {
+    SIZE_ASSERT(0x74);
+    VTABLE(0x60, fBase_c, 0x8098D3D8);
+    // 0x8098D3D0 g_profile_RESTART_CRSIN
+    // 0x80923970 dScRestartCrsin_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x809239A0 */
+    dScRestartCrsin_c();
+
 public:
     // Static Methods
     // ^^^^^^

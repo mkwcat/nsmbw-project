@@ -93,8 +93,7 @@ EXTERN_SYMBOL(0x801BE590, "VIResetDimmingCount");
 
 EXTERN_SYMBOL(0x801BE5B0, "__VIResetRFIdle");
 
-bool __VIResetSIIdle()
-{
+bool __VIResetSIIdle() {
     __VIDimmingFlag_SI_IDLE = 0;
     return true;
 }

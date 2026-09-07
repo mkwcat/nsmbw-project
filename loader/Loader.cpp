@@ -32,42 +32,42 @@
 
 #define PORT_CALL_BASE 0x800047E4
 
-#define PORT_ADDR_LIST(_ADDR)                                                                      \
-    (const u32[]) {                                                                                \
-        _ADDR, mkwcat::AddressMapperP2.MapAddress(_ADDR),                                          \
-            mkwcat::AddressMapperE1.MapAddress(_ADDR), mkwcat::AddressMapperE2.MapAddress(_ADDR),  \
-            mkwcat::AddressMapperJ1.MapAddress(_ADDR), mkwcat::AddressMapperJ2.MapAddress(_ADDR),  \
-            mkwcat::AddressMapperK.MapAddress(_ADDR), mkwcat::AddressMapperW.MapAddress(_ADDR)     \
+#define PORT_ADDR_LIST(_ADDR) \
+    (const u32[]) { \
+        _ADDR, mkwcat::AddressMapperP2.MapAddress(_ADDR), \
+            mkwcat::AddressMapperE1.MapAddress(_ADDR), mkwcat::AddressMapperE2.MapAddress(_ADDR), \
+            mkwcat::AddressMapperJ1.MapAddress(_ADDR), mkwcat::AddressMapperJ2.MapAddress(_ADDR), \
+            mkwcat::AddressMapperK.MapAddress(_ADDR), mkwcat::AddressMapperW.MapAddress(_ADDR) \
     }
 
-#define _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE)                                         \
-gnu::naked]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER);                   \
-    [[gnu::naked]]                                                                                 \
-    void _LoaderFunction##_COUNTER() {                                                             \
-        __asm__("li 12, ((. + 8) - " #_PORT_CALL_BASE ")@l;"                                       \
-                "b PortCall;"                                                                      \
-                ".long %0;"                                                                        \
-                ".long %1;"                                                                        \
-                ".long %2;"                                                                        \
-                ".long %3;"                                                                        \
-                ".long %4;"                                                                        \
-                ".long %5;"                                                                        \
-                ".long %6;"                                                                        \
-                ".long %7;"                                                                        \
-                :                                                                                  \
-                : "i"(_ADDR), "i"(mkwcat::AddressMapperP2.MapAddress(_ADDR)),                      \
-                  "i"(mkwcat::AddressMapperE1.MapAddress(_ADDR)),                                  \
-                  "i"(mkwcat::AddressMapperE2.MapAddress(_ADDR)),                                  \
-                  "i"(mkwcat::AddressMapperJ1.MapAddress(_ADDR)),                                  \
-                  "i"(mkwcat::AddressMapperJ2.MapAddress(_ADDR)),                                  \
-                  "i"(mkwcat::AddressMapperK.MapAddress(_ADDR)),                                   \
-                  "i"(mkwcat::AddressMapperW.MapAddress(_ADDR)));                                  \
-    }                                                                                              \
+#define _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE) \
+gnu::naked]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER); \
+    [[gnu::naked]] \
+    void _LoaderFunction##_COUNTER() { \
+        __asm__("li 12, ((. + 8) - " #_PORT_CALL_BASE ")@l;" \
+                "b PortCall;" \
+                ".long %0;" \
+                ".long %1;" \
+                ".long %2;" \
+                ".long %3;" \
+                ".long %4;" \
+                ".long %5;" \
+                ".long %6;" \
+                ".long %7;" \
+                : \
+                : "i"(_ADDR), "i"(mkwcat::AddressMapperP2.MapAddress(_ADDR)), \
+                  "i"(mkwcat::AddressMapperE1.MapAddress(_ADDR)), \
+                  "i"(mkwcat::AddressMapperE2.MapAddress(_ADDR)), \
+                  "i"(mkwcat::AddressMapperJ1.MapAddress(_ADDR)), \
+                  "i"(mkwcat::AddressMapperJ2.MapAddress(_ADDR)), \
+                  "i"(mkwcat::AddressMapperK.MapAddress(_ADDR)), \
+                  "i"(mkwcat::AddressMapperW.MapAddress(_ADDR))); \
+    } \
 [[gnu::alias("_LoaderFunction" #_COUNTER)
 
-#define _ADDRESS_LOADER2(_ADDR, _COUNTER, _PORT_CALL_BASE)                                         \
+#define _ADDRESS_LOADER2(_ADDR, _COUNTER, _PORT_CALL_BASE) \
     _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE)
-#define _ADDRESS_LOADER(_ADDR, _COUNTER, _PORT_CALL_BASE)                                          \
+#define _ADDRESS_LOADER(_ADDR, _COUNTER, _PORT_CALL_BASE) \
     _ADDRESS_LOADER2(_ADDR, _COUNTER, _PORT_CALL_BASE)
 #define address_loader(_ADDR) _ADDRESS_LOADER(_ADDR, __COUNTER__, PORT_CALL_BASE)
 

@@ -7,8 +7,7 @@
 #include "d_a_player_manager.h"
 
 [[nsmbw(0x8002D730)]]
-int daEnDpakkunBase_c::hitCallback_YoshiHipAttk(dCc_c* main, dCc_c* other) ASM_METHOD(
-  // clang-format off
+bool daEnDpakkunBase_c::hitCallback_YoshiHipAttk(dCc_c* main, dCc_c* other) ASM_METHOD(
 /* 8002D730 9421FFE0 */  stwu     r1, -32(r1);
 /* 8002D734 7C0802A6 */  mflr     r0;
 /* 8002D738 90010024 */  stw      r0, 36(r1);
@@ -66,7 +65,6 @@ UNDEF_8002d81c:;
 /* 8002D82C 7C0803A6 */  mtlr     r0;
 /* 8002D830 38210020 */  addi     r1, r1, 32;
 /* 8002D834 4E800020 */  blr;
-  // clang-format on
 );
 
 // Four patch: daEnDpakkunBase_c::hitCallback_Star

@@ -6,6 +6,18 @@
 #include <nw4r/lyt/Picture.h>
 
 class dCharacterChangeIndicator_c : public dBase_c {
+    SIZE_ASSERT(0x250);
+    VTABLE(0x060, fBase_c, 0x8093E3F8);
+    // 0x8093E280 g_profile_CHARACTER_CHANGE_INDICATOR
+    // 0x8076D880 dCharacterChangeIndicator_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x8076D8B0 */
+    dCharacterChangeIndicator_c();
+
 public:
     // Instance Methods
     // ^^^^^^

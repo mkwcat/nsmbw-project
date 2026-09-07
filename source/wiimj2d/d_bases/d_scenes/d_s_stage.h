@@ -6,7 +6,7 @@
 #include "d_gamerule.h"
 #include "d_mj2d_game.h"
 #include "d_profile.h"
-#include "m_vec.h"
+#include "d_replay_play.h"
 
 class dGameDisplay_c;
 class dMiniGameCannon_c;
@@ -15,23 +15,19 @@ class dModelPlayManager_c;
 class dMessageWindow_c;
 class dStaffCreditScore_c;
 
-// TODO
-struct dReplayPlay_c {
-    FILL(0x00, 0x64);
-
-    /* 0x64 */ u32     mFrameFlags;
-    /* 0x68 */ u32     mPrevFrameFlags;
-    /* 0x6C */ u32     mFrameInput;
-    /* 0x70 */ u32     mPrevFrameInput;
-    /* 0x74 */ u32     mFrameCount;
-    /* 0x78 */ mVec3_c mFrameAccel;
-    /* 0x84 */ mVec2_c mFrameAccelVertX;
-    /* 0x8C */ mVec2_c mFrameAccelVertY;
-    /* 0x94 */ mVec2_c mFrameAccelVertZ;
-    /* 0x9C */ u16     mFrameTilt;
-};
-
 class dScStage_c : public dBase_c {
+    SIZE_ASSERT(0x1218);
+    VTABLE(0x0060, fBase_c, 0x8098DC28);
+    // 0x8098D4B8 g_profile_STAGE
+    // 0x80923C10 dScStage_c_classInit
+
+public:
+    // Structors
+    // ^^^^^^
+
+    /* 0x80924A50 */
+    dScStage_c();
+
 public:
     // Nested Types
     // ^^^^^^
@@ -202,5 +198,5 @@ public:
     /* 0x1210 */ u8      mLayer;
     /* 0x1211 */ u8      mGoto; // A.k.a Entrance
 
-    OFFSET_ASSERT(0x1212);
+    FILL(0x1212, 0x1218);
 };

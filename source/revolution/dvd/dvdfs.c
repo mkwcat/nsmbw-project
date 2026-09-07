@@ -14,15 +14,16 @@ static constexpr int DVDEX_ARC_ENTRYNUM_BASE = 800000;
 const char* FstStringStart;
 
 [[nsmbw_data(0x8042ABE8)]]
-FstEntry* FstStart;
+FstEntry*         FstStart;
 
-static s32 s_dvdExArc = -1;
+static s32        s_dvdExArc       = -1;
 static ARCHandle* s_dvdExArcHandle = nullptr;
 
 // 0x801CA790: __DVDFSInit
 
-void __DVDEXInit(s32 arcEntryNum, ARCHandle* arcHandle)
-{
+void __DVDEXInit(
+    s32 arcEntryNum, ARCHandle* arcHandle
+) {
     if (s_dvdExArcHandle != nullptr) {
         return;
     }
@@ -31,24 +32,25 @@ void __DVDEXInit(s32 arcEntryNum, ARCHandle* arcHandle)
         return;
     }
 
-    s_dvdExArc = arcEntryNum;
-    s_dvdExArcHandle = arcHandle;
+    s_dvdExArc          = arcEntryNum;
+    s_dvdExArcHandle    = arcHandle;
 
     bool arcChangeDirOk = ARCChangeDir(s_dvdExArcHandle, "/.");
     ASSERT(arcChangeDirOk);
 }
 
 EXTERN_REPL(
-  0x801CA7C0, //
-  s32 __DVDPathToEntrynum(const char* fileName)
+    0x801CA7C0, //
+    s32 __DVDPathToEntrynum(const char* fileName)
 );
 
 [[nsmbw(0x801CA7C0)]]
-s32 DVDConvertPathToEntrynum(const char* fileName)
-{
+s32 DVDConvertPathToEntrynum(
+    const char* fileName
+) {
     if (s_dvdExArcHandle != nullptr) {
         s32 entryNum =
-          ARCConvertPathToEntrynum(s_dvdExArcHandle, *fileName == '/' ? fileName + 1 : fileName);
+            ARCConvertPathToEntrynum(s_dvdExArcHandle, *fileName == '/' ? fileName + 1 : fileName);
 
         if (entryNum != -1) {
             return entryNum + DVDEX_ARC_ENTRYNUM_BASE;
@@ -61,22 +63,23 @@ s32 DVDConvertPathToEntrynum(const char* fileName)
 // UNUSED: DVDEntrynumIsDir
 
 EXTERN_REPL(
-  0x801CAAD0, //
-  bool __DVDFastOpen(s32 entryNum, DVDFileInfo* fileInfo)
+    0x801CAAD0, //
+    bool __DVDFastOpen(s32 entryNum, DVDFileInfo* fileInfo)
 );
 
 [[nsmbw(0x801CAAD0)]]
-bool DVDFastOpen(s32 entryNum, DVDFileInfo* fileInfo)
-{
+bool DVDFastOpen(
+    s32 entryNum, DVDFileInfo* fileInfo
+) {
     if (s_dvdExArcHandle == nullptr || entryNum < DVDEX_ARC_ENTRYNUM_BASE) {
         return __DVDFastOpen(entryNum, fileInfo);
     }
 
     // Regular file replacement
-    s32 arcEntryNum = entryNum - DVDEX_ARC_ENTRYNUM_BASE;
+    s32         arcEntryNum = entryNum - DVDEX_ARC_ENTRYNUM_BASE;
 
     ARCFileInfo af;
-    bool ret = ARCFastOpen(s_dvdExArcHandle, arcEntryNum, &af);
+    bool        ret = ARCFastOpen(s_dvdExArcHandle, arcEntryNum, &af);
 
     if (!ret) {
         return false;
@@ -94,8 +97,9 @@ bool DVDFastOpen(s32 entryNum, DVDFileInfo* fileInfo)
     return true;
 }
 
-bool DVDOpen(const char* fileName, DVDFileInfo* fileInfo)
-{
+bool DVDOpen(
+    const char* fileName, DVDFileInfo* fileInfo
+) {
     s32 entryNum = DVDConvertPathToEntrynum(fileName);
 
     if (entryNum == -1) {
@@ -113,8 +117,9 @@ bool DVDClose(DVDFileInfo* fileInfo);
 // From Double Dash Deluxe:
 // https://github.com/doubledashdeluxe/ddd/blob/d7eed424d55f926f2fc6f65b476815942562c7f5/payload/dolphin/DVD.c#L75
 // SPDX-License-Identifier: MIT
-static bool __DVDEntrynumToPath(s32 entrynum, char* path, u32 maxlen)
-{
+static bool __DVDEntrynumToPath(
+    s32 entrynum, char* path, u32 maxlen
+) {
     u32 len = 0;
     for (u32 location = 1; location != u32(entrynum);) {
         if (!FstStart[location].isDir) {
@@ -132,7 +137,7 @@ static bool __DVDEntrynumToPath(s32 entrynum, char* path, u32 maxlen)
         }
         location++;
     }
-    const char* name = FstStringStart + FstStart[entrynum].stringOffset;
+    const char* name   = FstStringStart + FstStart[entrynum].stringOffset;
     const char* format = FstStart[entrynum].isDir ? "%s/" : "%s";
     len += (u32) std::snprintf(path + len, maxlen - len, format, name);
     if (len >= maxlen) {
@@ -141,11 +146,12 @@ static bool __DVDEntrynumToPath(s32 entrynum, char* path, u32 maxlen)
     return true;
 }
 
-bool DVDConvertEntrynumToPath(s32 entrynum, char* path, u32 maxlen)
-{
+bool DVDConvertEntrynumToPath(
+    s32 entrynum, char* path, u32 maxlen
+) {
     if (s_dvdExArcHandle != nullptr && entrynum >= DVDEX_ARC_ENTRYNUM_BASE) {
         return ARCConvertEntrynumToPath(
-          s_dvdExArcHandle, entrynum - DVDEX_ARC_ENTRYNUM_BASE, path, maxlen
+            s_dvdExArcHandle, entrynum - DVDEX_ARC_ENTRYNUM_BASE, path, maxlen
         );
     }
 
@@ -196,8 +202,9 @@ s32 DVDReadPrio(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, s32 p
 
 // UNUSED: DVDGetEntryName
 
-bool DVDEntrynumIsDir(s32 entryNum)
-{
+bool DVDEntrynumIsDir(
+    s32 entryNum
+) {
     if (s_dvdExArcHandle != nullptr && entryNum >= DVDEX_ARC_ENTRYNUM_BASE) {
         return ARCEntrynumIsDir(s_dvdExArcHandle, entryNum - DVDEX_ARC_ENTRYNUM_BASE);
     }
@@ -205,18 +212,17 @@ bool DVDEntrynumIsDir(s32 entryNum)
     return FstStart[entryNum].isDir;
 }
 
-ARCHandle* DVDGetExArcHandle()
-{
+ARCHandle* DVDGetExArcHandle() {
     return s_dvdExArcHandle;
 }
 
-s32 DVDGetExArchiveEntrynum()
-{
+s32 DVDGetExArchiveEntrynum() {
     return s_dvdExArc;
 }
 
-s32 DVDGetExEntrynum(s32 entrynum)
-{
+s32 DVDGetExEntrynum(
+    s32 entrynum
+) {
     if (s_dvdExArcHandle == nullptr) {
         return -1;
     }

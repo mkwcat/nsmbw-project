@@ -27,9 +27,9 @@
 #include "d_a_wm_Map.h"
 #include "d_mj2d_game.h"
 #include "d_profile.h"
-#include "d_wm_WorldSelect.h"
-#include "d_wm_WorldSelectGuide.h"
 #include "d_wm_actor.h"
+#include "d_worldSelect.h"
+#include "d_worldSelectGuide.h"
 #include <iterator>
 
 [[nsmbw(0x80926E10)]]

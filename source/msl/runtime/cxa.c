@@ -6,14 +6,12 @@
 EXTERN_C_START
 
 [[noreturn]]
-void __cxa_pure_virtual()
-{
+void __cxa_pure_virtual() {
     OS_PANIC("Pure virtual function called!");
 }
 
 [[noreturn]]
-void __cxa_deleted_virtual()
-{
+void __cxa_deleted_virtual() {
     OS_PANIC("Deleted virtual function called!");
 }
 

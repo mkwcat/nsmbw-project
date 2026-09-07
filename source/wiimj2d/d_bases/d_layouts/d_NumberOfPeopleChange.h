@@ -18,6 +18,11 @@ class dCharacterChangeIndicator_c;
 class da2DPlayer_c;
 
 class dNumberOfPeopleChange_c : public dBase_c {
+    // Original size: 0x710
+    VTABLE(0x060, fBase_c, 0x8094B650);
+    // 0x8094B0E0 g_profile_NUMBER_OF_PEOPLE_CHANGE
+    // 0x8079F630 dNumberOfPeopleChange_c_classInit
+
 public:
     // Structors
     // ^^^^^^
@@ -169,22 +174,6 @@ private:
     }
 
 public:
-    // State IDs
-    // ^^^^^^
-
-    sState_Extern(0x809944C8, dNumberOfPeopleChange_c, InitialSetup);
-    sState_Extern(0x80994508, dNumberOfPeopleChange_c, OnStageAnimeEndWait);
-    sState_Extern(0x80994548, dNumberOfPeopleChange_c, InfoOnStageAnimeEndWait);
-    sState_Extern(0x80994588, dNumberOfPeopleChange_c, NowEntrantRecruit);
-    sState_Extern(0x809945C8, dNumberOfPeopleChange_c, StoryModeCourseSelectExitWait);
-    sState_Extern(0x80994608, dNumberOfPeopleChange_c, InfoWindowExitWait);
-    sState_Extern(0x80994648, dNumberOfPeopleChange_c, ButtonOnStageAnimeEndWait);
-    sState_Extern(0x80994688, dNumberOfPeopleChange_c, ButtonChangeAnimeEndWait);
-    sState_Extern(0x809946C8, dNumberOfPeopleChange_c, ButtonSelect);
-    sState_Extern(0x80994708, dNumberOfPeopleChange_c, ButtonDecision);
-    sState_Extern(0x80994748, dNumberOfPeopleChange_c, ExitAnimeEndCheck);
-
-public:
     // Instance Variables
     // ^^^^^^
 
@@ -258,6 +247,9 @@ public:
     FILL(0x700, 0x710);
     OFFSET_ASSERT(0x710);
 
+    // Instance Variables
+    // ++++++
+
     int                                        mCcCount                      = MAX_CC_COUNT;
 
     dCharacterChangeSelectBase_c*              mpCcSelBase[MAX_CC_COUNT]     = {};
@@ -277,4 +269,85 @@ public:
     PLAYER_TYPE_e                              mCcDecidedPlayerType[PLAYER_COUNT];
 
     nw4r::lyt::Picture*                        mpPDolphinLight[4];
+
+public:
+    // State IDs
+    // ^^^^^^
+
+    /*
+     * initializeState: 0x807A0DA0
+     * executeState:    0x807A0DB0
+     * finalizeState:   0x807A1170
+     */
+    sState_Extern(0x809944C8, dNumberOfPeopleChange_c, InitialSetup);
+
+    /*
+     * initializeState: 0x807A11A0
+     * executeState:    0x807A12D0
+     * finalizeState:   0x807A1340
+     */
+    sState_Extern(0x80994508, dNumberOfPeopleChange_c, OnStageAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A1370
+     * executeState:    0x807A1380
+     * finalizeState:   0x807A14C0
+     */
+    sState_Extern(0x80994548, dNumberOfPeopleChange_c, InfoOnStageAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A14D0
+     * executeState:    0x807A1510
+     * finalizeState:   0x807A16C0
+     */
+    sState_Extern(0x80994588, dNumberOfPeopleChange_c, NowEntrantRecruit);
+
+    /*
+     * initializeState: 0x807A16D0
+     * executeState:    0x807A1710
+     * finalizeState:   0x807A1810
+     */
+    sState_Extern(0x809945C8, dNumberOfPeopleChange_c, StoryModeCourseSelectExitWait);
+
+    /*
+     * initializeState: 0x807A1820
+     * executeState:    0x807A1830
+     * finalizeState:   0x807A1850
+     */
+    sState_Extern(0x80994608, dNumberOfPeopleChange_c, InfoWindowExitWait);
+
+    /*
+     * initializeState: 0x807A1860
+     * executeState:    0x807A1990
+     * finalizeState:   0x807A1A40
+     */
+    sState_Extern(0x80994648, dNumberOfPeopleChange_c, ButtonOnStageAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A1A50
+     * executeState:    0x807A1AB0
+     * finalizeState:   0x807A1B30
+     */
+    sState_Extern(0x80994688, dNumberOfPeopleChange_c, ButtonChangeAnimeEndWait);
+
+    /*
+     * initializeState: 0x807A1B40
+     * executeState:    0x807A1B60
+     * finalizeState:   0x807A1D00
+     */
+    sState_Extern(0x809946C8, dNumberOfPeopleChange_c, ButtonSelect);
+
+    /*
+     * initializeState: 0x807A1D10
+     * executeState:    0x807A1D30
+     * finalizeState:   0x807A1D90
+     */
+    sState_Extern(0x80994708, dNumberOfPeopleChange_c, ButtonDecision);
+
+    /*
+     * initializeState: 0x807A1DA0
+     * executeState:    0x807A1E80
+     * finalizeState:   0x807A2080
+     */
+    sState_Extern(0x80994748, dNumberOfPeopleChange_c, ExitAnimeEndCheck);
 };
