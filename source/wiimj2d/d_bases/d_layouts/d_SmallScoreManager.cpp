@@ -21,4 +21,4 @@ void dSmallScoreManager_c::CreateSmallScore(const mVec3_c& pos, int type, int co
 void dSmallScoreManager_c::CreateGoalScore(const mVec3_c& pos, int type, int color);
 
 [[nsmbw(0x8010D160)]]
-void dSmallScoreManager_c::GoalScoreExecute(const mVec3_c& pos, int);
+void dSmallScoreManager_c::GoalScoreExecute(const mVec3_c& pos, int color);

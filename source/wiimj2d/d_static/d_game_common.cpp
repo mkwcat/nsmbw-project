@@ -108,9 +108,7 @@ void GoalScoreExecute(
         playerNo = 0;
     }
 
-    dSmallScoreManager_c::m_instance->GoalScoreExecute(
-        pos, static_cast<int>(daPyMng_c::mPlayerType[playerNo])
-    );
+    dSmallScoreManager_c::m_instance->GoalScoreExecute(pos, +daPyMng_c::mPlayerType[playerNo]);
 }
 
 [[nsmbw(0x800B37E0)]]

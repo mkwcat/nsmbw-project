@@ -51,11 +51,6 @@ public:
     /* 0x80A0A5E0 */
     static void ccCallBackForPole(dCc_c* self, dCc_c* other);
 
-    // Static Methods
-    // ++++++
-
-    static float getBasePlayerPos(int plrNo);
-
 public:
     // Nested Types
     // ^^^^^^
@@ -70,7 +65,13 @@ public:
 
     FILL(0x524, 0xA38);
     /* 0xA38 */ PlayerPos_s REMOVED(mPlayerPos[4]);
-    FILL(0xA78, 0xAAC);
+    FILL(0xA78, 0xA80);
+    /* 0xA80 */ float m0xA80;
+    FILL(0xA84, 0xA8C);
+    /* 0xA8C */ float m0xA8C;
+    FILL(0xA90, 0xA9C);
+    /* 0xA9C */ s8 m0xA9C;
+    FILL(0xA9D, 0xAAC);
     /* 0xAAC */ u8 mPlrOnPoleFlag;
     /* 0xAAD */ u8 mPlrTouchPoleFlag;
     /* 0xAAE */ u8 mPlrTouchPoleFlag2;

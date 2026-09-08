@@ -6,6 +6,7 @@
 #include "d_a_player_base.h"
 #include "d_a_player_manager.h"
 #include "d_cc.h"
+#include "d_game_common.h"
 #include <bit>
 #include <nw4r/math/arithmetic.h>
 
@@ -242,65 +243,15 @@ bool daEnGlpole_c::isTopOfFlagPole(
     return mask & (1u << player);
 }
 
-float daEnGlpole_c::getBasePlayerPos(
-    int plrNo
-) {
-    return 8.0f + nw4r::math::U16ToF32(plrNo + 1);
-}
-
 [[nsmbw(0x80A0AB10)]]
-void daEnGlpole_c::setPlayerBasePos() ASM_METHOD(
-/* 80A0AB10 9421FFD0 */  stwu     r1, -48(r1);
-/* 80A0AB14 7C0802A6 */  mflr     r0;
-/* 80A0AB18 90010034 */  stw      r0, 52(r1);
-/* 80A0AB1C 93E1002C */  // stw      r31, 44(r1);
-/* 80A0AB20 93C10028 */  stw      r30, 40(r1);
-/* 80A0AB24 93A10024 */  stw      r29, 36(r1);
-/* 80A0AB28 93810020 */  stw      r28, 32(r1);
-/* 80A0AB2C 7C7C1B78 */  mr       r28, r3;
-/* 80A0AB30 80030A9C */  lwz      r0, 2716(r3);
-/* 80A0AB34 2C000000 */  cmpwi    r0, 0;
-/* 80A0AB38 4182007C */  beq-     UNDEF_80a0abb4;
-/* 80A0AB3C 3C8080AD */  lis      r4, UNDEF_80ad02c8@ha;
-/* 80A0AB44 C06300AC */  lfs      f3, 172(r3);
-/* 80A0AB48 7F9EE378 */  mr       r30, r28;
-/* 80A0AB4C C00402C8 */  lfs      f0, UNDEF_80ad02c8@l(r4);
-/* 80A0AB54 C02300B4 */  lfs      f1, 180(r3);
-/* 80A0AB58 3BA00000 */  li       r29, 0;
-/* 80A0AB5C C04300B0 */  lfs      f2, 176(r3);
-/* 80A0AB60 EC030028 */  fsubs    f0, f3, f0;
-/* 80A0AB64 D041000C */  stfs     f2, 12(r1);
-/* 80A0AB68 D0210010 */  stfs     f1, 16(r1);
-/* 80A0AB6C D0010008 */  stfs     f0, 8(r1);
-/* 80A0AB70 48000038 */  b        UNDEF_80a0aba8;
-UNDEF_80a0ab74:;
-                         mr       r3, r29;
-                         bl       getBasePlayerPos__12daEnGlpole_cFi;
-/* 80A0AB74 C05C0A80 */  lfs      f2, 2688(r28);
-/* 80A0AB78 38610008 */  addi     r3, r1, 8;
-/* 80A0AB80 C01C0A8C */  lfs      f0, 2700(r28);
-/* 80A0AB84 EC22082A */  fadds    f1, f2, f1;
-/* 80A0AB88 EC00082A */  fadds    f0, f0, f1;
-/* 80A0AB8C D001000C */  stfs     f0, 12(r1);
-/* 80A0AB90 889E0A44 */  lbz      r4, daEnGlpole_c_OFFSET_mPlayerPos + 0xC(r30);
-/* 80A0AB94 7C840774 */  extsb    r4, r4;
-/* 80A0AB98 4B6A8A39 */  bl       UNDEF_800b35d0;
-/* 80A0ABA0 3BDE0010 */  addi     r30, r30, 16;
-/* 80A0ABA4 3BBD0001 */  addi     r29, r29, 1;
-UNDEF_80a0aba8:;
-/* 80A0ABA8 801C0A9C */  lwz      r0, 2716(r28);
-/* 80A0ABAC 7C1D0000 */  cmpw     r29, r0;
-/* 80A0ABB0 4180FFC4 */  blt+     UNDEF_80a0ab74;
-UNDEF_80a0abb4:;
-/* 80A0ABB4 80010034 */  lwz      r0, 52(r1);
-/* 80A0ABB8 83E1002C */  // lwz      r31, 44(r1);
-/* 80A0ABBC 83C10028 */  lwz      r30, 40(r1);
-/* 80A0ABC0 83A10024 */  lwz      r29, 36(r1);
-/* 80A0ABC4 83810020 */  lwz      r28, 32(r1);
-/* 80A0ABC8 7C0803A6 */  mtlr     r0;
-/* 80A0ABCC 38210030 */  addi     r1, r1, 48;
-/* 80A0ABD0 4E800020 */  blr;
-);
+void daEnGlpole_c::setPlayerBasePos() {
+    mVec3_c pos = mPos;
+    mPos.x -= 20.0;
+    for (int i = 0, count = m0xA9C; i < count; i++) {
+        pos.y = m0xA8C + m0xA80 + nw4r::math::U16ToF32(8 * i);
+        dGameCom::GoalScoreExecute(pos, i);
+    }
+}
 
 [[nsmbw(0x80A0ABE0)]]
 void UNDEF_80A0ABE0() ASM_METHOD(
