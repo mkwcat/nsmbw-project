@@ -86,36 +86,31 @@ inline f32 FSelect(
     return __builtin_ppc_fsel(value, ge_zero, lt_zero);
 }
 
+// Using internal OSFastCast functions because the public ones have a volatile pointer and emit
+// unnecessary instructions
+
 inline f32 U16ToF32(
     u16 x
 ) {
-    f32 ret;
-    OSu16tof32(&x, &ret);
-    return ret;
+    return __OSu16tof32(&x);
 }
 
 inline u16 F32ToU16(
     f32 x
 ) {
-    u16 ret;
-    OSf32tou16(&x, &ret);
-    return ret;
+    return __OSf32tou16(x);
 }
 
 inline f32 S16ToF32(
     s16 x
 ) {
-    f32 ret;
-    OSs16tof32(&x, &ret);
-    return ret;
+    return __OSs16tof32(&x);
 }
 
 inline s16 F32ToS16(
     f32 x
 ) {
-    s16 ret;
-    OSf32tos16(&x, &ret);
-    return ret;
+    return __OSf32tos16(x);
 }
 
 constexpr u32 F32AsU32(
