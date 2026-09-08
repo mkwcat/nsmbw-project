@@ -17,6 +17,7 @@
 #include "d_wm_lib.h"
 #include "d_wm_player_camera_base.h"
 #include "d_world_camera.h"
+#include "f_feature.h"
 #include "m_pad.h"
 #include <egg/core/eggController.h>
 #include <revolution/os.h>
@@ -127,7 +128,7 @@ void daWmPlayer_c::PlayerEntryInit();
 void daWmPlayer_c::PlayerEntryUpdate() {
     bool singleEntry = dWmLib::IsSingleEntry();
 
-    for (u32 i = 0; i < PLAYER_COUNT; i++) {
+    for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
         SetPlayerEntry(i, false, false);
         daPyMng_c::mPlayerEntry[0] = 0;
     }
@@ -135,9 +136,9 @@ void daWmPlayer_c::PlayerEntryUpdate() {
     daPyMng_c::mPlayerEntry[0] = 1;
     dInfo_c* info              = dInfo_c::m_instance;
 
-    for (u32 i = 0; i < PLAYER_COUNT; i++) {
-        bool active = info->getPlyConnectStage(i) == dInfo_c::PlyConnectStage_e::ENTER;
-        if (active) {
+    for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
+        if (info->getPlyConnectStage(i) == dInfo_c::PlyConnectStage_e::ENTER ||
+            fFeat::force_all_wm_subplayers_present) {
             std::size_t index          = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
             daPyMng_c::mPlayerEntry[i] = 1;
             SetPlayerEntry(
@@ -155,9 +156,10 @@ void daWmPlayer_c::PlayerEntryUpdate() {
         }
     }
 
-    for (u32 i = 0; i < PLAYER_COUNT; i++) {
-        ms_plyConnectStage[static_cast<std::size_t>(daPyMng_c::mPlayerType[i])] =
-            info->getPlyConnectStage(i);
+    for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
+        ms_plyConnectStage[+daPyMng_c::mPlayerType[i]] = fFeat::force_all_wm_subplayers_present
+                                                             ? dInfo_c::PlyConnectStage_e::ENTER
+                                                             : info->getPlyConnectStage(i);
     }
 
     for (daWmSubPlayer_c* player = GetSubPlayer(); player; player = player->Next()) {
@@ -200,7 +202,7 @@ void daWmPlayer_c::updateSubPlayerModel(
 void daWmPlayer_c::updatePlayerMode() {
     dInfo_c* info = dInfo_c::m_instance;
 
-    for (u32 i = 0; i < PLAYER_COUNT; i++) {
+    for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
         if (info->getPlyConnectStage(i) != dInfo_c::PlyConnectStage_e::ENTER) {
             continue;
         }
@@ -228,41 +230,39 @@ u32 daWmPlayer_c::checkCsGuideKey() {
         return 0;
     }
 
-    if (dCsSeqMng_c::ms_instance->UNDEF_80915630() == 0 &&
-        !dCsSeqMng_c::ms_instance->UNDEF_80915600()) {
+    auto* core     = mPad::g_currentCore;
+    auto* csSeqMng = dCsSeqMng_c::ms_instance;
+    if (csSeqMng->UNDEF_80915630() == 0 && !csSeqMng->UNDEF_80915600()) {
         dGameKeyCore_c::Type_e contType = dWmLib::isYokoCon(0);
         bool                   openWorldView;
         switch (contType) {
         case dGameKeyCore_c::Type_e::FREESTYLE:
-            openWorldView = mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_FS_C);
+            openWorldView = core->downTrigger(EGG::cCORE_BUTTON_FS_C);
             break;
         case dGameKeyCore_c::Type_e::CLASSIC:
-            openWorldView =
-                mPad::g_currentCore->getClassicController()->mTrig & EGG::cCLASSIC_BUTTON_Y;
+            openWorldView = core->getClassicController()->mTrig & EGG::cCLASSIC_BUTTON_Y;
             break;
         case dGameKeyCore_c::Type_e::DOLPHIN:
-            openWorldView = mPad::g_currentCore->getGCController()->mTrig & EGG::cDOLPHIN_BUTTON_Y;
+            openWorldView = core->getGCController()->mTrig & EGG::cDOLPHIN_BUTTON_Y;
             break;
         default:
-            openWorldView = mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_A);
+            openWorldView = core->downTrigger(EGG::cCORE_BUTTON_A);
             break;
         }
 
         if (openWorldView) {
-            if (dCourseSelectManager_c::m_instance->mEndedMsgChange ||
-                dCourseSelectManager_c::m_instance->mpMessageWindow->mVisible) {
-                dCourseSelectManager_c::m_instance->mStartedMsgChange = true;
+            auto* csMng = dCourseSelectManager_c::m_instance;
+            if (csMng->mEndedMsgChange || csMng->mpMessageWindow->mVisible) {
+                csMng->mStartedMsgChange = true;
             }
             daWmKinoBalloon_c::UNDEF_808D8720();
             // SMC_DEMO_VIEW_WORLD
-            return dCsSeqMng_c::ms_instance->addScriptToQueue(
-                0x1E, this, dWCamera_c::m_instance, 0x80
-            );
+            return csSeqMng->addScriptToQueue(0x1E, this, dWCamera_c::m_instance, 0x80);
         }
         // Omitting some unused dWmLib::isYokoCon calls here...
-        if (mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_PLUS)) {
+        if (core->downTrigger(EGG::cCORE_BUTTON_PLUS)) {
             // SMC_DEMO_PAUSE_MENU
-            return dCsSeqMng_c::ms_instance->addScriptToQueue(0x2F, nullptr, nullptr, 0x80);
+            return csSeqMng->addScriptToQueue(0x2F, nullptr, nullptr, 0x80);
         }
 
         u32 checkButton;
@@ -271,18 +271,18 @@ u32 daWmPlayer_c::checkCsGuideKey() {
             checkButton = EGG::cCORE_BUTTON_1;
             break;
         default:
-            checkButton = (EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_B);
+            checkButton = EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_B;
             break;
         }
 
-        if (mPad::g_currentCore->downTrigger(checkButton)) {
+        if (core->downTrigger(checkButton)) {
             // SMC_DEMO_STOCK_MENU
-            return dCsSeqMng_c::ms_instance->addScriptToQueue(0x31, nullptr, nullptr, 0x80);
+            return csSeqMng->addScriptToQueue(0x31, nullptr, nullptr, 0x80);
         }
 
-        if (mPad::g_currentCore->downTrigger(EGG::cCORE_BUTTON_MINUS)) {
+        if (core->downTrigger(EGG::cCORE_BUTTON_MINUS)) {
             // SMC_DEMO_WORLDSELECT_MENU
-            return dCsSeqMng_c::ms_instance->addScriptToQueue(0x32, nullptr, nullptr, 0x80);
+            return csSeqMng->addScriptToQueue(0x32, nullptr, nullptr, 0x80);
         }
     }
 
@@ -343,7 +343,7 @@ u32 daWmPlayer_c::UNDEF_80908DA0();
 void daWmPlayer_c::VT_0x60();
 
 [[nsmbw(0x809093D0)]]
-void daWmPlayer_c::initActiveCharaFlags() {
+void daWmPlayer_c::initPlyConnectStage() {
     dInfo_c* info = dInfo_c::m_instance;
 
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
@@ -351,7 +351,10 @@ void daWmPlayer_c::initActiveCharaFlags() {
         if (flag != dInfo_c::PlyConnectStage_e::ENTER) {
             flag = dInfo_c::PlyConnectStage_e::OFF;
         }
-        ms_plyConnectStage[+daPyMng_c::mPlayerType[i] % SUBPLAYER_COUNT] = flag;
+        if (fFeat::force_all_wm_subplayers_present) {
+            flag = dInfo_c::PlyConnectStage_e::ENTER;
+        }
+        ms_plyConnectStage[+daPyMng_c::mPlayerType[i]] = flag;
     }
 }
 
@@ -381,6 +384,7 @@ bool daWmPlayer_c::startGame(
                 dCourseSelectManager_c::m_instance->getPlayerPowerup(i);
         } else {
             daPyMng_c::mPlayerEntry[i] = 0;
+            ms_plyConnectStage[i]      = dInfo_c::PlyConnectStage_e::OFF;
         }
     }
 

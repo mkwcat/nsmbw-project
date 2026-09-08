@@ -68,10 +68,10 @@ inline u8   autoboot_title_demo                 = 0;
 inline u8   autoboot_hint_movie_demo            = 0;
 
 inline bool one_player_special_hip_attack_quake = false;
+inline bool end_battles_immediately             = false;
+inline bool force_all_wm_subplayers_present     = true;
 
 inline bool print_base_creation                 = true;
 inline bool print_state_changes                 = true;
-
-inline bool end_battles_immediately             = false;
 
 } // namespace fFeat

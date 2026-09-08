@@ -148,7 +148,7 @@ public:
     u32 UNDEF_80908DA0();
 
     /* 0x809093D0 */
-    void initActiveCharaFlags();
+    void initPlyConnectStage();
 
     /* 0x8090CE10 */
     bool startGame(dWmLib::WorldNo world, dWmLib::CourseNo stage, u8 nextGotoNo);
