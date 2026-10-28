@@ -9,7 +9,7 @@ dBc_c::dBc_c();
 [[nsmbw(0x8006d090)]]
 void dBc_c::set(
     dActor_c*, const sBcSensorBase*, const sBcSensorBase*, const sBcSensorBase*
-); ///< @unofficial
+); /// @unofficial
 
 [[nsmbw(0x80075090)]]
 void dBc_c::checkLink();

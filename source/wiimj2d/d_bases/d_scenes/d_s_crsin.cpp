@@ -143,14 +143,14 @@ void dScCrsin_c::executeState_resWaitProc2() {
             u32 seed = static_cast<u32>(game.getPipeRandomizerSeed());
             u32 add  = static_cast<u32>(startGameInfo.stage1.stage) << 24;
             add += static_cast<u32>(startGameInfo.stage1.world) << 16;
-            cRnd_c rnd(seed);
-            (void) rnd.next();
+            cRandom_c rnd(seed);
+            (void) rnd.getRandomByAsm();
             rnd.mSeed += add;
-            (void) rnd.next();
+            (void) rnd.getRandomByAsm();
             rnd.mSeed += add;
-            (void) rnd.next();
+            (void) rnd.getRandomByAsm();
             rnd.mSeed += add;
-            seed = rnd.next();
+            seed = rnd.getRandomByAsm();
 
             if (dNextGotoList_c::ms_lookup.empty() ||
                 dNextGotoList_c::ms_instance.getSeed() != seed) {

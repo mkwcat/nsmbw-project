@@ -169,7 +169,7 @@ public:
     static const char* getSkeletonRoot(dPyMdlMng_c::ModelType_e character);
 
     /* 0x80100C50 */
-    static dWmSeManager_c::WmPlyVoice_e getCourseInVoiceId(int node);
+    static dWmSeManager_c::CourseSelectVoiceID_e getCourseInVoiceId(int node);
 
     /* 0x801011A0 */
     static bool isPlayerStarMode();

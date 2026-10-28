@@ -19,9 +19,9 @@ void daBgCarry_c::callBackF(
         daPlBase_c* player = static_cast<daPlBase_c*>(other);
         player->setStatus5D(self->mPosDelta.x);
         if (self->mPosDelta.y <= 0.0f) {
-            player->UNDEF_80056370(self, 9);
+            player->setBgPressReq(self, daPlBase_c::BgPress_e(9));
         } else {
-            player->UNDEF_80056370(self, 1);
+            player->setBgPressReq(self, daPlBase_c::BgPress_e(1));
         }
     }
 }
@@ -32,9 +32,9 @@ void daBgCarry_c::callBackH(
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
         daPlBase_c* player = static_cast<daPlBase_c*>(other);
         if (self->mPosDelta.y < 0.0f) {
-            player->UNDEF_80056370(self, 2);
+            player->setBgPressReq(self, daPlBase_c::BgPress_e(2));
         } else {
-            player->UNDEF_80056370(self, 10);
+            player->setBgPressReq(self, daPlBase_c::BgPress_e(10));
         }
     }
 }
@@ -46,15 +46,15 @@ void daBgCarry_c::callBackW(
         daPlBase_c* player = static_cast<daPlBase_c*>(other);
         if (direction == 1) {
             if (self->mPosDelta.x > 0.0f) {
-                player->UNDEF_80056370(self, 6);
+                player->setBgPressReq(self, daPlBase_c::BgPress_e(6));
             } else {
-                player->UNDEF_80056370(self, 12);
+                player->setBgPressReq(self, daPlBase_c::BgPress_e(12));
             }
         } else {
             if (self->mPosDelta.x < 0.0f) {
-                player->UNDEF_80056370(self, 5);
+                player->setBgPressReq(self, daPlBase_c::BgPress_e(5));
             } else {
-                player->UNDEF_80056370(self, 11);
+                player->setBgPressReq(self, daPlBase_c::BgPress_e(11));
             }
         }
     }
@@ -150,10 +150,6 @@ daBgCarry_c::~daBgCarry_c() {
     mBg.~dBg_ctr_c();
 }
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 fBase_c::PACK_RESULT_e daBgCarry_c::create() {
     // Assign members based on actor parameters
     mTileNum                    = mParam & 0xFFFF;
@@ -194,11 +190,6 @@ fBase_c::PACK_RESULT_e daBgCarry_c::create() {
     return fBase_c::PACK_RESULT_e::SUCCEEDED;
 }
 
-/**
- * VT+0x14
- * do method for the delete operation. This method was renamed due to conflict with the delete
- * C++ keyword.
- */
 fBase_c::PACK_RESULT_e daBgCarry_c::doDelete() {
     //  Remove tile renderer
     dPanelObjMgr_c* panelObjMgr = dBg_c::m_bg_p->getPanelObjMgr(0);
@@ -207,10 +198,6 @@ fBase_c::PACK_RESULT_e daBgCarry_c::doDelete() {
     return fBase_c::PACK_RESULT_e::SUCCEEDED;
 }
 
-/**
- * VT+0x20
- * do method for the execute operation.
- */
 fBase_c::PACK_RESULT_e daBgCarry_c::execute() {
     mStateMgr.executeState();
     ActorScrOutCheck(0);
@@ -218,10 +205,6 @@ fBase_c::PACK_RESULT_e daBgCarry_c::execute() {
     return fBase_c::PACK_RESULT_e::SUCCEEDED;
 }
 
-/**
- * VT+0x5C
- * Code to be executed after all actors' execute operation has run.
- */
 void daBgCarry_c::finalUpdate() {
     if (isState(StateID_Carry)) {
         mPos            = calcCarryPos(mCarryOffset);

@@ -66,6 +66,21 @@ enum CC_ATTACK_e {
 
 class dCc_c;
 
+struct sRangeDataF {
+    void set(
+        float t, float b, float l, float r
+    ) {
+        mOffset = {t, b};
+        mSize   = {l, r};
+    }
+
+    mVec2_c getSize() const { return mSize; }
+
+    mVec2_c mOffset, mSize;
+};
+
+struct sCcSizeF : sRangeDataF {};
+
 struct sCcDatNewF {
     mVec2_c mOffset;
 
@@ -166,6 +181,6 @@ public:
 
     static hitCheck _hitCheck[4][4];
 
-    static dCc_c*   mEntryN; ///< The first collider in the list.
-    static dCc_c*   mEntryB; ///< The last collider in the list.
+    static dCc_c*   mEntryN; /// The first collider in the list.
+    static dCc_c*   mEntryB; /// The last collider in the list.
 };

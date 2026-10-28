@@ -4,6 +4,7 @@
 #include "d_actor.h"
 
 #include "d_a_player.h"
+#include "d_cc.h"
 #include "d_fukidashiManager.h"
 #include "d_game_common.h"
 #include "d_info.h"
@@ -158,10 +159,10 @@ bool dActor_c::carryFukidashiCheck(
         // Already displaying a fukidashi
         dAcPy_c* player = daPyMng_c::getPlayer(mCarryFukidashiPlayerNo);
         if (player != nullptr) {
-            bool        canDrawFukidashi = player->isDrawingCarryFukidashi();
+            bool     canDrawFukidashi = player->isDrawingCarryFukidashi();
 
-            sRangeDataF playerBoundBox;
-            player->getCcBounds(&playerBoundBox);
+            sCcSizeF playerBoundBox;
+            player->getSpinLiftUpCcDat(&playerBoundBox);
             mVec3_c playerPos(
                 dScStage_c::getLoopPosX(playerBoundBox.mOffset.x + player->mPos.x),
                 playerBoundBox.mOffset.y + player->mPos.y, player->mPos.z
@@ -192,10 +193,10 @@ bool dActor_c::carryFukidashiCheck(
         // Not displaying a fukidashi yet, search for a player to show it
         dAcPy_c* player = searchCarryFukidashiPlayer(fukidashiAction);
         if (player != nullptr) {
-            bool        canDrawFukidashi = player->isDrawingCarryFukidashi();
+            bool     canDrawFukidashi = player->isDrawingCarryFukidashi();
 
-            sRangeDataF playerBoundBox;
-            player->getCcBounds(&playerBoundBox);
+            sCcSizeF playerBoundBox;
+            player->getSpinLiftUpCcDat(&playerBoundBox);
             mVec3_c playerPos(
                 dScStage_c::getLoopPosX(playerBoundBox.mOffset.x + player->mPos.x),
                 playerBoundBox.mOffset.y + player->mPos.y, player->mPos.z

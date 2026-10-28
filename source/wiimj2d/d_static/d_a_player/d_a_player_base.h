@@ -868,6 +868,10 @@ public:
         CAN_WATER_SLIDE               = 195,
     };
 
+    enum class setJumpSE_e {};
+    enum class setJumpButton_e {};
+    enum class SoundOffCheck_e {};
+
     static const float sc_DirSpeed[];
     static const float sc_JumpSpeed;
     static const float sc_JumpSpeedNuma1;
@@ -1189,8 +1193,8 @@ public:
     /* VT+0x280 0x8004F670 */
     virtual void initDemoOutDokan();
 
-    /* VT+0x284 0x80051CF0 @unofficial */
-    virtual bool updateDemoKimePose(s32 clearType);
+    /* VT+0x284 0x80051CF0 */
+    virtual bool updateDemoKimePose(ClearType_e clearType);
 
     /* VT+0x288 0x80051240 */
     virtual void initDemoGoalBase();
@@ -1486,11 +1490,11 @@ public:
     /* VT+0x430 0x80057810 */
     virtual void offZPosSetNone();
 
-    /* VT+0x434 0x80058050 @unofficial */
-    virtual void playVoice(SndObjctPly::PLAYER_VOICE_e voice, int param2);
+    /* VT+0x434 0x80058050 */
+    virtual void startVoicePlayer(SndObjctPly::ESnd_C_Voice voice, SoundOffCheck_e);
 
     /* VT+0x438 0x800580B0 */
-    virtual void VT_0x438();
+    virtual void holdVoicePlayer(SndObjctPly::ESnd_C_Voice voice, SoundOffCheck_e);
 
     /* VT+0x43C 0x80058280 */
     virtual void startQuakeShock(dQuake_c::TYPE_SHOCK_e);
@@ -1594,7 +1598,7 @@ public:
     /* 0x80052470 */
     bool isBossDemoLand();
 
-    /* 0x80052500 @unofficial */
+    /* 0x80052500 */
     bool isHitGroundKinopioWalk(int dir, float f, int i2);
 
     /* 0x80052650 */
@@ -1604,10 +1608,10 @@ public:
     bool checkKinopioWaitBG(int);
 
     /* 0x80056370 */
-    void UNDEF_80056370(dActor_c*, int);
+    void setBgPressReq(dActor_c*, BgPress_e);
 
     /* 0x80056980 */
-    void setStatus5D(float f); ///< @unofficial
+    void setStatus5D(float f); /// @unofficial
 
     /* 0x80056C70 */
     void onStatus(int flag);
@@ -1642,7 +1646,7 @@ public:
     dPyMdlBase_c* getModel();
 
     /* 0x80057E70 */
-    void playSound(SndID::Type, long);
+    void playSound(SndID::Type, s32);
 
     /* 0x800583A0 */
     void calcHeadAttentionAngle();

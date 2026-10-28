@@ -10,7 +10,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80160C10 - 0x80161050
     c_lib.cpp
 # NSMBW          .text:  0x80161050 - 0x801611A0
-    c_list.cpp
+    c_line.cpp
 # NSMBW          .text:  0x801611A0 - 0x801615A0
     c_math.cpp
 # NSMBW          .text:  0x801615A0 - 0x80161670

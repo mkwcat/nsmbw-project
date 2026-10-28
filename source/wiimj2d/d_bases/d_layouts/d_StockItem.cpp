@@ -65,22 +65,23 @@ bool dStockItem_c::createLayout() {
     mpRootPane = mLayout.getRootPane();
 
     mLayout.NPaneRegister(
-        mpNullPanes, {
-                         "N_forUse_1PPos",
-                         "N_forUse_2PPos",
-                         "N_forUse_3PPos",
-                         "N_forUse_4PPos",
-                         "N_iconKinoko_00",
-                         "N_iconFlower_00",
-                         "N_iconPro_00",
-                         "N_iconIce_00",
-                         "N_iconPen_00",
-                         "N_mameKinoko_00",
-                         "N_iconStar_00",
-                         "N_stockItem",
-                         "N_stockItem_01",
-                         "N_itemSelect_00",
-                     }
+        mpNullPanes, //
+        {
+            "N_forUse_1PPos",
+            "N_forUse_2PPos",
+            "N_forUse_3PPos",
+            "N_forUse_4PPos",
+            "N_iconKinoko_00",
+            "N_iconFlower_00",
+            "N_iconPro_00",
+            "N_iconIce_00",
+            "N_iconPen_00",
+            "N_mameKinoko_00",
+            "N_iconStar_00",
+            "N_stockItem",
+            "N_stockItem_01",
+            "N_itemSelect_00",
+        }
     );
 
     mLayout.TPaneNameRegister(
@@ -96,7 +97,7 @@ bool dStockItem_c::createLayout() {
     );
 
     mLayout.PPaneRegister(
-        mpPicturePanes,
+        mpPicturePanes, //
         {
             "P_iconKinoko_00", "P_iconFlower_00", "P_iconPro_00",    "P_iconIce_00",
             "P_iconPen_00",    "P_mameKinoko_00", "P_iconStar_00",   "P_buttonBase_00",
@@ -109,20 +110,21 @@ bool dStockItem_c::createLayout() {
 
     // New
     mLayout.NPaneRegister(
-        mpNForUsePos, {
-                          "N_forUse_1PPos",
-                          "N_forUse_2PPos",
-                          "N_forUse_3PPos",
-                          "N_forUse_4PPos",
-                          "N_forUse_5PPos",
-                          "N_forUse_5PPos",
-                          "N_forUse_5PPos",
-                          "N_forUse_5PPos",
-                      }
+        mpNForUsePos, //
+        {
+            "N_forUse_1PPos",
+            "N_forUse_2PPos",
+            "N_forUse_3PPos",
+            "N_forUse_4PPos",
+            "N_forUse_5PPos",
+            "N_forUse_5PPos",
+            "N_forUse_5PPos",
+            "N_forUse_5PPos",
+        }
     );
 
     mLayout.PPaneRegister(
-        mpPIconBase4P,
+        mpPIconBase4P, //
         {
             "P_iconBase_00", "P_iconBase_01", "P_iconBase_02", "P_iconBase_03",
 
@@ -783,15 +785,15 @@ UNDEF_807b0430:;
 /* 807B0468 4E800020 */  blr      ;
 /* 807B046C 00000000 */  .word    0x00000000;
   // clang-format on
-)
+);
 
-        void stockItemPlayStarVoice(
-            PLAYER_TYPE_e character, bool isMame
-        ) {
+void stockItemPlayStarVoice(
+    PLAYER_TYPE_e character, bool isMame
+) {
     dAudio::SndObjctCSPly_c* playerSound =
         dWmSeManager_c::m_pInstance->mpObjCSPlyArray[static_cast<int>(character)];
     playerSound->mSoundPlyMode = (isMame) ? 3 : 0;
-    playerSound->startVoiceSound(SndObjctPly::PLAYER_VOICE_e::GET_STAR, 0);
+    playerSound->startVoice(SndObjctPly::ESnd_C_Voice::GET_STAR, 0);
 }
 
 [[nsmbw(0x807B06C0)]]

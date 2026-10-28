@@ -177,6 +177,8 @@ public:
         QUAKE_MODE_0,
     };
 
+    class DemoDokanType_e {};
+
 public:
     // Instance Methods
     // ^^^^^^
@@ -192,18 +194,16 @@ public:
     bool setKaniActionInitHangHand();
     bool jump_common();
     void _jumpSet(jmpInf_c*);
-    void calcJumpCount();
+    /* 0x80127550 */ void calcJumpCount();
     /* 0x801275B0 */ float getJumpSpeed();
-    void setJumpSpeed();
-    void fn_80127740(
-        int jumpType, AnmBlend_e blendMode
-    );                              ///< Jump animation set, some enum as first param @unofficial
-    void fn_80145fd0(int jumpType); ///< Jump voice, some enum as param @unofficial
+    /* 0x801276f0 */ void setJumpSpeed();
+    /* 0x80127740 */ void jumpSelect(setJumpSE_e, int);
+    /* 0x80145FD0 */ void setJumpSE(setJumpSE_e);
     bool checkCarryThrow();
     void jumpExeTakeOff();
     void jumpExecAir();
-    void fn_801282d0(AnmBlend_e blendMode); ///< @unofficial
-    bool spinLiftUp(dActor_c*, bool);       ///< @unofficial
+    /* 0x801282D0 */ void changeWalkFromJumpAction(AnmBlend_e blendMode);
+    bool spinLiftUp(dActor_c*, bool); /// @unofficial
     void setJumpCommonBase();
     /* 0x8012DD20 */ dAcPy_c* getCarryPlayer();
     bool isIceSlipAnmPlay();
@@ -414,7 +414,7 @@ public:
     void setShakeIce(float);
     mVec3_c getIceDrawPos();
 
-    void fn_801395a0();              ///< @unofficial
+    void setBeakIceJump();
     void fn_801416c0(PLAYER_MODE_e); ///< @unofficial
 
     /* 0x80139910 */ bool setRideOffYoshiJump(daPlBase_c* yoshi);
@@ -445,7 +445,7 @@ public:
     bool setFireBallAction();
     bool checkFireJump();
 
-    bool fn_80146e40(float, float, bool); ///< @unofficial
+    bool setSpinJump(float, float, setJumpButton_e);
     int getSpinActionMode();
 
     bool setPropelAction();
@@ -495,7 +495,7 @@ public:
     void exeDemoOutDoor_WaitClose();
     void exeDemoOutDoor_WaitEnter();
 
-    bool initDemoDokanCannon(mVec3_c& pos, int cannonMode); // @unofficial
+    /* 0x8013FB20 */ bool setDemoDokanCannon(mVec3_c& pos, DemoDokanType_e);
     /* 0x8013FBE0 */ void endDemoDokanCannon(mVec3_c& pos);
     bool isDokanCannonIn();
     /* 0x80146F60 */ bool setCannonJump(float speedY, float speedF, int jumpType);
@@ -503,7 +503,7 @@ public:
     void setOffYoshiInGoal(daPlBase_c* yoshi);
 
     /* 0x80147CA0 */ bool isDrawingCarryFukidashi();
-    /* 0x801420B0 */ void getCcBounds(sRangeDataF* bounds); // @unofficial
+    /* 0x801420B0 */ void getSpinLiftUpCcDat(sCcSizeF* bounds);
     /* 0x8012E650 */ bool cancelCarry(dActor_c* carriedActor);
 
     void setFireBallDamage(u8 type);
@@ -544,10 +544,10 @@ public:
     void setCcData();
     void setCcDataDirect();
 
-    void fn_80143060(sBcPointData& data1, sBcPointData& data2, bool);          ///< @unofficial
-    bool fn_80143220(sBcPointData& data1, sBcPointData& data2);                ///< @unofficial
-    void reviseBcDataCarryPlayer(sBcPointData& data1, sBcPointData& data2);    ///< @unofficial
-    void reviseBcDataCarryHardBlock(sBcPointData& data1, sBcPointData& data2); ///< @unofficial
+    void fn_80143060(sBcPointData& data1, sBcPointData& data2, bool);          /// @unofficial
+    bool fn_80143220(sBcPointData& data1, sBcPointData& data2);                /// @unofficial
+    void reviseBcDataCarryPlayer(sBcPointData& data1, sBcPointData& data2);    /// @unofficial
+    void reviseBcDataCarryHardBlock(sBcPointData& data1, sBcPointData& data2); /// @unofficial
 
     void setStarBase(StarSet_e, int);
 
@@ -639,7 +639,7 @@ public:
     /* VT+0x278 0x8013DF10 */ virtual void setFallDownDemo() override;
     virtual bool setDokanIn(DokanDir_e dir) override;
     virtual void initDemoOutDokan() override;
-    virtual bool updateDemoKimePose(s32 clearType) override;
+    virtual bool updateDemoKimePose(ClearType_e clearType) override;
     virtual void initDemoGoalBase() override;
     /* VT+0x28C 0x801400B0 */ virtual void executeDemoGoal_Run() override;
     virtual void initializeDemoControl() override;

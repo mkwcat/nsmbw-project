@@ -54,11 +54,11 @@ void dWmSeManager_c::initialize() {
             REMOVED(mpObjCSPlyArray)[i] = mpObjCSPlyArray[i];
         }
 
-        mpObjCSPlyArray[i]->mPlayerSndIndex = static_cast<SndObjctPly::PLAYER_SOUND_INDEX_e>(i);
+        mpObjCSPlyArray[i]->mPlayerSndIndex = static_cast<SndObjctPly::ESnd_PlyType>(i);
     }
 
     mpObjCSPly                  = new dAudio::SndObjctCSPly_c();
-    mpObjCSPly->mPlayerSndIndex = SndObjctPly::PLAYER_SOUND_INDEX_e::MA;
+    mpObjCSPly->mPlayerSndIndex = SndObjctPly::ESnd_PlyType::MA;
 
     mpObjEmy                    = new SndObjctEmy(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
     mpObjCmnEmy                 = new SndObjctCmnEmy(*SndAudioMgr::sInstance->mpSoundArchivePlayer);
@@ -67,8 +67,6 @@ void dWmSeManager_c::initialize() {
 
 [[nsmbw(0x801046B0)]]
 void dWmSeManager_c::execute() ASM_METHOD(
-  // clang-format off
-UNDEF_801046b0:;
 /* 801046B0 9421FF30 */  stwu     r1, -208(r1);
 /* 801046B4 7C0802A6 */  mflr     r0;
 /* 801046B8 900100D4 */  stw      r0, 212(r1);
@@ -591,12 +589,10 @@ UNDEF_80104da4:;
 /* 80104DC0 7C0803A6 */  mtlr     r0;
 /* 80104DC4 382100D0 */  addi     r1, r1, 208;
 /* 80104DC8 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x80104DD0)]]
-void dWmSeManager_c::UNDEF_80104dd0() ASM_METHOD(
-  // clang-format off
+void dWmSeManager_c::calcHoldSe(int) ASM_METHOD(
 /* 80104DD0 9421FFC0 */  stwu     r1, -64(r1);
 /* 80104DD4 7C0802A6 */  mflr     r0;
 /* 80104DD8 C002A174 */  lfs      f0, UNDEF_8042d4d4@sda21;
@@ -793,72 +789,71 @@ UNDEF_801050a0:;
 /* 801050B0 7C0803A6 */  mtlr     r0;
 /* 801050B4 38210040 */  addi     r1, r1, 64;
 /* 801050B8 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x801050E0)]]
 void dWmSeManager_c::playPlyVoice(
-    WmPlyVoice_e voice, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode
+    CourseSelectVoiceID_e voice, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode
 ) {
-    SndObjctPly::PLAYER_VOICE_e voiceId = getPlyVoiceId(voice);
-    if (voiceId == SndObjctPly::PLAYER_VOICE_e::COUNT) {
+    SndObjctPly::ESnd_C_Voice voiceId = getVoiceId(voice);
+    if (voiceId == SndObjctPly::ESnd_C_Voice::COUNT) {
         return;
     }
 
-    int                      plyIndex    = static_cast<int>(daPyMng_c::getModelPlayerType(player));
+    int                      plyIndex    = +daPyMng_c::getModelPlayerType(player);
     dAudio::SndObjctCSPly_c* playerSound = mpObjCSPlyArray[plyIndex];
 
     playerSound->mSoundPlyMode           = getSoundPlyMode(playerMode);
-    playerSound->startVoiceSound(voiceId, 0);
+    playerSound->startVoice(voiceId, 0);
 }
 
 [[nsmbw(0x80105170)]]
 void dWmSeManager_c::playPlySound(
-    WmSound_e sound, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode, f32 param4
+    CourseSelectSeID_e sound, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode, f32 param4
 ) {
-    SndID::Type soundId = getSoundId(sound);
+    SndID::Type soundId = getSeId(sound);
     if (soundId == SndID::SE_DEMO_OP_DUMMY_U) {
         return;
     }
 
-    int                      plyIndex    = static_cast<int>(daPyMng_c::getModelPlayerType(player));
+    int                      plyIndex    = +daPyMng_c::getModelPlayerType(player);
     dAudio::SndObjctCSPly_c* playerSound = mpObjCSPlyArray[plyIndex];
 
     playerSound->mSoundPlyMode           = getSoundPlyMode(playerMode);
 
-    WmSoundType_e soundType              = getSoundType(sound);
-    if (soundType == WmSoundType_e::PLAYER) {
-        if (sound == WmSound_e::PLY_JUMP) {
+    CourseSelectSeGroup_e seGroup        = getSeGroup(sound);
+    if (seGroup == CourseSelectSeGroup_e::PLAYER) {
+        if (sound == CourseSelectSeID_e::PLY_JUMP) {
             if (playerMode == PLAYER_MODE_e::NONE) {
-                soundId = getSoundId(WmSound_e::PLY_JUMP_S);
+                soundId = getSeId(CourseSelectSeID_e::PLY_JUMP_S);
             } else if (playerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
-                soundId = getSoundId(WmSound_e::PLY_JUMP_SS);
+                soundId = getSeId(CourseSelectSeID_e::PLY_JUMP_SS);
             }
-        } else if (sound == WmSound_e::PLY_LAND_POINT &&
+        } else if (sound == CourseSelectSeID_e::PLY_LAND_POINT &&
                    playerMode == PLAYER_MODE_e::PENGUIN_SUIT) {
-            soundId = getSoundId(WmSound_e::PLY_LAND_PNGN);
+            soundId = getSeId(CourseSelectSeID_e::PLY_LAND_PNGN);
         }
 
         playerSound->startSound(soundId, 0);
-    } else if (soundType == WmSoundType_e::FOOTNOTE) {
+    } else if (seGroup == CourseSelectSeGroup_e::FOOTNOTE) {
         if (playerMode == PLAYER_MODE_e::PENGUIN_SUIT) {
-            soundId = getSoundId(WmSound_e::PLY_FOOTNOTE_PNGN);
+            soundId = getSeId(CourseSelectSeID_e::PLY_FOOTNOTE_PNGN);
         }
         playerSound->startFootSound(soundId, param4, 0);
     }
 }
 
 [[nsmbw(0x801057D0)]]
-u32 dWmSeManager_c::getSoundId(WmSound_e sound) const;
+u32 dWmSeManager_c::getSeId(CourseSelectSeID_e sound);
 
 [[nsmbw(0x80105B30)]]
-dWmSeManager_c::WmSoundType_e dWmSeManager_c::getSoundType(WmSound_e sound) const;
+dWmSeManager_c::CourseSelectSeGroup_e dWmSeManager_c::getSeGroup(CourseSelectSeID_e sound);
 
 [[nsmbw(0x80105BC0)]]
-SndObjctPly::PLAYER_VOICE_e dWmSeManager_c::getPlyVoiceId(WmPlyVoice_e voice) const;
+SndObjctPly::ESnd_C_Voice dWmSeManager_c::getVoiceId(CourseSelectVoiceID_e voice);
 
 [[nsmbw(0x80105CA0)]]
-s32 dWmSeManager_c::getSoundPlyMode(PLAYER_MODE_e playerMode) const;
+s32 dWmSeManager_c::getSoundPlyMode(PLAYER_MODE_e playerMode);
 
 [[nsmbw(0x80105D20)]]
-u32 dWmSeManager_c::getBossSoundId(WmSound_e sound) const;
+u32 dWmSeManager_c::getBossVoice(CourseSelectSeID_e sound);

@@ -30,14 +30,10 @@ public:
     // Constants and Types
     // ^^^^^^
 
-    /* @unofficial */
-    enum class WmSound_e {
+    enum class CourseSelectSeID_e {
         DUMMY                      = 0,
 
-        /*
-         * WmSoundType_e::PLAYER
-         */
-        TYPE_PLAYER_BEGIN          = 1,
+        GROUP_PLAYER_BEGIN         = 1, /// CourseSelectSeGroup_e::PLAYER
 
         PLY_JUMP                   = 1,
         PLY_JUMP_S                 = 2,
@@ -53,12 +49,9 @@ public:
         BGM_STAR                   = 12,
         PLY_LAND_PNGN              = 13,
 
-        TYPE_PLAYER_END            = 14,
+        GROUP_PLAYER_END           = 14,
 
-        /*
-         * WmSoundType_e::FOOTNOTE
-         */
-        TYPE_FOOTNOTE_BEGIN        = 16,
+        GROUP_FOOTNOTE_BEGIN       = 16, /// CourseSelectSeGroup_e::FOOTNOTE
 
         PLY_FOOTNOTE_DIRT          = 16,
         PLY_FOOTNOTE_WOOD          = 17,
@@ -73,12 +66,9 @@ public:
         PLY_FOOTNOTE_HASHIGO_FE    = 26,
         PLY_FOOTNOTE_ROCK_CLIMB    = 27,
 
-        TYPE_FOOTNOTE_END          = 28,
+        GROUP_FOOTNOTE_END         = 28,
 
-        /*
-         * WmSoundType_e::ACTOR
-         */
-        TYPE_ACTOR_BEGIN           = 30,
+        GROUP_ACTOR_BEGIN          = 30, /// CourseSelectSeGroup_e::ACTOR
 
         OBJ_GEN_LOAD               = 30,
         OBJ_GEN_NEW_COURSE         = 31,
@@ -121,12 +111,9 @@ public:
         BOSS_JR_JUMP_L             = 68,
         VOC_JR_JUMP                = 69,
 
-        TYPE_ACTOR_END             = 70,
+        GROUP_ACTOR_END            = 70,
 
-        /*
-         * WmSoundType_e::BOSS
-         */
-        TYPE_BOSS_BEGIN            = 72,
+        GROUP_BOSS_BEGIN           = 72, /// CourseSelectSeGroup_e::BOSS
 
         BOSS_JUMP                  = 72,
         BOSS_LAND_SHIRO            = 73,
@@ -141,12 +128,9 @@ public:
         VOC_BOSS_JUMP              = 82,
         VOC_BOSS_JUMP_F            = 83,
 
-        TYPE_BOSS_END              = 84,
+        GROUP_BOSS_END             = 84,
 
-        /*
-         * WmSoundType_e::ENEMY
-         */
-        TYPE_ENEMY_BEGIN           = 86,
+        GROUP_ENEMY_BEGIN          = 86, /// CourseSelectSeGroup_e::ENEMY
 
         EMY_ENEMY_BYE              = 86,
         EMY_MOVE_W1_KURIBO         = 87,
@@ -168,12 +152,9 @@ public:
         PLY_CSDEMO_KURI_TAKEAWAY   = 103,
         PLY_CSDEMO_KURI_COURSE_IN  = 104,
 
-        TYPE_ENEMY_END             = 105,
+        GROUP_ENEMY_END            = 105,
 
-        /*
-         * WmSoundType_e::SYSTEM
-         */
-        TYPE_SYSTEM_BEGIN          = 107,
+        GROUP_SYSTEM_BEGIN         = 107, /// CourseSelectSeGroup_e::SYSTEM
 
         SYS_MAP_VIEW_MODE          = 107,
         SYS_MAP_VIEW_QUIT          = 108,
@@ -183,23 +164,20 @@ public:
         SYS_KINO_BALLOON_DISAPP    = 112,
         VOC_ITEM_KO_HELP_ME        = 113,
 
-        TYPE_SYSTEM_END            = 114,
+        GROUP_SYSTEM_END           = 114,
 
-        /*
-         * WmSoundType_e::BGM
-         */
-        TYPE_BGM_BEGIN             = 116,
+        GROUP_BGM_BEGIN            = 116, /// CourseSelectSeGroup_e::BGM
 
         BGM_LAST_CASTLE_APPEAR     = 116,
         BGM_STAR_COIN_CMPLT_WORLD  = 117,
         BGM_STAR_COIN_CMPLT_ALL    = 118,
         BGM_ALL_CMPLT_5STARS       = 119,
 
-        TYPE_BGM_END               = 120,
+        GROUP_BGM_END              = 120,
     };
 
     /* @unofficial */
-    enum class WmSoundType_e {
+    enum class CourseSelectSeGroup_e {
         PLAYER   = 0,
         FOOTNOTE = 1,
         ACTOR    = 2,
@@ -210,8 +188,7 @@ public:
         OTHER    = 7,
     };
 
-    /* @unofficial */
-    enum class WmPlyVoice_e {
+    enum class CourseSelectVoiceID_e {
         JUMP            = 0,
         ENCOUNT         = 1,
         SHOVED          = 2,
@@ -269,31 +246,33 @@ public:
     void execute();
 
     /* 0x80104DD0 */
-    void UNDEF_80104dd0();
+    void calcHoldSe(int);
 
     /* 0x801050E0 @unofficial */
-    void
-    playPlyVoice(WmPlyVoice_e voice, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode);
+    void playPlyVoice(
+        CourseSelectVoiceID_e voice, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode
+    );
 
     /* 0x80105170 @unofficial */
     void playPlySound(
-        WmSound_e sound, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode, f32 param4
+        CourseSelectSeID_e sound, dPyMdlMng_c::ModelType_e player, PLAYER_MODE_e playerMode,
+        f32 param4
     );
 
-    /* 0x801057D0 @unofficial */
-    u32 getSoundId(WmSound_e sound) const;
+    /* 0x801057D0 */
+    u32 getSeId(CourseSelectSeID_e sound);
 
-    /* 0x80105B30 @unofficial */
-    WmSoundType_e getSoundType(WmSound_e sound) const;
+    /* 0x80105B30 */
+    CourseSelectSeGroup_e getSeGroup(CourseSelectSeID_e sound);
 
-    /* 0x80105B30 @0x80105BC0 */
-    SndObjctPly::PLAYER_VOICE_e getPlyVoiceId(WmPlyVoice_e voice) const;
+    /* 0x80105B30 */
+    SndObjctPly::ESnd_C_Voice getVoiceId(CourseSelectVoiceID_e voice);
 
     /* 0x80105CA0 @unofficial */
-    s32 getSoundPlyMode(PLAYER_MODE_e playerMode) const;
+    s32 getSoundPlyMode(PLAYER_MODE_e playerMode);
 
-    /* 0x80105D20 @unofficial */
-    u32 getBossSoundId(WmSound_e sound) const;
+    /* 0x80105D20 */
+    u32 getBossVoice(CourseSelectSeID_e sound);
 
 public:
     // Instance Variables

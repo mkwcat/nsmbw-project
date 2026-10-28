@@ -474,7 +474,7 @@ void daPlBase_c::executeState_DemoControl() {
 }
 
 [[nsmbw(0x80056370)]]
-void daPlBase_c::UNDEF_80056370(dActor_c*, int);
+void daPlBase_c::setBgPressReq(dActor_c*, BgPress_e);
 
 [[nsmbw(0x80056980)]]
 void daPlBase_c::setStatus5D(float f);

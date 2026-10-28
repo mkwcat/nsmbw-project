@@ -7,7 +7,6 @@
 #include "d_rc.h"
 #include "f_base_id.h"
 #include "m_vec.h"
-#include "s_RangeData.h"
 #include <nw4r/ut/Rect.h>
 
 class dPropelParts_c;

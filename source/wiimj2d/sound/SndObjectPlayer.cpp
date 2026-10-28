@@ -8,8 +8,8 @@
 #include "d_game_common.h"
 #include <nw4r/snd/SoundHandle.h>
 
-static constexpr u16 PLAYER_VOICE_SOUND_ID_LIST[SndObjctPly::PLAYER_SOUND_INDEX_COUNT]
-                                               [SndObjctPly::PLAYER_VOICE_COUNT] = //
+static constexpr u16 PLAYER_VOICE_SOUND_ID_LIST[SndObjctPly::cNumPlyType]
+                                               [SndObjctPly::cNumPlayerVoice] = //
     {
         {
             SndID::SE_VOC_MA_PLAYER_JOIN,
@@ -412,21 +412,19 @@ SndObjctPly::holdSound(u32 soundId, const nw4r::math::VEC2& position, u32 remote
 nw4r::snd::SoundHandle* SndObjctPly::startFootSound(u32 soundId, f32 param2, u32 remoteMask);
 
 [[nsmbw(0x8019AAB0)]]
-nw4r::snd::SoundHandle* SndObjctPly::startVoiceSound(
-    PLAYER_VOICE_e voice, u32 remoteMask
+nw4r::snd::SoundHandle* SndObjctPly::startVoice(
+    ESnd_C_Voice voice, u32 remoteMask
 ) {
-    if (voice >= PLAYER_VOICE_e::COUNT || mPlayerSndIndex >= PLAYER_SOUND_INDEX_e::COUNT) {
+    if (voice >= ESnd_C_Voice::COUNT || mPlayerSndIndex >= ESnd_PlyType::COUNT) {
         return nullptr;
     }
 
-    PLAYER_SOUND_INDEX_e playerSndIndex = mPlayerSndIndex;
+    ESnd_PlyType playerSndIndex = mPlayerSndIndex;
 
-    if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KC2) {
-        playerSndIndex = PLAYER_SOUND_INDEX_e::KC;
-    } else if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO3 ||
-               mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO4) {
-        playerSndIndex =
-            dGameCom::rndInt(2) == 0 ? PLAYER_SOUND_INDEX_e::KO : PLAYER_SOUND_INDEX_e::KO2;
+    if (mPlayerSndIndex == ESnd_PlyType::KC2) {
+        playerSndIndex = ESnd_PlyType::KC;
+    } else if (mPlayerSndIndex == ESnd_PlyType::KO3 || mPlayerSndIndex == ESnd_PlyType::KO4) {
+        playerSndIndex = dGameCom::rndInt(2) == 0 ? ESnd_PlyType::KO : ESnd_PlyType::KO2;
     }
 
     u32 sound =
@@ -442,11 +440,11 @@ nw4r::snd::SoundHandle* SndObjctPly::startVoiceSound(
     f32 pitch                      = mSoundPlyMode == 3 ? 1.5f : 1.0f;
 
     // Pitch changes for additional characters
-    if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KC2) {
+    if (mPlayerSndIndex == ESnd_PlyType::KC2) {
         pitch *= 0.85f;
-    } else if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO3) {
+    } else if (mPlayerSndIndex == ESnd_PlyType::KO3) {
         pitch *= 1.15f;
-    } else if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO4) {
+    } else if (mPlayerSndIndex == ESnd_PlyType::KO4) {
         pitch *= 0.85f;
     }
 
@@ -455,7 +453,7 @@ nw4r::snd::SoundHandle* SndObjctPly::startVoiceSound(
     }
 
     // Increase volume for COURSE_IN_MULTI if needed
-    if (voice == PLAYER_VOICE_e::CS_COURSE_IN_MULTI && daPyMng_c::getNumInGame() == 1) {
+    if (voice == ESnd_C_Voice::CS_COURSE_IN_MULTI && daPyMng_c::getNumInGame() == 1) {
         handle->mpSound->SetVolume(2.0, 0);
     }
 
@@ -463,21 +461,19 @@ nw4r::snd::SoundHandle* SndObjctPly::startVoiceSound(
 }
 
 [[nsmbw(0x8019ABB0)]]
-nw4r::snd::SoundHandle* SndObjctPly::holdVoiceSound(
-    PLAYER_VOICE_e voice, u32 remoteMask
+nw4r::snd::SoundHandle* SndObjctPly::holdVoice(
+    ESnd_C_Voice voice, u32 remoteMask
 ) {
-    if (voice >= PLAYER_VOICE_e::COUNT || mPlayerSndIndex >= PLAYER_SOUND_INDEX_e::COUNT) {
+    if (voice >= ESnd_C_Voice::COUNT || mPlayerSndIndex >= ESnd_PlyType::COUNT) {
         return nullptr;
     }
 
-    PLAYER_SOUND_INDEX_e playerSndIndex = mPlayerSndIndex;
+    ESnd_PlyType playerSndIndex = mPlayerSndIndex;
 
-    if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KC2) {
-        playerSndIndex = PLAYER_SOUND_INDEX_e::KC;
-    } else if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO3 ||
-               mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO4) {
-        playerSndIndex =
-            dGameCom::rndInt(2) == 0 ? PLAYER_SOUND_INDEX_e::KO : PLAYER_SOUND_INDEX_e::KO2;
+    if (mPlayerSndIndex == ESnd_PlyType::KC2) {
+        playerSndIndex = ESnd_PlyType::KC;
+    } else if (mPlayerSndIndex == ESnd_PlyType::KO3 || mPlayerSndIndex == ESnd_PlyType::KO4) {
+        playerSndIndex = dGameCom::rndInt(2) == 0 ? ESnd_PlyType::KO : ESnd_PlyType::KO2;
     }
 
     u32 sound =
@@ -489,11 +485,11 @@ nw4r::snd::SoundHandle* SndObjctPly::holdVoiceSound(
     f32 pitch                      = mSoundPlyMode == 3 ? 1.5f : 1.0f;
 
     // Pitch changes for additional characters
-    if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KC2) {
+    if (mPlayerSndIndex == ESnd_PlyType::KC2) {
         pitch *= 0.85f;
-    } else if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO3) {
+    } else if (mPlayerSndIndex == ESnd_PlyType::KO3) {
         pitch *= 1.15f;
-    } else if (mPlayerSndIndex == PLAYER_SOUND_INDEX_e::KO4) {
+    } else if (mPlayerSndIndex == ESnd_PlyType::KO4) {
         pitch *= 0.85f;
     }
 

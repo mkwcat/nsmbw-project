@@ -48,7 +48,7 @@ public:
     constexpr fTrNdBa_c(
         fBase_c* owner
     )
-        : mpOwner(owner) {}
+        : mOwner(owner) {}
 
     fTrNdBa_c* getTreeNext() const { return static_cast<fTrNdBa_c*>(cTreeNd_c::getTreeNext()); }
 
@@ -64,19 +64,21 @@ public:
 
     fTrNdBa_c* getBrNext() const { return static_cast<fTrNdBa_c*>(cTreeNd_c::getBrNext()); }
 
-    /* 0x10 */ fBase_c* mpOwner; // The owner of this node.
+    fBase_c* getOwner() const { return mOwner; }
+
+protected:
+    /* 0x10 */ fBase_c* mOwner; /// The owner of this node.
 };
 
 /**
  * A base tree made of fTrNdBa_c nodes, with a reference to a process function.
- * @unofficial
  */
-struct fTrMgVisitor_c : public fTrMgBa_c {
+struct fTrMgBaFu_c : public fTrMgBa_c {
     /**
      * Constructs a new tree.
      * @param procFunc The process function, or @p nullptr.
      */
-    constexpr fTrMgVisitor_c(
+    constexpr fTrMgBaFu_c(
         int (fBase_c::*procFunc)()
     )
         : mProc(procFunc) {}
@@ -85,7 +87,7 @@ struct fTrMgVisitor_c : public fTrMgBa_c {
      * Calls @ref mProc "the process function" on each base in the tree.
      * @return Always returns true.
      */
-    bool walkPack();
+    bool treeListProc();
 
 private:
     /**

@@ -4,4 +4,10 @@
 #include "c_random.h"
 
 [[nsmbw(0x801615A0)]]
-u32 cRnd_c::next(u32 limit);
+u32 cRandom_c::getRandomByAsm(u32 limit);
+
+[[nsmbw(0x801615D0)]]
+float cRandom_c::getRandomFByAsm();
+
+[[nsmbw(0x80161620)]]
+float cRandom_c::getRandomF2ByAsm();

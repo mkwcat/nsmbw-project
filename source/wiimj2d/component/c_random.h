@@ -1,18 +1,13 @@
 #pragma once
 
-// @unofficial
-class cRnd_c {
+class cRandom_c {
 public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x801615A0 */
-    u32 next(u32 limit = -1);
-
-    // +++
-    float nextFloat() {
-        return static_cast<float>(next() & 0xFFFFFF) / static_cast<float>(0xFFFFFF);
-    }
+    /* 0x801615A0 */ u32 getRandomByAsm(u32 limit = -1);
+    /* 0x801615D0 */ float getRandomFByAsm();
+    /* 0x80161620 */ float getRandomF2ByAsm();
 
 public:
     // Instance Variables

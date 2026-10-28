@@ -1,7 +1,7 @@
 #pragma once
 
 #include "f_base_id.h"
-#include "f_list.h"
+#include "f_line.h"
 #include "f_profile.h"
 #include "f_tree.h"
 
@@ -38,17 +38,17 @@ private:
      * @brief The node in the @ref m_createManage "create", @ref m_executeManage "execute" or @ref
      * m_deleteManage "delete" list.*
      */
-    /* 0x14 */ fLiNdPrio_c mMainNode;
+    /* 0x14 */ fLiNdBaPr_c mMainNode;
 
     /**
      * The node in the @ref m_drawManage "draw list".
      */
-    /* 0x24 */ fLiNdPrio_c mDrawNode;
+    /* 0x24 */ fLiNdBaPr_c mDrawNode;
 
     /**
      * The node in the @ref m_searchManage "search lists".
      */
-    /* 0x34 */ fLiNdBa_c mSearchNode;
+    /* 0x34 */ fLiNdBaLink_c mSearchNode;
 
 private:
     // Static Variables
@@ -57,21 +57,21 @@ private:
     /**
      * A tree that connects all loaded bases.
      */
-    /* 0x80377D10 */ static fTrMgVisitor_c m_connectManage;
+    /* 0x80377D10 */ static fTrMgBaFu_c m_connectManage;
     /**
      * A list of all the bases scheduled for creation.
      */
-    /* 0x80377D20 */ static fLiMgVisitor_c m_createManage;
+    /* 0x80377D20 */ static fLiMgBaFuPr_c m_createManage;
     /**
      * A list of all the bases scheduled for execution.
      */
-    /* 0x80377D34 */ static fLiMgVisitor_c m_executeManage;
+    /* 0x80377D34 */ static fLiMgBaFuPr_c m_executeManage;
     /**
      * A list of all the bases scheduled for drawing.
      */
-    /* 0x80377D48 */ static fLiMgVisitor_c m_drawManage;
+    /* 0x80377D48 */ static fLiMgBaFuPr_c m_drawManage;
     /**
      * A list of all the bases scheduled for deletion.
      */
-    /* 0x80377D5C */ static fLiMgVisitor_c m_deleteManage;
+    /* 0x80377D5C */ static fLiMgBaFuPr_c m_deleteManage;
 };

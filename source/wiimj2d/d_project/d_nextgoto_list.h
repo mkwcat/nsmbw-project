@@ -128,7 +128,7 @@ public:
     // Structors
     // ^^^^^^
 
-    Randomizer_c(Entry_s* input, Index inputCount, Index* lookupTable, cRnd_c&& rnd);
+    Randomizer_c(Entry_s* input, Index inputCount, Index* lookupTable, cRandom_c&& rnd);
 
     ~Randomizer_c() {}
 
@@ -158,5 +158,5 @@ private:
 
     Index*                     m_pEntryLookup;
 
-    cRnd_c                     m_rnd;
+    cRandom_c                     m_rnd;
 };

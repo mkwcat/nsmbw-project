@@ -90,7 +90,8 @@ void dNextGotoList_c::randomize(
     m_lookupTable.clear();
     m_lookupTable.resize(size(), Index());
     Randomizer_c rndizer(
-        data(), static_cast<Index>(size()), m_lookupTable.data(), cRnd_c(static_cast<u32>(m_seed))
+        data(), static_cast<Index>(size()), m_lookupTable.data(),
+        cRandom_c(static_cast<u32>(m_seed))
     );
     rndizer.createLookupTable();
 }
@@ -220,7 +221,7 @@ bool dNextGotoList_c::endArray() {
 #pragma clang diagnostic ignored "-Wc++11-narrowing"
 
 dNextGotoList_c::Randomizer_c::Randomizer_c(
-    Entry_s* input, Index inputCount, Index* lookupTable, cRnd_c&& rnd
+    Entry_s* input, Index inputCount, Index* lookupTable, cRandom_c&& rnd
 )
     : m_inputCount(inputCount)
     , m_pInput(input)
@@ -278,7 +279,7 @@ dNextGotoList_c::Randomizer_c::Randomizer_c(
     }
 
     // Reserve a random non-exclusive entrance for the last link
-    u32 index      = lastGroupedEnt + m_rnd.next(m_entList.size() - lastGroupedEnt);
+    u32 index      = lastGroupedEnt + m_rnd.getRandomByAsm(m_entList.size() - lastGroupedEnt);
     m_lastEntrance = m_entList[index].index;
     remove(index);
 }
@@ -323,7 +324,7 @@ dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select1() {
 
     // Randomly select an entrance within the group. This will make sure
     // that which entry ends up exclusive will be evenly distributed.
-    u32           i     = m_rnd.next(m_curGroupEnd);
+    u32           i     = m_rnd.getRandomByAsm(m_curGroupEnd);
     LookupEntry_s entry = m_entList[i];
     removeUpdate(i);
 
@@ -340,7 +341,7 @@ dNextGotoList_c::LookupEntry_s dNextGotoList_c::Randomizer_c::select2() {
     }
 
     // Entrance 2 cannot be an exclusive entrance
-    u32           i     = m_rnd.next(m_entList.size());
+    u32           i     = m_rnd.getRandomByAsm(m_entList.size());
     LookupEntry_s entry = m_entList[i];
     removeUpdate(i);
 

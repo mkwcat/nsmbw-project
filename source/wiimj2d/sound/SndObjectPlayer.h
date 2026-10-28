@@ -9,8 +9,7 @@ public:
     // Constants and Types
     // ^^^^^^
 
-    /* @unofficial */
-    enum class PLAYER_VOICE_e {
+    enum class ESnd_C_Voice {
         PLAYER_JOIN        = 0,
         PJ_JUMP            = 1,
         PJ_SPIN_JUMP       = 2,
@@ -86,10 +85,10 @@ public:
         COUNT,
     };
 
-    static constexpr s32 PLAYER_VOICE_COUNT = static_cast<s32>(PLAYER_VOICE_e::COUNT);
+    static constexpr s32 cNumPlayerVoice = static_cast<s32>(ESnd_C_Voice::COUNT);
 
     /* @unofficial */
-    enum class PLAYER_SOUND_INDEX_e {
+    enum class ESnd_PlyType {
         MA  = 0,
         LU  = 1,
         KO  = 2,
@@ -102,7 +101,7 @@ public:
         COUNT,
     };
 
-    static constexpr s32 PLAYER_SOUND_INDEX_COUNT = static_cast<s32>(PLAYER_SOUND_INDEX_e::COUNT);
+    static constexpr s32 cNumPlyType = static_cast<s32>(ESnd_PlyType::COUNT);
 
 public:
     // Structors
@@ -112,7 +111,7 @@ public:
         nw4r::snd::SoundArchivePlayer& soundArchivePlayer
     )
         : NMSndObject<4>(soundArchivePlayer)
-        , mPlayerSndIndex(PLAYER_SOUND_INDEX_e::COUNT)
+        , mPlayerSndIndex(ESnd_PlyType::COUNT)
         , mSoundPlyMode(6)
         , m0xB4(0) {}
 
@@ -151,16 +150,16 @@ public:
     nw4r::snd::SoundHandle* startFootSound(u32 soundId, f32 param2, u32 remoteMask);
 
     /* 0x8019AAB0 */
-    nw4r::snd::SoundHandle* startVoiceSound(PLAYER_VOICE_e voice, u32 remoteMask);
+    nw4r::snd::SoundHandle* startVoice(ESnd_C_Voice voice, u32 remoteMask);
 
     /* 0x8019ABB0 */
-    nw4r::snd::SoundHandle* holdVoiceSound(PLAYER_VOICE_e voice, u32 remoteMask);
+    nw4r::snd::SoundHandle* holdVoice(ESnd_C_Voice voice, u32 remoteMask);
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0xAC */ PLAYER_SOUND_INDEX_e mPlayerSndIndex;
-    /* 0xB0 */ s32                  mSoundPlyMode;
-    /* 0xB4 */ u8                   m0xB4;
+    /* 0xAC */ ESnd_PlyType mPlayerSndIndex;
+    /* 0xB0 */ s32          mSoundPlyMode;
+    /* 0xB4 */ u8           m0xB4;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_base.h"
-#include "f_list.h"
+#include "f_line.h"
 #include "m_angle.h"
 #include "m_mtx.h"
 #include "m_vec.h"
@@ -244,7 +244,7 @@ private:
     /**
      * The node in m_actorManage.
      */
-    /* 0x070 */ fLiNdBa_c mLinkActor;
+    /* 0x070 */ fLiNdBaLink_c mLinkActor;
 
 public:
     /**

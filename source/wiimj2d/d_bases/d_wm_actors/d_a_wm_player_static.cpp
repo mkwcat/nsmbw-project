@@ -47,7 +47,7 @@ const char* daWmPlayer_c::getSkeletonRoot(
 }
 
 [[nsmbw(0x80100C50)]]
-dWmSeManager_c::WmPlyVoice_e daWmPlayer_c::getCourseInVoiceId(
+dWmSeManager_c::CourseSelectVoiceID_e daWmPlayer_c::getCourseInVoiceId(
     int node
 ) {
     int subPlayerCount = getSubPlayerNum();
@@ -60,11 +60,11 @@ dWmSeManager_c::WmPlyVoice_e daWmPlayer_c::getCourseInVoiceId(
                 stageType, dWmLib::StageType_e::GHOST, dWmLib::StageType_e::TOWER,
                 dWmLib::StageType_e::CASTLE, dWmLib::StageType_e::DOOMSHIP
             )) {
-            return dWmSeManager_c::WmPlyVoice_e::COURSE_IN_HARD;
+            return dWmSeManager_c::CourseSelectVoiceID_e::COURSE_IN_HARD;
         }
-        return dWmSeManager_c::WmPlyVoice_e::COURSE_IN;
+        return dWmSeManager_c::CourseSelectVoiceID_e::COURSE_IN;
     }
-    return dWmSeManager_c::WmPlyVoice_e::COURSE_IN_MULTI;
+    return dWmSeManager_c::CourseSelectVoiceID_e::COURSE_IN_MULTI;
 }
 
 [[nsmbw(0x801011A0)]]

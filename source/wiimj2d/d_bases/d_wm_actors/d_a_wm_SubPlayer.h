@@ -15,7 +15,6 @@ public:
     // Constants and Types
     // ^^^^^^
 
-    /* @unofficial */
     class NodeTrailBase_c {
         SIZE_ASSERT(0xC);
 
@@ -57,7 +56,6 @@ public:
         /* 0x8 */ Node_s* mpNodes;
     };
 
-    /* @unofficial */
     class NodeTrail_c : public NodeTrailBase_c {
         SIZE_ASSERT(0x14);
 

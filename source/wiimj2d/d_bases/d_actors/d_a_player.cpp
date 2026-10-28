@@ -10,6 +10,7 @@
 #include "d_bc.h"
 #include "d_bg.h"
 #include "d_bg_gm.h"
+#include "d_cc.h"
 #include "d_fader.h"
 #include "d_gamerule.h"
 #include "d_mj2d_game.h"
@@ -24,7 +25,7 @@
 bool dAcPy_c::setHipAttackAction();
 
 [[nsmbw(0x801420B0)]]
-void dAcPy_c::getCcBounds(sRangeDataF* bounds);
+void dAcPy_c::getSpinLiftUpCcDat(sCcSizeF* bounds);
 
 [[nsmbw(0x801275B0)]]
 float dAcPy_c::getJumpSpeed();
@@ -86,48 +87,54 @@ void dAcPy_c::clearSpinLiftUpReserve();
 
 [[nsmbw(0x8012E330)]]
 void dAcPy_c::setSpinLiftUpReserve() {
-    if (!isStatus(122) && !isDemo() && !isCarry() && !isStatus(Status_e::OUT_OF_PLAY) &&
-        !isStatus(Status_e::STUNNED) && !isStatus(Status_e::QUAKE)) {
-        dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
-        if (actor != nullptr && actor->isSpinLiftUpEnable()) {
-            mCarryActorID = actor->mUniqueID;
-            m0x27E0       = 0;
-            mPyMdlMng.mModel->mVisibilityFlags |= 4;
-            if (dAcPy_c* player = actor->castToPlayer()) {
-                mPyMdlMng.mModel->mpSpinLiftParentMdl = player->getModel();
-            }
-            changeState(StateID_LiftUp, 0);
-            dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
-            actor->setSpinLiftUpActor(this);
-        } else if (dGameRule_s::current.liftable_tiles && mAttCc1.mCcData.mAttack == 18 &&
-                   mKey.buttonOne()) {
-            // No actor found to lift
-            // Get foot sensor position
-            float footY = getFootBgPointData()->mOffsetY / 4096.0;
-            u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
-            u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
-            if (u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(bgX, bgY, mLayer, nullptr, false);
-                *tileBelow > 0) {
-                // We're standing on a tile, clone it
-                dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
-                mCarryActorID    = liftBg->mUniqueID;
-                m0x27E0          = 0;
-                mPyMdlMng.mModel->mVisibilityFlags |= 4;
-                changeState(StateID_LiftUp, 0);
-                dQuake_c::m_instance->shockMotor(
-                    mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false
-                );
-                liftBg->setSpinLiftUpActor(this);
-
-                // Duplicate the tile on layer 0
-                // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
-
-                // Delete the tile we're standing on
-                dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
-            }
-        }
-        clearSpinLiftUpReserve();
+    if (!(!isStatus(122) && !isDemo() && !isCarry() && !isStatus(Status_e::OUT_OF_PLAY) &&
+          !isStatus(Status_e::STUNNED) && !isStatus(Status_e::QUAKE))) {
+        return;
     }
+
+    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
+    if (actor != nullptr && actor->isSpinLiftUpEnable()) {
+        mCarryActorID = actor->mUniqueID;
+        m0x27E0       = 0;
+        mPyMdlMng.mModel->mVisibilityFlags |= 4;
+        if (dAcPy_c* player = actor->castToPlayer()) {
+            mPyMdlMng.mModel->mpSpinLiftParentMdl = player->getModel();
+        }
+        changeState(StateID_LiftUp, 0);
+        dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
+        actor->setSpinLiftUpActor(this);
+        return clearSpinLiftUpReserve();
+    }
+
+    if (!(dGameRule_s::current.liftable_tiles && mAttCc1.mCcData.mAttack == 18 &&
+          mKey.buttonOne())) {
+        return clearSpinLiftUpReserve();
+    }
+
+    // No actor found to lift
+    // Get foot sensor position
+    float footY = getFootBgPointData()->mOffsetY / 4096.0;
+    u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
+    u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
+    if (u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(bgX, bgY, mLayer, nullptr, false);
+        *tileBelow > 0) {
+        // We're standing on a tile, clone it
+        dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
+        mCarryActorID    = liftBg->mUniqueID;
+        m0x27E0          = 0;
+        mPyMdlMng.mModel->mVisibilityFlags |= 4;
+        changeState(StateID_LiftUp, 0);
+        dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
+        liftBg->setSpinLiftUpActor(this);
+
+        // Duplicate the tile on layer 0
+        // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
+
+        // Delete the tile we're standing on
+        dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
+    }
+
+    return clearSpinLiftUpReserve();
 }
 
 [[nsmbw(0x8012E650)]]
@@ -220,7 +227,7 @@ bool dAcPy_c::setBalloonInDispOutBase(
     DamageType_e damageType = DamageType_e::FALL_DOWN;
 
     if (type == 2 || type == 0) {
-        playVoice(SndObjctPly::PLAYER_VOICE_e::SCROLL_OUT, 0);
+        startVoicePlayer(SndObjctPly::ESnd_C_Voice::SCROLL_OUT, SoundOffCheck_e(0));
         dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
         damageType = DamageType_e::SCROLL_OUT;
