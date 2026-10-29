@@ -1,0 +1,569 @@
+#pragma once
+
+#include <cassert>
+#include <cstring>
+#include <initializer_list>
+#include <optional>
+#include <type_traits>
+
+namespace std {
+
+template <class T, size_t N>
+class inplace_vector {
+public:
+    // Type Aliases
+    // ^^^^^^
+
+    using value_type      = T;
+    using pointer         = T*;
+    using const_pointer   = const T*;
+    using reference       = value_type&;
+    using const_reference = const value_type&;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+
+    // Use pointers as iterators for now
+    using iterator        = pointer;
+    using const_iterator  = const_pointer;
+
+public:
+    // Instance Variables
+    // ^^^^^^
+
+    char      m_memory[N][sizeof(value_type)];
+    pointer   m_constexpr_data;
+    size_type m_size = 0;
+
+private:
+    // Internal Methods
+    // ^^^^^^
+
+    [[gnu::always_inline]]
+    constexpr void internal_initialize() {
+        if (!is_constant_evaluated()) {
+            return;
+        }
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < sizeof(value_type); j++) {
+                m_memory[i][j] = 0;
+            }
+        }
+        m_constexpr_data = nullptr;
+    }
+
+    [[gnu::always_inline]]
+    constexpr void internal_construct(
+        size_type index
+    ) {
+        if (is_constant_evaluated() && index == 0) {
+            m_constexpr_data = new (m_memory[index]) value_type();
+        } else {
+            new (m_memory[index]) value_type();
+        }
+    }
+
+    template <class... Args>
+    [[gnu::always_inline]]
+    constexpr void internal_construct(
+        size_type index, Args... args
+    ) {
+        if (is_constant_evaluated() && index == 0) {
+            m_constexpr_data = new (m_memory[index]) value_type(args...);
+        } else {
+            new (m_memory[index]) value_type(forward<Args...>(args...));
+        }
+    }
+
+    [[gnu::always_inline]]
+    constexpr void internal_destruct(
+        size_type index
+    ) {
+        [[assume(index < m_size)]];
+        if constexpr (!is_trivially_destructible_v<value_type>) {
+            operator[](index).~value_type();
+        }
+    }
+
+    constexpr void internal_move_forward(
+        size_type index, size_type n
+    ) {
+        if (!is_constant_evaluated() && is_trivially_copyable_v<value_type> &&
+            is_trivially_move_constructible_v<value_type>) {
+            if (index != m_size) {
+                memmove(
+                    m_memory[index + n], m_memory[index], (m_size - index) * sizeof(value_type)
+                );
+            }
+        } else {
+            for (size_type i = index + n - 1; i >= index; i--) {
+                internal_construct(i + n, move_if_noexcept(operator[](i)));
+                internal_destruct(i);
+            }
+        }
+        m_size += n;
+    }
+
+    constexpr void internal_move_backward(
+        size_type index, size_type n
+    ) {
+        if (!is_constant_evaluated() && is_trivially_copyable_v<value_type> &&
+            is_trivially_move_constructible_v<value_type>) {
+            memmove(m_memory[index - n], m_memory[index], (m_size - index) * sizeof(value_type));
+        } else {
+            for (size_type i = index - n; i < index; i++) {
+                internal_destruct(i);
+                internal_construct(i, move_if_noexcept(operator[](i + n)));
+                internal_destruct(i + n);
+            }
+        }
+        m_size -= n;
+    }
+
+public:
+    // Structors
+    // ^^^^^^
+
+    constexpr inplace_vector() noexcept { internal_initialize(); }
+
+    constexpr explicit inplace_vector(
+        size_type n
+    )
+        : m_size(n) {
+        assert(n <= N);
+
+        internal_initialize();
+        for (size_type i = 0; i < n; i++) {
+            internal_construct(i);
+        }
+    }
+
+    constexpr inplace_vector(
+        size_type n, const T& value
+    )
+        : m_size(n) {
+        assert(n <= N);
+
+        internal_initialize();
+        for (size_type i = 0; i < n; i++) {
+            internal_construct<const value_type&>(i, value);
+        }
+    }
+
+    template <class InputIter>
+    constexpr inplace_vector(
+        InputIter first, InputIter last
+    ) {
+        size_t n = distance(first, last);
+        if (n == 0) {
+            return;
+        }
+        internal_initialize();
+        for (size_type i = 0; i < n; i++) {
+            internal_construct<const value_type&>(i, *first++);
+        }
+    }
+
+    constexpr inplace_vector(
+        const inplace_vector& other
+    ) {
+        operator=(other);
+    }
+
+    constexpr inplace_vector(
+        inplace_vector&& other
+    ) noexcept(N == 0 || is_nothrow_move_constructible_v<T>) {
+        operator=(other);
+    }
+
+    constexpr inplace_vector(initializer_list<T> il);
+
+    constexpr ~inplace_vector() {
+        if constexpr (!is_trivially_destructible_v<value_type>) {
+            for (size_type i = 0; i < m_size; i++) {
+                internal_destruct(i);
+            }
+        }
+    }
+
+    constexpr inplace_vector& operator=(
+        const inplace_vector& other
+    ) {
+        if (m_size = other.size(); m_size == 0) {
+            return *this;
+        }
+        if (!is_constant_evaluated() && is_trivially_copyable_v<value_type>) {
+            memcpy(m_memory, other.m_memory, m_size);
+        } else {
+            for (size_type i = 0; i < m_size; i++) {
+                internal_construct<const value_type&>(i, other[i]);
+            }
+        }
+        return *this;
+    }
+
+    constexpr inplace_vector& operator=(
+        inplace_vector&& other
+    ) noexcept(N == 0 || (is_nothrow_move_assignable_v<T> && is_nothrow_move_constructible_v<T>)) {
+        if (m_size = other.size(); m_size == 0) {
+            return *this;
+        }
+        if (!is_constant_evaluated() && is_trivially_copyable_v<value_type>) {
+            memcpy(m_memory, other.m_memory, m_size);
+        } else {
+            for (size_type i = 0; i < m_size; i++) {
+                internal_construct(i, move_if_noexcept(other[i]));
+            }
+        }
+    }
+
+    constexpr inplace_vector& operator=(initializer_list<T>);
+    template <class InputIter>
+    constexpr void assign(InputIter first, InputIter last);
+    constexpr void assign(size_type n, const T& u);
+    constexpr void assign(initializer_list<T> il);
+
+public:
+    // Iterators
+    // ^^^^^^
+
+    constexpr iterator begin() noexcept { return data(); }
+
+    constexpr const_iterator begin() const noexcept { return data(); }
+
+    constexpr iterator end() noexcept { return data() + m_size; }
+
+    constexpr const_iterator end() const noexcept { return data() + m_size; }
+
+    // constexpr reverse_iterator rbegin() noexcept;
+    // constexpr const_reverse_iterator rbegin() const noexcept;
+    // constexpr reverse_iterator rend() noexcept;
+    // constexpr const_reverse_iterator rend() const noexcept;
+
+    constexpr const_iterator cbegin() const noexcept { return data(); }
+
+    constexpr const_iterator cend() const noexcept { return data() + m_size; }
+
+    // constexpr const_reverse_iterator crbegin() const noexcept;
+    // constexpr const_reverse_iterator crend() const noexcept;
+
+public:
+    // Capacity
+    // ^^^^^^
+
+    constexpr bool empty() const noexcept { return m_size == 0; }
+
+    constexpr size_type size() const noexcept { return m_size; }
+
+    static constexpr size_type max_size() noexcept { return N; }
+
+    static constexpr size_type capacity() noexcept { return N; }
+
+    constexpr void resize(
+        size_type count
+    ) {
+        for (size_type i = m_size; i < count; i++) {
+            internal_construct(i);
+        }
+        for (size_type i = count; i < m_size; i++) {
+            internal_destruct(i);
+        }
+        m_size = count;
+    }
+
+    constexpr void resize(
+        size_type count, const value_type& value
+    ) {
+        for (size_type i = m_size; i < count; i++) {
+            internal_construct<const value_type&>(i, value);
+        }
+        for (size_type i = count; i < m_size; i++) {
+            internal_destruct(i, value);
+        }
+        m_size = count;
+    }
+
+    static constexpr void reserve(
+        size_type new_cap
+    ) {
+        assert(new_cap <= capacity());
+    }
+
+    static constexpr void shrink_to_fit() noexcept {}
+
+public:
+    // Element access
+    // ^^^^^^
+    constexpr reference operator[](
+        size_type n
+    ) {
+        return data()[n];
+    }
+
+    constexpr const_reference operator[](
+        size_type n
+    ) const {
+        return data()[n];
+    }
+
+    constexpr reference at(
+        size_type n
+    ) {
+        return data()[n];
+    }
+
+    constexpr const_reference at(
+        size_type n
+    ) const {
+        return data()[n];
+    }
+
+    constexpr reference front() { return *begin(); }
+
+    constexpr const_reference front() const { return *begin(); }
+
+    constexpr reference back() { return *(end() - 1); }
+
+    constexpr const_reference back() const { return *(end() - 1); }
+
+public:
+    // Data access
+    // ^^^^^^
+    constexpr T* data() noexcept {
+        if (!is_constant_evaluated()) {
+            return reinterpret_cast<value_type*>(m_memory);
+        }
+        return m_size == 0 ? nullptr : m_constexpr_data;
+    }
+
+    constexpr const T* data() const noexcept {
+        if (!is_constant_evaluated()) {
+            return reinterpret_cast<const value_type*>(m_memory);
+        }
+        return m_size == 0 ? nullptr : m_constexpr_data;
+    }
+
+public:
+    // Modifiers
+    // ^^^^^^
+
+    template <class... Args>
+    [[gnu::always_inline]]
+    constexpr reference emplace_back(
+        Args&&... args
+    ) {
+        assert(m_size < N);
+        size_type index = m_size++;
+        internal_construct<Args...>(index, forward<Args>(args)...);
+        return operator[](index);
+    }
+
+    [[gnu::always_inline]]
+    constexpr reference push_back(
+        const T& x
+    ) {
+        assert(m_size < N);
+        size_type index = m_size++;
+        internal_construct<const value_type&>(index, x);
+        return operator[](index);
+    }
+
+    [[gnu::always_inline]]
+    constexpr reference push_back(
+        T&& x
+    ) {
+        assert(m_size < N);
+        size_type index = m_size++;
+        internal_construct<value_type&&>(index, forward<T&&>(x));
+        return operator[](index);
+    }
+
+    // template <container-compatible-range<T> R>
+    // constexpr void append_range(R&& rg);
+
+    [[gnu::always_inline]]
+    constexpr void pop_back() {
+        assert(m_size != 0);
+        internal_destruct(m_size--);
+    }
+
+    template <class... Args>
+    [[gnu::always_inline]]
+    constexpr optional<reference> try_emplace_back(
+        Args&&... args
+    ) {
+        if (m_size < N) {
+            return nullopt;
+        }
+        size_type index = m_size++;
+        internal_construct<Args...>(index, forward<Args>(args)...);
+        return operator[](index);
+    }
+
+    [[gnu::always_inline]]
+    constexpr optional<reference> try_push_back(
+        const T& value
+    ) {
+        if (m_size < N) {
+            return nullopt;
+        }
+        size_type index = m_size++;
+        internal_construct<const value_type&>(index, value);
+        return operator[](index);
+    }
+
+    [[gnu::always_inline]]
+    constexpr optional<reference> try_push_back(
+        T&& value
+    ) {
+        if (m_size < N) {
+            return nullopt;
+        }
+        size_type index = m_size++;
+        internal_construct<value_type&&>(index, forward<T&&>(value));
+        return operator[](index);
+    }
+
+    template <class... Args>
+    [[gnu::always_inline]]
+    constexpr reference unchecked_emplace_back(
+        Args&&... args
+    ) {
+        size_type index = m_size++;
+        internal_construct<Args...>(index, forward<Args>(args)...);
+        return operator[](index);
+    }
+
+    [[gnu::always_inline]]
+    constexpr reference unchecked_push_back(
+        const T& value
+    ) {
+        size_type index = m_size++;
+        internal_construct<const T&>(index, value);
+        return operator[](index);
+    }
+
+    [[gnu::always_inline]]
+    constexpr reference unchecked_push_back(
+        T&& value
+    ) {
+        size_type index = m_size++;
+        internal_construct<T&&>(index, forward<T&&>(value));
+        return operator[](index);
+    }
+
+    template <class... Args>
+    constexpr iterator emplace(const_iterator position, Args&&... args);
+
+    constexpr iterator insert(
+        const_iterator position, const T& value
+    ) {
+        assert(position >= begin() && position <= end() && m_size < capacity());
+
+        size_type index = position - begin();
+        internal_move_forward(index, 1);
+        internal_construct<const value_type&>(index, value);
+        return data() + index;
+    }
+
+    constexpr iterator insert(
+        const_iterator position, T&& value
+    ) {
+        assert(position >= begin() && position <= end() && m_size < capacity());
+
+        size_type index = position - begin();
+        internal_move_forward(index, 1);
+        internal_construct<value_type&&>(index, forward<value_type&&>(value));
+        return data() + index;
+    }
+
+    constexpr iterator insert(
+        const_iterator position, size_type n, const T& value
+    ) {
+        if (n == 0) {
+            return;
+        }
+        assert(position >= begin() && position <= end() && m_size + n <= capacity());
+
+        size_type index = position - begin();
+        internal_move_forward(index, n);
+        for (size_type i = index; i < n; i++) {
+            internal_construct<value_type&&>(i, forward<value_type&&>(value));
+        }
+        return data() + index;
+    }
+
+    template <class InputIter>
+    constexpr iterator insert(
+        const_iterator position, InputIter first, InputIter last
+    ) {
+        size_type n = distance(first, last);
+        if (n == 0) {
+            return;
+        }
+        assert(position >= begin() && position <= end() && m_size + n <= capacity());
+
+        size_type index = position - begin();
+        internal_move_forward(index, n);
+        for (size_type i = index; i < n; i++) {
+            internal_construct<const value_type&>(i, *first++);
+        }
+        return data() + index;
+    }
+
+    // template <container-compatible-range<T> R>
+    // constexpr iterator insert_range(const_iterator position, R&& rg);
+    constexpr iterator insert(const_iterator position, initializer_list<T> il);
+
+    constexpr iterator erase(
+        const_iterator position
+    ) {
+        assert(position >= begin() && position <= end() && m_size != 0);
+
+        size_type index = position - begin();
+        internal_move_backward(index + 1, 1);
+        return position < end() ? const_cast<iterator>(position) : end();
+    }
+
+    constexpr iterator erase(
+        const_iterator first, const_iterator last
+    ) {
+        size_type n = distance(first, last);
+        if (n == 0) {
+            return const_cast<iterator>(last);
+        }
+        assert(first >= begin() && last <= end() && m_size != 0);
+
+        size_type index = first - begin();
+        internal_move_backward(index + n, n);
+        return first < end() ? const_cast<iterator>(first) : end();
+    }
+
+    // constexpr void swap(
+    //    inplace_vector& x
+    // ) noexcept(N == 0 || (is_nothrow_swappable_v<T> && is_nothrow_move_constructible_v<T>) );
+
+    constexpr void clear() noexcept { resize(0); }
+
+    friend constexpr bool operator==(const inplace_vector& x, const inplace_vector& y);
+
+    // friend constexpr auto operator<=>(
+    //     const inplace_vector& x, const inplace_vector& y
+    // )
+    //     requires requires(const T t) { /*synth-three-way*/
+    //                                    (t, t);
+    //     }
+    // {
+    //     return lexicographical_compare_three_way(
+    //         x.begin(), x.end(), y.begin(), y.end(),
+    //         /*synth-three-way*/
+    //     );
+    // }
+
+    // friend constexpr void swap(inplace_vector& x, inplace_vector& y) noexcept(
+    //     N == 0 || (is_nothrow_swappable_v<T> && is_nothrow_move_constructible_v<T>))
+    // {
+    //     x.swap(y);
+    // }
+};
+} // namespace std

@@ -12,7 +12,9 @@ namespace cJson {
 
 class HandlerIf_c {
 public:
-    virtual bool null() = 0;
+    ~HandlerIf_c() {}
+
+    virtual bool null() { return false; }
 
     virtual bool value(
         bool number
@@ -20,15 +22,43 @@ public:
         return value(s64(number));
     }
 
-    virtual bool value(s64 number)               = 0;
-    virtual bool value(double number)            = 0;
-    virtual bool rawNumber(std::string_view str) = 0;
-    virtual bool string(std::string_view str)    = 0;
-    virtual bool key(std::string_view str)       = 0;
-    virtual bool startObject()                   = 0;
-    virtual bool endObject()                     = 0;
-    virtual bool startArray()                    = 0;
-    virtual bool endArray()                      = 0;
+    virtual bool value(
+        s64 number
+    ) {
+        return false;
+    }
+
+    virtual bool value(
+        double number
+    ) {
+        return false;
+    }
+
+    virtual bool rawNumber(
+        std::string_view str
+    ) {
+        return false;
+    }
+
+    virtual bool string(
+        std::string_view str
+    ) {
+        return false;
+    }
+
+    virtual bool key(
+        std::string_view str
+    ) {
+        return false;
+    }
+
+    virtual bool startObject() { return false; }
+
+    virtual bool endObject() { return false; }
+
+    virtual bool startArray() { return false; }
+
+    virtual bool endArray() { return false; }
 };
 
 using ReadMethod  = int (*)(void* buffer, std::size_t size, void* userData);

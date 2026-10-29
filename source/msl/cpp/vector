@@ -10,7 +10,8 @@
 
 namespace std {
 
-template <class T, class Allocator = allocator<T>> class vector {
+template <class T, class Allocator = allocator<T>>
+class vector {
     static_assert(
         is_copy_assignable_v<T> && is_copy_constructible_v<T>, "vector requires T to be copyable"
     );
@@ -377,7 +378,8 @@ constexpr bool operator==(
     return lhs.size() == rhs.size() && equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
-template <> class vector<bool> {
+template <>
+class vector<bool> {
     vector(...) = delete ("Please do not use vector<bool> because it sucks (read the standard "
                           "for more information)");
 };

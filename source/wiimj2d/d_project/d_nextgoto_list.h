@@ -2,8 +2,8 @@
 
 #include "c_json.h"
 #include "c_random.h"
+#include <inplace_vector>
 #include <string_view>
-#include <vector>
 
 struct dNextGotoEntry_s {
     SIZE_ASSERT(sizeof(u32));
@@ -16,7 +16,12 @@ struct dNextGotoEntry_s {
     u32 group_end   : 1;
 };
 
-class dNextGotoList_c final : private cJson::HandlerIf_c, public std::vector<dNextGotoEntry_s> {
+enum {
+    MAX_NEXTGOTO_ENTRY = 800,
+};
+
+class dNextGotoList_c final : private cJson::HandlerIf_c,
+                              public std::inplace_vector<dNextGotoEntry_s, MAX_NEXTGOTO_ENTRY> {
 public:
     // Type Aliases
     // ^^^^^^
@@ -65,14 +70,14 @@ private:
         STAGE,
         COURSE,
         GROUP,
-    } m_state                          = State_e::NONE,
-      m_nextState                      = State_e::NONE;
+    } m_state                                                      = State_e::NONE,
+      m_nextState                                                  = State_e::NONE;
 
-    Entry_s            m_entry         = {};
-    bool               m_groupHasEntry = false;
+    Entry_s                                        m_entry         = {};
+    bool                                           m_groupHasEntry = false;
 
-    std::vector<Index> m_lookupTable;
-    s32                m_seed = 0;
+    std::inplace_vector<Index, MAX_NEXTGOTO_ENTRY> m_lookupTable;
+    s32                                            m_seed = 0;
 
 public:
     // Static Methods
@@ -87,8 +92,8 @@ public:
     // Static Variables
     // ^^^^^^
 
-    static dNextGotoList_c     ms_instance;
-    static std::vector<Index>& ms_lookup;
+    static dNextGotoList_c                                 ms_instance;
+    static std::inplace_vector<Index, MAX_NEXTGOTO_ENTRY>& ms_lookup;
 
 private:
     // JSON interface
@@ -120,8 +125,8 @@ private:
     bool endArray() override;
 };
 
-constinit inline std::vector<dNextGotoList_c::Index>& dNextGotoList_c::ms_lookup =
-    dNextGotoList_c::ms_instance.m_lookupTable;
+constinit inline std::inplace_vector<dNextGotoList_c::Index, MAX_NEXTGOTO_ENTRY>&
+    dNextGotoList_c::ms_lookup = dNextGotoList_c::ms_instance.m_lookupTable;
 
 class dNextGotoList_c::Randomizer_c final {
 public:
@@ -147,16 +152,16 @@ private:
     // Instance Variables
     // ^^^^^^
 
-    const Index                m_inputCount;
-    Entry_s* const             m_pInput;
+    const Index                                            m_inputCount;
+    Entry_s* const                                         m_pInput;
 
-    std::vector<LookupEntry_s> m_entList;
-    std::vector<LookupEntry_s> m_excEntList;
+    std::inplace_vector<LookupEntry_s, MAX_NEXTGOTO_ENTRY> m_entList;
+    std::inplace_vector<LookupEntry_s, MAX_NEXTGOTO_ENTRY> m_excEntList;
 
-    Index                      m_curGroupEnd;
-    Index                      m_lastEntrance;
+    Index                                                  m_curGroupEnd;
+    Index                                                  m_lastEntrance;
 
-    Index*                     m_pEntryLookup;
+    Index*                                                 m_pEntryLookup;
 
-    cRandom_c                  m_rnd;
+    cRandom_c                                              m_rnd;
 };

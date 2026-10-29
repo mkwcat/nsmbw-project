@@ -88,7 +88,7 @@ void dNextGotoList_c::randomize(
 ) {
     m_seed = seed;
     m_lookupTable.clear();
-    m_lookupTable.resize(size(), Index());
+    m_lookupTable.resize(size());
     Randomizer_c rndizer(
         data(), static_cast<Index>(size()), m_lookupTable.data(),
         cRandom_c(static_cast<u32>(m_seed))
