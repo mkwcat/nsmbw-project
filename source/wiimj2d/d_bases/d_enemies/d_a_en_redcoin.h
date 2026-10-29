@@ -30,16 +30,16 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x66C);
+    u8 FILL(0x524, 0x66C);
 
     /* 0x66C */ int mItemType;
 
-    FILL(0x670, 0x67C);
+    u8 FILL(0x670, 0x67C);
 
     /* 0x67C */ int REMOVED(mPlyItemSpawnMode)[4];
     /* 0x68C */ int REMOVED(mPlyItem)[4];
 
-    FILL(0x69C, 0x6A8);
+    u8 FILL(0x69C, 0x6A8);
     OFFSET_ASSERT(0x6A8);
 
 #define OFFSET_mPlyItemSpawnMode 0x6A8

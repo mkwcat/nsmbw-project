@@ -36,15 +36,15 @@ public:
     /* 0x6B4 */ void*            m_pResFile;
     /* 0x6B8 */ m3d::mdl_c       m_model;
 
-    FILL(0x6F8, 0x732);
+    u8 FILL(0x6F8, 0x732);
 
     /* 0x732 */ s8 m0x732;
 
-    FILL(0x733, 0x737);
+    u8 FILL(0x733, 0x737);
 
     /* 0x737 */ s8 m0x737;
 
-    FILL(0x738, 0x73C);
+    u8 FILL(0x738, 0x73C);
 
     /* 0x73C */ int m0x73C;
     /* 0x740 */ int m0x740;
@@ -52,7 +52,7 @@ public:
     /* 0x748 */ s8  REMOVED(m0x748)[4];
     /* 0x74C */ s8  REMOVED(m0x74C)[4];
 
-    FILL(0x750, 0x758);
+    u8 FILL(0x750, 0x758);
     OFFSET_ASSERT(0x758);
 
     // Instance Variables

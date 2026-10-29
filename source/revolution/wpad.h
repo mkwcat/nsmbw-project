@@ -435,70 +435,31 @@ struct WPADAccGravityUnit {
 // Functions
 // ^^^^^^
 
-/* 0x801DDB90 */
 BOOL WPADIsEnabledVSM(void);
-
-/* 0x801DDBA0 */
 BOOL WPADIsEnabledTRN(void);
-
-/* 0x801DDBB0 */
 BOOL WPADIsEnabledGTR(void);
-
-/* 0x801DDBC0 */
 BOOL WPADIsEnabledDRM(void);
-
-/* 0x801DFB90 */
 void WPADInit(void);
-
-/* 0x801DFC00 */
 BOOL WPADStartFastSimpleSync(void);
-
-/* 0x801DFC10 */
 BOOL WPADStopSimpleSync(void);
-
-/* 0x801DFC20 */
 BOOL WPADStartClearDevice(void);
-
-/* 0x801DFC30 */
 WPADSyncDeviceCallback WPADSetSimpleSyncCallback(WPADSyncDeviceCallback pCallback);
-
-/* 0x801DFC40 */
 WPADClearDeviceCallback WPADSetClearDeviceCallback(WPADClearDeviceCallback pCallback);
-
-/* 0x801DFC50 */
 void WPADRegisterAllocator(WPADAllocFunc pAllocFunc, WPADFreeFunc pFreeFunc);
-
-/* 0x801DFC60 */
 u32 WPADGetWorkMemorySize(void);
-
-/* 0x801DFC70 */
 WPADLibStatus WPADGetStatus(void);
-
-/* 0x801DFCD0 */
 u8 WPADGetSensorBarPosition(void);
-
-/* 0x801DFD10 */
 BOOL WPADSetAcceptConnection(BOOL accept);
-
 void WPADGetAccGravityUnit(WPADChannel chan, u32 type, WPADAccGravityUnit* pAcc);
-
-/* 0x801E0F80 */
 void WPADDisconnect(WPADChannel chan);
-
-/* 0x801E1080 */
 WPADResult WPADProbe(WPADChannel chan, u32* pDevType);
-
 WPADSamplingCallback WPADSetSamplingCallback(WPADChannel chan, WPADSamplingCallback pCallback);
 WPADConnectCallback WPADSetConnectCallback(WPADChannel chan, WPADConnectCallback pCallback);
 WPADExtensionCallback WPADSetExtensionCallback(WPADChannel chan, WPADExtensionCallback pCallback);
-
 u32 WPADGetDataFormat(WPADChannel chan);
 s32 WPADSetDataFormat(WPADChannel chan, u32 format);
 s32 WPADGetInfoAsync(WPADChannel chan, WPADInfo* pInfo, WPADCallback pCallback);
-
-/* 0x801E1620 */
 void WPADControlMotor(WPADChannel chan, WPADMotorCommand command);
-
 void WPADEnableMotor(BOOL enable);
 BOOL WPADIsMotorEnabled(void);
 s32 WPADControlLed(WPADChannel chan, u8 flags, WPADCallback pCallback);

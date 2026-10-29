@@ -5,7 +5,7 @@
 #include "m_math.h"
 #include <nw4r/g3d/g3d_resmat.h>
 #include <nw4r/g3d/g3d_scnmdlsmpl.h>
-#include <nw4r/math/mtx.h>
+#include <nw4r/math/types.h>
 #include <revolution/gx/GXEnum.h>
 #include <revolution/gx/GXStruct.h>
 

@@ -29,11 +29,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0392, 0x1044);
+    u8 FILL(0x0392, 0x1044);
 
     dRide2Point_c maRide2Point[9];
 
-    FILL(0x1380, 0x1393);
+    u8 FILL(0x1380, 0x1393);
     OFFSET_ASSERT(0x1393);
 
     // /* 0x1393 */ u8 REMOVED(mPlayerRideMask);

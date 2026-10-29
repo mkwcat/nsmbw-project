@@ -48,12 +48,12 @@ public:
     /* 0x210 */ nw4r::g3d::ResFile mCommonAnimResFile;
     /* 0x214 */ nw4r::g3d::ResFile mAnimResFile;
 
-    FILL(0x218, 0x24C);
+    u8 FILL(0x218, 0x24C);
 
     /* 0x24C */ COLOR_e            mColor;
     /* 0x250 */ nw4r::g3d::ResFile mColorResFile;
 
-    FILL(0x254, 0x404);
+    u8 FILL(0x254, 0x404);
 
 public:
     // Static Methods

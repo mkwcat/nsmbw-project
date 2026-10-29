@@ -31,13 +31,13 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x66C);
+    u8 FILL(0x524, 0x66C);
 
     /* 0x66C */ float m0x66C;
     /* 0x670 */ float m0x670;
     /* 0x674 */ float m0x674;
 
-    FILL(0x678, 0x684);
+    u8 FILL(0x678, 0x684);
 
     /* 0x684 */ u8 m0x684;
     /* 0x685 */ u8 m0x685;
@@ -49,7 +49,7 @@ public:
 #endif
     /* 0x68A */ bool REMOVED(m0x68A)[4];
 
-    FILL(0x68E, 0x6A8);
+    u8 FILL(0x68E, 0x6A8);
     OFFSET_ASSERT(0x6A8);
 
 #if PLAYER_COUNT > 7

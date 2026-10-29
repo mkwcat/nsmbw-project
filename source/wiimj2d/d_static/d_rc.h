@@ -55,7 +55,7 @@ public:
     /* 0x0C */ dRide_ctr_c* mpNext;
     /* 0x10 */ dRc_c*       mpChain;
 
-    FILL(0x14, 0x4C);
+    u8 FILL(0x14, 0x4C);
 };
 
 class dRideRoll_c : public dRide_ctr_c {
@@ -74,7 +74,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C, 0x60);
+    u8 FILL(0x4C, 0x60);
 };
 
 class dRide2Point_c : public dRide_ctr_c {
@@ -91,5 +91,5 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C, 0x5C);
+    u8 FILL(0x4C, 0x5C);
 };

@@ -30,11 +30,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x454, 0x54A);
+    u8 FILL(0x454, 0x54A);
 
     /* 0x54A */ short mCurrentAngle;
 
-    FILL(0x54C, 0x560);
+    u8 FILL(0x54C, 0x560);
 };
 
 class daLiftBossRemoconSeesaw_c : public daLiftRemoconSeesaw_c {

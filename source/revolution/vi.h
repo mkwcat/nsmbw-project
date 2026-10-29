@@ -1,8 +1,13 @@
 #pragma once
 
+#include "revolution/types.h"
+
 EXTERN_C_START
 
-/* 0x801BE430 */
+void VIInit(void);
+
+void VISetBlack(BOOL);
+
 int VIEnableDimming(int enable);
 
 bool __VIResetSIIdle();

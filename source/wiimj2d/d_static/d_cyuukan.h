@@ -36,7 +36,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x04);
+    u8 FILL(0x00, 0x04);
 
     /* 0x04 */ int           mIndex;
     /* 0x08 */ mVec3_c       mPlayerSetPos;

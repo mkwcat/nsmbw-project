@@ -157,7 +157,7 @@ private:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x28);
+    u8 FILL(0x00, 0x28);
 
     /* 0x28 */ const SoundArchiveFile::Info*        mInfo;
     /* 0x2C */ const void*                          mStringBase;

@@ -15,7 +15,7 @@
 #include "d_profile.h"
 #include "d_util_disp.h"
 #include <algorithm>
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 
 [[nsmbw(0x807D0070)]]
 daBossKoopaJrDemo_c* daBossKoopaJrDemo_c_classInit() {

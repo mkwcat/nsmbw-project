@@ -2,6 +2,11 @@
 
 #include <revolution/arc.h>
 
+extern "C" {
+int preinit(s32 param1, void* param2);
+int main(int argc, char** argv);
+}
+
 class dProject_c {
 private:
     // Structors
@@ -14,8 +19,8 @@ private:
     // ======
 
     friend int preinit(s32 param1, void* param2);
-    friend int main();
-    static void preCModuleInit(s32 arcEntryNum, ARCHandle* arcHandle);
+    friend int main(int argc, char** argv);
+    static void preCModuleInit(s32 arcEntryNum, void* arcStart);
 
     // Static Variables
     // ======

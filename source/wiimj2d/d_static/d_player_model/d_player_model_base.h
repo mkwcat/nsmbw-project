@@ -179,11 +179,11 @@ public:
     /* 0x020 */ dAcPy_c*      mpOwner;
     /* 0x024 */ dPyMdlBase_c* mpSpinLiftParentMdl;
 
-    FILL(0x028, 0x108);
+    u8 FILL(0x028, 0x108);
 
     /* 0x108 */ mMtx_c mMtx;
 
-    FILL(0x138, 0x150);
+    u8 FILL(0x138, 0x150);
 
     /* 0x150 */ u8  mPlayerNo;
     /* 0x151 */ u8  mCharaID;
@@ -192,14 +192,14 @@ public:
 
     /* 0x154 */ u32 mCurrentAnm;
 
-    FILL(0x158, 0x160);
+    u8 FILL(0x158, 0x160);
 
     /* 0x160 */ u32 mFlags;
     /* 0x164 */ u32 mFlags2;
 
-    FILL(0x168, 0x17C);
+    u8 FILL(0x168, 0x17C);
 
     /* 0x17C */ u32 mVisibilityFlags;
 
-    FILL(0x180, 0x20C);
+    u8 FILL(0x180, 0x20C);
 };

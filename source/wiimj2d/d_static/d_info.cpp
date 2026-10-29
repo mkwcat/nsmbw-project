@@ -40,7 +40,7 @@ dInfo_c::dInfo_c(
     std::memcpy(static_cast<void*>(this), dInfoOld, dInfo_c::ORIGINAL_SIZE);
 }
 
-EXTERN_SYMBOL(0x80315EA0, "__vt__7dInfo_c");
+[[nsmbw_symbol(0x80315EA0, "__vt__7dInfo_c")]];
 
 [[nsmbw(0x800BB180)]]
 void dInfo_c::PlayerStateInit() {
@@ -80,7 +80,7 @@ u8 dInfo_c::getStockItem(
 [[nsmbw(0x800BB410)]]
 void dInfo_c::clsStockItem(int item);
 
-EXTERN_SYMBOL(0x800BB450, "initGame__7dInfo_cFv");
+[[nsmbw_symbol(0x800BB450, "initGame__7dInfo_cFv")]];
 
 [[nsmbw(0x800BB5B0)]]
 void dInfo_c::initMultiMode() {
@@ -113,12 +113,12 @@ void dInfo_c::initMultiMode() {
     }
 }
 
-EXTERN_SYMBOL(0x800BB7D0, "startGame__7dInfo_cFRCQ27dInfo_c15StartGameInfo_s");
+[[nsmbw_symbol(0x800BB7D0, "startGame__7dInfo_cFRCQ27dInfo_c15StartGameInfo_s")]];
 
 [[nsmbw(0x800BB7D0)]]
 void dInfo_c::startGame(const StartGameInfo_s& startGameInfo);
 
-EXTERN_SYMBOL(0x800BB8D0, "startStaffCredit__7dInfo_cFv");
+[[nsmbw_symbol(0x800BB8D0, "startStaffCredit__7dInfo_cFv")]];
 
 [[nsmbw(0x800BB940)]]
 void dInfo_c::initStage() {
@@ -191,11 +191,11 @@ void dInfo_c::SetWorldMapEnemy(int world, int index, const enemy_s& enemy);
 [[nsmbw(0x800BBC00)]]
 const dInfo_c::enemy_s& dInfo_c::GetWorldMapEnemy(int world, int index);
 
-EXTERN_SYMBOL(0x800BBC20, "SetMapEnemyInfo__7dInfo_cFiiii");
+[[nsmbw_symbol(0x800BBC20, "SetMapEnemyInfo__7dInfo_cFiiii")]];
 
-EXTERN_SYMBOL(0x800BBC40, "#0A406FBE");
+[[nsmbw_symbol(0x800BBC40, "#0A406FBE")]];
 
-EXTERN_SYMBOL(0x800BBC60, "GetMapEnemyInfo__7dInfo_cFiiRQ27dInfo_c7enemy_s");
+[[nsmbw_symbol(0x800BBC60, "GetMapEnemyInfo__7dInfo_cFiiRQ27dInfo_c7enemy_s")]];
 
 [[nsmbw(0x800BBCA0)]]
 void dInfo_c::SetIbaraNow(int i, IbaraMode_e mode);
@@ -209,6 +209,6 @@ dInfo_c::IbaraMode_e dInfo_c::GetIbaraNow(int i);
 [[nsmbw(0x800BBCD0)]]
 dInfo_c::IbaraMode_e dInfo_c::GetIbaraOld(int i);
 
-EXTERN_SYMBOL(0x800BBCE0, "__sinit_\\d_info_cpp");
+[[nsmbw_symbol(0x800BBCE0, "__sinit_\\d_info_cpp")]];
 
-EXTERN_SYMBOL(0x800BBD60, "__arraydtor$68604");
+[[nsmbw_symbol(0x800BBD60, "__arraydtor$68604")]];

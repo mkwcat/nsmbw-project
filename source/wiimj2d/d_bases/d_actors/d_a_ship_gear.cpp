@@ -6,7 +6,7 @@
 #include "d_a_player_base.h"
 #include <algorithm>
 #include <iterator>
-#include <mkwcat/VTable.hpp>
+#include <slu/vtable.hpp>
 #include <nw4r/math/triangular.h>
 #include <nw4r/math/types.h>
 
@@ -16,7 +16,7 @@ fBase_c* daShipGear_c_classInit() {
 }
 
 daShipGear_c::daShipGear_c() {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
 }
 
 [[nsmbw(0x808A2380)]]

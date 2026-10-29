@@ -1,7 +1,6 @@
 #pragma once
 
-#include "mtx.h"
-#include "vec.h"
+#include "nw4r/math/types.h"
 
 namespace nw4r::math {
 

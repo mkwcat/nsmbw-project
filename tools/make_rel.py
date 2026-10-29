@@ -2,8 +2,11 @@
 
 import argparse, struct, copy
 from wii_code_tools.lib_wii_code_tools.code_files import rel
-from wii_code_tools.lib_wii_code_tools import nsmbw_constants, address_maps, common
+from wii_code_tools.lib_wii_code_tools import nsmbw_constants, mkw_constants, address_maps, common
 from elftools.elf.elffile import ELFFile
+
+game = "nsmbw"
+default_revision = "P1"
 
 def find_symbol(symtab, name):
     for sym in symtab.iter_symbols():
@@ -69,18 +72,46 @@ def write_rel(rel_file, mod, import_count = None):
             for reloc in imp.relocations:
                 rel_file.write(struct.pack('>HBBI', reloc.offset, reloc.type.value, reloc.section, reloc.addend & 0xFFFFFFFF))
 
+def get_rel_name(module_id):
+    global game
+    if game == "nsmbw":
+        return nsmbw_constants.REL_NAMES[module_id - 1]
+    elif game == "mkw":
+        return mkw_constants.REL_NAMES[module_id - 1]
+
+def get_section_addresses():
+    global game
+    if game == "nsmbw":
+        return nsmbw_constants.SECTION_ADDRESSES
+    elif game == "mkw":
+        return mkw_constants.SECTION_ADDRESSES
+
+def get_r2_r13_values():
+    global game
+    if game == "nsmbw":
+        return nsmbw_constants.R2_R13_VALUES
+    elif game == "mkw":
+        return mkw_constants.R2_R13_VALUES
+
+def get_rel_names():
+    global game
+    if game == "nsmbw":
+        return nsmbw_constants.REL_NAMES
+    elif game == "mkw":
+        return mkw_constants.REL_NAMES
+
 def create_import_table(self_module_id, module_id, imports, out_sections, mapper_from = None, mapper_to = None):
     # Port all addresses in the relocations to the new region
     input_table = imports[module_id]
     if mapper_from is not None and mapper_to is not None and module_id != self_module_id:
         if module_id != 0:
             # Obtain address of import
-            rel_name = nsmbw_constants.REL_NAMES[module_id - 1]
+            rel_name = get_rel_name(module_id)
             target_sections_from = []
             target_sections_to = []
             for section in nsmbw_constants.REL_SECTION_NAMES:
-                target_sections_from.append(nsmbw_constants.SECTION_ADDRESSES[mapper_from.name][rel_name][section][0])
-                target_sections_to.append(nsmbw_constants.SECTION_ADDRESSES[mapper_to.name][rel_name][section][0])
+                target_sections_from.append(get_section_addresses()[mapper_from.name][rel_name][section][0])
+                target_sections_to.append(get_section_addresses()[mapper_to.name][rel_name][section][0])
 
         input_table = copy.deepcopy(input_table)
         for section in input_table:
@@ -127,10 +158,10 @@ def create_import_table(self_module_id, module_id, imports, out_sections, mapper
             if reloc.type == rel.RELRelocationType.R_DOLPHIN_NOP:
                 # Final fix for SDA21 relocations
                 adaptive_reloc.type = rel.RELRelocationType.R_PPC_ADDR16_LO
-                adaptive_reloc.addend = reloc.addend - nsmbw_constants.R2_R13_VALUES[mapper_to.name if mapper_to is not None else 'P1'][1]
+                adaptive_reloc.addend = reloc.addend - get_r2_r13_values()[mapper_to.name if mapper_to is not None else default_revision][1]
             elif reloc.type == rel.RELRelocationType.R_DOLPHIN_END:
                 adaptive_reloc.type = rel.RELRelocationType.R_PPC_ADDR16_LO
-                adaptive_reloc.addend = reloc.addend - nsmbw_constants.R2_R13_VALUES[mapper_to.name if mapper_to is not None else 'P1'][0]
+                adaptive_reloc.addend = reloc.addend - get_r2_r13_values()[mapper_to.name if mapper_to is not None else default_revision][0]
             else:
                 adaptive_reloc.type = rel.RELRelocationType(reloc.type)
                 adaptive_reloc.addend = reloc.addend
@@ -152,7 +183,16 @@ def main():
     parser.add_argument("module_id", type=int, help="The REL module ID")
     parser.add_argument("--imp", help="Port the import table to the specified region and output it as \"<output>.<region>.imp\"", action='append')
     parser.add_argument("--address-map", help="The address map to use when porting the import table (required if --imp is used)", nargs='?')
+    parser.add_argument("--game", help="The game to compile this module for", default="nsmbw")
     args = parser.parse_args()
+
+    global game
+    global default_revision
+    game = args.game
+    if game == "nsmbw":
+        default_revision = "P1"
+    elif game == "mkw":
+        default_revision = "P"
 
     elf = ELFFile(open(args.input, 'rb'))
 
@@ -234,7 +274,6 @@ def main():
                 if corrected_symbol is not None:
                     symbol = corrected_symbol
                     section_index = symbol['st_shndx']
-
             if section_index == 'SHN_UNDEF':
                 section_index = None
                 section = None
@@ -280,7 +319,7 @@ def main():
                     except:
                         print('Warning: Invalid ext symbol name: ' + symbol.name)
                         addr = None
-                elif symbol.name == 'PortRegion__6mkwcat':
+                elif symbol.name == 'port_region__3slu':
                     addr = 0
                 else:
                     print(f"Warning: Relocation to symbol {symbol.name} resolves to an unwritten section {section.name if section is not None else 'None'}")
@@ -304,17 +343,17 @@ def main():
                 relocation.addend = addr
 
                 # Check if the target address is inside a REL
-                for rel_name in nsmbw_constants.SECTION_ADDRESSES['P1']:
+                for rel_name in get_section_addresses()[default_revision]:
                     if rel_name == 'main':
                         continue
-                    rel_sections_info = nsmbw_constants.SECTION_ADDRESSES['P1'][rel_name]
+                    rel_sections_info = get_section_addresses()[default_revision][rel_name]
                     for rel_section_name in nsmbw_constants.REL_SECTION_NAMES:
                         if rel_section_name not in rel_sections_info:
                             continue
                         rel_section_addr = rel_sections_info[rel_section_name][0]
                         rel_section_size = rel_sections_info[rel_section_name][1]
                         if addr >= rel_section_addr and addr < rel_section_addr + rel_section_size:
-                            module_id = nsmbw_constants.REL_NAMES.index(rel_name) + 1
+                            module_id = get_rel_names().index(rel_name) + 1
                             relocation.section = nsmbw_constants.REL_SECTION_NAMES.index(rel_section_name) + 1
                             relocation.addend = addr - rel_section_addr
                             break
@@ -325,8 +364,8 @@ def main():
                     # Use this relocation type to mimick SDA21, patched more later
                     instruction = struct.unpack_from('>I', rel_section.data, relocation.offset-2)[0]
                     # Find if closer to r13 or r2
-                    r2 = nsmbw_constants.R2_R13_VALUES['P1'][0]
-                    r13 = nsmbw_constants.R2_R13_VALUES['P1'][1]
+                    r2 = get_r2_r13_values()[default_revision][0]
+                    r13 = get_r2_r13_values()[default_revision][1]
                     if addr >= r13 - 0x8000 and addr < r13 + 0x8000:
                         reg = 13
                         relocation.type=rel.RELRelocationType.R_DOLPHIN_NOP # Temporary
@@ -355,7 +394,7 @@ def main():
     regional_imports = {}
     for module_id in imports:
         if module_id != args.module_id and args.imp is not None and len(args.imp) > 0:
-            mapper_from = address_map["P1"]
+            mapper_from = address_map[default_revision]
             for region in args.imp:
                 mapper_to = address_map[region]
                 if region not in regional_imports:
@@ -403,6 +442,7 @@ def main():
             for imp in default_imports:
                 rel_file.write(struct.pack('>II', imp.module_num, rel_offset))
                 rel_offset += len(imp.relocations) * 0x8
+            rel_offset = (rel_offset + 31) & ~31
             for size_index, size in enumerate(import_table_sizes):
                 rel_file.write(struct.pack('>II', import_table_module_ids[size_index], rel_offset))
                 rel_offset += size

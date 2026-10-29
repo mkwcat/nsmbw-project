@@ -17,12 +17,12 @@ public:
     dMessageWindow_c();
 
 public:
-    FILL(0x070, 0x254);
+    u8 FILL(0x070, 0x254);
 
     /* 0x254 */ bool mReady;
     /* 0x255 */ bool mVisible;
 
-    FILL(0x256, 0x260);
+    u8 FILL(0x256, 0x260);
 
 public:
     // State IDs

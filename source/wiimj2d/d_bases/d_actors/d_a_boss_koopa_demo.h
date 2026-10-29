@@ -28,11 +28,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x03DC, 0x03E0);
+    u8 FILL(0x03DC, 0x03E0);
 
     /* 0x03E0 */ int m0x03E0;
 
-    FILL(0x03E4, 0x99E4);
+    u8 FILL(0x03E4, 0x99E4);
 
     /* 0x99E4 */ dEf::followEffect_c m_followEffect[1];
     /* 0x9AF8 */ dEf::dLevelEffect_c m_levelEffect[1];
@@ -47,12 +47,12 @@ public:
     /* 0x9C44 */ float               m_curBaseY;
     /* 0x9C48 */ float               m_targetBaseY;
 
-    FILL(0x9C4C, 0x9C54);
+    u8 FILL(0x9C4C, 0x9C54);
 
     /* 0x9C54 */ nw4r::ut::Color m_color[8];
     /* 0x9C74 */ float           m0x9C74[5];
 
-    FILL(0x9C88, 0x9CC4);
+    u8 FILL(0x9C88, 0x9CC4);
 
     /* 0x9CC4 */ float m0x9CC4;
     /* 0x9CC8 */ float m0x9CC8;
@@ -61,7 +61,7 @@ public:
     /* 0x9CD4 */ int   m0x9CD4[4];
     /* 0x9CE4 */ bool  m0x9CE4;
 
-    FILL(0x9CE5, 0x9CE8);
+    u8 FILL(0x9CE5, 0x9CE8);
 
 public:
     // Virtual State IDs

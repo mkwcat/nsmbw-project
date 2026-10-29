@@ -41,5 +41,5 @@ public:
 
     /* 0x392 */ u8 mMaskPlrNo;
 
-    FILL(0x393, 0x510);
+    u8 FILL(0x393, 0x510);
 };

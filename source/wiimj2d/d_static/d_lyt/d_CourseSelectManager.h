@@ -76,16 +76,16 @@ public:
     /* 0x534 */ dMessageWindow_c* mpMessageWindow; // MESSAGE_WINDOW
     /* 0x538 */ dLetterWindow_c*  mpLetterWindow;  // LETTER_WINDOW
 
-    FILL(0x53C, 0x541);
+    u8 FILL(0x53C, 0x541);
 
     /* 0x541 */ bool mContinueActive;
 
-    FILL(0x542, 0x545);
+    u8 FILL(0x542, 0x545);
 
     /* 0x545 */ bool mStartedMsgChange;
     /* 0x546 */ bool mEndedMsgChange;
 
-    FILL(0x547, 0x560);
+    u8 FILL(0x547, 0x560);
 
     /* 0x560 */ PLAYER_MODE_e REMOVED(maPlayerPowerup)[4];
 

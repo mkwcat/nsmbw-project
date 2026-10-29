@@ -1,10 +1,10 @@
 #pragma once
 
-#include "c_array.h"
 #include "d_mj2d_game.h"
 #include "d_player_model_manager.h"
 #include "d_yoshi_model.h"
 #include "f_base_id.h"
+#include "slu/array.hpp"
 
 class dAcPy_c;
 class daYoshi_c;
@@ -241,40 +241,40 @@ public:
     // ^^^^^^
 
     /* 0x80355110 */
-    static cArray_c<fBaseID_e, PLAYER_COUNT, int> m_playerID;
+    static slu::array<fBaseID_e, PLAYER_COUNT, int> m_playerID;
 
     /* 0x80355120 */
-    static cArray_c<fBaseID_e, PLAYER_COUNT, int> m_yoshiID;
+    static slu::array<fBaseID_e, PLAYER_COUNT, int> m_yoshiID;
 
     /* 0x80355130 */
-    static cArray_c<s32, PLAYER_COUNT, int> mCourseInList;
+    static slu::array<s32, PLAYER_COUNT, int> mCourseInList;
 
     /* 0x80355140 */
-    static cArray_c<s32, PLAYER_COUNT, int> m_yoshiFruit;
+    static slu::array<s32, PLAYER_COUNT, int> m_yoshiFruit;
 
     /* 0x80355150 */
-    static cArray_c<s32, PLAYER_COUNT, int> mPlayerEntry;
+    static slu::array<s32, PLAYER_COUNT, int> mPlayerEntry;
 
     /* 0x80355160 */
-    static cArray_c<PLAYER_TYPE_e, PLAYER_COUNT, int> mPlayerType;
+    static slu::array<PLAYER_TYPE_e, PLAYER_COUNT, int> mPlayerType;
 
     /* 0x80355170 */
-    static cEnumArray_c<PLAYER_MODE_e, PLAYER_TYPE_e> mPlayerMode;
+    static slu::enum_array<PLAYER_MODE_e, PLAYER_TYPE_e> mPlayerMode;
 
     /* 0x80355180 */
-    static cEnumArray_c<PLAYER_CREATE_ITEM_e, PLAYER_TYPE_e> mCreateItem;
+    static slu::enum_array<PLAYER_CREATE_ITEM_e, PLAYER_TYPE_e> mCreateItem;
 
     /* 0x80355190 */
-    static cEnumArray_c<int, PLAYER_TYPE_e> mRest;
+    static slu::enum_array<int, PLAYER_TYPE_e> mRest;
 
     /* 0x803551A0 */
-    static cEnumArray_c<int, PLAYER_TYPE_e> mCoin;
+    static slu::enum_array<int, PLAYER_TYPE_e> mCoin;
 
     /* 0x803551B0 */
-    static cArray_c<s32, PLAYER_COUNT, int> m_quakeTimer;
+    static slu::array<s32, PLAYER_COUNT, int> m_quakeTimer;
 
     /* 0x803551C0 */
-    static cArray_c<s32, PLAYER_COUNT, int> m_quakeEffectFlag;
+    static slu::array<s32, PLAYER_COUNT, int> m_quakeEffectFlag;
 
     /* 0x803551E0 */
     static daPyDemoMng_c mDemoManager;
@@ -290,13 +290,13 @@ public:
     static u64 mActPlayerInfo;
 
     /* 0x80429F8C */
-    static cArray_c<u8, PLAYER_COUNT, int> m_yoshiColor;
+    static slu::array<u8, PLAYER_COUNT, int> m_yoshiColor;
 
     /* 0x80429F90 */
-    static cArray_c<u16, PLAYER_COUNT, int> m_star_time;
+    static slu::array<u16, PLAYER_COUNT, int> m_star_time;
 
     /* 0x80429F98 */
-    static cArray_c<u16, PLAYER_COUNT, int> m_star_count;
+    static slu::array<u16, PLAYER_COUNT, int> m_star_count;
 
     /* 0x80429FA0 */
     static int mScore;

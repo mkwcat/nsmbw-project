@@ -4,10 +4,10 @@
 #include "m_pad.h"
 
 #include <egg/core/eggController.h>
-#include <mkwcat/Relocate.hpp>
-#include <mkwcat/ToString.hpp>
 #include <revolution/pad.h>
 #include <revolution/wpad.h>
+#include <slu/relocate.hpp>
+#include <slu/to_string.hpp>
 
 namespace mPad {
 
@@ -249,14 +249,14 @@ void setPlayerOrder(
     auto* prevCore = g_currentCore;
     g_currentCore  = g_core_order[g_currentCoreID];
     if (prevCore != g_currentCore) {
-        OS_REPORT("New current core: %s\n", mkwcat::ToString(order[g_currentCoreID]));
+        OS_REPORT("New current core: %s\n", slu::to_string(order[g_currentCoreID]));
     }
 }
 
 void setPlayerOrder(
     int player, CH_e channel
 ) {
-    OS_REPORT("Register player #%d: %s\n", player, mkwcat::ToString(channel));
+    OS_REPORT("Register player #%d: %s\n", player, slu::to_string(channel));
 
     g_playerChannel[player] = channel;
     g_core_order[player]    = g_core[channel];

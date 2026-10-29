@@ -2,7 +2,7 @@
 
 #include "m_angle.h"
 #include "m_vec.h"
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 
 /**
  * A 3x4 matrix.

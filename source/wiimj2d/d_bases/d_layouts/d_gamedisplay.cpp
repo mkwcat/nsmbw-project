@@ -22,7 +22,7 @@
 #include "m_vec.h"
 #include <algorithm>
 #include <iterator>
-#include <nw4r/lyt/Material.h>
+#include <nw4r/lyt/material.h>
 #include <revolution/os.h>
 
 [[nsmbw_data(0x8042A608)]]

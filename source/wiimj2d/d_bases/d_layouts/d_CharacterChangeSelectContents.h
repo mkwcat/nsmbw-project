@@ -4,7 +4,7 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "s_State.h"
-#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/pane.h>
 
 class dCharacterChangeIndicator_c;
 
@@ -42,7 +42,7 @@ public:
     /* 0x070 */ LytBase_c                    mLayout;
     /* 0x208 */ dCharacterChangeIndicator_c* mpCcIndicator;
 
-    FILL(0x20C, 0x248);
+    u8 FILL(0x20C, 0x248);
 
     /* 0x248 */ nw4r::lyt::Pane*    mpRootPane;
 

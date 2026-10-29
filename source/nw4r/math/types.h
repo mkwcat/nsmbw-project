@@ -1,12 +1,29 @@
 #pragma once
 
+#include <revolution/mtx.h>
+
 namespace nw4r::math {
-[[nsmbw(0x80237D10)]]
-float SinFIdx(float idx);
 
-[[nsmbw(0x80237D80)]]
-float CosFIdx(float idx);
+struct VEC2 : ::Vec2 {
+    constexpr VEC2() {}
+
+    constexpr VEC2(
+        float x, float y
+    )
+        : ::Vec2(x, y) {}
+};
+
+struct VEC3 : ::Vec {
+    constexpr VEC3() {}
+
+    constexpr VEC3(
+        float x, float y, float z
+    )
+        : ::Vec(x, y, z) {}
+};
+
+using MTX33 = float[3][3];
+using MTX34 = Mtx;
+using MTX44 = Mtx44;
+
 } // namespace nw4r::math
-
-#include "mtx.h"
-#include "vec.h"

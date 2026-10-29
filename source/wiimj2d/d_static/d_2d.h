@@ -1,9 +1,9 @@
 #pragma once
 
 #include "m_2d.h"
-#include <nw4r/lyt/DrawInfo.h>
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/ResourceAccessor.h>
+#include <nw4r/lyt/drawInfo.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/resourceAccessor.h>
 
 namespace d2d {
 
@@ -13,9 +13,9 @@ class ResAccMult_c : public nw4r::lyt::ResourceAccessor {
 private:
     SIZE_ASSERT(0xBC);
 
-    FILL(0x00, 0x04);
+    u8                                      FILL(0x00, 0x04);
     /* 0x04 */ nw4r::lyt::ResourceAccessor* mpBase;
-    FILL(0x08, 0xBC);
+    u8                                      FILL(0x08, 0xBC);
 };
 
 class ResAccMultLoader_c : public ResAccMult_c {
@@ -36,7 +36,7 @@ public:
     bool request(const char* path);
 
 public:
-    FILL(0xBC, 0xD4);
+    u8 FILL(0xBC, 0xD4);
 };
 
 class Multi_c : public m2d::Base_c {
@@ -83,12 +83,12 @@ public:
     inline nw4r::lyt::DrawInfo* getDrawInfo() { return &mDrawInfo; }
 
 private:
-    FILL(0x0D, 0x30);
+    u8                             FILL(0x0D, 0x30);
 
     /* 0x30 */ nw4r::lyt::DrawInfo mDrawInfo;
     /* 0x84 */ ResAccMult_c*       mpResAccessor;
 
-    FILL(0x88, 0xAC);
+    u8                             FILL(0x88, 0xAC);
 };
 
 } // namespace d2d

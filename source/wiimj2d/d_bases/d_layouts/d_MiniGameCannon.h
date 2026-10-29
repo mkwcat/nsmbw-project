@@ -128,7 +128,7 @@ public:
     /* 0x2E3 */ bool mCloseOperate;
     /* 0x2E4 */ bool mCloseResult;
 
-    FILL(0x2E5, 0x2E8);
+    u8 FILL(0x2E5, 0x2E8);
 
     // New (added 0xE8 bytes)
     /* 0x2E8 */ nw4r::lyt::Pane*    mpN8pPos[4];   // 0

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "c_array.h"
 #include "d_base.h"
 #include "d_mj2d_game.h"
 #include "m_angle.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
-#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/pane.h>
+#include <slu/array.hpp>
 
 class daWmIsland_c;
 class dWorldSelectGuide_c;
@@ -41,42 +41,42 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x20C);
+    u8                                                 FILL(0x070, 0x20C);
 
-    /* 0x20C */ sStateMgrDefault_c<dWorldSelect_c> m_stateMgr;
+    /* 0x20C */ sStateMgrDefault_c<dWorldSelect_c>     m_stateMgr;
 
-    /* 0x248 */ daWmIsland_c*                      mpaIsland[9];
-    /* 0x26C */ dWorldSelectGuide_c*               mpWSelectGuide;
+    /* 0x248 */ daWmIsland_c*                          mpaIsland[9];
+    /* 0x26C */ dWorldSelectGuide_c*                   mpWSelectGuide;
 
-    /* 0x270 */ nw4r::lyt::Pane*                   mpP0x270;
-    /* 0x274 */ nw4r::lyt::Pane*                   mpP0x274;
+    /* 0x270 */ nw4r::lyt::Pane*                       mpP0x270;
+    /* 0x274 */ nw4r::lyt::Pane*                       mpP0x274;
 
-    FILL(0x278, 0x27C);
+    u8                                                 FILL(0x278, 0x27C);
 
-    /* 0x27C */ int m_currentIsland; // Unsure
-    /* 0x280 */ int m_toIsland;
-    /* 0x284 */ int m_moveNum;
+    /* 0x27C */ int                                    m_currentIsland; // Unsure
+    /* 0x280 */ int                                    m_toIsland;
+    /* 0x284 */ int                                    m_moveNum;
 
-    FILL(0x288, 0x294);
+    u8                                                 FILL(0x288, 0x294);
 
-    /* 0x294 */ int m0x294;
-    /* 0x298 */ int m_islandBeforeSpecialWorld;
+    /* 0x294 */ int                                    m0x294;
+    /* 0x298 */ int                                    m_islandBeforeSpecialWorld;
 
-    FILL(0x29C, 0x2A4);
+    u8                                                 FILL(0x29C, 0x2A4);
 
-    /* 0x2A4 */ mAng                                 m_moveAngle;
-    /* 0x2A6 */ mAng                                 m_moveAngle2;
+    /* 0x2A4 */ mAng                                   m_moveAngle;
+    /* 0x2A6 */ mAng                                   m_moveAngle2;
 
-    /* 0x2A8 */ cArray_c<bool, ORIGINAL_WORLD_COUNT> m_isWorldOpen;
+    /* 0x2A8 */ slu::array<bool, ORIGINAL_WORLD_COUNT> m_isWorldOpen;
 
-    FILL(0x2B2, 0x2B4);
+    u8                                                 FILL(0x2B2, 0x2B4);
 
-    /* 0x2B4 */ bool m_isMoveRight;
-    /* 0x2B5 */ bool m0x2B5;
-    /* 0x2B6 */ bool m_isMove;
-    /* 0x2B7 */ bool m0x2B7;
+    /* 0x2B4 */ bool                                   m_isMoveRight;
+    /* 0x2B5 */ bool                                   m0x2B5;
+    /* 0x2B6 */ bool                                   m_isMove;
+    /* 0x2B7 */ bool                                   m0x2B7;
 
-    FILL(0x2B8, 0x2BC);
+    u8                                                 FILL(0x2B8, 0x2BC);
 
 public:
     // State IDs

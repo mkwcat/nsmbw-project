@@ -29,18 +29,18 @@ public:
     /* 0x074 */ sStateMgrDefault_c<dScBoot_c> mStateMgr;
     /* 0x0B0 */ sStateMgrDefault_c<dScBoot_c> mStateMgr2;
 
-    FILL(0xEC, 0xF0);
+    u8 FILL(0xEC, 0xF0);
 
     /* 0x0F0 */ dWiiStrap_c*              mWiiStrap;
     /* 0x0F4 */ dYesNoWindow_c*           mYesNoWindow;
     /* 0x0F8 */ dSelectCursor_c*          mSelectCursor;
     /* 0x0FC */ dControllerInformation_c* mControllerInformation;
 
-    FILL(0x100, 0x102);
+    u8 FILL(0x100, 0x102);
 
     /* 0x102 */ bool mLoadedSceneSnd;
 
-    FILL(0x103, 0x110);
+    u8 FILL(0x103, 0x110);
 
 public:
     // Static Variables

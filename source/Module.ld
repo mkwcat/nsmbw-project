@@ -10,19 +10,19 @@ SECTIONS {
 
 	.data : {
 		. = ALIGN(4);
-		_MRel_replace_array = .;
+		slu_replace_array = .;
 		KEEP(*(replace_array))
-		_MRel_replace_array_end = .;
+		slu_replace_array_end = .;
 
 		. = ALIGN(4);
-		_MRel_patch_references_array = .;
+		slu_patch_references_array = .;
 		KEEP(*(patch_references_array))
-		_MRel_patch_references_array_end = .;
+		slu_patch_references_array_end = .;
 
 		. = ALIGN(4);
-		_MRel_extern_array = .;
+		slu_extern_array = .;
 		KEEP(*(extern_array))
-		_MRel_extern_array_end = .;
+		slu_extern_array_end = .;
 
 		*(.rodata*)
 

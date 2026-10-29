@@ -3,7 +3,7 @@
 #include "d_system.h"
 #include "f_base.h"
 #include "f_profile.h"
-#include <mkwcat/Concepts.hpp>
+#include <slu/concepts.hpp>
 #include <type_traits>
 
 class dBase_c;
@@ -48,12 +48,12 @@ constexpr dProfName Name_c<V>::toNative() {
     }
 
     if constexpr (V >= TIME_UP.StaticNonRegionalValue) {
-        if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::K) {
+        if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::kor) {
             value -= 2;
         }
     }
     if constexpr (V >= WM_CS_SEQ_MNG.StaticNonRegionalValue) {
-        if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::C) {
+        if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::chn_shield) {
             value -= 2;
         }
     }
@@ -71,11 +71,11 @@ constexpr dProfName toStatic(
         return value;
     }
 
-    if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::C &&
+    if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::chn_shield &&
         value > WII_STRAP.StaticNonRegionalValue) {
         value += 2;
     }
-    if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::K &&
+    if (dSys_c::m_codeRegion < dSys_c::CODE_REGION_e::kor &&
         value > MULTI_COURSE_SELECT.StaticNonRegionalValue) {
         value += 2;
     }
@@ -100,7 +100,7 @@ template <class T>
 constexpr T* cast(
     fBase_c* base
 ) {
-    static_assert(mkwcat::CompleteType<T>, "Cast to an incomplete type");
+    static_assert(slu::concepts::complete_type<T>, "Cast to an incomplete type");
 
     if constexpr (std::is_same_v<T, dBase_c>) {
         // Everything is a dBase_c

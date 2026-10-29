@@ -44,17 +44,17 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x534);
+    u8 FILL(0x524, 0x534);
 
     /* 0x534 */ dBg_ctr_c m_bg_ctr;
 
-    FILL(0x618, 0x648);
+    u8 FILL(0x618, 0x648);
 
     /* 0x648 */ BOOL m_item_created;
 
-    FILL(0x64C, 0x650);
+    u8 FILL(0x64C, 0x650);
 
     /* 0x64C */ int REMOVED(m_player_item[4]);
 
-    FILL(0x660, 0x698);
+    u8 FILL(0x660, 0x698);
 };

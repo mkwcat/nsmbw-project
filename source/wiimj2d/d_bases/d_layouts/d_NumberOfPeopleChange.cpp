@@ -32,16 +32,16 @@ fBase_c* dNumberOfPeopleChange_c_classInit() {
 [[nsmbw(0x8079F660)]]
 dNumberOfPeopleChange_c::dNumberOfPeopleChange_c() {}
 
-EXTERN_SYMBOL(0x8079F780, "__dt__33sFState_c<23dNumberOfPeopleChange_c>Fv");
-EXTERN_SYMBOL(0x8079F7C0, "__dt__36sFStateFct_c<23dNumberOfPeopleChange_c>Fv");
-EXTERN_SYMBOL(
+[[nsmbw_symbol(0x8079F780, "__dt__33sFState_c<23dNumberOfPeopleChange_c>Fv")]];
+[[nsmbw_symbol(0x8079F7C0, "__dt__36sFStateFct_c<23dNumberOfPeopleChange_c>Fv")]];
+[[nsmbw_symbol(
     0x8079F800,
     "__dt__89sStateMgr_c<23dNumberOfPeopleChange_c,20sStateMethodUsr_FI_c,12sFStateFct_c,"
     "13sStateIDChk_c>Fv"
-);
-EXTERN_SYMBOL(
+)]];
+[[nsmbw_symbol(
     0x8079F860, "__dt__59sFStateMgr_c<23dNumberOfPeopleChange_c,20sStateMethodUsr_FI_c>Fv"
-);
+)]];
 
 [[nsmbw(0x8079F8D0)]]
 dNumberOfPeopleChange_c::~dNumberOfPeopleChange_c() {

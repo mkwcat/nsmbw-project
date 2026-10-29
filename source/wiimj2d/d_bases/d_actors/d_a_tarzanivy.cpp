@@ -7,8 +7,8 @@
 #include "d_mj2d_game.h"
 #include <algorithm>
 #include <cmath>
-#include <mkwcat/Relocate.hpp>
-#include <mkwcat/VTable.hpp>
+#include <slu/relocate.hpp>
+#include <slu/vtable.hpp>
 
 [[nsmbw(0x808ADFC0)]]
 fBase_c* daTarzanIvy_c_classInit() {
@@ -16,7 +16,7 @@ fBase_c* daTarzanIvy_c_classInit() {
 }
 
 daTarzanIvy_c::daTarzanIvy_c() {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
 }
 
 [[nsmbw(0x808AE0A0)]]

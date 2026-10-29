@@ -14,7 +14,7 @@ public:
     daEnDfpakkun_c();
 
 public:
-    FILL(0x6E0, 0x758);
+    u8 FILL(0x6E0, 0x758);
 
 public:
     // Virtual State IDs

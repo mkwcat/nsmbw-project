@@ -5,7 +5,7 @@
 
 #include "d_mj2d_game.h"
 #include "f_feature.h"
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 
 [[nsmbw_data(0x8042931C)]]
 dScStage_c::Exit_e dScStage_c::m_exitMode = dScStage_c::Exit_e::RESTORE_INFO;

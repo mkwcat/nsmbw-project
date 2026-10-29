@@ -102,4 +102,5 @@ source/System.h
 -Wno-unnecessary-virtual-specifier
 -Wno-dollar-in-identifier-extension
 
+-Dis_nsmbw=1
 -DCLANGD

@@ -19,7 +19,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x184, 0x208);
+    u8 FILL(0x184, 0x208);
 
 public:
     // Static Methods

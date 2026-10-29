@@ -52,7 +52,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x3DC, 0x3E0);
+    u8 FILL(0x3DC, 0x3E0);
 
     /* 0x3E0 */ int                       mDemoNum;
     /* 0x3E4 */ float                     mXBased;
@@ -74,12 +74,12 @@ public:
     /* 0x450 */ float                     mBaseXCopy;
     /* 0x454 */ float                     m0x454;
 
-    FILL(0x458, 0x460);
+    u8 FILL(0x458, 0x460);
 
     /* 0x460 */ float mBaseYCopy;
     /* 0x464 */ float mScreenTopCopy;
 
-    FILL(0x468, 0x470);
+    u8 FILL(0x468, 0x470);
 
     /* 0x470 */ dAcPy_c* mpFirstPlr;
     /* 0x474 */ float    mBaseX2;
@@ -88,7 +88,7 @@ public:
     /* 0x480 */ float    mBaseY;
     /* 0x484 */ float    m0x484;
 
-    FILL(0x488, 0x490);
+    u8 FILL(0x488, 0x490);
     OFFSET_ASSERT(0x490);
 
     float    mPlayerWalkPos[PLAYER_COUNT];

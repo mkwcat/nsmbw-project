@@ -74,7 +74,7 @@ public:
         /* 0x18 */ float       m_0x18;
         /* 0x1C */ bool        m_inUse;
         /* 0x1D */ s8          m_plrNo;
-        FILL(0x1E, 0x20);
+        u8 FILL(0x1E, 0x20);
     };
 
 public:
@@ -120,7 +120,7 @@ public:
     /* 0x802 */ short            m_0x800[64];
     /* 0x880 */ u8               m_0x880;
     /* 0x881 */ u8               m_0x881;
-    FILL(0x882, 0x888);
+    u8 FILL(0x882, 0x888);
     OFFSET_ASSERT(0x888);
 
     // Instance Variables

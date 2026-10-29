@@ -26,7 +26,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0xD3C);
+    u8 FILL(0x070, 0xD3C);
 
 public:
     // Static Variables

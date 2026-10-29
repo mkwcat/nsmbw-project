@@ -1,5 +1,7 @@
 #pragma once
 
+#include "msl/c/internal/size_t.h"
+
 EXTERN_C_START
 
 struct __locale {

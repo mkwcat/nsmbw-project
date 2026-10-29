@@ -30,22 +30,20 @@ def demangleNamespaces(node):
     return namespaces, '', node
 
 def demangleNode(node):
-    signedness = []
     qualifiers = []
-    while node:
-        if node[0] == 'P':
-            qualifiers.append('P')
-        elif node[0] == 'R':
-            qualifiers.append('R')
-        elif node[0] == 'C':
-            qualifiers.append('C')
-        elif node[0] == 'U':
-            signedness.append('unsigned')
-        elif node[0] == 'S':
-            signedness.append('signed')
-        else:
+    temp = []
+    order = ['C', 'V', 'S', 'U']
+    for c in node:
+        if c in order:
+            temp.append(c)
+            continue
+        for q in reversed(order):
+            qualifiers += [q] * temp.count(q)
+        if c not in ['P', 'R']:
             break
-        node = node[1:]
+        qualifiers.append(c)
+        temp = []
+    node = node[len(qualifiers):]
     qualifiers = ''.join(reversed(qualifiers))
 
     if node[0] == 'F':
@@ -53,8 +51,17 @@ def demangleNode(node):
         return '%s%s(%s)' % (returnType, post, args), node
 
     pre = ''
-    while qualifiers.startswith('C'):
-        pre += 'const '
+    while qualifiers:
+        if qualifiers[0] == 'C':
+            pre += 'const '
+        elif qualifiers[0] == 'V':
+            pre += 'volatile '
+        elif qualifiers[0] == 'S':
+            pre += 'signed '
+        elif qualifiers[0] == 'U':
+            pre += 'unsigned '
+        else:
+            break
         qualifiers = qualifiers[1:]
 
     post = ''
@@ -63,11 +70,14 @@ def demangleNode(node):
             post += '*'
         elif c == 'R':
             post += '&'
-        else:  # c == 'C'
-            post += 'const'
-
-    if signedness:
-        pre += ' '.join(signedness) + ' '
+        elif c == 'C':
+            post += ' const'
+        elif c == 'V':
+            post += ' volatile'
+        elif c == 'S':
+            post += ' signed'
+        elif c == 'U':
+            post += ' unsigned'
 
     if node[0] == 'i':
         return pre + 'int' + post, node[1:]
@@ -80,11 +90,15 @@ def demangleNode(node):
     elif node[0] == 'l':
         return pre + 'long' + post, node[1:]
     elif node[0] == 'x':
-        return pre + 'long long ' + post, node[1:]
+        return pre + 'long long' + post, node[1:]
     elif node[0] == 'f':
         return pre + 'float' + post, node[1:]
+    elif node[0] == 'D':
+        return pre + 'short double' + post, node[1:]
     elif node[0] == 'd':
         return pre + 'double' + post, node[1:]
+    elif node[0] == 'r':
+        return pre + 'long double' + post, node[1:]
     elif node[0] == 'w':
         return pre + 'wchar_t' + post, node[1:]
     elif node[0] == 'v':

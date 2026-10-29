@@ -2,7 +2,7 @@
 
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/picture.h>
 
 class dCourseSelectGuide_c {
     SIZE_ASSERT(0x450 + 16);
@@ -59,11 +59,11 @@ public:
     /* 0x004 */ u32       m0x004;
     /* 0x008 */ LytBase_c mLayout;
 
-    FILL(0x1A0, 0x384);
+    u8 FILL(0x1A0, 0x384);
 
     /* 0x384 */ nw4r::lyt::Pane* mpNIconPos[4];
 
-    FILL(0x394, 0x3B0);
+    u8 FILL(0x394, 0x3B0);
 
     /* 0x3B0 */ LytTextBox_c*       mpTWorldNum;
     /* 0x3B4 */ LytTextBox_c*       mpTCSelect;
@@ -85,24 +85,24 @@ public:
     /* 0x3FC */ nw4r::lyt::Picture* mpPYKinoFace;
     /* 0x400 */ nw4r::lyt::Picture* mpPBgShadow;
 
-    FILL(0x404, 0x414);
+    u8 FILL(0x404, 0x414);
 
     // Used in one function so we can replace the type int -> short
     /* 0x414 */ s16 mStoredRestNumber[8];
 
-    FILL(0x424, 0x42C);
+    u8 FILL(0x424, 0x42C);
 
     /* 0x42C */ int mRestAlpha;
     /* 0x430 */ int mRestAlphaTarget;
 
-    FILL(0x434, 0x44E);
+    u8 FILL(0x434, 0x44E);
 
     /* 0x44E */ bool mRestDispNeeded;
 
     // Added 16 bytes
     /* 0x450 */ Extra_s* mpExtra;
 
-    FILL(0x454, 0x460);
+    u8 FILL(0x454, 0x460);
 
 public:
     // Static Variables

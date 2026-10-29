@@ -136,10 +136,8 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x802BC9E0 */
     u32 getFSStickButton() const;
 
-    /* 0x802BC9D0 */
     void init() { *this = {}; }
 
     f32 getFSStickX() const { return ex_status.fs.stick.x; }
@@ -258,28 +256,14 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x802BCC10 */
     void createRumbleMgr(u8 overlap_num);
-
-    /* 0x802BCCB0 */
     void stopRumbleMgr();
-
-    /* 0x802BCBF0 */
     void startMotor();
-
-    /* 0x802BCC00 */
     void stopMotor();
-
-    /* 0x802BCC70 */
     void startPatternRumble(const char* pattern, int frame, bool force);
-
-    /* 0x802BCC90 */
     void startPowerFrameRumble(f32 power, int frame, bool force);
 
-public:
-    // Inline Methods
-    // ^^^^^^
-
+    NSMBW_ONLY(
 private:
     template <class Self, class T>
     using CastReturnType =
@@ -295,13 +279,12 @@ public:
                                  std::remove_cvref_t<decltype(self)>, ClassicController>) {
             return self.getCoreController();
         } else {
-            auto* core =
-                mkwcat::VTable::Cast<CastReturnType<decltype(self), CoreController>>(&self);
+            auto* core = slu::vtable::cast<CastReturnType<decltype(self), CoreController>>(&self);
             if (core) {
                 return core;
             }
             auto* classic =
-                mkwcat::VTable::Cast<CastReturnType<decltype(self), ClassicController>>(&self);
+                slu::vtable::cast<CastReturnType<decltype(self), ClassicController>>(&self);
             if (classic) {
                 return classic->getCoreController();
             }
@@ -309,28 +292,30 @@ public:
         }
     }
 
-    inline constexpr auto getGCController(
-        this auto& self
-    ) -> CastReturnType<decltype(self), GCController> {
-        if constexpr (std::is_same_v<std::remove_cvref_t<decltype(self)>, GCController>) {
-            return &self;
-        } else {
-            auto* gc = mkwcat::VTable::Cast<CastReturnType<decltype(self), GCController>>(&self);
-            return gc;
-        }
-    }
 
-    inline constexpr auto getClassicController(
-        this auto& self
-    ) -> CastReturnType<decltype(self), ClassicController> {
-        if constexpr (std::is_same_v<std::remove_cvref_t<decltype(self)>, ClassicController>) {
-            return &self;
-        } else {
-            auto* classic =
-                mkwcat::VTable::Cast<CastReturnType<decltype(self), ClassicController>>(&self);
-            return classic;
-        }
-    }
+        inline constexpr auto getGCController(this auto& self)
+            ->CastReturnType<decltype(self), GCController> {
+                if constexpr (std::is_same_v<std::remove_cvref_t<decltype(self)>, GCController>) {
+                    return &self;
+                } else {
+                    auto* gc =
+                        slu::vtable::cast<CastReturnType<decltype(self), GCController>>(&self);
+                    return gc;
+                }
+            }
+
+        inline constexpr auto getClassicController(this auto& self)
+            ->CastReturnType<decltype(self), ClassicController> {
+                if constexpr (std::is_same_v<
+                                  std::remove_cvref_t<decltype(self)>, ClassicController>) {
+                    return &self;
+                } else {
+                    auto* classic =
+                        slu::vtable::cast<CastReturnType<decltype(self), ClassicController>>(&self);
+                    return classic;
+                }
+            }
+    )
 };
 
 class ControllerRumbleMgr;
@@ -338,7 +323,9 @@ class ControllerRumbleMgr;
 class CoreController final : public Controller {
     SIZE_ASSERT(0xBD0);
 
-    VTABLE(0x000, Controller, 0x80350370);
+    NSMBW_ONLY(
+        VTABLE(0x000, Controller, 0x80350370);
+    )
 
     friend class ClassicController;
 
@@ -383,7 +370,7 @@ public:
     /* VT+0x2C */
     bool upAll(u32 mask) const override;
 
-    /* VT+0x30 0x802BD0D0 */
+    /* VT+0x30 */
     void beginFrame(PADStatus* pPadStatus) override;
 
     /* VT+0x34 */
@@ -393,13 +380,8 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x802BCAF0 */
     void sceneReset();
-
-    /* 0x802BCBB0 */
     Vector2f getDpdRawPos();
-
-    /* 0x802BCCD0 */
     void calc_posture_matrix(Matrix34f& posture, bool checkStable);
 
 public:
@@ -440,6 +422,7 @@ public:
     /* 0xBC4 */ Vector3f                mPrevAccel;
 };
 
+NSMBW_ONLY(
 class GCController final : public Controller {
     VTABLE_SYM(0x00, Controller, "__vt__Q23EGG12GCController");
 
@@ -501,7 +484,7 @@ public:
         return (mDown & gcMask(mask)) == 0;
     }
 
-    /* VT+0x30 0x802BD0D0 */
+    /* VT+0x30  */
     void beginFrame(PADStatus* pPadStatus) override;
 
     /* VT+0x34 */
@@ -657,6 +640,7 @@ private:
 public:
     // Static Inline Variables
     // ^^^^^^
+
     static constexpr u32 clMask(
         u32 mask
     ) {
@@ -679,11 +663,14 @@ public:
         return cl_mask;
     }
 };
+)
 
 class CoreControllerMgr {
     SIZE_ASSERT(0xE60);
 
-    VTABLE(0x010, CoreControllerMgr, 0x80350318);
+    NSMBW_ONLY(
+        VTABLE(0x010, CoreControllerMgr, 0x80350318);
+    )
 
     EGG_SINGLETON_DECL(CoreControllerMgr);
 
@@ -691,69 +678,63 @@ public:
     // Structors
     // ^^^^^^
 
-    /* 0x802BD790 */
     CoreControllerMgr();
 
 public:
     // Virtual Methods
     // ^^^^^^
 
-    /* VT+0x08 0x802BDBB0 */
-    virtual void beginFrame();
-
-    /* VT+0x0C 0x802BDC60 */
-    virtual void endFrame();
+    /* VT+0x08 */ virtual void beginFrame();
+    /* VT+0x0C */ virtual void endFrame();
 
 public:
     // Instance Methods
     // ^^^^^^
 
-    void initClassic();
-
-    /* 0x802BD660 */
     CoreController* getNthController(int n);
 
-    inline ClassicController* getNthClassic(
-        int n
-    ) {
-        return getNthController(n)->mpClassic;
-    }
+    NSMBW_ONLY(
+        void initClassic();
+        inline ClassicController * getNthClassic(int n) { return getNthController(n)->mpClassic; }
+    )
 
 public:
     // Instance Variables
     // ^^^^^^
 
     /* 0x014 */ TBuffer<CoreController*> mControllers;
-    FILL(0x020, 0xE24);
-    /* 0xE24 */ TBuffer<eCoreDevType> mDevTypes;
-    FILL(0xE30, 0xE60);
+    u8                                   FILL(0x020, 0xE24);
+    /* 0xE24 */ TBuffer<eCoreDevType>    mDevTypes;
+    u8                                   FILL(0xE30, 0xE60);
 };
 
-class GCControllerMgr {
-    EGG_SINGLETON_DECL(GCControllerMgr);
+NSMBW_ONLY(
+    class GCControllerMgr {
+        EGG_SINGLETON_DECL(GCControllerMgr);
 
-public:
-    // Structors
-    // ^^^^^^
+    public:
+        // Structors
+        // ^^^^^^
 
-    GCControllerMgr();
+        GCControllerMgr();
 
-private:
-    // Instance Variables
-    // ^^^^^^
+    private:
+        // Instance Variables
+        // ^^^^^^
 
-    /* 0x010 */ TBuffer<GCController*>   mControllers;
-    /* 0x01C */ std::array<PADStatus, 4> mPadStatus;
-    bool                                 mEnabled;
+        /* 0x010 */ TBuffer<GCController*>   mControllers;
+        /* 0x01C */ std::array<PADStatus, 4> mPadStatus;
+        bool                                 mEnabled;
 
-public:
-    // Instance Methods
-    // ^^^^^^
+    public:
+        // Instance Methods
+        // ^^^^^^
 
-    GCController* getNthController(int n);
-    void beginFrame();
-    void endFrame();
-};
+        GCController* getNthController(int n);
+        void beginFrame();
+        void endFrame();
+    };
+)
 
 class ControllerRumbleMgr {
     SIZE_ASSERT(0x20);
@@ -764,29 +745,17 @@ public:
     // Structors
     // ^^^^^^
 
-    /* 0x802BDFF0 */
     ControllerRumbleMgr();
-
-    /* VT+0x8 0x802BE3B0 */
-    virtual ~ControllerRumbleMgr();
+    /* VT+0x8 */ virtual ~ControllerRumbleMgr();
 
 public:
     // Instance Methods
     // ^^^^^^
 
-    /* 0x802BE050 */
     void createUnit(u8 overlap_num, Controller* pController);
-
-    /* 0x802BE0E0 */
     void stop();
-
-    /* 0x802BE150 */
     void calc();
-
-    /* 0x802BE260 */
     void startPattern(const char* pPattern, int frame, bool force);
-
-    /* 0x802BE2B0 */
     void startPowerFrame(f32 power, int frame, bool force);
 
 private:

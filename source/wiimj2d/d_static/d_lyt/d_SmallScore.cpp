@@ -6,7 +6,7 @@
 #include "d_a_player_manager.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
-#include <nw4r/lyt/Material.h>
+#include <nw4r/lyt/material.h>
 #include <nw4r/ut/Color.h>
 
 [[nsmbw(0x80014FF0)]]

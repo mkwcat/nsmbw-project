@@ -13,11 +13,11 @@
 #include <cstddef>
 #include <cstdio>
 #include <cstring>
-#include <mkwcat/NoInitialize.hpp>
 #include <msl/c/common/ansi_files.h>
 #include <revolution/fs.h>
 #include <revolution/nand.h>
 #include <revolution/os/OSError.h>
+#include <slu/no_initialize.hpp>
 
 [[nsmbw_data(0x8042A298)]]
 dNandThread_c* dNandThread_c::m_instance;
@@ -28,7 +28,7 @@ namespace d_nand_thread_cpp {
 u8 l_safeCopyBuf[0x4000];
 
 [[nsmbw_data(0x8035DFC0)]]
-dMj2dData_c  l_tmpSave = mkwcat::NoInitialize<dMj2dData_c>();
+dMj2dData_c  l_tmpSave = slu::no_initialize<dMj2dData_c>();
 
 NANDFileInfo l_fileInfo;
 

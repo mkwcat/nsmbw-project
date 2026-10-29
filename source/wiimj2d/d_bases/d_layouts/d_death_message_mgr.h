@@ -1,10 +1,10 @@
 #pragma once
 
-#include "d_a_player_manager.h"
 #include "m_2d.h"
-#include <nw4r/lyt/ResourceAccessor.h>
-#include <nw4r/lyt/Resources.h>
-#include <nw4r/lyt/TextBox.h>
+#include <d_mj2d_game.h>
+#include <nw4r/lyt/resourceAccessor.h>
+#include <nw4r/lyt/resources.h>
+#include <nw4r/lyt/textBox.h>
 
 class dDeathMsgMgr_c : public m2d::Base_c {
 public:

@@ -2,7 +2,7 @@
 
 #include "SndObjectBase.h"
 #include <iterator>
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 #include <nw4r/snd/SoundActor.h>
 #include <nw4r/snd/SoundHandle.h>
 

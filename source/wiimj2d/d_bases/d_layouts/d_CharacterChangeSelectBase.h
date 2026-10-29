@@ -1,11 +1,11 @@
 #pragma once
 
-#include "c_array.h"
 #include "d_base.h"
 #include "d_info.h"
 #include "d_lytbase.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
+#include <slu/array.hpp>
 
 class dCharacterChangeSelectContents_c;
 class dCharacterChangeSelectArrow_c;
@@ -98,15 +98,15 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x074);
+    u8                                            FILL(0x070, 0x074);
 
     /* 0x074 */ dCharacterChangeSelectContents_c* mpCcSelContents;
     /* 0x078 */ dCharacterChangeSelectArrow_c*    mpCcSelArrow;
     /* 0x07C */ dCharacterChangeIndicator_c*      mpCcIndicator;
 
     union {
-        /* 0x080 */ da2DPlayer_c*                                 REMOVED(mp2DPlayer)[4];
-        /* 0x080 */ cEnumArrayRef_c<da2DPlayer_c*, PLAYER_TYPE_e> mp2DPlayer;
+        /* 0x080 */ da2DPlayer_c*                                      REMOVED(mp2DPlayer)[4];
+        /* 0x080 */ slu::enum_array<da2DPlayer_c*, PLAYER_TYPE_e>::ref mp2DPlayer;
     };
 
     /* 0x090 */ LytBase_c                                        mLayout;
@@ -136,9 +136,9 @@ public:
     /* 0x29B */ bool                                             m0x29B;
     /* 0x29C */ bool                                             mEasyPairingWait;
 
-    FILL(0x29D, 0x2A0);
+    u8                                                           FILL(0x29D, 0x2A0);
 
-    /* 0x2A0 */ int           m0x2A0;
+    /* 0x2A0 */ int                                              m0x2A0;
     /* 0x2A4 */ mVec3_c       mAllBasePos[4]; // Changed to just use the first element
     /* 0x2D4 */ PLAYER_TYPE_e mDecidedCharacter;
     /* 0x2D8 */ int           mPlayerNo;

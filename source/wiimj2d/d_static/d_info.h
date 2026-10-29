@@ -4,7 +4,7 @@
 #include "d_mj2d_game.h"
 #include "d_save_manager.h"
 #include "d_start_info.h"
-#include <mkwcat/Enum.h>
+#include <slu/enum.hpp>
 
 class dInfo_c {
     VTABLE(0x000, dInfo_c, 0x80315EA0);
@@ -303,7 +303,7 @@ public:
     /* 0x06C */ bool       m_isKinopioInChukan;
     /* 0x06D */ bool       m_isOtasuke; // Is Super Guide
 
-    FILL(0x06E, 0x380);
+    u8                     FILL(0x06E, 0x380);
 
     /**
      * The status of the World 3 switch.
@@ -316,37 +316,37 @@ public:
     /* 0x39F */ STAGE_e           mStage0x39F[WORLD_COUNT];
     /* 0x3A9 */ bool              mKinopioCourseInvalid[WORLD_COUNT];
 
-    FILL(0x3B3, 0x3CC);
+    u8                            FILL(0x3B3, 0x3CC);
 
-    /* 0x3CC */ int mPlayerCount;
+    /* 0x3CC */ int               mPlayerCount;
 
-    FILL(0x3D0, 0x3E4);
+    u8                            FILL(0x3D0, 0x3E4);
 
-    /* 0x3E4 */ int mMultiCurrPage;
-    /* 0x3E8 */ int mMultiCurrButton;
-    /* 0x3EC */ int mCoinBattleWin[4];
+    /* 0x3E4 */ int               mMultiCurrPage;
+    /* 0x3E8 */ int               mMultiCurrButton;
+    /* 0x3EC */ int               mCoinBattleWin[4];
 
-    FILL(0x3FC, 0x400);
+    u8                            FILL(0x3FC, 0x400);
 
-    /* 0x400 */ MultiCourse_s mCoinCourse[10][10];
-    /* 0x720 */ MultiCourse_s mCoinFavorite[10];
-    /* 0x770 */ MultiCourse_s mFreeCourse[10][10];
-    /* 0xA90 */ MultiCourse_s mFreeFavorite[10];
+    /* 0x400 */ MultiCourse_s     mCoinCourse[10][10];
+    /* 0x720 */ MultiCourse_s     mCoinFavorite[10];
+    /* 0x770 */ MultiCourse_s     mFreeCourse[10][10];
+    /* 0xA90 */ MultiCourse_s     mFreeFavorite[10];
 
-    FILL(0xAE0, 0xAF4);
+    u8                            FILL(0xAE0, 0xAF4);
 
-    /* 0xAF4 */ int mCyuukanIndex;
+    /* 0xAF4 */ int               mCyuukanIndex;
 
-    FILL(0xAF8, 0xAFC);
+    u8                            FILL(0xAF8, 0xAFC);
 
-    /* 0xAFC */ u8 m0xAFC;
+    /* 0xAFC */ u8                m0xAFC;
 
-    FILL(0xAFD, 0xAFE);
+    u8                            FILL(0xAFD, 0xAFE);
 
-    /* 0xAFE */ bool mFukidashiActionPerformed[4][22];
-    /* 0xB56 */ bool mFukidashiHidePropeller[4];
-    /* 0xB57 */ bool mOtehonClearDisablePause;
-    /* 0xB58 */ bool mEasyPairingActive;
+    /* 0xAFE */ bool              mFukidashiActionPerformed[4][22];
+    /* 0xB56 */ bool              mFukidashiHidePropeller[4];
+    /* 0xB57 */ bool              mOtehonClearDisablePause;
+    /* 0xB58 */ bool              mEasyPairingActive;
 
     OFFSET_ASSERT(0xB5C);
 

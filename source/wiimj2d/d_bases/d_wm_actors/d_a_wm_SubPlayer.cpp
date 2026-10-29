@@ -10,13 +10,13 @@
 #include "d_wm_player_base.h"
 #include "m_angle.h"
 #include "m_heap.h"
-#include <mkwcat/NoConsteval.hpp>
 #include <revolution/os.h>
+#include <slu/no_consteval.hpp>
 
 // This is a float literal changed to read-only data field.
 // Temporary(?) hack that makes the node reached check more generous
 [[nsmbw_data_noconstinit(0x8093CE28)]]
-extern const float l_SUB_PLAYER_NODE_REACH_DIST = mkwcat::NoConsteval(0.05f);
+extern const float l_SUB_PLAYER_NODE_REACH_DIST = slu::no_consteval(0.05f);
 
 EXTERN_REPL(
     0x808EB220, //

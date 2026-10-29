@@ -72,10 +72,10 @@ public:
         END             = 4,
     };
 
-    FILL(0x70, 0x208);
+    u8 FILL(0x70, 0x208);
 
     /* 0x208 */ bool mReady;
     /* 0x209 */ bool mVisible;
 
-    FILL(0x20A, 0x210);
+    u8 FILL(0x20A, 0x210);
 };

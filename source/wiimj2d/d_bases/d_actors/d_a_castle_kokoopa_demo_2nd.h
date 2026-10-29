@@ -44,7 +44,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x3DC, 0x3E0);
+    u8 FILL(0x3DC, 0x3E0);
 
     /* 0x3E0 */ int                         mWorldNo;
     /* 0x3E4 */ mVec3_c                     mBasePos;

@@ -4,7 +4,6 @@
 #include "d_exception.h"
 #include <cstdarg>
 #include <cstdio>
-#include <mkwcat/Region.hpp>
 #include <revolution/base/PPCArch.h>
 #include <revolution/os/OSError.h>
 #include <revolution/os/OSFatal.h>

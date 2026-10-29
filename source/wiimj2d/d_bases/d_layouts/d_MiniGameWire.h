@@ -5,9 +5,9 @@
 #include "d_lyttextbox.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Picture.h>
-#include <nw4r/lyt/Window.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/picture.h>
+#include <nw4r/lyt/window.h>
 
 class dMiniGameWire_c : public dBase_c {
     // Original size: 0x384
@@ -48,11 +48,11 @@ public:
 
     /* 0x350 */ int                                 mCurrentTurn;
 
-    FILL(0x354, 0x378);
+    u8 FILL(0x354, 0x378);
 
     /* 0x378 */ bool mReady;
 
-    FILL(0x379, 0x384);
+    u8 FILL(0x379, 0x384);
     OFFSET_ASSERT(0x384);
 
     // New (added 0x20 bytes)

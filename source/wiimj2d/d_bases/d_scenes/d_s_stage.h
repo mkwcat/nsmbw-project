@@ -176,20 +176,20 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0070, 0x11D4);
+    u8 FILL(0x0070, 0x11D4);
 
     /* 0x11D4 */ dGameDisplay_c* mpGameDisplay;
 
-    FILL(0x11D8, 0x11E8);
+    u8 FILL(0x11D8, 0x11E8);
 
     /* 0x11E8 */ dMiniGameCannon_c*   mpMiniGameCannon;
     /* 0x11EC */ dMiniGameWire_c*     mpMiniGameWire;
     /* 0x11F0 */ dModelPlayManager_c* mpModelPlayManager;
     /* 0x11F4 */ dMessageWindow_c*    mpMessageWindow;
-    FILL(0x11F8, 0x11FC);
+    u8 FILL(0x11F8, 0x11FC);
     /* 0x11FC */ dStaffCreditScore_c* mpStaffCreditScore;
 
-    FILL(0x1200, 0x120C);
+    u8 FILL(0x1200, 0x120C);
 
     /* 0x120C */ WORLD_e mWorld;
     /* 0x120D */ STAGE_e mStage;
@@ -198,5 +198,5 @@ public:
     /* 0x1210 */ u8      mLayer;
     /* 0x1211 */ u8      mGoto; // A.k.a Entrance
 
-    FILL(0x1212, 0x1218);
+    u8 FILL(0x1212, 0x1218);
 };

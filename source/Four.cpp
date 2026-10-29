@@ -6,14 +6,14 @@
 
 #include "d_mj2d_game.h"
 #include <cstring>
-#include <mkwcat/Port.hpp>
 #include <revolution/os.h>
+#include <slu/port.hpp>
 
 struct FourPatch {
     constexpr FourPatch(
         u32 address, u8 size, s8 offset = -0
     )
-        : address(&mkwcat::PortRegion[address])
+        : address(&slu::port_region[address])
         , size(size)
         , offset(offset) {}
 

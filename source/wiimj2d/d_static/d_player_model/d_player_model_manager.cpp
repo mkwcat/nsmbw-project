@@ -8,10 +8,10 @@
 #include "d_mario_model.h"
 #include "d_yoshi_model.h"
 #include "m_heap.h"
-#include <mkwcat/NoInitialize.hpp>
+#include <slu/no_initialize.hpp>
 
 [[nsmbw_data(0x803710A0)]]
-dPyMdlBase_HIO_c dPyMdlMng_c::m_hio = mkwcat::NoInitialize<dPyMdlBase_HIO_c>();
+dPyMdlBase_HIO_c dPyMdlMng_c::m_hio = slu::no_initialize<dPyMdlBase_HIO_c>();
 
 [[nsmbw(0x800D6DB0)]]
 dPyMdlMng_c::dPyMdlMng_c(dPyMdlMng_c::ModelType_e modelType);

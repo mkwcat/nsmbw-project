@@ -71,41 +71,41 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x778);
+    u8 FILL(0x524, 0x778);
 
     /* 0x778 */ int mPlayerNo;
 
-    FILL(0x77C, 0x78C);
+    u8 FILL(0x77C, 0x78C);
 
     mVec3_c mStagePos;
 
-    FILL(0x798, 0x7A4);
+    u8 FILL(0x798, 0x7A4);
 
     /* 0x7A4 */ short mTargetAngle;
     /* 0x7A6 */ short _7A6;
 
-    FILL(0x7A8, 0x7BC);
+    u8 FILL(0x7A8, 0x7BC);
 
     /* 0x7BC */ dRemoconCannonGuide_c* mpGuide;
 
-    FILL(0x7C0, 0x888);
+    u8 FILL(0x7C0, 0x888);
 
     /* 0x888 */ bool mHasPlayer;
 
-    FILL(0x889, 0x898);
+    u8 FILL(0x889, 0x898);
 
     /* 0x898 */ m3d::anmTexPat_c mAnmTexPat;
 
-    FILL(0x8C4, 0x8FC);
+    u8 FILL(0x8C4, 0x8FC);
 
     /* 0x8FC */ dEf::dLevelEffect_c mEffectTrail[2];
     /* 0xB4C */ bool                REMOVED(mCannonFired)[4];
 
-    FILL(0xB50, 0xB54);
+    u8 FILL(0xB50, 0xB54);
 
     /* 0xB54 */ int mPlayerNo2;
 
-    FILL(0xB58, 0xB60);
+    u8 FILL(0xB58, 0xB60);
     OFFSET_ASSERT(0xB60);
 
     // Instance Variables

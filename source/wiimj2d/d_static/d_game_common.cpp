@@ -20,7 +20,7 @@
 #include "m_vec.h"
 #include "s_Lib.h"
 #include <algorithm>
-#include <nw4r/lyt/Window.h>
+#include <nw4r/lyt/window.h>
 #include <nw4r/ut/Color.h>
 
 namespace dGameCom {

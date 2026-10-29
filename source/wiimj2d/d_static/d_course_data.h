@@ -18,11 +18,11 @@ public:
     struct CourseInfo_s {
         SIZE_ASSERT(0x14);
 
-        FILL(0x00, 0x11);
+        u8 FILL(0x00, 0x11);
 
         /* 0x11 */ bool mIsAmbush;
 
-        FILL(0x12, 0x14);
+        u8 FILL(0x12, 0x14);
     };
 
     struct NextGoto_s {

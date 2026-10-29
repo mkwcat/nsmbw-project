@@ -10,10 +10,9 @@
 #include "d_mj2d_game.h"
 #include "m_ef.h"
 #include "m_vec.h"
-#include "mkwcat/Macro.hpp"
 #include <egg/util/eggEffect.h>
 #include <nw4r/math/arithmetic.h>
-#include <nw4r/math/types.h>
+#include <nw4r/math/triangular.h>
 
 KEEP(nw4r::math::U16ToF32);
 

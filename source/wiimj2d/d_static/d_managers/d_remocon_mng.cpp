@@ -8,9 +8,9 @@
 #include <egg/audio/eggAudioRmtSpeaker.h>
 #include <egg/core/eggController.h>
 #include <memory>
-#include <mkwcat/ToString.hpp>
 #include <revolution/os.h>
 #include <revolution/wpad.h>
+#include <slu/to_string.hpp>
 
 [[nsmbw_data(0x80428280)]]
 bool dRemoconMng_c::dConnect_c::m_isBoot;
@@ -243,7 +243,7 @@ void dRemoconMng_c::dConnect_c::executeState_Shutdown() {
 void dRemoconMng_c::dConnect_c::initializeState_Setup() {
     // Call to dRemoconMng_c::dConnect_c::dExtension_c::setup removed because it's just a blr
 
-    OS_REPORT("Remocon Setup: %s\n", mkwcat::ToString(static_cast<mPad::CH_e>(mChannel)));
+    OS_REPORT("Remocon Setup: %s\n", slu::to_string(static_cast<mPad::CH_e>(mChannel)));
 
     mBattery = mPad::getBatteryLevel_ch(mPad::CH_e(mChannel));
 
@@ -262,7 +262,7 @@ void dRemoconMng_c::dConnect_c::initializeState_Setup() {
 
 [[nsmbw(0x800DC990)]]
 void dRemoconMng_c::dConnect_c::finalizeState_Setup() {
-    OS_REPORT("Remocon Shutdown: %s\n", mkwcat::ToString(static_cast<mPad::CH_e>(mChannel)));
+    OS_REPORT("Remocon Shutdown: %s\n", slu::to_string(static_cast<mPad::CH_e>(mChannel)));
 
     deregisterOrder();
 

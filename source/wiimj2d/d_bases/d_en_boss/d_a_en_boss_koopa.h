@@ -54,16 +54,16 @@ public:
     /* 0x06A8 */ m3d::anmTexPat_c m_anmTexPat;
     /* 0x06D4 */ m3d::anmTexSrt_c m_anmTexSrt;
 
-    FILL(0x0700, 0x0704);
+    u8 FILL(0x0700, 0x0704);
 
     /* 0x0704 */ nodeCallback_c m_nodeCallback;
 
-    FILL(0x070C, 0x0790);
+    u8 FILL(0x070C, 0x0790);
 
     /* 0x0790 */ dEf::dLevelEffect_c m_levelEffect[6];
     /* 0x0E80 */ dEf::followEffect_c m_followEffect[1];
 
-    FILL(0x0F94, 0x15C8);
+    u8 FILL(0x0F94, 0x15C8);
 
 public:
     // Virtual State IDs

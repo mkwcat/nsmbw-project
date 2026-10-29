@@ -64,21 +64,21 @@ public:
 
     /* 0x070 */ LytBase_c mLayout;
 
-    FILL(0x208, 0x6A8);
+    u8 FILL(0x208, 0x6A8);
 
     /* 0x6A8 */ sStateMgr_c<
         dPointResultDateFile_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c>
         mStateMgr;
 
-    FILL(0x6E4, 0x7BC);
+    u8 FILL(0x6E4, 0x7BC);
 
     /* 0x7BC */ Player_s mPlayerData[4];
 
-    FILL(0x8AC, 0x8AF);
+    u8 FILL(0x8AC, 0x8AF);
 
     /* 0x8AF */ bool mIsRankChange;
 
-    FILL(0x8B0, 0x8E0);
+    u8 FILL(0x8B0, 0x8E0);
 
 public:
     // State IDs

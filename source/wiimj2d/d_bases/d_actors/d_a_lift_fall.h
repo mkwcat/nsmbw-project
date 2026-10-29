@@ -21,11 +21,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x3D0, 0x508);
+    u8 FILL(0x3D0, 0x508);
 
     /* 0x508 */ dRideRoll_c mRc;
 
-    FILL(0x568, 0x598);
+    u8 FILL(0x568, 0x598);
 
 public:
     // State IDs

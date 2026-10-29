@@ -33,15 +33,15 @@ public:
     /* 0x074 */ sStateMgr_c<dScMulti_c, sStateMethodUsr_FI_c, sFStateFct_c, sStateIDChk_c>
         mStateMgr;
 
-    FILL(0xB0, 0xBC);
+    u8 FILL(0xB0, 0xBC);
 
     /* 0xBC */ dMultiCourseSelect_c* mpCourseSelect;
 
-    FILL(0xC0, 0xD4);
+    u8 FILL(0xC0, 0xD4);
 
     /* 0xD4 */ int m_D4;
 
-    FILL(0xD8, 0x1DC);
+    u8 FILL(0xD8, 0x1DC);
 
 public:
     // State IDs

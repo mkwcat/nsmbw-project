@@ -1,44 +1,34 @@
-// Module.cpp
-
-#include "Four.h"
 #include <cstdint>
-#include <mkwcat/Relocate.hpp>
 #include <revolution/arc.h>
 #include <revolution/dvd.h>
 #include <revolution/os.h>
-#include <wiimj2d/d_static/d_system.h>
+#include <slu/init.hpp>
+#include <slu/relocate.hpp>
+#include <slu/revision.hpp>
+
+#if is_nsmbw
+#  include "Four.h"
+#endif
 
 // External init
-int main();
+extern "C" {
+int main(int argc, char** argv);
 int preinit(s32, void*);
+}
 
 // Rel init
-extern "C" void _prolog(s32, void*);
+extern "C" void _prolog(int argc, char** argv, const char*& at, s32 arcEntryNum, void* arcStart);
 extern "C" void _epilog();
 extern "C" void _unresolved();
 
 // Runtime init
 extern "C" void __stack_chk_init(std::uintptr_t value);
 
-using VoidFunction = void (*)();
-extern "C" VoidFunction               _ctors[];
-extern "C" VoidFunction               _ctors_end[];
-
-extern "C" mkwcat::Attribute::Entry   _MRel_replace_array[];
-extern "C" mkwcat::Attribute::Entry   _MRel_replace_array_end[];
-
-extern "C" mkwcat::Attribute::Entry   _MRel_extern_array[];
-extern "C" mkwcat::Attribute::Entry   _MRel_extern_array_end[];
-
-extern "C" mkwcat::Relocate::Entry<1> _MRel_patch_references_array[];
-extern "C" mkwcat::Relocate::Entry<1> _MRel_patch_references_array_end[];
-
 #define HID0      1008
 #define HID0_ICFI (1 << 31 >> 20)
 #define HID0_DCFA (1 << 31 >> 25)
 static void __flush_entire_cache(bool interrupts = OSDisableInterrupts()) ASM_METHOD(
-  // clang-format off
-    // Set data cache flush assist
+    // Enable data cache flush assist
     mfspr   r4, HID0;
     ori     r0, r4, HID0_DCFA;
     mtspr   HID0, r0;
@@ -65,93 +55,64 @@ static void __flush_entire_cache(bool interrupts = OSDisableInterrupts()) ASM_ME
     rlwimi  r4, r3, 15, 0x8000;
     mtmsr   r4;
     blr;
-  // clang-format on
 );
+
+bool slu::init::handle_null_extern_address(
+    attribute::entry* entry
+) {
+    return true;
+}
+
+bool slu::init::handle_null_replace_address(
+    attribute::entry* entry
+) {
+    return true;
+}
+
+bool slu::relocate::handle_null_relocate_address(
+    entry<1>* entry
+) {
+    return true;
+}
+
+bool slu::relocate::handle_invalid_relocation_type(
+    entry<1>* entry
+) {
+    OS_PANIC("Invalid relocation type");
+}
 
 [[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
 void _prolog(
-    s32 param1, void* param2
+    int argc, char** argv, const char*& at, s32 arcEntryNum, void* arcStart
 ) {
     __stack_chk_init(OSGetTick());
+    slu::determine_revision();
 
-    auto codeRegion                                                     = dSys_c::findCodeRegion();
-    *const_cast<volatile dSys_c::CODE_REGION_e*>(&dSys_c::m_codeRegion) = codeRegion;
+    BOOL interrupts = OSDisableInterrupts();
 
-    int interrupt                                                       = OSDisableInterrupts();
+    NSMBW_ONLY(slu::relocate::apply());
 
-    // Reference patches
-    for (auto repl = _MRel_patch_references_array; repl != _MRel_patch_references_array_end;) {
-        for (u32 i = 0; i < repl->count; i++) {
-            u32 offset        = reinterpret_cast<u32>(repl->dest.addr) + repl->references[i].addend;
-            volatile u16* ptr = static_cast<volatile u16*>(repl->references[i].address);
-            if (ptr == nullptr) {
-                continue;
-            }
+    // Apply patches to DOL
+    slu::init::apply_patches();
 
-            if (repl->references[i].type == R_PPC_ADDR16_LO) {
-                offset &= 0xFFFF;
-            } else if (repl->references[i].type == R_PPC_ADDR16_HI) {
-                offset >>= 16;
-            } else if (repl->references[i].type == R_PPC_ADDR16_HA) {
-                offset = (offset + 0x8000) >> 16;
-            } else {
-                OSPanic(
-                    __FILE_NAME__, __LINE__, "Unsupported relocation type %d",
-                    repl->references[i].type
-                );
-            }
+    NSMBW_ONLY(Four::Apply());
 
-            *ptr = static_cast<u16>(offset);
-        }
+    __flush_entire_cache(interrupts);
 
-        // Increment repl to the next entry
-        repl = reinterpret_cast<mkwcat::Relocate::Entry<1>*>(&repl->references[repl->count]);
-    }
-
-    Four::Apply();
-
-    // External replaced array
-    for (mkwcat::Attribute::Entry* __restrict repl = _MRel_extern_array;
-         repl != _MRel_extern_array_end; ++repl) {
-        if (repl->addr == nullptr) {
-            OS_REPORT("WARNING: Skipping extern patch with null address\n");
-            continue;
-        }
-        *repl->dest.instruction = *repl->addr;
-    }
-
-    // Function patches
-    for (mkwcat::Attribute::Entry* __restrict repl = _MRel_replace_array;
-         repl != _MRel_replace_array_end; ++repl) {
-        if (repl->addr == nullptr) {
-            OS_REPORT(
-                "WARNING: Skipping replace patch #%ld with null address (prev %p)\n",
-                static_cast<s32>(repl - _MRel_replace_array), static_cast<void*>((repl - 1)->addr)
-            );
-            continue;
-        }
-        *repl->addr = 0x48000000 | ((u32(repl->dest.instruction) - u32(repl->addr)) & 0x3FFFFFC);
-    }
-
-    __flush_entire_cache(false);
-
-    if (preinit(param1, param2) != 0) {
-        OSPanic(__FILE_NAME__, __LINE__, "preinit() returned non-zero");
+    if (preinit(arcEntryNum, arcStart) != 0) {
+        at = "preinit";
+        return;
     }
 
     // Run global constructors
-    for (VoidFunction* ctor = _ctors; ctor != _ctors_end && *ctor; ++ctor) {
-        (*ctor)();
-    }
+    slu::init::run_ctors();
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmain"
-    if (main() != 0) {
-        OSPanic(__FILE_NAME__, __LINE__, "main() returned non-zero");
-    }
+    (void) main(argc, argv);
 #pragma clang diagnostic pop
 
-    OSRestoreInterrupts(interrupt);
+    at = nullptr;
 }
 
 [[gnu::no_stack_protector]] [[gnu::section("rel_prolog")]]
@@ -163,3 +124,17 @@ void _unresolved() {
     while (true) {
     }
 }
+
+#if is_mkw
+extern "C" [[mkw(0x801A6D30)]]
+void OSNotifyLink(
+    OSModuleInfo* newModule
+) {
+    BOOL interrupts = OSDisableInterrupts();
+
+    // Apply patches to StaticR.rel
+    slu::init::apply_patches();
+
+    __flush_entire_cache(interrupts);
+}
+#endif

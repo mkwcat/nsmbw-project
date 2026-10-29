@@ -2,7 +2,7 @@
 
 #include <bitset>
 #include <component/c_bitmask.h>
-#include <mkwcat/Enum.h>
+#include <slu/enum.hpp>
 
 /**
  * The maximum amount of ambush enemies per world map.

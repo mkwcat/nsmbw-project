@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdio>
-#include <nw4r/db/db_console.h>
+#include <nw4r/db/console.h>
 #include <variant>
 
 class dException_c {

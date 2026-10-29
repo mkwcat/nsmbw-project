@@ -13,8 +13,8 @@
 #include <cstdio>
 #include <egg/util/eggException.h>
 #include <iterator>
-#include <nw4r/db/db_console.h>
-#include <nw4r/db/db_exception.h>
+#include <nw4r/db/console.h>
+#include <nw4r/db/exception.h>
 #include <revolution/nand.h>
 #include <revolution/os/OSError.h>
 #include <revolution/os/OSThread.h>
@@ -253,28 +253,28 @@ const char* dException_c::getRegionInfo() {
     default:
         return "Unknown";
 
-    case mkwcat::Region::P1:
+    case slu::revision::pal1:
         return "PAL Rev 1";
-    case mkwcat::Region::P2:
+    case slu::revision::pal2:
         return "PAL Rev 2";
 
-    case mkwcat::Region::E1:
+    case slu::revision::usa1:
         return "USA Rev 1";
-    case mkwcat::Region::E2:
+    case slu::revision::usa2:
         return "USA Rev 2";
 
-    case mkwcat::Region::J1:
+    case slu::revision::jpn1:
         return "JPN Rev 1";
-    case mkwcat::Region::J2:
+    case slu::revision::jpn2:
         return "JPN Rev 2";
 
-    case mkwcat::Region::K:
+    case slu::revision::kor:
         return "KOR";
 
-    case mkwcat::Region::W:
+    case slu::revision::twn:
         return "TWN";
 
-    case mkwcat::Region::C:
+    case slu::revision::chn_shield:
         return "CHN";
     }
 }

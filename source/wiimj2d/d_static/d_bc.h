@@ -197,7 +197,7 @@ public:
     /* 0x88 */ u32            mFlags;
     /* 0x8C */ u32            mPrevFlags;
 
-    FILL(0x90, 0xE5);
+    u8 FILL(0x90, 0xE5);
 
     /* 0xE5 */ u8  mAmiLine;
     /* 0xE6 */ u8  m0xE6;

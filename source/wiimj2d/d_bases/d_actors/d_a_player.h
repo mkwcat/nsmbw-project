@@ -708,7 +708,7 @@ public:
 
     /* 0x14D4 */ PLAYER_TYPE_e mPlayerType;
 
-    FILL(0x14D8, 0x14DC);
+    u8 FILL(0x14D8, 0x14DC);
 
     /* 0x14DC */ int           mIsRescueKinopio;
     /* 0x14E0 */ PLAYER_MODE_e mNextMode;
@@ -795,7 +795,7 @@ public:
     /* 0x2518 */ int                m0x2518;
     /* 0x251C */ int                mSpinTimer; // Timer for the duration of a spin jump.
     /* 0x2520 */ s16                m0x2520;
-    FILL(0x2522, 0x2528);
+    u8 FILL(0x2522, 0x2528);
     /* 0x2528 */ float mSpinHoldReqTarget;  // The target X position to
                                             // move to while doing a spin in place.
     /* 0x252C */ u32 mSpinFireBallCooldown; // Timer to control how often fireballs the player
@@ -807,10 +807,10 @@ public:
     /* 0x264C */ dEf::followEffect_c mFollowEf3;
     /* 0x2760 */ u32                 m0x2760;
     /* 0x2764 */ u32                 m0x2764;
-    FILL(0x2768, 0x2770);
+    u8 FILL(0x2768, 0x2770);
     /* 0x2770 */ int     m0x2770;
     /* 0x2774 */ mVec2_c m0x2774;
-    FILL(0x277C, 0x2780);
+    u8 FILL(0x277C, 0x2780);
     /* 0x2780 */ mVec3_c   m0x2780;
     /* 0x278C */ u32       m0x278C;
     /* 0x2790 */ int       m0x2790;

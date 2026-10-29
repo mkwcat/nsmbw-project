@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mkwcat/Enum.h>
+#include <slu/enum.hpp>
 
 class SndSceneMgr {
 public:

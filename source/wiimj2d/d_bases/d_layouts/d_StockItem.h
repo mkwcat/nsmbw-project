@@ -7,8 +7,8 @@
 #include "s_State.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/picture.h>
 
 class da2DPlayer_c;
 class daWmItem_c;
@@ -109,7 +109,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x074);
+    u8 FILL(0x070, 0x074);
 
     /* 0x074 */ LytBase_c mLayout;
     /* 0x20C */
@@ -123,20 +123,20 @@ public:
     /* 0x2F4 */ daWmItem_c*         mpaItem[7];
     /* 0x310 */ dStockItemShadow_c* mpShadow;
 
-    FILL(0x314, 0x8B0);
+    u8 FILL(0x314, 0x8B0);
 
     /* 0x8B0 */ int mPresentPlayerCount;
     /* 0x8B4 */ int mItemCount[7];
 
-    FILL(0x8D0, 0x8D8);
+    u8 FILL(0x8D0, 0x8D8);
 
     /* 0x8D8 */ bool REMOVED(maPlayerPresent)[4];
 
-    FILL(0x8DC, 0x8DD);
+    u8 FILL(0x8DC, 0x8DD);
 
     /* 0x8DD */ u8 m0x8DD;
 
-    FILL(0x8DE, 0x8E0);
+    u8 FILL(0x8DE, 0x8E0);
     OFFSET_ASSERT(0x8E0);
 
     // Instance Variables

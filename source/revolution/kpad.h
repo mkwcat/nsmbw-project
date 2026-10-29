@@ -72,7 +72,8 @@ struct KPADStatus {
     /* 0x60 */ KPADEXStatus   ex_status;
 };
 
-/* 0x801ED4F0 */
+void KPADInit(void);
+
 int KPADReadEx(WPADChannel chan, KPADStatus* status, u32 count, s32* result);
 
 EXTERN_C_END

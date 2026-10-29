@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SndObjectBase.h"
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 #include <nw4r/snd/SoundHandle.h>
 
 template <int TParam>

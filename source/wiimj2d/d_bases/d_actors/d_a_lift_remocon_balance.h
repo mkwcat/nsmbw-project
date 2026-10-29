@@ -73,7 +73,7 @@ public:
 
     /* 0x454 */ nodeCallbackA_c m_nodeCallbackA{this};
     /* 0x45C */ nodeCallbackB_c m_nodeCallbackB{this};
-    FILL(0x464, 0x468);
+    u8 FILL(0x464, 0x468);
     /* 0x468 */ dHeapAllocator_c m_allocator;
     /* 0x484 */ void*            m_pResFile{};
     /* 0x488 */ m3d::mdl_c       m_modelA;
@@ -83,10 +83,10 @@ public:
     /* 0x580 */ m3d::anmTexPat_c m_anmTexPatA;
     /* 0x5AC */ m3d::anmTexPat_c m_anmTexPatB;
     /* 0x5D8 */ dRotShake_c      m_RotShake;
-    FILL(0x5EC, 0x618);
+    u8 FILL(0x5EC, 0x618);
     /* 0x618 */ int REMOVED(m_0x618)[4];
 
-    FILL(0x628, 0x668);
+    u8 FILL(0x628, 0x668);
     OFFSET_ASSERT(0x668);
 
     // Instance Variables

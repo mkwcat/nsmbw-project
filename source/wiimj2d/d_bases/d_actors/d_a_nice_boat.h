@@ -31,11 +31,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x454, 0xE0A);
+    u8 FILL(0x454, 0xE0A);
 
     /* 0xE0A */ u8 REMOVED(mPlayerRideStatus)[4];
 
-    FILL(0xE0E, 0xE18);
+    u8 FILL(0xE0E, 0xE18);
     OFFSET_ASSERT(0xE18);
 
 #define OFFSET_mPlayerRideStatus 0xE18

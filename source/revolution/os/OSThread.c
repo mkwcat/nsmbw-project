@@ -5,56 +5,57 @@
 
 EXTERN_C_START
 
-EXTERN_SYMBOL(0x801B4950, "DefaultSwitchThreadCallback");
+[[nsmbw_symbol(0x801B4950, "DefaultSwitchThreadCallback")]];
 
-EXTERN_SYMBOL(0x801B4960, "OSSetSwitchThreadCallback");
+[[nsmbw_symbol(0x801B4960, "OSSetSwitchThreadCallback")]];
 
-EXTERN_SYMBOL(0x801B49D0, "__OSThreadInit");
+[[nsmbw_symbol(0x801B49D0, "__OSThreadInit")]];
 
-EXTERN_SYMBOL(0x801B4C60, "OSInitThreadQueue");
+[[nsmbw_symbol(0x801B4C60, "OSInitThreadQueue")]];
 
-EXTERN_SYMBOL(0x801B4C70, "OSGetCurrentThread");
+[[nsmbw(0x801B4C70)]] [[mkw(0x801A98B0)]]
+OSThread* OSGetCurrentThread(void);
 
-EXTERN_SYMBOL(0x801B4C80, "OSIsThreadTerminated");
+[[nsmbw_symbol(0x801B4C80, "OSIsThreadTerminated")]];
 
-EXTERN_SYMBOL(0x801B4CB0, "OSDisableScheduler");
+[[nsmbw_symbol(0x801B4CB0, "OSDisableScheduler")]];
 
-EXTERN_SYMBOL(0x801B4CF0, "OSEnableScheduler");
+[[nsmbw_symbol(0x801B4CF0, "OSEnableScheduler")]];
 
-EXTERN_SYMBOL(0x801B4D30, "UnsetRun");
+[[nsmbw_symbol(0x801B4D30, "UnsetRun")]];
 
-EXTERN_SYMBOL(0x801B4DA0, "__OSGetEffectivePriority");
+[[nsmbw_symbol(0x801B4DA0, "__OSGetEffectivePriority")]];
 
-EXTERN_SYMBOL(0x801B4DE0, "SetEffectivePriority");
+[[nsmbw_symbol(0x801B4DE0, "SetEffectivePriority")]];
 
-EXTERN_SYMBOL(0x801B4F90, "__OSPromoteThread");
+[[nsmbw_symbol(0x801B4F90, "__OSPromoteThread")]];
 
-EXTERN_SYMBOL(0x801B4FE0, "SelectThread");
+[[nsmbw_symbol(0x801B4FE0, "SelectThread")]];
 
-EXTERN_SYMBOL(0x801B5210, "__OSReschedule");
+[[nsmbw_symbol(0x801B5210, "__OSReschedule")]];
 
-EXTERN_SYMBOL(0x801B5230, "OSYieldThread");
+[[nsmbw_symbol(0x801B5230, "OSYieldThread")]];
 
-EXTERN_SYMBOL(0x801B5270, "OSCreateThread");
+[[nsmbw_symbol(0x801B5270, "OSCreateThread")]];
 
-EXTERN_SYMBOL(0x801B54E0, "OSExitThread");
+[[nsmbw_symbol(0x801B54E0, "OSExitThread")]];
 
-EXTERN_SYMBOL(0x801B55D0, "OSCancelThread");
+[[nsmbw_symbol(0x801B55D0, "OSCancelThread")]];
 
-EXTERN_SYMBOL(0x801B57B0, "OSJoinThread");
+[[nsmbw_symbol(0x801B57B0, "OSJoinThread")]];
 
-EXTERN_SYMBOL(0x801B5900, "OSDetachThread");
+[[nsmbw_symbol(0x801B5900, "OSDetachThread")]];
 
-EXTERN_SYMBOL(0x801B59A0, "OSResumeThread");
+[[nsmbw_symbol(0x801B59A0, "OSResumeThread")]];
 
-EXTERN_SYMBOL(0x801B5C40, "OSSuspendThread");
+[[nsmbw_symbol(0x801B5C40, "OSSuspendThread")]];
 
-EXTERN_SYMBOL(0x801B5DD0, "OSSleepThread");
+[[nsmbw_symbol(0x801B5DD0, "OSSleepThread")]];
 
-EXTERN_SYMBOL(0x801B5EC0, "OSWakeupThread");
+[[nsmbw_symbol(0x801B5EC0, "OSWakeupThread")]];
 
-EXTERN_SYMBOL(0x801B5FC0, "OSSetThreadPriority");
+[[nsmbw_symbol(0x801B5FC0, "OSSetThreadPriority")]];
 
-EXTERN_SYMBOL(0x801B60B0, "OSGetThreadPriority");
+[[nsmbw_symbol(0x801B60B0, "OSGetThreadPriority")]];
 
 EXTERN_C_END

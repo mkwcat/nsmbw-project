@@ -5,6 +5,12 @@
 
 EXTERN_C_START
 
+[[mkw(0x801BF644)]]
+void WPADRegisterAllocator(WPADAllocFunc pAllocFunc, WPADFreeFunc pFreeFunc);
+
+[[mkw(0x801BF648)]]
+u32 WPADGetWorkMemorySize(void);
+
 [[nsmbw(0x801DFC40)]]
 WPADClearDeviceCallback WPADSetClearDeviceCallback(WPADClearDeviceCallback pCallback);
 

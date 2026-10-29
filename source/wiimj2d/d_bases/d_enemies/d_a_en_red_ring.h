@@ -31,16 +31,16 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x688);
+    u8 FILL(0x524, 0x688);
 
 #if PLAYER_COUNT == 8
 #  define OFFSET_daEnRedRing_c_mPlayerDelta 0x688
     /* 0x688 */ mVec2_c mPlayerDelta[8];
 #else
-    FILL(0x688, 0x6C8);
+    u8 FILL(0x688, 0x6C8);
 #endif
 
-    FILL(0x6C8, 0x800);
+    u8 FILL(0x6C8, 0x800);
     OFFSET_ASSERT(0x800);
 
 #if PLAYER_COUNT == 8

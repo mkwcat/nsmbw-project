@@ -19,7 +19,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x398);
+    u8 FILL(0x070, 0x398);
 };
 
 class daPeachCastleSequenceMgrObj_c : public dBase_c {
@@ -39,7 +39,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x70, 0xB8);
+    u8 FILL(0x70, 0xB8);
 
 public:
     // State IDs

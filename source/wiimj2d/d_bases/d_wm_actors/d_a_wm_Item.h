@@ -26,9 +26,9 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x125, 0x209);
+    u8 FILL(0x125, 0x209);
 
     /* 0x209 */ bool mVisible;
 
-    FILL(0x20A, 0x210);
+    u8 FILL(0x20A, 0x210);
 };

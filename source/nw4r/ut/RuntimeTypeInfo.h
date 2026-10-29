@@ -8,7 +8,7 @@
     static nw4r::ut::detail::RuntimeTypeInfo typeInfo
 
 // Define type RTTI (base type)
-#define NW4R_UT_RTTI_DEF_BASE(T) nw4r::ut::detail::RuntimeTypeInfo T::typeInfo(NULL)
+#define NW4R_UT_RTTI_DEF_BASE(T) nw4r::ut::detail::RuntimeTypeInfo T::typeInfo(nullptr)
 
 // Define type RTTI (derived type)
 #define NW4R_UT_RTTI_DEF_DERIVED(T, BASE) \
@@ -19,16 +19,16 @@ namespace nw4r::ut {
 namespace detail {
 
 struct RuntimeTypeInfo {
-    RuntimeTypeInfo(
+    constexpr RuntimeTypeInfo(
         const RuntimeTypeInfo* base
     )
-        : mBase(base) {}
+        : mParentTypeInfo(base) {}
 
     bool IsDerivedFrom(
-        const RuntimeTypeInfo* base
+        const RuntimeTypeInfo* typeInfo
     ) const {
-        for (const RuntimeTypeInfo* it = this; it != nullptr; it = it->mBase) {
-            if (it == base) {
+        for (const RuntimeTypeInfo* it = this; it != nullptr; it = it->mParentTypeInfo) {
+            if (it == typeInfo) {
                 return true;
             }
         }
@@ -36,28 +36,28 @@ struct RuntimeTypeInfo {
         return false;
     }
 
-    /* 0x0 */ const RuntimeTypeInfo* mBase;
+    /* 0x0 */ const RuntimeTypeInfo* mParentTypeInfo;
 };
 
-template <typename T>
+template <class T>
 inline const RuntimeTypeInfo* GetTypeInfoFromPtr_(
-    T* ptr
+    const T* obj
 ) {
-    return &ptr->typeInfo;
+    return &obj->typeInfo;
 }
 
 } // namespace detail
 
-template <typename TDerived, typename TBase>
+template <class TDerived, class TBase>
 inline TDerived DynamicCast(
-    TBase* ptr
+    TBase* obj
 ) {
     // Derived type info
-    const detail::RuntimeTypeInfo* derivedTypeInfo =
+    const detail::RuntimeTypeInfo* typeInfoU =
         detail::GetTypeInfoFromPtr_(static_cast<TDerived>(nullptr));
     // Downcast if possible
-    if (ptr && ptr->GetRuntimeTypeInfo()->IsDerivedFrom(derivedTypeInfo)) {
-        return static_cast<TDerived>(ptr);
+    if (obj && obj->GetRuntimeTypeInfo()->IsDerivedFrom(typeInfoU)) {
+        return static_cast<TDerived>(obj);
     }
 
     return nullptr;

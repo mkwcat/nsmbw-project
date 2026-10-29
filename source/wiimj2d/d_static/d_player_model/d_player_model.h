@@ -188,7 +188,7 @@ public:
     /* 0x210 */ nw4r::g3d::ResFile mCommonAnimResFile;
     /* 0x214 */ nw4r::g3d::ResFile mAnimResFile;
 
-    FILL(0x218, 0x468);
+    u8 FILL(0x218, 0x468);
 
     /* @unofficial */
     struct modelCntr_c {
@@ -217,5 +217,5 @@ public:
     /* 0x782 */ u16              mPropelRollSpeed;
     /* 0x784 */ float            mPropelScale;
 
-    FILL(0x788, 0x824);
+    u8 FILL(0x788, 0x824);
 };

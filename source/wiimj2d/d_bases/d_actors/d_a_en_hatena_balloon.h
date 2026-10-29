@@ -78,30 +78,30 @@ public:
     /* 0x6F8 */ m3d::anmChr_c      mItemAnmChr;
     /* 0x730 */ m3d::anmTexPat_c   mItemAnmTexPat;
 
-    FILL(0x75C, 0x7A4);
+    u8 FILL(0x75C, 0x7A4);
 
     /* 0x7A4 */ mVec3_c mItemScale;
 
-    FILL(0x7B0, 0x7E0);
+    u8 FILL(0x7B0, 0x7E0);
 
     /* 0x7E0 */ int m_shake_check_timer;
     /* 0x7E4 */ int m_countdown_anm;
 
-    FILL(0x7E8, 0x7EC);
+    u8 FILL(0x7E8, 0x7EC);
 
     /* 0x7EC */ int mHasItem;
 
-    FILL(0x7F0, 0x810);
+    u8 FILL(0x7F0, 0x810);
 
     /* 0x810 */ u32 mPlayerNo;
 
-    FILL(0x814, 0x86C);
+    u8 FILL(0x814, 0x86C);
 
     /* 0x86C */ bool    mPopReady;
 
     /* 0x870 */ mVec3_c mBalloonPopPos;
 
-    FILL(0x87C, 0x8A0);
+    u8 FILL(0x87C, 0x8A0);
 
 public:
     // State IDs

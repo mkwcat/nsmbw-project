@@ -3,7 +3,7 @@
 
 #include "d_a_en_white_block.h"
 
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 #include <revolution/os/OSLink.h>
 
 asm(".set __vt__16daEnWhiteBlock_c, 0");
@@ -15,7 +15,7 @@ fBase_c* daEnWhiteBlock_c_classInit() {
 
 daEnWhiteBlock_c::daEnWhiteBlock_c()
     : m_pResFile(nullptr) {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
 }
 
 [[nsmbw(0x80AC8A80)]]

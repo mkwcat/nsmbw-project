@@ -4,7 +4,7 @@
 #include "m_vec.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/picture.h>
 
 class dfukidashiInfo_c {
     SIZE_ASSERT(0x23C);
@@ -73,39 +73,39 @@ protected:
     /* 0x004 */ LytBase_c                            mLayout;
     /* 0x19C */ sStateMgrDefault_c<dfukidashiInfo_c> mStateMgr;
 
-    FILL(0x1D8, 0x1DC);
+    u8                                               FILL(0x1D8, 0x1DC);
 
-    /* 0x1DC */ mVec3_c mPosOffset;
+    /* 0x1DC */ mVec3_c                              mPosOffset;
 
-    FILL(0x1E8, 0x1F4);
+    u8                                               FILL(0x1E8, 0x1F4);
 
-    /* 0x1F4 */ nw4r::lyt::Pane* mpPane;
+    /* 0x1F4 */ nw4r::lyt::Pane*                     mpPane;
 
-    FILL(0x1F8, 0x1FC);
+    u8                                               FILL(0x1F8, 0x1FC);
 
-    /* 0x1FC */ nw4r::lyt::Picture* mpAfterImgUD;
-    /* 0x200 */ nw4r::lyt::Picture* mpUpDownImg01;
-    /* 0x204 */ nw4r::lyt::Picture* mpAfterImgK;
-    /* 0x208 */ nw4r::lyt::Picture* mpKatamukiHand;
-    /* 0x20C */ nw4r::lyt::Picture* mpArrow;
-    /* 0x210 */ nw4r::lyt::Picture* mpUpDownImg02;
+    /* 0x1FC */ nw4r::lyt::Picture*                  mpAfterImgUD;
+    /* 0x200 */ nw4r::lyt::Picture*                  mpUpDownImg01;
+    /* 0x204 */ nw4r::lyt::Picture*                  mpAfterImgK;
+    /* 0x208 */ nw4r::lyt::Picture*                  mpKatamukiHand;
+    /* 0x20C */ nw4r::lyt::Picture*                  mpArrow;
+    /* 0x210 */ nw4r::lyt::Picture*                  mpUpDownImg02;
 
-    FILL(0x214, 0x21C);
+    u8                                               FILL(0x214, 0x21C);
 
-    /* 0x21C */ int mPlrNo;
-    /* 0x220 */ int mAction;
-    /* 0x224 */ int m0x224;
-    /* 0x228 */ int m0x228;
-    /* 0x22C */ int m0x22C;
-    /* 0x230 */ int m0x230;
-    /* 0x234 */ int m0x234;
+    /* 0x21C */ int                                  mPlrNo;
+    /* 0x220 */ int                                  mAction;
+    /* 0x224 */ int                                  m0x224;
+    /* 0x228 */ int                                  m0x228;
+    /* 0x22C */ int                                  m0x22C;
+    /* 0x230 */ int                                  m0x230;
+    /* 0x234 */ int                                  m0x234;
 
-    FILL(0x238, 0x239);
+    u8                                               FILL(0x238, 0x239);
 
-    /* 0x239 */ bool mDispOn;
-    /* 0x23A */ bool mVisible;
+    /* 0x239 */ bool                                 mDispOn;
+    /* 0x23A */ bool                                 mVisible;
 
-    FILL(0x23B, 0x23C);
+    u8                                               FILL(0x23B, 0x23C);
 
 public:
     // State IDs

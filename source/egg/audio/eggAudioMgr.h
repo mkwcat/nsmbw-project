@@ -29,7 +29,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x004, 0x008);
+    u8 FILL(0x004, 0x008);
 
     /* 0x008 */ EGG::SoundHeapMgr mHeapMgr;
 };

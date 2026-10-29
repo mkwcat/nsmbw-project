@@ -85,7 +85,7 @@ typedef void (*PADSamplingCallback)(void);
 // Pad
 int PADReset(u32 mask);
 BOOL PADRecalibrate(u32 mask);
-BOOL PADInit(void);
+[[mkw(0x801AF2F0)]] BOOL PADInit(void);
 u32 PADRead(PADStatus* status);
 void PADSetSamplingRate(u32 msec);
 void __PADTestSamplingRate(u32 tvmode);

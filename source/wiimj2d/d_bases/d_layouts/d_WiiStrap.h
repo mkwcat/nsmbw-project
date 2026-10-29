@@ -16,10 +16,10 @@ public:
     dWiiStrap_c();
 
 public:
-    FILL(0x070, 0x208);
+    u8 FILL(0x070, 0x208);
 
     /* 0x208 */ bool mReady;
     /* 0x209 */ bool mVisible;
 
-    FILL(0x20A, 0x20C);
+    u8 FILL(0x20A, 0x20C);
 };

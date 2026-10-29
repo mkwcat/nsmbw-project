@@ -33,11 +33,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0xD48, 0xD78);
+    u8 FILL(0xD48, 0xD78);
 
     /* 0xD78 */ dBg_ctr_c mPlrCollider;
 
-    FILL(0xE5C, 0xFD0);
+    u8 FILL(0xE5C, 0xFD0);
 
 public:
     // State IDs

@@ -3,8 +3,8 @@
 #include "constant.h"
 #include <bit>
 #include <cmath>
-#include <mkwcat/Instructions.hpp>
 #include <revolution/os.h>
+#include <slu/ppc.hpp>
 
 namespace nw4r::math {
 
@@ -47,8 +47,8 @@ inline f32 FInv(
     f32 res = __builtin_ppc_fres(x);
 
     // Refine estimate
-    return mkwcat::ps_nmsub(
-        x, mkwcat::ps_mul(res, res), mkwcat::ps_add(res, res)
+    return slu::ppc::ps_nmsub(
+        x, slu::ppc::ps_mul(res, res), slu::ppc::ps_add(res, res)
     ); // -(x * 1/x^2 - 2/x)
 }
 

@@ -44,10 +44,10 @@ struct ARCDir {
 struct ARCDirEntry {
     SIZE_ASSERT(0x10);
 
-    FILL(0x00, 0x04);
-    /* 0x04 */ u32   entryNum;
-    /* 0x08 */ bool  isDir;
-    /* 0x0C */ char* name;
+    /* 0x00 */ ARCHandle* handle;
+    /* 0x04 */ u32        entryNum;
+    /* 0x08 */ bool       isDir;
+    /* 0x0C */ char*      name;
 };
 
 struct FstEntry {

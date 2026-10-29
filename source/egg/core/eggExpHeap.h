@@ -7,11 +7,13 @@ namespace EGG {
 
 class ExpHeap : public Heap {
 public:
-    /* 0x802B9840 */
+    static ExpHeap* create(void*, u32, u16);
+    static ExpHeap* create(u32, Heap*, u16);
+
     static u32 getSizeForMBlock(const void* block);
 
 public:
-    FILL(0x10, 0x1C);
+    u8                       FILL(0x10, 0x1C);
 
     /* 0x1C */ TBitFlag<u16> mFlags;
 };

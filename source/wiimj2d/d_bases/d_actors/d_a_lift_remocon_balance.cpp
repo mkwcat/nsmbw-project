@@ -4,7 +4,7 @@
 #include "d_a_lift_remocon_balance.h"
 
 #include "d_a_player_base.h"
-#include <mkwcat/VTable.hpp>
+#include <slu/vtable.hpp>
 
 [[nsmbw(0x8083C020)]]
 fBase_c* daRemoconBalance_c_classInit() {
@@ -12,7 +12,7 @@ fBase_c* daRemoconBalance_c_classInit() {
 }
 
 daRemoconBalance_c::daRemoconBalance_c() {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
 }
 
 [[nsmbw(0x8083C140)]]

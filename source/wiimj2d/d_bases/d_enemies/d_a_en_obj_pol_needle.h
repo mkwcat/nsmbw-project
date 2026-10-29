@@ -19,7 +19,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C30, 0x4D40);
+    u8 FILL(0x4C30, 0x4D40);
 };
 
 class daEnOPNeedleR_c : public daEnOP_c {
@@ -39,7 +39,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C30, 0x4D40);
+    u8 FILL(0x4C30, 0x4D40);
 };
 
 class daEnOPNeedleLR_c : public daEnOP_c {
@@ -59,7 +59,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C30, 0x4E48);
+    u8 FILL(0x4C30, 0x4E48);
 };
 
 class daEnOPNeedleU_c : public daEnOP_c {
@@ -79,7 +79,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C30, 0x4CE0);
+    u8 FILL(0x4C30, 0x4CE0);
 };
 
 class daEnOPNeedleD_c : public daEnOP_c {
@@ -99,7 +99,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C30, 0x4CE0);
+    u8 FILL(0x4C30, 0x4CE0);
 };
 
 class daEnOPNeedleUD_c : public daEnOP_c {
@@ -119,5 +119,5 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x4C30, 0x4D88);
+    u8 FILL(0x4C30, 0x4D88);
 };

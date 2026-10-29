@@ -1,66 +1,66 @@
 // vi3in1.c
 // NSMBW .text: 0x801BEEE0 - 0x801C0610
 
-EXTERN_SYMBOL(0x801BEEE0, "__VISetYUVSEL");
+[[nsmbw_symbol(0x801BEEE0, "__VISetYUVSEL")]];
 
 // UNUSED: __VISetTiming
 // UNUSED: __VISet3in1Output
 
-EXTERN_SYMBOL(0x801BEF80, "__VISetFilter4EURGB60");
+[[nsmbw_symbol(0x801BEF80, "__VISetFilter4EURGB60")]];
 
 // UNUSED: __VISetVBICtrl
 // UNUSED: __VIGetVenderID
 
-EXTERN_SYMBOL(0x801BEFC0, "__VISetCGMS");
+[[nsmbw_symbol(0x801BEFC0, "__VISetCGMS")]];
 
 // UNUSED: __VISetCGMSClear
 // UNUSED: VISetCGMS
 // UNUSED: VIGetCGMS
 
-EXTERN_SYMBOL(0x801BF020, "__VISetWSS");
+[[nsmbw_symbol(0x801BF020, "__VISetWSS")]];
 
 // UNUSED: VISetWSS
 // UNUSED: VIGetWSS
 
-EXTERN_SYMBOL(0x801BF090, "__VISetClosedCaption");
+[[nsmbw_symbol(0x801BF090, "__VISetClosedCaption")]];
 
 // UNUSED: VISetClosedCaption
 // UNUSED: __VISetMacrovisionImm
 
-EXTERN_SYMBOL(0x801BF100, "__VISetMacrovision");
+[[nsmbw_symbol(0x801BF100, "__VISetMacrovision")]];
 
 // UNUSED: VISetMacrovision
 
-EXTERN_SYMBOL(0x801BFE80, "__VISetGammaImm");
+[[nsmbw_symbol(0x801BFE80, "__VISetGammaImm")]];
 
-EXTERN_SYMBOL(0x801BFFE0, "__VISetGamma1_0");
+[[nsmbw_symbol(0x801BFFE0, "__VISetGamma1_0")]];
 
-EXTERN_SYMBOL(0x801BFFF0, "__VISetGamma");
+[[nsmbw_symbol(0x801BFFF0, "__VISetGamma")]];
 
 // UNUSED: VISetGamma
 // UNUSED: __VISetTrapFilterImm
 
-EXTERN_SYMBOL(0x801C0010, "__VISetTrapFilter");
+[[nsmbw_symbol(0x801C0010, "__VISetTrapFilter")]];
 
 // UNUSED: VISetTrapFilter
 
-EXTERN_SYMBOL(0x801C0070, "__VISetRGBOverDrive");
+[[nsmbw_symbol(0x801C0070, "__VISetRGBOverDrive")]];
 
 // UNUSED: VISetRGBOverDrive
 
-EXTERN_SYMBOL(0x801C0100, "VISetRGBModeImm");
+[[nsmbw_symbol(0x801C0100, "VISetRGBModeImm")]];
 
 // UNUSED: __VISetDTVMode
 // UNUSED: VISetDTVMode
 // UNUSED: VISetRVAMode
 
-EXTERN_SYMBOL(0x801C0110, "__VISetRGBModeImm");
+[[nsmbw_symbol(0x801C0110, "__VISetRGBModeImm")]];
 
 // UNUSED: __VISetLegacyMode
 // UNUSED: __VISetDVDMode
 // UNUSED: __VISetRevolutionMode
 
-EXTERN_SYMBOL(0x801C0160, "__VISetRevolutionModeSimple");
+[[nsmbw_symbol(0x801C0160, "__VISetRevolutionModeSimple")]];
 
 // UNUSED: __VISetRevolutionModeNoRetrace
 // UNUSED: __VIInit3in1

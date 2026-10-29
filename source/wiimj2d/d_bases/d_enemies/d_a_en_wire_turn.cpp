@@ -8,8 +8,8 @@
 #include "d_cc.h"
 #include "d_profile.h"
 #include <algorithm>
-#include <mkwcat/Relocate.hpp>
-#include <mkwcat/VTable.hpp>
+#include <slu/relocate.hpp>
+#include <slu/vtable.hpp>
 
 [[nsmbw_data(0x80AD58A0)]]
 sCcDatNewF l_CC_DATA_BIG_WIRE_TURN{};
@@ -25,11 +25,11 @@ fBase_c* daEnBigWrturn_c_classInit() {
 }
 
 daEnWrturn_c::daEnWrturn_c() {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
 }
 
 daEnBigWrturn_c::daEnBigWrturn_c() {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
 }
 
 [[nsmbw(0x80ACA0F0)]]

@@ -16,11 +16,12 @@
 #include "m_dvd.h"
 #include "m_heap.h"
 #include "m_pad.h"
+#include "revolution/dvd.h"
 #include <egg/core/eggController.h>
 #include <revolution/os/OSError.h>
 
 void dProject_c::preCModuleInit(
-    s32 arcEntryNum, ARCHandle* arcHandle
+    s32 arcEntryNum, void* arcStart
 ) {
     dException_c::initCallback();
 
@@ -28,7 +29,7 @@ void dProject_c::preCModuleInit(
     dSys_c::ms_RootHeapMem1->mFlags.resetBit(0);
     dSys_c::ms_RootHeapMem2->mFlags.resetBit(0);
 
-    __DVDEXInit(arcEntryNum, arcHandle);
+    DVDPatchInit(arcEntryNum, arcStart);
 }
 
 dProject_c::dProject_c() {
@@ -85,14 +86,18 @@ void dProject_c::loadVersionJson() {
     std::strcpy(m_version, "(unknown)");
 }
 
+extern "C" {
 int preinit(
     s32 param1, void* param2
 ) {
-    dProject_c::preCModuleInit(param1, static_cast<ARCHandle*>(param2));
+    dProject_c::preCModuleInit(param1, param2);
     return 0;
 }
 
-int main() {
+int main(
+    int argc, char** argv
+) {
     dProject_c::m_instance = new dProject_c;
     return 0;
+}
 }

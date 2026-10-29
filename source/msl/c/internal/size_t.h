@@ -1,3 +1,3 @@
 #pragma once
 
-typedef decltype(sizeof(0)) size_t;
+typedef decltype(sizeof 0) size_t;

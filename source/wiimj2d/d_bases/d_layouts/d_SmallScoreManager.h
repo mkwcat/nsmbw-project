@@ -40,7 +40,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0070, 0x4A18);
+    u8 FILL(0x0070, 0x4A18);
 
 public:
     // Static Variables

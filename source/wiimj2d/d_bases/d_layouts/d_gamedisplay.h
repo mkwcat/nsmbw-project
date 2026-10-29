@@ -8,9 +8,9 @@
 #include "m_ef.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Picture.h>
-#include <nw4r/lyt/TexMap.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/picture.h>
+#include <nw4r/lyt/texMap.h>
 #include <revolution/gx/GXStruct.h>
 
 class dGameDisplay_c : public dBase_c {
@@ -145,30 +145,30 @@ public:
     /* 0x418 */ int mAreaAlpha[cAreaCheckCount];
 
     // Changed from int to s8
-    /* 0x424 */ s8   mEffectTimer[16];
+    /* 0x424 */ s8               mEffectTimer[16];
 
-    /* 0x434 */ int  mSetScoreDelay;
-    /* 0x438 */ int  m0x438;
-    /* 0x43C */ int  m0x43C;
-    /* 0x440 */ int  m0x440;
-    /* 0x444 */ int  m0x444;
+    /* 0x434 */ int              mSetScoreDelay;
+    /* 0x438 */ int              m0x438;
+    /* 0x43C */ int              m0x43C;
+    /* 0x440 */ int              m0x440;
+    /* 0x444 */ int              m0x444;
 
-    /* 0x448 */ bool m0x448;
-    /* 0x449 */ bool m0x449;
-    /* 0x44A */ bool m0x44A;
-    /* 0x44B */ bool mLayoutLoaded;
-    /* 0x44C */ bool m0x44C;
-    /* 0x44D */ bool mAreaCrossed[cAreaCheckCount];
-    /* 0x450 */ bool mIsAlphaEnterOrExit;
-    /* 0x451 */ bool m0x451;
-    /* 0x452 */ bool m0x452;
-    /* 0x453 */ bool m0x453;
+    /* 0x448 */ bool             m0x448;
+    /* 0x449 */ bool             m0x449;
+    /* 0x44A */ bool             m0x44A;
+    /* 0x44B */ bool             mLayoutLoaded;
+    /* 0x44C */ bool             m0x44C;
+    /* 0x44D */ bool             mAreaCrossed[cAreaCheckCount];
+    /* 0x450 */ bool             mIsAlphaEnterOrExit;
+    /* 0x451 */ bool             m0x451;
+    /* 0x452 */ bool             m0x452;
+    /* 0x453 */ bool             m0x453;
 
-    FILL(0x454, 0x458);
+    u8                           FILL(0x454, 0x458);
 
-    /* 0x458 */ Area_s mArea[cAreaCheckCount];
+    /* 0x458 */ Area_s           mArea[cAreaCheckCount];
 
-    FILL(0x488, 0x490);
+    u8                           FILL(0x488, 0x490);
 
     /* 0x490 */ nw4r::lyt::Pane* mpRootPane;
 
@@ -238,7 +238,7 @@ public:
         /* 0x4E8 */ nw4r::lyt::Pane* mpaPanes[20];
     };
 
-    FILL(0x538, 0x5A4);
+    u8 FILL(0x538, 0x5A4);
     OFFSET_ASSERT(0x5A4);
 
 #define dGameDisplay_c_EXTRA_PLAYER_COUNT 4

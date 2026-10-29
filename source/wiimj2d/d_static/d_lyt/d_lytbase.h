@@ -4,11 +4,11 @@
 #include "d_lyttextbox.h"
 #include "f_base.h"
 #include "m_2d.h"
-#include <nw4r/lyt/Layout.h>
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Picture.h>
-#include <nw4r/lyt/TextBox.h>
-#include <nw4r/lyt/Window.h>
+#include <nw4r/lyt/layout.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/picture.h>
+#include <nw4r/lyt/textBox.h>
+#include <nw4r/lyt/window.h>
 #include <utility>
 
 class LytBase_c : public d2d::Multi_c {
@@ -181,10 +181,10 @@ public:
 
     /* 0x0AC */ d2d::ResAccMultLoader_c mResAccLoader;
 
-    FILL(0x180, 0x184);
+    u8                                  FILL(0x180, 0x184);
 
-    /* 0x184 */ m2d::AnmGroup_c* mpAnmGroups;
-    /* 0x188 */ bool*            mpAnmGroupEnabled;
+    /* 0x184 */ m2d::AnmGroup_c*        mpAnmGroups;
+    /* 0x188 */ bool*                   mpAnmGroupEnabled;
 
-    FILL(0x18C, 0x198);
+    u8                                  FILL(0x18C, 0x198);
 };

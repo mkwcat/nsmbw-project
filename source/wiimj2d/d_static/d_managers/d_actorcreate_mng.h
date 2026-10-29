@@ -12,14 +12,14 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x000, 0xBC8);
+    u8 FILL(0x000, 0xBC8);
 
     /* 0xBC8 */ s16  m0xBC8;
     /* 0xBC9 */ bool m0xBC9;
     /* 0xBCA */ bool mIsEndingDemo;
     /* 0xBCB */ bool m_stopped;
 
-    FILL(0xBCC, 0xBDC);
+    u8 FILL(0xBCC, 0xBDC);
 
 public:
     // Static Variables

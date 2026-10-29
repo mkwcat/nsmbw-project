@@ -20,7 +20,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x18);
+    u8 FILL(0x00, 0x18);
 
     /* 0x18 */ daBossDemo_c* mpBossDemo;
 

@@ -15,8 +15,8 @@
 #include "f_base.h"
 #include "m_pad.h"
 #include "m_vec.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Types.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/types.h>
 #include <revolution/os.h>
 #include <revolution/sc.h>
 

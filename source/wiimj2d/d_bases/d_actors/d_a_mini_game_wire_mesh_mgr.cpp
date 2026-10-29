@@ -12,7 +12,7 @@
 #include "m_mtx.h"
 #include "m_vec.h"
 #include <egg/util/eggEffect.h>
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 #include <nw4r/ut/Color.h>
 #include <revolution/gx/GXStruct.h>
 

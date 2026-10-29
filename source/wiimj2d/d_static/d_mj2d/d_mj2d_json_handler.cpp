@@ -11,17 +11,17 @@
 #include <bitset>
 #include <cstdlib>
 #include <cstring>
-#include <mkwcat/ToString.hpp>
 #include <revolution/os/OSError.h>
+#include <slu/to_string.hpp>
 #include <string_view>
 #include <variant>
 
 namespace {
 
-template <mkwcat::Enum T>
+template <slu::concepts::enum_type T>
 struct DataString;
 
-template <mkwcat::Enum T>
+template <slu::concepts::enum_type T>
 inline constexpr const char* encode(
     T value
 ) {
@@ -32,7 +32,7 @@ inline constexpr const char* encode(
     return DataString<T>::mapping[integral];
 }
 
-template <mkwcat::Enum T>
+template <slu::concepts::enum_type T>
 inline constexpr T decode(
     const char* string
 ) {
@@ -432,7 +432,7 @@ bool dMj2dJsonHandler_c::string(
     if (!expectValue()) {
         OS_REPORT(
             "Not expecting string() (UNKNOWN_OBJECT=%s)\n",
-            mkwcat::ToString(!!(mFlags & UNKNOWN_OBJECT))
+            slu::to_string(!!(mFlags & UNKNOWN_OBJECT))
         );
         return mFlags & UNKNOWN_OBJECT;
     }
@@ -661,7 +661,7 @@ bool dMj2dJsonHandler_c::null() {
     if (!expectValue()) {
         OS_REPORT(
             "Not expecting null() (UNKNOWN_OBJECT=%s)\n",
-            mkwcat::ToString(!!(mFlags & UNKNOWN_OBJECT))
+            slu::to_string(!!(mFlags & UNKNOWN_OBJECT))
         );
         return mFlags & UNKNOWN_OBJECT;
     }

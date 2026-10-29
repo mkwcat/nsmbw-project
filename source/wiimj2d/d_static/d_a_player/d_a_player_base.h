@@ -1768,17 +1768,17 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0392, 0x03F4);
+    u8 FILL(0x0392, 0x03F4);
 
     /* 0x03F4 */ ControlDemoSubstate_e mDemoState;
     /* 0x03F8 */ int                   mGotoDest;
     /* 0x03FC */ mVec3_c               mGotoPos;
 
-    FILL(0x0408, 0x043C);
+    u8 FILL(0x0408, 0x043C);
 
     /* 0x043C */ int m0x43C;
 
-    FILL(0x0440, 0x0450);
+    u8 FILL(0x0440, 0x0450);
 
     /* 0x0450 */ mVec3_c mControlDemoTargetPos;
     /* 0x045C */ float   mControlDemoSpeedF;
@@ -1789,11 +1789,11 @@ public:
     /* 0x046C */ int     mEndingDanceKeyTimers[5];
     /* 0x0480 */ int     mEndingDanceInactivityTimer;
 
-    FILL(0x0484, 0x0DE8);
+    u8 FILL(0x0484, 0x0DE8);
 
     /* 0x0DE8 */ dPyMdlMng_c* mpModelMng;
 
-    FILL(0x0DEC, 0x0EA4);
+    u8 FILL(0x0DEC, 0x0EA4);
 
     /* 0x0EA4 */ dAcPyKey_c mKey;
 
@@ -1855,14 +1855,14 @@ public:
     /* 0x10E0 */ u32               mOldBgCross2;
     /* 0x10E4 */ u32               mBgFootHistory[10];
 
-    FILL(0x110C, 0x1164);
+    u8 FILL(0x110C, 0x1164);
 
     /* 0x1164 */ dCc_c mCc1;
     /* 0x1208 */ dCc_c mAttCc1;
     /* 0x12AC */ dCc_c mAttCc2;
     /* 0x1350 */ dCc_c mAttCc3;
 
-    FILL(0x13F4, 0x1418);
+    u8 FILL(0x13F4, 0x1418);
 
     /**
      * The state manager for demo (cutscene) states.
@@ -1908,5 +1908,5 @@ public:
      */
     /* 0x14AC */ int m_SubstateValue;
 
-    FILL(0x14B0, 0x14D4);
+    u8 FILL(0x14B0, 0x14D4);
 };

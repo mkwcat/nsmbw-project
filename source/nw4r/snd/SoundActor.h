@@ -59,7 +59,7 @@ public:
 
     /* 0x04 */ SoundArchivePlayer& mSoundArchivePlayer;
 
-    FILL(0x08, 0x54);
+    u8                             FILL(0x08, 0x54);
 };
 
 } // namespace nw4r::snd

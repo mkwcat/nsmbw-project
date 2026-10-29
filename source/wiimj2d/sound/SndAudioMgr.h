@@ -27,7 +27,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x010, 0x5BC);
+    u8 FILL(0x010, 0x5BC);
 
     /* 0x5BC */ nw4r::snd::SoundArchivePlayer* mpSoundArchivePlayer;
 

@@ -11,7 +11,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x3D0, 0x554);
+    u8 FILL(0x3D0, 0x554);
 
 public:
     // Virtual State IDs

@@ -1,9 +1,11 @@
+#if is_nsmbw
+
 // Padclamp.c
 // NSMBW: ---
 
-#include <cmath>
-#include <revolution/os.h>
-#include <revolution/pad.h>
+#  include <math.h>
+#  include <revolution/os.h>
+#  include <revolution/pad.h>
 
 EXTERN_C_START
 
@@ -115,7 +117,7 @@ static void ClampCircle(
 
     squared = x * x + y * y;
     if (radius * radius < squared) {
-        length = std::sqrtf(squared);
+        length = sqrtf(squared);
         x      = (x * radius) / length;
         y      = (y * radius) / length;
     }
@@ -178,3 +180,5 @@ void PADClampCircle(
 }
 
 EXTERN_C_END
+
+#endif

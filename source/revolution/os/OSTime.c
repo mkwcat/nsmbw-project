@@ -5,22 +5,22 @@
 
 EXTERN_C_START
 
-[[nsmbw(0x801B60C0)]]
+[[nsmbw(0x801B60C0)]] [[mkw(0x801AAD5C)]]
 OSTime OSGetTime();
 
-[[nsmbw(0x801B60E0)]]
+[[nsmbw(0x801B60E0)]] [[mkw(0x801AAD74)]]
 OSTick OSGetTick();
 
 // UNUSED: __SetTime
 // UNUSED: __OSSetTime
 
-EXTERN_SYMBOL(0x801B60F0, "__OSGetSystemTime");
+[[nsmbw_symbol(0x801B60F0, "__OSGetSystemTime")]];
 
-EXTERN_SYMBOL(0x801B6160, "__OSTimeToSystemTime");
+[[nsmbw_symbol(0x801B6160, "__OSTimeToSystemTime")]];
 
 // UNUSED: __OSSetTick
 
-[[nsmbw(0x801B61C0)]]
+[[nsmbw(0x801B61C0)]] [[mkw(0x801AAFA8)]]
 void OSTicksToCalendarTime(OSTime time, OSCalendarTime* cal);
 
 // UNUSED: OSCalendarTimeToTicks

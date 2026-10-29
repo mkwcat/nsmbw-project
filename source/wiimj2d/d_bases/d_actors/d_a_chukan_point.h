@@ -29,15 +29,15 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x3D0, 0x3F0);
+    u8 FILL(0x3D0, 0x3F0);
 
     /* 0x3F0 */ m3d::mdl_c m_model;
 
-    FILL(0x430, 0x46C);
+    u8 FILL(0x430, 0x46C);
 
     /* 0x46C */ m3d::anmTexPat_c m_anmTexPat;
 
-    FILL(0x498, 0x4E0);
+    u8 FILL(0x498, 0x4E0);
 
 public:
     // State IDs

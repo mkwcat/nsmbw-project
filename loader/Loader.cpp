@@ -6,8 +6,8 @@
 #undef nsmbw_data
 #define nsmbw_data(...) maybe_unused
 
-#undef EXTERN_SYMBOL
-#define EXTERN_SYMBOL(...)
+#undef nsmbw_symbol
+#define nsmbw_symbol gnu ::const
 
 #undef EXTERN_REPL
 #define EXTERN_REPL(...)
@@ -19,10 +19,10 @@
 #include <egg/core/eggHeap.h>
 #include <egg/core/eggStreamDecomp.h>
 #include <machine/m_dvd.h>
-#include <mkwcat/AddressMapper.hpp>
 #include <revolution/arc.h>
 #include <revolution/dvd.h>
 #include <revolution/os.h>
+#include <slu/address_mapper.hpp>
 #include <utility>
 
 // Since the same Loader.bin file will be used for every region, ported addresses need to be
@@ -34,10 +34,12 @@
 
 #define PORT_ADDR_LIST(_ADDR) \
     (const u32[]) { \
-        _ADDR, mkwcat::AddressMapperP2.MapAddress(_ADDR), \
-            mkwcat::AddressMapperE1.MapAddress(_ADDR), mkwcat::AddressMapperE2.MapAddress(_ADDR), \
-            mkwcat::AddressMapperJ1.MapAddress(_ADDR), mkwcat::AddressMapperJ2.MapAddress(_ADDR), \
-            mkwcat::AddressMapperK.MapAddress(_ADDR), mkwcat::AddressMapperW.MapAddress(_ADDR) \
+        _ADDR, slu::address_mapper_pal2.map_address(_ADDR), \
+            slu::address_mapper_usa1.map_address(_ADDR), \
+            slu::address_mapper_usa2.map_address(_ADDR), \
+            slu::address_mapper_jpn1.map_address(_ADDR), \
+            slu::address_mapper_jpn2.map_address(_ADDR), \
+            slu::address_mapper_kor.map_address(_ADDR), slu::address_mapper_twn.map_address(_ADDR) \
     }
 
 #define _ADDRESS_LOADER3(_ADDR, _COUNTER, _PORT_CALL_BASE) \
@@ -55,13 +57,13 @@ gnu::naked]]  void _LoaderFunction##_COUNTER() asm("_LoaderFunction" #_COUNTER);
                 ".long %6;" \
                 ".long %7;" \
                 : \
-                : "i"(_ADDR), "i"(mkwcat::AddressMapperP2.MapAddress(_ADDR)), \
-                  "i"(mkwcat::AddressMapperE1.MapAddress(_ADDR)), \
-                  "i"(mkwcat::AddressMapperE2.MapAddress(_ADDR)), \
-                  "i"(mkwcat::AddressMapperJ1.MapAddress(_ADDR)), \
-                  "i"(mkwcat::AddressMapperJ2.MapAddress(_ADDR)), \
-                  "i"(mkwcat::AddressMapperK.MapAddress(_ADDR)), \
-                  "i"(mkwcat::AddressMapperW.MapAddress(_ADDR))); \
+                : "i"(_ADDR), "i"(slu::address_mapper_pal2.map_address(_ADDR)), \
+                  "i"(slu::address_mapper_usa1.map_address(_ADDR)), \
+                  "i"(slu::address_mapper_usa2.map_address(_ADDR)), \
+                  "i"(slu::address_mapper_jpn1.map_address(_ADDR)), \
+                  "i"(slu::address_mapper_jpn2.map_address(_ADDR)), \
+                  "i"(slu::address_mapper_kor.map_address(_ADDR)), \
+                  "i"(slu::address_mapper_twn.map_address(_ADDR))); \
     } \
 [[gnu::alias("_LoaderFunction" #_COUNTER)
 
@@ -76,13 +78,12 @@ EXTERN_C_START
 constinit u32 g_port_offset = 0;
 
 void PortCall() ASM_METHOD(
-  // clang-format off
-  lis     r11, g_port_offset@ha;
-  lwz     r11, g_port_offset@l(r11);
-  lwzx    r12, r11, r12;
-  mtctr   r12;
-  bctr;
-  // clang-format on
+    //
+    lis     r11, g_port_offset@ha;
+    lwz     r11, g_port_offset@l(r11);
+    lwzx    r12, r11, r12;
+    mtctr   r12;
+    bctr;
 );
 
 EXTERN_C_END
@@ -364,9 +365,15 @@ bool LoaderMain() {
         }
         GetHeap()->free(l_stack);
 
+        const char*           at     = "call prolog";
         OSModuleHeader* const header = static_cast<OSModuleHeader*>(l_loader_block);
-        (*reinterpret_cast<void (*)(...)>(header->prolog))(l_arc_entry_num, &l_arc_handle);
-        return true;
+        (*reinterpret_cast<void (*)(int, char**, const char*& at, int, void*)>(header->prolog))(
+            0, nullptr, at, l_arc_entry_num, l_arc_handle.archiveStartAddr
+        );
+        if (at == nullptr) {
+            return true;
+        }
+        Error(at, __builtin_LINE());
     }
 
     // GetPortByCode must be called first.

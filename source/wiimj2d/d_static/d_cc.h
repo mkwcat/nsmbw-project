@@ -171,7 +171,7 @@ public:
 
     /* 0xA2 */ bool       mIsLinked;
 
-    FILL(0xA3, 0xA4);
+    u8 FILL(0xA3, 0xA4);
 
 public:
     // Static Variables

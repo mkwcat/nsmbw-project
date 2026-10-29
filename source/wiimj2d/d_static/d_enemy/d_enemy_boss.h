@@ -121,7 +121,7 @@ public:
     /* 0x5F4 */ u32                   mQuakeDamage;
     /* 0x5F8 */ dBossLifeInf_c*       mpBossLife;
 
-    FILL(0x5FC, 0x600);
+    u8 FILL(0x5FC, 0x600);
 
 public:
     // Virtual State IDs

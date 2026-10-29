@@ -9,5 +9,5 @@ public:
     [[nsmbw(0x800CA150)]]
     dMarioMdl_c(u8 index);
 
-    FILL(0x824, 0x874);
+    u8 FILL(0x824, 0x874);
 };

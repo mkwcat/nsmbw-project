@@ -22,7 +22,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x398);
+    u8 FILL(0x070, 0x398);
 };
 
 class daMiniGameWireMeshMgrObj_c : public dBase_c {
@@ -48,12 +48,12 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x1D5);
+    u8 FILL(0x070, 0x1D5);
 
     /* 0x1D5 */ bool mIsGameFail;
     /* 0x1D6 */ bool mIsBadPanelFlip;
 
-    FILL(0x1D7, 0x1E8);
+    u8 FILL(0x1D7, 0x1E8);
 
     /* 0x1E8 */ int mWinItemCount;
     /* 0x1EC */ int mWinStockItem[STOCK_ITEM_COUNT];
@@ -61,22 +61,22 @@ public:
     /* 0x20C */ int mTurnPlayerBackup;
     /* 0x210 */ int mPlayNum;
 
-    FILL(0x214, 0x220);
+    u8 FILL(0x214, 0x220);
 
     /* 0x220 */ bool mUpdateCursor;
 
-    FILL(0x221, 0x224);
+    u8 FILL(0x221, 0x224);
 
     /* 0x224 */ dEf::dLevelEffect_c mEffectCursor;
     /* 0x34C */ mEf::effect_c       mEffectCursorSt;
 
     /* 0x460 */ bool                mHasPlayedCursorSt;
 
-    FILL(0x461, 0x58C);
+    u8 FILL(0x461, 0x58C);
 
     /* 0x58C */ mEf::effect_c mEffectCursor2d;
 
-    FILL(0x6A0, 0x708);
+    u8 FILL(0x6A0, 0x708);
 
 public:
     // State IDs

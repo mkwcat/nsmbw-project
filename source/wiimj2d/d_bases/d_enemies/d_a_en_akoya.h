@@ -20,7 +20,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x940);
+    u8 FILL(0x524, 0x940);
 
 public:
     // State IDs

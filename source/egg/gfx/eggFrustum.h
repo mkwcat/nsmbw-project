@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 
 namespace EGG {
 
@@ -45,9 +45,9 @@ private:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x00 */ ProjectionType mProjType;
+    /* 0x00 */ ProjectionType   mProjType;
 
-    FILL(0x04, 0x28);
+    u8                          FILL(0x04, 0x28);
 
     /* 0x28 */ nw4r::math::VEC3 mScale;
     /* 0x34 */ mutable u16      mFlags;

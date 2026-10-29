@@ -1,16 +1,16 @@
 #pragma once
 
 #include <egg/core/eggExpHeap.h>
-#include <mkwcat/Region.hpp>
 #include <nw4r/ut/Color.h>
 #include <revolution/arc.h>
+#include <slu/revision.hpp>
 
 class dSys_c {
 public:
     // Constants and Types
     // ^^^^^^
 
-    using CODE_REGION_e = mkwcat::Region;
+    using CODE_REGION_e = slu::revision;
 
 public:
     // Static Methods

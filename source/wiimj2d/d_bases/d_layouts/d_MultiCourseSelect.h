@@ -10,8 +10,8 @@
 #include "s_State.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Window.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/window.h>
 
 class dMultiCourseSelectContents_c;
 
@@ -138,24 +138,24 @@ public:
     /* 0x40C */ LytTextBox_c*       mpTextBoxes[7];
     /* 0x428 */ nw4r::lyt::Window*  mpWindowPanes[5];
 
-    FILL(0x43C, 0x440);
+    u8 FILL(0x43C, 0x440);
 
     /* 0x400 */ FavoriteCourse_s mFavorites[10];
 
-    FILL(0x4E0, 0x4F4);
+    u8 FILL(0x4E0, 0x4F4);
 
     /* 0x4F4 */ int mCurrButton;
 
-    FILL(0x4F8, 0x500);
+    u8 FILL(0x4F8, 0x500);
 
     /* 0x500 */ int mCurrPage;
 
-    FILL(0x504, 0x50F);
+    u8 FILL(0x504, 0x50F);
 
     /* 0x50F */ bool mBeginCourse;
     /* 0x510 */ bool mExitWindowActive;
 
-    FILL(0x511, 0x524);
+    u8 FILL(0x511, 0x524);
 
     // New (added 0xD0 bytes)
     /* 0x524 */ nw4r::lyt::Pane* mpNPBase[PLAYER_COUNT];
@@ -169,7 +169,7 @@ public:
     /* 0x5B4 */ nw4r::lyt::Pane* mpNPos8P[8];
     /* 0x5D4 */ LytTextBox_c*    mpTRankStar[8];
 
-    FILL(0x070, 0x524);
+    u8 FILL(0x070, 0x524);
 
 public:
     // State IDs

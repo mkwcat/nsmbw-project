@@ -32,12 +32,12 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0xB8D);
+    u8 FILL(0x070, 0xB8D);
 
     /* 0xB8D */ bool m0xB8D;
     /* 0xB8E */ bool m0xB8E;
 
-    FILL(0xB8F, 0xB94);
+    u8 FILL(0xB8F, 0xB94);
 
 public:
     // Static Variables

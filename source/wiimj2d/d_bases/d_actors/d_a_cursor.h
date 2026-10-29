@@ -19,5 +19,5 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x60C);
+    u8 FILL(0x070, 0x60C);
 };

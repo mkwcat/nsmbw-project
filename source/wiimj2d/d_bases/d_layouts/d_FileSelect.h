@@ -21,16 +21,16 @@ public:
     dFileSelect_c();
 
 public:
-    FILL(0x070, 0x24C);
+    u8 FILL(0x070, 0x24C);
 
     /* 0x24C */ dDateFile_c*   mpDateFile[SAVE_SLOT_COUNT];
     /* 0x258 */ dInfoWindow_c* mpInfoWindow;
 
-    FILL(0x25C, 0x2A4);
+    u8 FILL(0x25C, 0x2A4);
 
     /* 0x2A4 */ int mChoice;
 
-    FILL(0x2A8, 0x2DB);
+    u8 FILL(0x2A8, 0x2DB);
 
     /* 0x2DB */ bool mChoiceDone;
     /* 0x2DC */ bool mChoiceBack;

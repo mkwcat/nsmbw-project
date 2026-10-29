@@ -3,10 +3,9 @@
 #include "egg/math/eggMatrix.h"
 #include "egg/math/eggVector.h"
 #include "egg/prim/eggBitFlag.h"
-#include "eggExEffect.h"
-#include <nw4r/ef/Handle.h>
-#include <nw4r/math/mtx.h>
-#include <nw4r/math/vec.h>
+#include "egg/util/eggExEffect.h"
+#include <nw4r/ef/handle.h>
+#include <nw4r/math/types.h>
 #include <revolution/gx/GXStruct.h>
 
 namespace EGG {

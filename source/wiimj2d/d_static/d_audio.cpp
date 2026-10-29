@@ -6,7 +6,7 @@
 
 #include "d_mj2d_game.h"
 #include "m_vec.h"
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 
 namespace dAudio {
 

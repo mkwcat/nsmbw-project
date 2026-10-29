@@ -24,13 +24,13 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x074);
+    u8 FILL(0x070, 0x074);
 
     /* 0x074 */ dCollectionCoinBase_c* mpColCoinBase[2];
     /* 0x07C */ dCollectionCoinDate_c* mpColCoinDate[24];
     /* 0x0DC */ dModelPlayArrow_c*     mpMdlPlyArrow;
 
-    FILL(0x0E0, 0xB5C);
+    u8 FILL(0x0E0, 0xB5C);
 
 public:
     // State IDs

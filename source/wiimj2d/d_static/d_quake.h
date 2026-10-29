@@ -33,7 +33,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x30);
+    u8 FILL(0x00, 0x30);
 
     /* 0x30 */ EGG::TBitFlag<u32> mFlags;
 

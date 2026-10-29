@@ -24,11 +24,11 @@ public:
     /* 0x80845D60 */
     bool isAllPlayerOnLift();
 
-    FILL(0x3D0, 0x508);
+    u8 FILL(0x3D0, 0x508);
 
     /* 0x508 */ dRideRoll_c mRideRoll;
 
-    FILL(0x568, 0x590);
+    u8 FILL(0x568, 0x590);
 
 public:
     // State IDs

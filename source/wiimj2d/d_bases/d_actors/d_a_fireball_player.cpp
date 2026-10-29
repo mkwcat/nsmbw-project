@@ -2,7 +2,7 @@
 // NSMBW .text: 0x8011A5B0 - 0x8011B640
 
 #include "d_mj2d_game.h"
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 
 /* 0x80375840 */
 int daFireBall_Player_c_m_limit1[PLAYER_COUNT];

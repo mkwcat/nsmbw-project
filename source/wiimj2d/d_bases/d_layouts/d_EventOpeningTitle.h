@@ -5,7 +5,7 @@
 #include "d_lyttextbox.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
-#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/pane.h>
 
 class dEventOpeningTitle_c : public dBase_c {
     SIZE_ASSERT(0x277);
@@ -44,7 +44,7 @@ public:
     /* 0x248 */ LytTextBox_c*                            m_tE3VerCheck;
     /* 0x24C */ nw4r::lyt::Pane*                         m_nProportionC;
 
-    FILL(0x250, 0x274);
+    u8 FILL(0x250, 0x274);
 
     /* 0x274 */ bool m_created;
     /* 0x275 */ bool m_visible;

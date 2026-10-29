@@ -4,7 +4,7 @@
 #include "d_lytbase.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/picture.h>
 
 class dCourseSelectMenu_c : public dBase_c {
     SIZE_ASSERT(0x278);
@@ -45,14 +45,14 @@ public:
     /* 0x260 */ LytTextBox_c*               m_tCourseSelectS;
     /* 0x264 */ LytTextBox_c*               m_tCourseSelect;
 
-    FILL(0x268, 0x270);
+    u8 FILL(0x268, 0x270);
 
     /* 0x270 */ bool m_created;
     /* 0x271 */ bool m0x271;
     /* 0x272 */ bool m0x272;
     /* 0x273 */ bool m0x273;
 
-    FILL(0x274, 0x278);
+    u8 FILL(0x274, 0x278);
 
 public:
     // State IDs

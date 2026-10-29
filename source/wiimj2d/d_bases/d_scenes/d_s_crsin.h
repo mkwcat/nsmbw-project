@@ -34,7 +34,7 @@ public:
 
     /* 0x074 */ sStateMgrDefault_c<dScCrsin_c> mStateMgr;
     /* 0x0B0 */ dPreGame_c                     mPreGameLyt;
-    FILL(0x3BC, 0x3C8);
+    u8 FILL(0x3BC, 0x3C8);
 
 public:
     // Static Variables

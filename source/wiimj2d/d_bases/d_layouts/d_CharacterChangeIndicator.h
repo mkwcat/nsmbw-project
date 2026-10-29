@@ -3,7 +3,7 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/picture.h>
 
 class dCharacterChangeIndicator_c : public dBase_c {
     SIZE_ASSERT(0x250);
@@ -53,7 +53,7 @@ public:
     /* 0x239 */ u8                  m0x239;
     /* 0x23C */ int                 mPlayerNo;
 
-    FILL(0x240, 0x248);
+    u8 FILL(0x240, 0x248);
 
     /* 0x248 */ int m0x248;
     /* 0x24C */ int m0x24C;

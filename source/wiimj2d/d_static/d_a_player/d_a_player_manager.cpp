@@ -35,10 +35,10 @@
 #include <algorithm>
 #include <bit>
 #include <cassert>
-#include <mkwcat/Relocate.hpp>
 #include <numeric>
 #include <revolution/os.h>
 #include <revolution/os/OSLink.h>
+#include <slu/relocate.hpp>
 
 [[nsmbw_data(0x80429F80)]]
 int daPyMng_c::mNum;
@@ -52,54 +52,54 @@ u8  daPyMng_c::mOldActPlayerInfo;
 u64 daPyMng_c::mActPlayerInfo;
 
 /* 0x80355110 */
-cArray_c<fBaseID_e, PLAYER_COUNT, int> daPyMng_c::m_playerID;
+slu::array<fBaseID_e, PLAYER_COUNT, int> daPyMng_c::m_playerID;
 
 /* 0x80355120 */
-cArray_c<fBaseID_e, PLAYER_COUNT, int> daPyMng_c::m_yoshiID;
+slu::array<fBaseID_e, PLAYER_COUNT, int> daPyMng_c::m_yoshiID;
 
 /* 0x80355130 */
-cArray_c<s32, PLAYER_COUNT, int> daPyMng_c::mCourseInList;
+slu::array<s32, PLAYER_COUNT, int> daPyMng_c::mCourseInList;
 
 /* 0x80429F8C */
-cArray_c<u8, PLAYER_COUNT, int> daPyMng_c::m_yoshiColor;
+slu::array<u8, PLAYER_COUNT, int> daPyMng_c::m_yoshiColor;
 
 /* 0x80355140 */
-cArray_c<s32, PLAYER_COUNT, int> daPyMng_c::m_yoshiFruit;
+slu::array<s32, PLAYER_COUNT, int> daPyMng_c::m_yoshiFruit;
 
 /* 0x80355150 */
-cArray_c<s32, PLAYER_COUNT, int> daPyMng_c::mPlayerEntry;
+slu::array<s32, PLAYER_COUNT, int> daPyMng_c::mPlayerEntry;
 
 /* 0x80355160 */
 // Index is player ID
-cArray_c<PLAYER_TYPE_e, PLAYER_COUNT, int> daPyMng_c::mPlayerType =
-    std::bit_cast<cArray_c<PLAYER_TYPE_e, PLAYER_COUNT, int>>(dMj2dGame_c::scDefaultPlayerTypes);
+slu::array<PLAYER_TYPE_e, PLAYER_COUNT, int> daPyMng_c::mPlayerType =
+    std::bit_cast<slu::array<PLAYER_TYPE_e, PLAYER_COUNT, int>>(dMj2dGame_c::scDefaultPlayerTypes);
 
 /* 0x80355170 */
-cEnumArray_c<PLAYER_MODE_e, PLAYER_TYPE_e> daPyMng_c::mPlayerMode;
+slu::enum_array<PLAYER_MODE_e, PLAYER_TYPE_e> daPyMng_c::mPlayerMode;
 
 /* 0x80355180 */
-cEnumArray_c<PLAYER_CREATE_ITEM_e, PLAYER_TYPE_e> daPyMng_c::mCreateItem;
+slu::enum_array<PLAYER_CREATE_ITEM_e, PLAYER_TYPE_e> daPyMng_c::mCreateItem;
 
 /* 0x80355190 */
-cEnumArray_c<int, PLAYER_TYPE_e> daPyMng_c::mRest = mRest.of(START_REST);
+slu::enum_array<int, PLAYER_TYPE_e> daPyMng_c::mRest = mRest.of(START_REST);
 
 /* 0x803551A0 */
-cEnumArray_c<int, PLAYER_TYPE_e> daPyMng_c::mCoin;
+slu::enum_array<int, PLAYER_TYPE_e> daPyMng_c::mCoin;
 
 /* 0x803551B0 */
-cArray_c<s32, PLAYER_COUNT, int> daPyMng_c::m_quakeTimer;
+slu::array<s32, PLAYER_COUNT, int> daPyMng_c::m_quakeTimer;
 
 /* 0x803551C0 */
-cArray_c<s32, PLAYER_COUNT, int> daPyMng_c::m_quakeEffectFlag;
+slu::array<s32, PLAYER_COUNT, int> daPyMng_c::m_quakeEffectFlag;
 
 /* 0x803551E0 */
 static daPyDemoMng_c mDemoManager;
 
 /* 0x80429F90 */
-cArray_c<u16, PLAYER_COUNT, int> daPyMng_c::m_star_time;
+slu::array<u16, PLAYER_COUNT, int> daPyMng_c::m_star_time;
 
 /* 0x80429F98 */
-cArray_c<u16, PLAYER_COUNT, int> daPyMng_c::m_star_count;
+slu::array<u16, PLAYER_COUNT, int> daPyMng_c::m_star_count;
 
 [[nsmbw_data(0x80429FA0)]]
 int daPyMng_c::mScore;
@@ -385,7 +385,7 @@ void daPyMng_c::initKinopioPlayer(
     mKinopioMode                    = playerMode;
 }
 
-static cArray_c<int, PLAYER_COUNT, PLAYER_TYPE_e> mDeathCount = {};
+static slu::array<int, PLAYER_COUNT, PLAYER_TYPE_e> mDeathCount = {};
 
 [[nsmbw(0x8005F5C0)]]
 void daPyMng_c::update() {
@@ -554,7 +554,7 @@ daPlBase_c* daPyMng_c::getCtrlPlayer(int plrNo);
 PLAYER_TYPE_e daPyMng_c::getModelPlayerType(
     dPyMdlMng_c::ModelType_e modelType
 ) {
-    return cEnumArray_c<PLAYER_TYPE_e, dPyMdlMng_c::ModelType_e>{
+    return slu::enum_array<PLAYER_TYPE_e, dPyMdlMng_c::ModelType_e>{
         PLAYER_TYPE_e::MARIO,       PLAYER_TYPE_e::LUIGI,           PLAYER_TYPE_e::BLUE_TOAD,
         PLAYER_TYPE_e::YELLOW_TOAD, PLAYER_TYPE_e::BLUE_TOAD,       PLAYER_TYPE_e::LUIGI,
         PLAYER_TYPE_e::TOADETTE,    PLAYER_TYPE_e::PURPLE_TOADETTE, PLAYER_TYPE_e::BLACK_TOAD,
@@ -569,7 +569,7 @@ dPyMdlMng_c::ModelType_e daPyMng_c::getPlayerTypeModelType(
         return dPyMdlMng_c::ModelType_e::MODEL_TOAD_RED;
     }
 
-    return cEnumArray_c<dPyMdlMng_c::ModelType_e, PLAYER_TYPE_e>{
+    return slu::enum_array<dPyMdlMng_c::ModelType_e, PLAYER_TYPE_e>{
         dPyMdlMng_c::ModelType_e::MODEL_MARIO,
         dPyMdlMng_c::ModelType_e::MODEL_LUIGI,
         dPyMdlMng_c::ModelType_e::MODEL_TOAD_BLUE,

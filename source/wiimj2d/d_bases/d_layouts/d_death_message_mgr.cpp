@@ -3,6 +3,7 @@
 
 #include "d_death_message_mgr.h"
 
+#include "d_a_player_manager.h"
 #include "d_game_common.h"
 #include <algorithm>
 #include <cwchar>
@@ -10,9 +11,9 @@
 #include <egg/gfx/eggScreen.h>
 #include <iterator>
 #include <memory>
-#include <nw4r/lyt/Material.h>
-#include <nw4r/lyt/Resources.h>
-#include <nw4r/lyt/TextBox.h>
+#include <nw4r/lyt/material.h>
+#include <nw4r/lyt/resources.h>
+#include <nw4r/lyt/textBox.h>
 
 static constinit nw4r::lyt::res::TextureList s_txl1 = {
     .blockHeader =

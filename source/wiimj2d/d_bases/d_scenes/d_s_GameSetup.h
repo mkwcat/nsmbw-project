@@ -73,11 +73,11 @@ public:
 
     /* 0x074 */ sStateMgrDefault_c<dScGameSetup_c> mStateMgr;
 
-    FILL(0x0B0, 0x0B8);
+    u8 FILL(0x0B0, 0x0B8);
 
     /* 0x0B8 */ dNumberOfPeopleChange_c* mpNumPyChg;
 
-    FILL(0x0BC, 0x0C0);
+    u8 FILL(0x0BC, 0x0C0);
 
     /* 0x0C0 */ da2DPlayer_c*    mpa2DPlayer[ORIGINAL_PLAYER_COUNT];
     /* 0x0D0 */ dSelectPlayer_c* mpSelectPlayer;
@@ -87,15 +87,15 @@ public:
     /* 0x0E8 */ dFileSelect_c*   mpFileSelect;
     /* 0x0EC */ dInfoWindow_c*   mpInfoWindow;
 
-    FILL(0x0F0, 0x0F8);
+    u8 FILL(0x0F0, 0x0F8);
 
     /* 0x0F8 */ u32 mPlayerCreateIdx;
 
-    FILL(0x0FC, 0x108);
+    u8 FILL(0x0FC, 0x108);
 
     /* 0x108 */ bool mInPlayerSelect;
 
-    FILL(0x109, 0x210);
+    u8 FILL(0x109, 0x210);
 
 public:
     // State IDs

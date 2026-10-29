@@ -86,10 +86,7 @@ struct OSModuleRelInfo {
     /* 0x4 */ u32 addend;
 };
 
-/* 0x801B2060 */
 bool OSLink(OSModuleInfo* info, void* bss);
-
-/* 0x801B2070 */
 bool OSLinkFixed(OSModuleInfo* info, void* bss);
 
 //

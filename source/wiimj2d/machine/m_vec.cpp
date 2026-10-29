@@ -57,4 +57,4 @@ void mVec3_c::rotY(mAng angle);
 // 0x80170D30: __sinit_\m_vec_cpp
 
 // Hack because of compiler bug
-EXTERN_SYMBOL(0x80006DF0, "__dt__Q34nw4r4math4VEC2Fv");
+[[nsmbw_symbol(0x80006DF0, "__dt__Q34nw4r4math4VEC2Fv")]];

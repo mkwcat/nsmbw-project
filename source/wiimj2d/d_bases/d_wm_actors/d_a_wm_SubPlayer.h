@@ -167,27 +167,27 @@ public:
 
     /* 0x1CC */ dPyMdlMng_c* mModelManager;
 
-    FILL(0x1D0, 0x1F4);
+    u8 FILL(0x1D0, 0x1F4);
 
     /* 0x1F4 */ int mFromNode;
     /* 0x1F8 */ int mToNode;
-    FILL(0x1FC, 0x200);
+    u8 FILL(0x1FC, 0x200);
     /* 0x200 */ dWmLib::Dir_e mMoveDir;
-    FILL(0x204, 0x208);
+    u8 FILL(0x204, 0x208);
     /* 0x208 */ int mSubPlayerNo;
 
-    FILL(0x20C, 0x214);
+    u8 FILL(0x20C, 0x214);
 
     /* 0x214 */ NodeTrail_c             mNodeTrail;
     /* 0x228 */ NodeTrailBase_c::Node_s maNodes[8];
 
-    FILL(0x268, 0x294);
+    u8 FILL(0x268, 0x294);
 
     /* 0x294 */ float* mp0x294;
 
-    FILL(0x298, 0x2A8);
+    u8 FILL(0x298, 0x2A8);
 
     /* 0x2A8 */ s32 mPrevSpeedMultiply;
 
-    FILL(0x2AC, 0x318);
+    u8 FILL(0x2AC, 0x318);
 };

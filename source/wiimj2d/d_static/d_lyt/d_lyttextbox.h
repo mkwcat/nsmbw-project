@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nw4r/lyt/TextBox.h>
+#include <nw4r/lyt/textBox.h>
 
 class MsgRes_c;
 

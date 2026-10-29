@@ -448,12 +448,12 @@ public:
 
     /* 0x414 */ dDeathInfo_c mDeathInfo;
 
-    FILL(0x434, 0x504);
+    u8 FILL(0x434, 0x504);
 
     // Change from u16 to u8 to fit more players
     /* 0x504 */ u8 mCollTimer[8];
 
-    FILL(0x50C, 0x524);
+    u8 FILL(0x50C, 0x524);
 
 public:
     // Static Methods

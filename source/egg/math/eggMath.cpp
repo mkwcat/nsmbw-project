@@ -5,12 +5,20 @@
 
 namespace EGG {
 
-EXTERN_SYMBOL(0x802BE760, "sqrt__Q23EGG7Math<f>Ff");
+template <>
+[[nsmbw(0x802BE760)]] [[mkw(0x8022F80C)]]
+float EGG::Math<float>::sqrt(float);
 
-EXTERN_SYMBOL(0x802BE790, "sin__Q23EGG7Math<f>Ff");
+template <>
+[[nsmbw(0x802BE790)]] [[mkw(0x8022F860)]]
+float EGG::Math<float>::sin(float);
 
-EXTERN_SYMBOL(0x802BE7C0, "cos__Q23EGG7Math<f>Ff");
+template <>
+[[nsmbw(0x802BE7C0)]] [[mkw(0x8022F86C)]]
+float EGG::Math<float>::cos(float);
 
-EXTERN_SYMBOL(0x802BE7F0, "tan__Q23EGG7Math<f>Ff");
+template <>
+[[nsmbw(0x802BE7F0)]] [[mkw(0x8022F878)]]
+float EGG::Math<float>::tan(float);
 
 } // namespace EGG

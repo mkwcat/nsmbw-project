@@ -31,7 +31,6 @@ public:
 
     static T zero() { return static_cast<T>(0); }
 
-    // Assumed to be here (emitted globally at 0x807C9890)
     static T lerp(
         float t, const T& low, const T& high
     ) {

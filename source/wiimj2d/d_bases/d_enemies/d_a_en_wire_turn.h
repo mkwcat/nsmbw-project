@@ -78,7 +78,7 @@ public:
     /* 0x7FC */ float            m_0x7FC[17];
     /* 0x840 */ float            m_0x840[17];
     /* 0x884 */ short            m_0x884[17];
-    FILL(0x8A6, 0x8AC);
+    u8 FILL(0x8A6, 0x8AC);
     /* 0x8AC */ WireType_e m_wireType;
     /* 0x8B0 */ int        m_0x8B0;
     /* 0x8B4 */ short      m_0x8B4;
@@ -89,7 +89,7 @@ public:
     /* 0x8C0 */ u8         REMOVED(m_plrAmiLayer)[4];
     /* 0x8C4 */ bool       REMOVED(m_plrAmiRoll)[4];
     /* 0x8C8 */ s8         REMOVED(m_0x8C8)[4];
-    FILL(0x8CC, 0x8D0);
+    u8 FILL(0x8CC, 0x8D0);
     OFFSET_ASSERT(0x8D0);
 
     // Instance Variables

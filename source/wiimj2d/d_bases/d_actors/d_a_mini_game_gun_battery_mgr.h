@@ -22,7 +22,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0x398);
+    u8 FILL(0x070, 0x398);
 };
 
 class daMiniGameGunBatteryMgrObj_c : public dBase_c {

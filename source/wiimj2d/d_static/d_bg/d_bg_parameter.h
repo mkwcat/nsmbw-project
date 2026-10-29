@@ -5,7 +5,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x38);
+    u8 FILL(0x00, 0x38);
 
     /* 0x38 */ f32 mScreenLeft;
     /* 0x3C */ f32 mScreenTop;

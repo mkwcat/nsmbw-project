@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mkwcat/Instructions.hpp>
+#include <slu/ppc.hpp>
 
 // Inline Methods
 // ^^^^^^
@@ -8,7 +8,7 @@
 inline f32 __OSu8tof32(
     u8* in
 ) {
-    return mkwcat::psq_l<1, 2>(in);
+    return slu::ppc::psq_l<1, 2>(in);
 }
 
 inline void OSu8tof32(
@@ -20,7 +20,7 @@ inline void OSu8tof32(
 inline f32 __OSu16tof32(
     u16* in
 ) {
-    return mkwcat::psq_l<1, 3>(in);
+    return slu::ppc::psq_l<1, 3>(in);
 }
 
 inline void OSu16tof32(
@@ -32,7 +32,7 @@ inline void OSu16tof32(
 inline f32 __OSs16tof32(
     s16* in
 ) {
-    return mkwcat::psq_l<1, 5>(in);
+    return slu::ppc::psq_l<1, 5>(in);
 }
 
 inline void OSs16tof32(
@@ -48,7 +48,7 @@ inline u8 __OSf32tou8(
     f32* ptr = &a;
     u8   r;
 
-    mkwcat::psq_st<0, 1, 2>(ptr, in);
+    slu::ppc::psq_st<0, 1, 2>(ptr, in);
 
     r = *reinterpret_cast<u8*>(ptr);
     return r;
@@ -67,7 +67,7 @@ inline u16 __OSf32tou16(
     f32* ptr = &a;
     u16  r;
 
-    mkwcat::psq_st<0, 1, 3>(ptr, in);
+    slu::ppc::psq_st<0, 1, 3>(ptr, in);
 
     r = *reinterpret_cast<u16*>(ptr);
     return r;
@@ -86,7 +86,7 @@ inline s16 __OSf32tos16(
     f32* ptr = &a;
     s16  r;
 
-    mkwcat::psq_st<0, 1, 5>(ptr, in);
+    slu::ppc::psq_st<0, 1, 5>(ptr, in);
 
     r = *reinterpret_cast<s16*>(ptr);
     return r;

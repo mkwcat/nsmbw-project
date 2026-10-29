@@ -8,8 +8,8 @@
 #include "s_StateInterfaces.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/picture.h>
 
 class dContinue_c : public dBase_c {
     // Original size: 0x2E4
@@ -101,11 +101,11 @@ public:
 
     /* 0x2D8 */ bool                REMOVED(mMustRevive)[4];
 
-    FILL(0x2DC, 0x2E0);
+    u8 FILL(0x2DC, 0x2E0);
 
     /* 0x2E0 */ bool mIsGameOver;
 
-    FILL(0x2E1, 0x2E4);
+    u8 FILL(0x2E1, 0x2E4);
 
     // New (added 0xF0 bytes)
     /* 0x2E4 */ nw4r::lyt::Pane* mpNPos4P[4];

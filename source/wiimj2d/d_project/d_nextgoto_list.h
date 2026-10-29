@@ -158,5 +158,5 @@ private:
 
     Index*                     m_pEntryLookup;
 
-    cRandom_c                     m_rnd;
+    cRandom_c                  m_rnd;
 };

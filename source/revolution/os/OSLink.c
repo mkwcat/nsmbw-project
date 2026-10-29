@@ -5,21 +5,21 @@
 
 EXTERN_C_START
 
-EXTERN_SYMBOL(0x801B1A50, "OSNotifyLink");
+[[nsmbw_symbol(0x801B1A50, "OSNotifyLink")]];
 
-EXTERN_SYMBOL(0x801B1A60, "OSNotifyUnlink");
+[[nsmbw_symbol(0x801B1A60, "OSNotifyUnlink")]];
 
-EXTERN_SYMBOL(0x801B1A70, "OSNotifyPreLink");
+[[nsmbw_symbol(0x801B1A70, "OSNotifyPreLink")]];
 
-EXTERN_SYMBOL(0x801B1A80, "OSNotifyPostLink");
+[[nsmbw_symbol(0x801B1A80, "OSNotifyPostLink")]];
 
-EXTERN_SYMBOL(0x801B1A90, "OSSetStringTable");
+[[nsmbw_symbol(0x801B1A90, "OSSetStringTable")]];
 
-EXTERN_SYMBOL(0x801B1AA0, "Relocate");
+[[nsmbw_symbol(0x801B1AA0, "Relocate")]];
 
-EXTERN_SYMBOL(0x801B1D70, "Link");
+[[nsmbw_symbol(0x801B1D70, "Link")]];
 
-[[nsmbw(0x801B2060)]]
+[[nsmbw(0x801B2060)]] [[mkw(0x801A72DC)]]
 bool OSLink(OSModuleInfo* info, void* bss);
 
 [[nsmbw(0x801B2070)]]

@@ -3,7 +3,7 @@
 
 #include "d_a_floor_jr_c.h"
 
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 
 [[nsmbw(0x807F1A00)]]
 daFloorJrC_c* daFloorJrC_c_classInit() {

@@ -42,15 +42,15 @@ public:
 
     /* 0x14D4 */ dPyMdlMng_c mModelMng;
 
-    FILL(0x14E0, 0x1524);
+    u8 FILL(0x14E0, 0x1524);
 
     /* 0x1524 */ int mEatStage;
 
-    FILL(0x1528, 0x1564);
+    u8 FILL(0x1528, 0x1564);
 
     /* 0x1564 */ int m_eatCount;
 
-    FILL(0x1568, 0x17C8);
+    u8 FILL(0x1568, 0x17C8);
 
 public:
     // State IDs

@@ -21,7 +21,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x04, 0x64);
+    u8 FILL(0x04, 0x64);
 
     /* 0x64 */ u32     mFrameFlags;
     /* 0x68 */ u32     mPrevFrameFlags;
@@ -34,7 +34,7 @@ public:
     /* 0x94 */ mVec2_c mFrameAccelVertZ;
     /* 0x9C */ u16     mFrameTilt;
 
-    FILL(0x9E, 0xF0);
+    u8 FILL(0x9E, 0xF0);
 
 public:
     // State IDs

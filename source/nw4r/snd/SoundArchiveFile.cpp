@@ -1,13 +1,15 @@
 // snd_SoundArchiveFile.cpp
 // NSMBW .text: 0x80275E80 - 0x80277190
 
-#include "SoundArchiveFile.h"
+#if is_nsmbw
 
-#include <revolution/os.h>
+#  include "SoundArchiveFile.h"
+
+#  include <revolution/os.h>
 
 namespace {
-#include <mkwcat.rsid>
-#include <wiimj2d.rsid>
+#  include <mkwcat.rsid>
+#  include <wiimj2d.rsid>
 } // namespace
 
 namespace nw4r::snd::detail {
@@ -177,3 +179,5 @@ const SoundArchiveFile::GroupInfo* SoundArchiveFileReader::impl_GetGroupInfo(
 }
 
 } // namespace nw4r::snd::detail
+
+#endif

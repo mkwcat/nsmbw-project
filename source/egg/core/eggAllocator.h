@@ -10,7 +10,7 @@ class Allocator : public MEMAllocator {
     SIZE_ASSERT(0x1C);
 
 public:
-    Allocator(Heap* heap, s32 align);
+    [[mkw(0x8020F62C)]] Allocator(Heap* heap, s32 align);
 
 public:
     /* VT+0x08 */ virtual ~Allocator();

@@ -16,8 +16,8 @@
 #include "m_vec.h"
 #include <algorithm>
 #include <iterator>
-#include <mkwcat/Relocate.hpp>
-#include <mkwcat/VTable.hpp>
+#include <slu/relocate.hpp>
+#include <slu/vtable.hpp>
 
 [[nsmbw(0x807DCD80)]]
 fBase_c* daCastleKokoopaDemo2nd_c_classInit() {
@@ -25,7 +25,7 @@ fBase_c* daCastleKokoopaDemo2nd_c_classInit() {
 }
 
 daCastleKokoopaDemo2nd_c::daCastleKokoopaDemo2nd_c() {
-    mkwcat::VTable::Fix<fBase_c>(this);
+    slu::vtable::fix<fBase_c>(this);
     mBossID = fBaseID_e::NONE;
 }
 

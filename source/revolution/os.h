@@ -1,17 +1,18 @@
 #pragma once
 
-#include "os/OSCache.h"
-#include "os/OSContext.h"
-#include "os/OSError.h"
-#include "os/OSFastCast.h"
-#include "os/OSFatal.h"
-#include "os/OSInterrupt.h"
-#include "os/OSLink.h"
-#include "os/OSMutex.h"
-#include "os/OSReset.h"
-#include "os/OSRtc.h"
-#include "os/OSThread.h"
-#include "os/OSTime.h"
+#include "revolution/os/OSCache.h"
+#include "revolution/os/OSContext.h"
+#include "revolution/os/OSError.h"
+#include "revolution/os/OSFastCast.h"
+#include "revolution/os/OSFatal.h"
+#include "revolution/os/OSInterrupt.h"
+#include "revolution/os/OSLink.h"
+#include "revolution/os/OSMessage.h"
+#include "revolution/os/OSMutex.h"
+#include "revolution/os/OSReset.h"
+#include "revolution/os/OSRtc.h"
+#include "revolution/os/OSThread.h"
+#include "revolution/os/OSTime.h"
 
 EXTERN_C_START
 

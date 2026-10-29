@@ -38,11 +38,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x070, 0xA7C);
+    u8 FILL(0x070, 0xA7C);
 
     /* 0xA7C */ bool mReady;
 
-    FILL(0xA7D, 0xAC0);
+    u8 FILL(0xA7D, 0xAC0);
 
 public:
     // Static Variables

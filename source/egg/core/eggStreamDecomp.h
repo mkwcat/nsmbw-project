@@ -39,7 +39,7 @@ public:
     virtual u32 getUncompressedSize(const void* src) override;
 
 private:
-    FILL(0x4, 0x24);
+    u8 FILL(0x4, 0x24);
 };
 
 class StreamDecompRL : public StreamDecomp {
@@ -62,7 +62,7 @@ public:
     virtual u32 getUncompressedSize(const void* src) override;
 
 private:
-    FILL(0x4, 0x1C);
+    u8 FILL(0x4, 0x1C);
 };
 
 class StreamDecompLH : public StreamDecomp {
@@ -85,7 +85,7 @@ public:
     virtual u32 getUncompressedSize(const void* src) override;
 
 private:
-    FILL(0x4, 0x8B4);
+    u8 FILL(0x4, 0x8B4);
 };
 
 class StreamDecompLRC : public StreamDecomp {
@@ -108,7 +108,7 @@ public:
     virtual u32 getUncompressedSize(const void* src) override;
 
 private:
-    FILL(0x4, 0x9038);
+    u8 FILL(0x4, 0x9038);
 };
 
 class StreamDecompSZS : public StreamDecomp {
@@ -131,7 +131,7 @@ public:
     virtual u32 getUncompressedSize(const void* src) override;
 
 private:
-    FILL(0x4, 0x20);
+    u8 FILL(0x4, 0x20);
 };
 
 } // namespace EGG

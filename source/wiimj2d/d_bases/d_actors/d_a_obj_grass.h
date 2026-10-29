@@ -20,11 +20,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x0125, 0x2464);
+    u8 FILL(0x0125, 0x2464);
 
     /* 0x2464 */ float mPlayerDist[4];
 
-    FILL(0x2474, 0x2480);
+    u8 FILL(0x2474, 0x2480);
     OFFSET_ASSERT(0x2480);
 
 #define daObjGrass_c_OFFSET_mPlayerDistEx 0x2480

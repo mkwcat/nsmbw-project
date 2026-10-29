@@ -32,16 +32,16 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00070, 0x900C6);
+    u8 FILL(0x00070, 0x900C6);
 
     /* 0x900C6 */ bool mIsAutoscroll;
 
-    FILL(0x900C7, 0x90110);
+    u8 FILL(0x900C7, 0x90110);
 
     /* 0x90110 */ float m0x90110;
     /* 0x90114 */ u8    m0x90114;
 
-    FILL(0x90115, 0x90AAC);
+    u8 FILL(0x90115, 0x90AAC);
 
 public:
     // Static Variables

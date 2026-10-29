@@ -90,6 +90,8 @@ add_compile_options(
     -Wno-sign-conversion
     -Wno-sign-compare
     -Wno-dollar-in-identifier-extension
+
+    -Dis_nsmbw=1
 )
 
 add_link_options(

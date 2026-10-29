@@ -6,6 +6,7 @@
 #include "d_a_player_manager.h"
 #include "d_game_common.h"
 #include "d_mj2d_game.h"
+#include "slu/array.hpp"
 #include <algorithm>
 
 [[nsmbw(0x80772A50)]]
@@ -102,7 +103,7 @@ void dCharacterChangeSelectContents_c::dispNextConPicture(
 
     dGameCom::LayoutDispNumber(daPyMng_c::mRest[type], 2, mpaTextBoxes[side], false);
 
-    int picIndex = cEnumArray_c<int, PLAYER_TYPE_e>{
+    int picIndex = slu::enum_array<int, PLAYER_TYPE_e>{
         std::distance(mpaPictures, mpaMarioPictures), // Mario
         2,                                            // Luigi
         4,                                            // Blue Toad

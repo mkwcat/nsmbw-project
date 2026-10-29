@@ -63,7 +63,7 @@ public:
     // Instance Variables
     // ^^^^^
 
-    FILL(0x00184, 0x03388);
+    u8 FILL(0x00184, 0x03388);
 
     /* 0x03388 */ u32          mCurrentWorld;
     /* 0x0338C */ int          mCurrentMap;
@@ -71,5 +71,5 @@ public:
     /* 0x03394 */ dCsvData_c   mCsvData[4];
     /* 0x5C7F4 */ dWmConnect_c mConnect[4];
 
-    FILL(0x6C414, 0x6C510);
+    u8 FILL(0x6C414, 0x6C510);
 };

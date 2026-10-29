@@ -2,7 +2,7 @@
 #define NW4R_G3D_RESNODE_H
 
 #include "g3d_rescommon.h"
-#include "nw4r/math/vec.h"
+#include "nw4r/math/types.h"
 
 namespace nw4r::g3d {
 

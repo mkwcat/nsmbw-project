@@ -110,7 +110,7 @@ def print_info(rel: code_files_rel.REL, memdump: bytes) -> None:
         else:
             line.append(f'Section {i} (.data): ')
 
-        line.append(f'{addr:08X}-{addr+s.size:08X}')
+        line.append(f'{addr:08x}-{addr+s.size:08x} ({s.size:x})')
 
         print(''.join(line))
 

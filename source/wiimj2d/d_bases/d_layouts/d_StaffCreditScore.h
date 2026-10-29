@@ -8,8 +8,8 @@
 #include "s_StateInterfaces.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
-#include <nw4r/lyt/Pane.h>
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/pane.h>
+#include <nw4r/lyt/picture.h>
 
 class dStaffCreditScore_c : public dBase_c {
     // Original size: 0x2B8
@@ -80,7 +80,7 @@ public:
     /* 0x2D8 */ int           mCoinNum[8];
     /* 0x2F8 */ int           mPrevCoinNum[8];
     /* 0x318 */ bool          mIsWinPlayer[8];
-    FILL(0x070, 0x2B8);
+    u8 FILL(0x070, 0x2B8);
 
 public:
     // State IDs

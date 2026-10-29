@@ -53,17 +53,17 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x6A4);
+    u8 FILL(0x524, 0x6A4);
 
     /* 0x6A4 */ s32 m0x6A4[17];
 
-    FILL(0x6E8, 0x744);
+    u8 FILL(0x6E8, 0x744);
 
     /* 0x744 */ f32 REMOVED(mPlayerX)[4];
     /* 0x754 */ f32 REMOVED(mPlayerY)[4];
     /* 0x764 */ f32 REMOVED(mPlayerZ)[4];
 
-    FILL(0x774, 0x8B0);
+    u8 FILL(0x774, 0x8B0);
 
     /* 0x8B0 */ s32  m0x8B0;
     /* 0x8B4 */ s16  m0x8B4;
@@ -75,7 +75,7 @@ public:
     /* 0x8C4 */ bool REMOVED(mPlayers0x8C4)[4];
     /* 0x8C8 */ s8   REMOVED(mPlayerIDs)[4];
 
-    FILL(0x8CC, 0x908);
+    u8 FILL(0x8CC, 0x908);
     OFFSET_ASSERT(0x908);
 
 #define OFFSET_daMiniGameWireMesh_c_mPlayerIDs 0x908

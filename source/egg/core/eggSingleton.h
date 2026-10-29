@@ -37,18 +37,22 @@ protected: \
     T* T::createInstance() { \
         if (sInstance == nullptr) { \
             sInstance = new T(); \
-        } else { \
+        } \
+        NSMBW_ONLY(else { \
             OSPanic( \
                 __FILE_NAME__, __LINE__, "Create Singleton Twice (%s) : addr %x\n", #T, \
                 reinterpret_cast<unsigned int>(sInstance) \
             ); \
-        } \
+        }) \
 \
         return sInstance; \
     } \
 \
     void T::deleteInstance() { \
-        sInstance = nullptr; \
+        MKW_ONLY(if (T* instance = sInstance) {) \
+            sInstance = nullptr; \
+            MKW_ONLY(delete instance; \
+        }) \
     } \
 \
     T* T::sInstance = nullptr

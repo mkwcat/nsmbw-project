@@ -15,7 +15,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x1D);
+    u8 FILL(0x00, 0x1D);
 
     /* 0x1D */ bool m_ForbidPause;
 

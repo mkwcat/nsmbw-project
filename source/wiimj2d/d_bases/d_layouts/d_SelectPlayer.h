@@ -7,7 +7,7 @@
 #include "s_StateInterfaces.h"
 #include "s_StateMethodUsr_FI.h"
 #include "s_StateMgr.h"
-#include <nw4r/lyt/Picture.h>
+#include <nw4r/lyt/picture.h>
 
 class dSelectPlayer_c : public dBase_c {
     // Original size: 0x280

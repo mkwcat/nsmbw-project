@@ -1,7 +1,7 @@
 #pragma once
 
 #include "d_wm_lib.h"
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 
 class dCsvData_c;
 

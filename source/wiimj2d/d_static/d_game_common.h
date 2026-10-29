@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 #include <revolution/sc.h>
 
 namespace nw4r::lyt {

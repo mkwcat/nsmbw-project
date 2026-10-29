@@ -205,7 +205,7 @@ UNDEF_80a09c4c:;
 );
 
 [[nsmbw(0x80A0A550)]]
-void daEnGlpole_c::ccCallBackForPole2(
+void daEnGlpole_c::poleCollisionCheck(
     dCc_c* self, dCc_c* other
 ) {
     if (other->mCcData.mAttack == CC_ATTACK_YOSHI_EAT) {
@@ -217,11 +217,11 @@ void daEnGlpole_c::ccCallBackForPole2(
         return;
     }
 
-    static_cast<daEnGlpole_c*>(self->mpOwner)->mPlrTouchPoleFlag2 |= (1u << player->getPlrNo());
+    static_cast<daEnGlpole_c*>(self->mpOwner)->mPlayerPoleBit |= (1u << player->getPlrNo());
 }
 
 [[nsmbw(0x80A0A5E0)]]
-void daEnGlpole_c::ccCallBackForPole(
+void daEnGlpole_c::oneupCollisionCheck(
     dCc_c* self, dCc_c* other
 ) {
     if (other->mCcData.mAttack == CC_ATTACK_YOSHI_EAT) {
@@ -233,20 +233,20 @@ void daEnGlpole_c::ccCallBackForPole(
         return;
     }
 
-    static_cast<daEnGlpole_c*>(self->mpOwner)->mPlrTouchPoleFlag |= (1u << player->getPlrNo());
+    static_cast<daEnGlpole_c*>(self->mpOwner)->mPlayerOneupBit |= (1u << player->getPlrNo());
 }
 
 [[nsmbw(0x80A0A700)]]
-bool daEnGlpole_c::isTopOfFlagPole(
+bool daEnGlpole_c::bitToPlayerNoCheck(
     u32 mask, int player
 ) {
     return mask & (1u << player);
 }
 
 [[nsmbw(0x80A0AB10)]]
-void daEnGlpole_c::setPlayerBasePos() {
+void daEnGlpole_c::goalScorePosSet() {
     mVec3_c pos = mPos;
-    mPos.x -= 20.0;
+    pos.x -= 20.0;
     for (int i = 0, count = m0xA9C; i < count; i++) {
         pos.y = m0xA8C + m0xA80 + nw4r::math::U16ToF32(8 * i);
         dGameCom::GoalScoreExecute(pos, i);
@@ -487,6 +487,6 @@ UNDEF_80a0ab00:;
 );
 
 [[nsmbw(0x80A0B020)]]
-bool daEnGlpole_c::isAllPlayerOnPole() {
-    return std::popcount(mPlrOnPoleFlag) >= daPyMng_c::mNum;
+bool daEnGlpole_c::poleCatchAllPlayerCountCheck() {
+    return std::popcount(mPlayerCatchBit) >= daPyMng_c::mNum;
 }

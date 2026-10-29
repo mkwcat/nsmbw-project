@@ -38,7 +38,7 @@ public:
 
     /* 0x128 */ dPyMdlMng_c* mModelMng;
 
-    FILL(0x12C, 0x220);
+    u8 FILL(0x12C, 0x220);
 
     /* 0x220 */ mVec3_c       mBaseScale;
     /* 0x22C */ mVec3_c       mBasePos;
@@ -52,7 +52,7 @@ public:
     /* 0x24C */ float         mSubZ;
     /* 0x250 */ f32           m0x250;
 
-    FILL(0x254, 0x258);
+    u8 FILL(0x254, 0x258);
 
     /* 0x258 */ float mAddZ;
     /* 0x25C */ float mAddY;
@@ -69,7 +69,7 @@ public:
     /* 0x269 */ bool  m0x269;
     /* 0x26A */ bool  mForbidJump;
 
-    FILL(0x26B, 0x384);
+    u8 FILL(0x26B, 0x384);
 
 public:
     // State IDs

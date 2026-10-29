@@ -3,19 +3,19 @@
 
 #include <revolution/arc.h>
 
-[[nsmbw(0x8019F7A0)]]
+[[nsmbw(0x8019F7A0)]] [[mkw(0x80124500)]]
 bool ARCInitHandle(void* arcStart, ARCHandle* handle);
 
-[[nsmbw(0x8019F840)]]
+[[nsmbw(0x8019F840)]] [[mkw(0x801245A0)]]
 bool ARCOpen(ARCHandle* handle, const char* fileName, ARCFileInfo* af);
 
-[[nsmbw(0x8019FAF0)]]
+[[nsmbw(0x8019FAF0)]] [[mkw(0x80124844)]]
 bool ARCFastOpen(ARCHandle* handle, s32 entrynum, ARCFileInfo* af);
 
-[[nsmbw(0x8019FB40)]]
+[[nsmbw(0x8019FB40)]] [[mkw(0x80124894)]]
 s32 ARCConvertPathToEntrynum(ARCHandle* handle, const char* pathPtr);
 
-[[nsmbw(0x8019FDC0)]]
+[[nsmbw(0x8019FDC0)]] [[mkw(0x80124AF8)]]
 u32 entryToPath(ARCHandle* handle, s32 entrynum, char* path, u32 maxlen);
 
 bool ARCConvertEntrynumToPath(
@@ -40,19 +40,19 @@ bool ARCEntrynumIsDir(
     return entry->isDir;
 }
 
-[[nsmbw(0x8019FF90)]]
+[[nsmbw(0x8019FF90)]] [[mkw(0x80124CC0)]]
 void* ARCGetStartAddrInMem(ARCFileInfo* af);
 
-[[nsmbw(0x8019FFB0)]]
+[[nsmbw(0x8019FFB0)]] [[mkw(0x80124CD4)]]
 u32 ARCGetStartOffset(ARCFileInfo* af);
 
-[[nsmbw(0x8019FFC0)]]
+[[nsmbw(0x8019FFC0)]] [[mkw(0x80124CDC)]]
 u32 ARCGetLength(ARCFileInfo* af);
 
-[[nsmbw(0x8019FFD0)]]
+[[nsmbw(0x8019FFD0)]] [[mkw(0x80124CE4)]]
 bool ARCClose(ARCFileInfo* af);
 
-[[nsmbw(0x8019FFE0)]]
+[[nsmbw(0x8019FFE0)]] [[mkw(0x80124CEC)]]
 bool ARCChangeDir(ARCHandle* handle, const char* dirName);
 
 // UNUSED: ARCGetCurrentDir
@@ -78,11 +78,11 @@ bool ARCFastOpenDir(
     return true;
 }
 
-[[nsmbw(0x801A0040)]]
+[[nsmbw(0x801A0040)]] [[mkw(0x80124D44)]]
 bool ARCOpenDir(ARCHandle* handle, const char* dirName, ARCDir* dir);
 
-[[nsmbw(0x801A00C0)]]
+[[nsmbw(0x801A00C0)]] [[mkw(0x80124DC0)]]
 bool ARCReadDir(ARCDir* dir, ARCDirEntry* dirent);
 
-[[nsmbw(0x801A0180)]]
+[[nsmbw(0x801A0180)]] [[mkw(0x80124E78)]]
 bool ARCCloseDir(ARCDir* dir);

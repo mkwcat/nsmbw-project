@@ -49,7 +49,7 @@ public:
             /* 0x524 */ float REMOVED(m_plrOffset)[4];
             /* 0x534 */ bool  REMOVED(m_plrRideOn)[4];
             /* 0x538 */ bool  REMOVED(m_plrRideOnPrev)[8];
-            FILL(0x538, 0x53C);
+            u8 FILL(0x538, 0x53C);
         };
 
         /* 0x524+ */ float m_plrOffset[PLAYER_COUNT];

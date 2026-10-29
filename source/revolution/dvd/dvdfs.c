@@ -19,10 +19,8 @@ FstEntry*         FstStart;
 static s32        s_dvdExArc       = -1;
 static ARCHandle* s_dvdExArcHandle = nullptr;
 
-// 0x801CA790: __DVDFSInit
-
-void __DVDEXInit(
-    s32 arcEntryNum, ARCHandle* arcHandle
+void DVDPatchInit(
+    s32 arcEntryNum, void* arcStart
 ) {
     if (s_dvdExArcHandle != nullptr) {
         return;
@@ -32,19 +30,20 @@ void __DVDEXInit(
         return;
     }
 
-    s_dvdExArc          = arcEntryNum;
-    s_dvdExArcHandle    = arcHandle;
+    static ARCHandle s_dvdExArcHandleBuffer;
+    bool             arcInitHandleOk = ARCInitHandle(arcStart, &s_dvdExArcHandleBuffer);
+    ASSERT(arcInitHandleOk);
 
-    bool arcChangeDirOk = ARCChangeDir(s_dvdExArcHandle, "/.");
-    ASSERT(arcChangeDirOk);
+    s_dvdExArc       = arcEntryNum;
+    s_dvdExArcHandle = &s_dvdExArcHandleBuffer;
 }
 
 EXTERN_REPL(
-    0x801CA7C0, //
+    NSMBW_ONLY(0x801CA7C0) MKW_ONLY(0x8015DF4C), //
     s32 __DVDPathToEntrynum(const char* fileName)
 );
 
-[[nsmbw(0x801CA7C0)]]
+[[nsmbw(0x801CA7C0)]] [[mkw(0x8015DF4C)]]
 s32 DVDConvertPathToEntrynum(
     const char* fileName
 ) {
@@ -63,11 +62,11 @@ s32 DVDConvertPathToEntrynum(
 // UNUSED: DVDEntrynumIsDir
 
 EXTERN_REPL(
-    0x801CAAD0, //
+    NSMBW_ONLY(0x801CAAD0) MKW_ONLY(0x8015E254), //
     bool __DVDFastOpen(s32 entryNum, DVDFileInfo* fileInfo)
 );
 
-[[nsmbw(0x801CAAD0)]]
+[[nsmbw(0x801CAAD0)]] [[mkw(0x8015E254)]]
 bool DVDFastOpen(
     s32 entryNum, DVDFileInfo* fileInfo
 ) {
@@ -97,9 +96,8 @@ bool DVDFastOpen(
     return true;
 }
 
-bool DVDOpen(
-    const char* fileName, DVDFileInfo* fileInfo
-) {
+[[mkw(0x8015E2BC)]]
+bool DVDOpen(const char* fileName, DVDFileInfo* fileInfo) NSMBW_ONLY({
     s32 entryNum = DVDConvertPathToEntrynum(fileName);
 
     if (entryNum == -1) {
@@ -107,12 +105,10 @@ bool DVDOpen(
     }
 
     return DVDFastOpen(entryNum, fileInfo);
-}
+});
 
-[[nsmbw(0x801CAB40)]]
+[[nsmbw(0x801CAB40)]] [[mkw(0x8015E568)]]
 bool DVDClose(DVDFileInfo* fileInfo);
-
-// UNUSED: entryToPath
 
 // From Double Dash Deluxe:
 // https://github.com/doubledashdeluxe/ddd/blob/d7eed424d55f926f2fc6f65b476815942562c7f5/payload/dolphin/DVD.c#L75
@@ -158,49 +154,11 @@ bool DVDConvertEntrynumToPath(
     return __DVDEntrynumToPath(entrynum, path, maxlen);
 }
 
-// UNUSED: DVDGetCurrentDir
-
-// UNUSED: DVDChangeDir
-
-[[nsmbw(0x801CAB70)]]
+[[nsmbw(0x801CAB70)]] [[mkw(0x8015E74C)]]
 void DVDReadAsyncPrio();
 
-[[nsmbw(0x801CAC40)]]
-/* static */ void cbForReadAsync();
-
-[[nsmbw(0x801CAC60)]]
+[[nsmbw(0x801CAC60)]] [[mkw(0x8015E834)]]
 s32 DVDReadPrio(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, s32 prio);
-
-[[nsmbw(0x801CAD90)]]
-/* static */ void cbForReadSync();
-
-// UNUSED: DVDSeekAsyncPrio
-
-// UNUSED: cbForSeekAsync
-
-// UNUSED: DVDSeekPrio
-
-// UNUSED: cbForSeekSync
-
-// UNUSED: DVDGetFileInfoStatus
-
-// UNUSED: DVDFastOpenDir
-
-// UNUSED: DVDOpenDir
-
-// UNUSED: DVDReadDir
-
-// UNUSED: DVDCloseDir
-
-// UNUSED: DVDRewindDir
-
-// UNUSED: DVDGetFSTLocation
-
-// UNUSED: DVDGetTransferredSize
-
-// UNUSED: DVDGetEntrynum
-
-// UNUSED: DVDGetEntryName
 
 bool DVDEntrynumIsDir(
     s32 entryNum

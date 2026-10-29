@@ -3,7 +3,7 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "s_State.h"
-#include <nw4r/lyt/Pane.h>
+#include <nw4r/lyt/pane.h>
 
 class dCharacterChangeSelectArrow_c : public dBase_c {
     SIZE_ASSERT(0x26D);
@@ -17,15 +17,15 @@ public:
 
     /* 0x070 */ LytBase_c mLayout;
 
-    FILL(0x208, 0x244);
+    u8 FILL(0x208, 0x244);
 
     /* 0x244 */ nw4r::lyt::Pane* mp0x244;
 
-    FILL(0x248, 0x258);
+    u8 FILL(0x248, 0x258);
 
     /* 0x258 */ int mMoveDir;
 
-    FILL(0x25C, 0x264);
+    u8 FILL(0x25C, 0x264);
 
     /* 0x264 */ int  mOption;
 

@@ -19,11 +19,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x524, 0x858);
+    u8 FILL(0x524, 0x858);
 
     /* 0x858 */ float mBossDemoX;
 
-    FILL(0x85C, 0x860);
+    u8 FILL(0x85C, 0x860);
 
 public:
     // Virtual State IDs

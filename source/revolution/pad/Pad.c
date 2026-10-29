@@ -1,25 +1,27 @@
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
-#include <revolution/os.h>
-#include <revolution/pad.h>
-#include <revolution/si.h>
-#include <revolution/types.h>
-#include <revolution/vi.h>
+#if is_nsmbw
+
+#  include <cassert>
+#  include <cstdlib>
+#  include <cstring>
+#  include <revolution/os.h>
+#  include <revolution/pad.h>
+#  include <revolution/si.h>
+#  include <revolution/types.h>
+#  include <revolution/vi.h>
 
 EXTERN_C_START
 
-#ifndef __OSWirelessPadFixMode
-#  define __OSWirelessPadFixMode (*(u16*) (0x800030E0))
-#endif
+#  ifndef __OSWirelessPadFixMode
+#    define __OSWirelessPadFixMode (*(u16*) (0x800030E0))
+#  endif
 
 const char* __PADVersion =
     "<< RVL_SDK - PAD \tcustom build: " __DATE__ " " __TIME__ " (0x4302_145) >>";
 
-#define PAD_ALL \
-    (PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT | PAD_BUTTON_DOWN | PAD_BUTTON_UP | PAD_TRIGGER_Z | \
-     PAD_TRIGGER_R | PAD_TRIGGER_L | PAD_BUTTON_A | PAD_BUTTON_B | PAD_BUTTON_X | PAD_BUTTON_Y | \
-     PAD_BUTTON_MENU | 0x2000 | 0x0080)
+#  define PAD_ALL \
+      (PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT | PAD_BUTTON_DOWN | PAD_BUTTON_UP | PAD_TRIGGER_Z | \
+       PAD_TRIGGER_R | PAD_TRIGGER_L | PAD_BUTTON_A | PAD_BUTTON_B | PAD_BUTTON_X | PAD_BUTTON_Y | \
+       PAD_BUTTON_MENU | 0x2000 | 0x0080)
 
 static s32       ResettingChan = 0x20;
 static u32       XPatchBits    = PAD_CHAN0_BIT | PAD_CHAN1_BIT | PAD_CHAN2_BIT | PAD_CHAN3_BIT;
@@ -837,9 +839,9 @@ void PADSetAnalogMode(
     OSRestoreInterrupts(enabled);
 }
 
-#ifdef PAD_ENABLE_SAMPLING_CALLBACK
+#  ifdef PAD_ENABLE_SAMPLING_CALLBACK
 static void (*SamplingCallback)();
-#endif
+#  endif
 
 static BOOL OnShutdown(
     BOOL final, u32 event
@@ -847,11 +849,11 @@ static BOOL OnShutdown(
     BOOL        sync;
     static BOOL recalibrated = FALSE;
 
-#ifdef PAD_ENABLE_SAMPLING_CALLBACK
+#  ifdef PAD_ENABLE_SAMPLING_CALLBACK
     if (SamplingCallback) {
         PADSetSamplingCallback(NULL);
     }
-#endif
+#  endif
 
     if (!final) {
         sync = PADSync();
@@ -874,7 +876,7 @@ void __PADDisableXPatch(
     XPatchBits = 0;
 }
 
-#ifdef PAD_ENABLE_SAMPLING_CALLBACK
+#  ifdef PAD_ENABLE_SAMPLING_CALLBACK
 static void SamplingHandler(
     struct __OSInterrupt interrupt, OSContext* context
 ) {
@@ -904,7 +906,7 @@ PADSamplingCallback PADSetSamplingCallback(
 
     return prev;
 }
-#endif
+#  endif
 
 [[nsmbw(0x801DDB10)]]
 BOOL __PADDisableRecalibration(BOOL disable);
@@ -940,3 +942,5 @@ BOOL PADIsBarrel(
 }
 
 EXTERN_C_END
+
+#endif

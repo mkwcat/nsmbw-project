@@ -37,7 +37,7 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    FILL(0x00, 0x54);
+    u8 FILL(0x00, 0x54);
     /* 0x54 */ OSMutex       mMutex;
     /* 0x6C */ OSThreadQueue mThreadQueue;
     /* 0x74 */ s32           mState;

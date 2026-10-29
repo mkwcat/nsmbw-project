@@ -2,7 +2,7 @@
 
 #include "m_angle.h"
 #include <egg/math/eggMath.h>
-#include <nw4r/math/vec.h>
+#include <nw4r/math/types.h>
 
 /**
  * A two-dimensional floating point vector.

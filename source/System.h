@@ -1,13 +1,12 @@
 #pragma once
 
-#include "mkwcat/Asm.h"
-#include "mkwcat/Assert.hpp"
-#include "mkwcat/Attribute.hpp"
-#include "mkwcat/BaseTypes.hpp"
-#include "mkwcat/Instructions.hpp"
-#include "mkwcat/Literals.hpp"
-#include "mkwcat/Macro.hpp"
-#include "mkwcat/VTable.hpp"
+#include "slu/asm.hpp"
+#include "slu/assert.hpp"
+#include "slu/attribute.hpp"
+#include "slu/base_types.hpp"
+#include "slu/literals.hpp"
+#include "slu/macro.hpp"
+#include "slu/vtable.hpp"
 
-using namespace mkwcat::BaseTypes;
-using namespace mkwcat::Literals;
+using namespace slu::base_types;
+using namespace slu::literals;

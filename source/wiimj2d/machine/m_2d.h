@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nw4r/lyt/ResourceAccessor.h>
+#include <nw4r/lyt/resourceAccessor.h>
 #include <nw4r/ut/List.h>
 
 namespace nw4r::lyt {
@@ -79,7 +79,7 @@ public:
     )
         : mPriority(priority) {}
 
-    /* 0x0 */ nw4r::ut::Node mLink;
+    /* 0x0 */ nw4r::ut::Link mLink;
 
     /* 0x8 VTABLE */
 

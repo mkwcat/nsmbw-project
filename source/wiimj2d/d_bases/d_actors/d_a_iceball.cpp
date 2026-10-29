@@ -4,7 +4,7 @@
 #include "d_a_iceball.h"
 
 #include "d_mj2d_game.h"
-#include <mkwcat/Relocate.hpp>
+#include <slu/relocate.hpp>
 
 /* 0x80375DA8 */
 [[gnu::section(".sdata")]]

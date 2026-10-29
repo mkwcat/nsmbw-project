@@ -11,7 +11,7 @@ bool DvdFile::sIsInitialized;
 [[nsmbw_data(0x80423B70)]]
 nw4r::ut::List DvdFile::sDvdList{};
 
-[[nsmbw(0x802B7C00)]]
+[[nsmbw(0x802B7C00)]] [[mkw(0x8022231C)]]
 void DvdFile::initialize();
 
 [[nsmbw(0x802B7C40)]]
