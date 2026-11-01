@@ -58,7 +58,7 @@ constexpr auto s_formatted_name_data = [] consteval {
         return indices;
     }();
     constexpr std::pair encoded = [formatted_table, lengths, sorted_indices]() {
-        std::array<char, 0x1000> packed;
+        std::array<char, 0x1000> packed{};
         u32                      offset    = 0;
 
         auto                     writeByte = [&](char byte) {

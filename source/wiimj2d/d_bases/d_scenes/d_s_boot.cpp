@@ -4,13 +4,13 @@
 #include "d_s_boot.h"
 
 #include "d_a_player_manager.h"
+#include "d_debug_option.h"
 #include "d_demo_info.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
 #include "d_remocon_mng.h"
 #include "d_s_restart_crsin.h"
 #include "d_s_stage.h"
-#include "f_feature.h"
 #include <algorithm>
 #include <egg/core/eggHeap.h>
 
@@ -28,82 +28,77 @@ void dScBoot_c::executeState_WiiStrapFadeOut();
 
 [[nsmbw(0x8015D850)]]
 void dScBoot_c::executeState_ProcEnd() {
-    if (fFeat::autoboot_title_demo > 0 &&
-        fFeat::autoboot_title_demo <= dDemoInfo::c_titleDemoStageCnt) {
-        dScStage_c::m_titleCount = fFeat::autoboot_title_demo - 2;
+    if (dDebugOpt::autoboot::title_demo != 0xFF &&
+        dDebugOpt::autoboot::title_demo < dDemoInfo::c_titleDemoStageCnt) {
+        dScStage_c::m_titleCount = +dDebugOpt::autoboot::title_demo - 1;
         return dScRestartCrsin_c::startTitle(1, false);
     }
 
-    if (fFeat::autoboot_hint_movie_demo > 0 &&
-        fFeat::autoboot_hint_movie_demo <= dDemoInfo::c_otehonInfoCnt) {
-        dScStage_c::m_titleCount = fFeat::autoboot_hint_movie_demo - 2;
+    if (dDebugOpt::autoboot::hint_movie_demo != 0xFF &&
+        dDebugOpt::autoboot::hint_movie_demo < dDemoInfo::c_otehonInfoCnt) {
+        dScStage_c::m_titleCount = +dDebugOpt::autoboot::hint_movie_demo - 1;
         return dScRestartCrsin_c::reStartPeachCastle();
     }
 
-    if (fFeat::autoboot_player_index) {
-        dRemoconMng_c::m_instance->setFirstConnect(fFeat::autoboot_player_index);
+    if (dDebugOpt::autoboot::player_index) {
+        dRemoconMng_c::m_instance->setFirstConnect(dDebugOpt::autoboot::player_index);
     }
 
     bool mUsedIndex[CHARACTER_COUNT] = {};
     for (int ply = 0;
-         ply < std::min(fFeat::autoboot_player_index + fFeat::autoboot_player_count, PLAYER_COUNT);
+         ply <
+         std::min(
+             dDebugOpt::autoboot::player_index + dDebugOpt::autoboot::num_players, PLAYER_COUNT
+         );
          ply++) {
-        if (ply < fFeat::autoboot_player_index) {
+        if (ply < dDebugOpt::autoboot::player_index) {
             dInfo_c::m_instance->setPlyConnectStage(ply, dInfo_c::PlyConnectStage_e::OFF);
             continue;
         }
-        u8            abType = fFeat::autoboot_player_type_order[ply];
-        PLAYER_TYPE_e type;
-        if (abType >= std::size(mUsedIndex) || mUsedIndex[abType]) {
+        PLAYER_TYPE_e type = dDebugOpt::autoboot::player_type_order[ply];
+        if (+type >= std::size(mUsedIndex) || mUsedIndex[+type]) {
             type = *std::find_if(
                 std::begin(dMj2dGame_c::scDefaultPlayerTypes),
                 std::end(dMj2dGame_c::scDefaultPlayerTypes), [&mUsedIndex](PLAYER_TYPE_e type) {
                     return !mUsedIndex[+type];
                 }
             );
-        } else {
-            type = static_cast<PLAYER_TYPE_e>(abType);
         }
         mUsedIndex[+type]            = true;
 
         daPyMng_c::mPlayerType[ply]  = type;
         daPyMng_c::mPlayerEntry[ply] = 1;
-        daPyMng_c::mPlayerMode[type] = static_cast<PLAYER_MODE_e>(fFeat::autoboot_powerup);
+        daPyMng_c::mPlayerMode[type] = dDebugOpt::autoboot::player_mode;
         dInfo_c::m_instance->setPlyConnectStage(ply, dInfo_c::PlyConnectStage_e::ENTER);
-        if (fFeat::autoboot_in_star) {
+        if (dDebugOpt::autoboot::in_star) {
             daPyMng_c::mCreateItem[type] |= PLAYER_CREATE_ITEM_e::STAR_POWER;
         }
-        if (fFeat::autoboot_on_yoshi) {
+        if (dDebugOpt::autoboot::on_yoshi) {
             daPyMng_c::mCreateItem[type] |= PLAYER_CREATE_ITEM_e::YOSHI;
         }
     }
 
-    if (fFeat::autoboot_staffroll) {
+    if (dDebugOpt::autoboot::staffroll) {
         dInfo_c::m_instance->startStaffCredit();
         return;
     }
 
-    if (fFeat::autoboot_movie) {
-        dScene_c::setNextScene(dProf::MOVIE, fFeat::autoboot_movie, false);
+    if (dDebugOpt::autoboot::movie != 0xFF) {
+        dScene_c::setNextScene(dProf::MOVIE, dDebugOpt::autoboot::movie, false);
         return;
     }
 
-    if (!!fFeat::autoboot_world && fFeat::autoboot_course) {
+    if (dDebugOpt::autoboot::world != WORLD_e::COUNT && dDebugOpt::autoboot::area) {
         __extension__ dInfo_c::m_instance->startGame(
             dInfo_c::StartGameInfo_s{
                 .demoTime   = 0,
                 .otehonType = {},
-                .nextGotoNo = static_cast<u8>(fFeat::autoboot_next_goto - 1),
-                .courseNo   = static_cast<u8>((fFeat::autoboot_course ?: 1) - 1),
+                .nextGotoNo = dDebugOpt::autoboot::entrance,
+                .courseNo   = dDebugOpt::autoboot::area,
                 .isDemo     = false,
                 .demoType   = dInfo_c::DemoType_e::NONE,
-                .stage1 =
-                    {static_cast<WORLD_e>(fFeat::autoboot_world - 1),
-                     static_cast<STAGE_e>(fFeat::autoboot_stage - 1)},
-                .stage2 = {
-                    static_cast<WORLD_e>(fFeat::autoboot_world - 1),
-                    static_cast<STAGE_e>(fFeat::autoboot_stage - 1)
-                },
+                .stage1     = {dDebugOpt::autoboot::world, dDebugOpt::autoboot::stage},
+                .stage2     = {dDebugOpt::autoboot::world, dDebugOpt::autoboot::stage},
             }
         );
         return;

@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 #include <utility>
 
 namespace std {
@@ -93,7 +94,7 @@ public:
         }
     }
 
-    value_type m_data[N] = {};
+    value_type m_data[N];
 };
 
 template <class T, size_t N>
@@ -103,22 +104,50 @@ constexpr void swap(
     lhs.swap(rhs);
 }
 
+namespace __ {
+template <class T, size_t N, size_t... I>
+constexpr array<remove_cv_t<T>, N> to_array(
+    T (&a)[N], index_sequence<I...>
+) {
+    return {{a[I]...}};
+}
+
+template <class T, size_t N, size_t... I>
+constexpr array<remove_cv_t<T>, N> to_array(
+    T (&&a)[N], index_sequence<I...>
+) {
+    return {{std::move(a[I])...}};
+}
+} // namespace __
+
 template <class T, size_t N>
 constexpr array<remove_cv_t<T>, N> to_array(
     T (&a)[N]
 ) {
-    array<remove_cv_t<T>, N> ret{};
-    for (size_t i = 0; i < N; i++) {
-        ret[i] = a[i];
+    if constexpr (is_trivially_default_constructible_v<T>) {
+        array<remove_cv_t<T>, N> ret;
+        for (size_t i = 0; i < N; i++) {
+            ret[i] = a[i];
+        }
+        return ret;
+    } else {
+        return __::to_array<T, N>(a, make_index_sequence<N>{});
     }
-    return ret;
 }
 
 template <class T, size_t N>
 constexpr array<remove_cv_t<T>, N> to_array(
     T (&&a)[N], monostate = {}
 ) {
-    return to_array(a);
+    if constexpr (is_trivially_default_constructible_v<T>) {
+        array<remove_cv_t<T>, N> ret;
+        for (size_t i = 0; i < N; i++) {
+            ret[i] = move(a[i]);
+        }
+        return ret;
+    } else {
+        return __::to_array<T, N>(move(a), make_index_sequence<N>{});
+    }
 }
 
 template <class T, size_t N>

@@ -34,7 +34,7 @@ template <class T>
 concept complete_type = __is_complete_type(T);
 
 template <class T>
-concept enum_type = __is_enum(T);
+concept enumerator = __is_enum(T);
 
 template <class T>
 concept pointer = __is_pointer(T);

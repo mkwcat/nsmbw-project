@@ -145,6 +145,10 @@
         -->
         <file disc="/mkwcat.arc" external="mkwcat-nsmbw.arc" create="true"/>
         <!--
+            File patch: Debug configuration
+        -->
+        <file disc="/mkwcat-nsmbw-debug.json" external="mkwcat-nsmbw-debug.json" create="true"/>
+        <!--
             Save data redirection: Select [riivolution/]save
         -->
         <savegame external="save" clone="false"/>

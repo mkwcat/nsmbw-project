@@ -3,8 +3,8 @@
 
 #include "d_s_stage.h"
 
+#include "d_debug_option.h"
 #include "d_mj2d_game.h"
-#include "f_feature.h"
 #include <slu/relocate.hpp>
 
 [[nsmbw_data(0x8042931C)]]
@@ -299,7 +299,7 @@ UNDEF_80102598:;
 
 [[nsmbw(0x801026B0)]]
 void dScStage_c::calcTitleCount() {
-    if (fFeat::autoboot_title_demo) {
+    if (dDebugOpt::autoboot::title_demo) {
         // Moved to dScRestartCrsin_c::startTitle()
         return;
     }

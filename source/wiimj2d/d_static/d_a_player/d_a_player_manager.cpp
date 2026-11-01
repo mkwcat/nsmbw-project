@@ -12,6 +12,7 @@
 #include "d_balloon_mng.h"
 #include "d_bg_parameter.h"
 #include "d_course_data.h"
+#include "d_debug_option.h"
 #include "d_game_common.h"
 #include "d_gamedisplay.h"
 #include "d_gamerule.h"
@@ -28,7 +29,6 @@
 #include "d_score_mng.h"
 #include "d_stage_timer.h"
 #include "d_yoshi_model.h"
-#include "f_feature.h"
 #include "f_manager.h"
 #include "m_ef.h"
 #include "m_vec.h"
@@ -928,7 +928,7 @@ void daPyMng_c::setHipAttackQuake(
     }
 
     if (dScStage_c::m_isStaffCredit ||
-        (!fFeat::one_player_special_hip_attack_quake && count == 0)) {
+        (!dDebugOpt::one_player_special_hip_attack_quake && count == 0)) {
         if (type == 1) {
             dQuake_c::m_instance->startShock(
                 player, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK, 3, 0, false

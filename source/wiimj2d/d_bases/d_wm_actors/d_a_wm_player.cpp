@@ -8,6 +8,7 @@
 #include "d_a_wm_KinoBalloon.h"
 #include "d_a_wm_SubPlayer.h"
 #include "d_cs_seq_mng.h"
+#include "d_debug_option.h"
 #include "d_game_key_core.h"
 #include "d_gamerule.h"
 #include "d_info.h"
@@ -17,7 +18,6 @@
 #include "d_wm_lib.h"
 #include "d_wm_player_camera_base.h"
 #include "d_world_camera.h"
-#include "f_feature.h"
 #include "m_pad.h"
 #include <egg/core/eggController.h>
 #include <revolution/os.h>
@@ -138,7 +138,7 @@ void daWmPlayer_c::PlayerEntryUpdate() {
 
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
         if (info->getPlyConnectStage(i) == dInfo_c::PlyConnectStage_e::ENTER ||
-            fFeat::force_all_wm_subplayers_present) {
+            dDebugOpt::force_all_wm_subplayers_present) {
             std::size_t index          = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
             daPyMng_c::mPlayerEntry[i] = 1;
             SetPlayerEntry(
@@ -157,7 +157,7 @@ void daWmPlayer_c::PlayerEntryUpdate() {
     }
 
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
-        ms_plyConnectStage[+daPyMng_c::mPlayerType[i]] = fFeat::force_all_wm_subplayers_present
+        ms_plyConnectStage[+daPyMng_c::mPlayerType[i]] = dDebugOpt::force_all_wm_subplayers_present
                                                              ? dInfo_c::PlyConnectStage_e::ENTER
                                                              : info->getPlyConnectStage(i);
     }
@@ -351,7 +351,7 @@ void daWmPlayer_c::initPlyConnectStage() {
         if (flag != dInfo_c::PlyConnectStage_e::ENTER) {
             flag = dInfo_c::PlyConnectStage_e::OFF;
         }
-        if (fFeat::force_all_wm_subplayers_present) {
+        if (dDebugOpt::force_all_wm_subplayers_present) {
             flag = dInfo_c::PlyConnectStage_e::ENTER;
         }
         ms_plyConnectStage[+daPyMng_c::mPlayerType[i]] = flag;

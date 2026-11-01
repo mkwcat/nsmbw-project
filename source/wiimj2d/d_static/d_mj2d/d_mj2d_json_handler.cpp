@@ -16,134 +16,6 @@
 #include <string_view>
 #include <variant>
 
-namespace {
-
-template <slu::concepts::enum_type T>
-struct DataString;
-
-template <slu::concepts::enum_type T>
-inline constexpr const char* encode(
-    T value
-) {
-    const std::integral auto integral = static_cast<std::underlying_type_t<T>>(value);
-    if (integral < 0 || integral >= std::size(DataString<T>::mapping)) {
-        return nullptr;
-    }
-    return DataString<T>::mapping[integral];
-}
-
-template <slu::concepts::enum_type T>
-inline constexpr T decode(
-    const char* string
-) {
-    std::size_t i;
-    for (i = 0; i < std::size(DataString<T>::mapping); i++) {
-        if (std::strcmp(DataString<T>::mapping[i], string) == 0) {
-            break;
-        }
-    }
-    return static_cast<T>(i);
-}
-
-template <>
-struct DataString<PLAYER_TYPE_e> {
-    static constexpr const char* mapping[] = {
-        "mario",    "luigi",           "blue_toad",   "yellow_toad",
-        "toadette", "purple_toadette", "orange_toad", "black_toad",
-    };
-};
-
-template <>
-struct DataString<STAGE_e> {
-    static constexpr const char* mapping[] = {
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "coin",
-        "ghost_house",
-        "tower",
-        "tower_2nd",
-        "castle",
-        "castle_2nd",
-        "toad_house_1",
-        "toad_house_2",
-        "toad_house_3",
-        "toad_house_4",
-        "toad_house_5",
-        "toad_house_6",
-        "toad_house_7",
-        "ambush_1",
-        "ambush_2",
-        "ambush_3",
-        "cannon",
-        "37",
-        "airship",
-        "rescue",
-        "title",
-        "peach_castle",
-        "staff_roll",
-    };
-};
-
-template <>
-struct DataString<PLAYER_MODE_e> {
-    static constexpr const char* mapping[] = {
-        "small", "mushroom", "fire", "mini", "propeller", "penguin", "ice",
-    };
-};
-
-template <>
-struct DataString<STOCK_ITEM_e> {
-    static constexpr const char* mapping[] = {
-        "mushroom",      "fire_flower", "propeller_shroom", "ice_flower", "penguin_suit",
-        "mini_mushroom", "star",
-    };
-};
-
-template <>
-struct DataString<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e> {
-    static constexpr const char* mapping[] = {
-        "disabled",
-        "per_game",
-        "per_course",
-        "per_exit",
-    };
-};
-
-template <>
-struct DataString<dMj2dGame_c::START_KINOKO_KIND_e> {
-    static constexpr const char* mapping[] = {
-        "none", "yellow", "red", "green", "yellow_r", "red_r", "green_r",
-    };
-};
-
-template <>
-struct DataString<PATH_DIRECTION_e> {
-    static constexpr const char* mapping[] = {
-        "normal",
-        "reverse",
-        "initial",
-    };
-};
-
-} // namespace
-
 static inline constexpr u32 strHash(
     const char* str, std::size_t length
 ) {
@@ -1412,7 +1284,7 @@ bool dMj2dJsonHandler_c::marshalFileData(
             w.field("current_sub_world",     g.mCurrentSubWorld)    &&
             w.field("path_node",             g.mCurrentPathNode)    &&
             (g.mPipeRandomizerMode == dMj2dGame_c::PIPE_RANDOMIZER_MODE_e::DISABLED || (
-                w.field("pipe_randomizer_mode", encode(g.mPipeRandomizerMode)) &&
+                w.field("pipe_randomizer_mode", toString(g.mPipeRandomizerMode)) &&
                 w.field("pipe_randomizer_seed", static_cast<s32>(g.mPipeRandomizerSeed)))
             ) &&
             w.key("stock_item") && w.startObject() && (
@@ -1452,7 +1324,7 @@ bool dMj2dJsonHandler_c::marshalStockItem(
 ) {
     const char*                          name = nullptr;
     std::underlying_type_t<STOCK_ITEM_e> i    = 0;
-    while ((name = encode(static_cast<STOCK_ITEM_e>(i++))) != nullptr) {
+    while ((name = toString(static_cast<STOCK_ITEM_e>(i++))) != nullptr) {
         if (auto value = g.mStockItemCount[i]; value != 0) {
             if (!w.field(name, value)) {
                 return false;
@@ -1495,14 +1367,14 @@ bool dMj2dJsonHandler_c::marshalPlayerData(
         static_cast<PLAYER_CREATE_ITEM_e>(g.mPlayerCreateItem[index]);
 
     // clang-format off
-    return w.key(encode(player)) && w.startObject() && (
+    return w.key(toString(player)) && w.startObject() && (
         w.field("lives",     g.mPlayerLife[index])     &&
         w.field("coins",     g.mPlayerCoin[index])     &&
         w.field("continues", g.mPlayerContinue[index]) &&
         w.key("equip") && w.startArray() && (
             (!(equip & STAR_POWER) || w.string("star_power"))
         ) && w.endArray() &&
-        w.field("powerup",   encode(static_cast<PLAYER_MODE_e>(g.mPlayerPowerup[index]))) &&
+        w.field("powerup",   toString(static_cast<PLAYER_MODE_e>(g.mPlayerPowerup[index]))) &&
         w.field("player", player_number)
     ) && w.endObject();
     // clang-format on
@@ -1517,8 +1389,8 @@ bool dMj2dJsonHandler_c::marshalWorldData(
         const bool open = !!(g.mWorldCompletion[world] & dMj2dGame_c::WORLD_COMPLETION_e::WORLD_UNLOCKED);
         result = w.keyFmt("%d", world + 1) && w.startObject() && (
             w.field("open", open) &&
-            w.field("toad_rescue_course",  encode(g.mKinopioCourseNo[world])) &&
-            w.field("start_minigame_type", encode(g.mStartKinokoType[world])) &&
+            w.field("toad_rescue_course",  toString(g.mKinopioCourseNo[world])) &&
+            w.field("start_minigame_type", toString(g.mStartKinokoType[world])) &&
             w.key("ambush_enemy") && w.startObject() &&
                 marshalWorldAmbushEnemyData(w, g, world)
             && w.endObject() &&
@@ -1561,7 +1433,7 @@ bool dMj2dJsonHandler_c::marshalWorldAmbushEnemyData(
             w.field("revival_count",  entry.revival_count) &&
             w.field("sub_world",      entry.sub_world)     &&
             w.field("path_node",      entry.path_node)     &&
-            w.field("walk_direction", encode(entry.walk_direction))
+            w.field("walk_direction", toString(entry.walk_direction))
         ) && w.endObject();
         // clang-format on
     }
@@ -1615,7 +1487,7 @@ bool dMj2dJsonHandler_c::marshalWorldCourseData(
         }
 
         // clang-format off
-        result &= w.key(encode(static_cast<STAGE_e>(stage))) && w.startObject() && (
+        result &= w.key(toString(static_cast<STAGE_e>(stage))) && w.startObject() && (
             w.key("goal") && w.startArray() && (
                 (!entry.goal_normal             || w.string("normal"))            &&
                 (!entry.goal_secret             || w.string("secret"))            &&
@@ -1641,7 +1513,7 @@ bool dMj2dJsonHandler_c::marshalPlayerType(
     if (type < PLAYER_TYPE_e::MARIO || type >= PLAYER_TYPE_e::COUNT) {
         return !null || w.null();
     }
-    return w.string(encode(type));
+    return w.string(toString(type));
 }
 
 template <std::size_t N>

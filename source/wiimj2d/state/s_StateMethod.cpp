@@ -3,7 +3,7 @@
 
 #include "s_StateMethod.h"
 
-#include "f_feature.h"
+#include "d_debug_option.h"
 #include <revolution/os/OSError.h>
 
 /**
@@ -58,7 +58,7 @@ void sStateMethod_c::changeStateMethod(
         return;
     }
 
-    if (fFeat::print_state_changes) {
+    if (dDebugOpt::print_state_changes) {
         OS_REPORT("%p: State change -> %s\n", static_cast<void*>(this), newStateID.name());
     }
 

@@ -212,7 +212,7 @@ public:
     constexpr static size_type size() noexcept { return static_cast<size_type>(N); }
 };
 
-template <class T, concepts::enum_type S>
+template <class T, concepts::enumerator S>
 using enum_array = array<T, static_cast<base_types::size_type>(S::COUNT), S>;
 
 } // namespace slu

@@ -6,6 +6,7 @@
 #include "SndAudioMgr.h"
 #include "c_json.h"
 #include "d_a_player_manager.h"
+#include "d_debug_option.h"
 #include "d_exception.h"
 #include "d_info.h"
 #include "d_nand_thread.h"
@@ -34,6 +35,8 @@ void dProject_c::preCModuleInit(
 
 dProject_c::dProject_c() {
     mHeap::ScopeHeap_c scope{0};
+
+    dDebugOpt::readConfig();
 
     EGG::GCControllerMgr::createInstance();
     EGG::CoreControllerMgr::instance()->initClassic();

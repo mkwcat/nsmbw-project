@@ -4,8 +4,8 @@
 #include "d_a_boss_demo.h"
 
 #include "d_a_player_demo_manager.h"
+#include "d_debug_option.h"
 #include "d_enemy_boss.h"
-#include "f_feature.h"
 #include "f_manager.h"
 
 [[nsmbw(0x8001D090)]]
@@ -15,7 +15,7 @@ void daBossDemo_c::initializeState_BattleIn() {
     if (boss) {
         boss->setBattleReady();
 
-        if (fFeat::end_battles_immediately) {
+        if (dDebugOpt::end_battles_immediately) {
             boss->mpBossLife->mLife = 0;
             boss->deadAllKill();
             boss->setQuakeDead();

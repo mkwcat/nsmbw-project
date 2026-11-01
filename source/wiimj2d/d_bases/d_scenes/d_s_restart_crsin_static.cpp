@@ -3,6 +3,7 @@
 
 #include "d_s_restart_crsin.h"
 
+#include "d_debug_option.h"
 #include "d_demo_info.h"
 #include "d_fader.h"
 #include "d_info.h"
@@ -10,7 +11,6 @@
 #include "d_profile.h"
 #include "d_s_crsin.h"
 #include "d_s_stage.h"
-#include "f_feature.h"
 #include "m_dvd.h"
 
 [[nsmbw(0x80374060)]]
@@ -23,7 +23,7 @@ void dScRestartCrsin_c::startTitle(
     m_startGameInfo.courseNo   = 0;
     m_startGameInfo.nextGotoNo = -1;
 
-    if (fFeat::autoboot_title_demo) {
+    if (dDebugOpt::autoboot::title_demo != 0xFF) {
         dScStage_c::m_titleCount = (dScStage_c::m_titleCount + 1) % dDemoInfo::c_titleDemoStageCnt;
         const dInfo_c::StageNo_s& stage = dDemoInfo::c_titleDemoStage[dScStage_c::m_titleCount];
         m_startGameInfo.isDemo          = true;
@@ -52,7 +52,7 @@ void dScRestartCrsin_c::startTitle(
 
 [[nsmbw(0x801019D0)]]
 void dScRestartCrsin_c::reStartPeachCastle() {
-    if (fFeat::autoboot_hint_movie_demo) {
+    if (dDebugOpt::autoboot::hint_movie_demo != 0xFF) {
         dScStage_c::m_titleCount = (dScStage_c::m_titleCount + 1) % dDemoInfo::c_otehonInfoCnt;
         const dDemoInfo::OtehonInfo_s& info = dDemoInfo::c_otehonInfo[dScStage_c::m_titleCount];
         m_startGameInfo.isDemo              = true;

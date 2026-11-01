@@ -5,6 +5,9 @@
 #include "d_mj2d_game.h"
 #include "d_mj2d_header.h"
 #include <cstdio>
+#include <optional>
+#include <slu/concepts.hpp>
+#include <span>
 #include <variant>
 
 class dMj2dJsonHandler_c final : public cJson::HandlerIf_c {
@@ -130,4 +133,176 @@ private:
 
     template <std::size_t N>
     static bool marshalBitIndices(cJson::Writer_c& w, const std::bitset<N>& bits);
+
+public:
+    // Data strings
+    // ^^^^^^
+
+    template <slu::concepts::enumerator T>
+    struct DataString_c;
+
+    static constexpr std::optional<std::size_t> fromStringGeneric(
+        const char* string, std::span<const char*> mapping
+    ) {
+        std::size_t i;
+        for (i = 0; i < mapping.size(); i++) {
+            if (std::strcmp(mapping[i], string) == 0) {
+                return i;
+            }
+        }
+        return std::nullopt;
+    }
+
+    static constexpr std::optional<std::size_t> fromStringGeneric(
+        const char* string, std::size_t length, const std::span<const char* const>& mapping
+    ) {
+        std::size_t i;
+        for (i = 0; i < mapping.size(); i++) {
+            const char* entry = mapping[i];
+            if (std::strncmp(entry, string, length) == 0 && entry[length] == '\0') {
+                return i;
+            }
+        }
+        return std::nullopt;
+    }
+
+    template <slu::concepts::enumerator T>
+    static constexpr const char* toString(
+        T value
+    ) {
+        const std::integral auto integral = static_cast<std::underlying_type_t<T>>(value);
+        if (integral < 0 || integral >= std::size(DataString_c<T>::mapping)) {
+            return nullptr;
+        }
+        return DataString_c<T>::mapping[integral];
+    }
+
+    template <slu::concepts::enumerator T>
+    static constexpr std::optional<T> fromString(
+        const char* string
+    ) {
+        return fromStringGeneric(string, DataString_c<T>::mapping);
+    }
+
+    template <slu::concepts::enumerator T>
+    static constexpr T fromString(
+        const char* string, std::size_t length
+    ) {
+        return fromStringGeneric(string, length, DataString_c<T>::mapping);
+    }
+
+    static constexpr std::optional<std::size_t> readEnumGeneric(
+        const cJson::Reader_c::token_s& t, const std::span<const char* const>& mapping
+    ) {
+        if (t.is_number()) {
+            return t.number;
+        } else if (t.is_string()) {
+            return fromStringGeneric(t.string.data(), t.string.size(), mapping);
+        }
+        return std::nullopt;
+    }
+
+    template <slu::concepts::enumerator T>
+    static constexpr std::optional<std::size_t> readEnum(
+        const cJson::Reader_c::token_s& t
+    ) {
+        return readEnumGeneric(t, DataString_c<T>::mapping);
+    }
+
+    template <>
+    struct DataString_c<PLAYER_TYPE_e> {
+        static constexpr const char* mapping[] = {
+            "mario",    "luigi",           "blue_toad",   "yellow_toad",
+            "toadette", "purple_toadette", "orange_toad", "black_toad",
+        };
+    };
+
+    template <>
+    struct DataString_c<STAGE_e> {
+        static constexpr const char* mapping[] = {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "coin",
+            "ghost_house",
+            "tower",
+            "tower_2nd",
+            "castle",
+            "castle_2nd",
+            "toad_house_1",
+            "toad_house_2",
+            "toad_house_3",
+            "toad_house_4",
+            "toad_house_5",
+            "toad_house_6",
+            "toad_house_7",
+            "ambush_1",
+            "ambush_2",
+            "ambush_3",
+            "cannon",
+            "37",
+            "airship",
+            "rescue",
+            "title",
+            "peach_castle",
+            "staff_roll",
+        };
+    };
+
+    template <>
+    struct DataString_c<PLAYER_MODE_e> {
+        static constexpr const char* mapping[] = {
+            "small", "mushroom", "fire", "mini", "propeller", "penguin", "ice",
+        };
+    };
+
+    template <>
+    struct DataString_c<STOCK_ITEM_e> {
+        static constexpr const char* mapping[] = {
+            "mushroom",      "fire_flower", "propeller_shroom", "ice_flower", "penguin_suit",
+            "mini_mushroom", "star",
+        };
+    };
+
+    template <>
+    struct DataString_c<dMj2dGame_c::PIPE_RANDOMIZER_MODE_e> {
+        static constexpr const char* mapping[] = {
+            "disabled",
+            "per_game",
+            "per_course",
+            "per_exit",
+        };
+    };
+
+    template <>
+    struct DataString_c<dMj2dGame_c::START_KINOKO_KIND_e> {
+        static constexpr const char* mapping[] = {
+            "none", "yellow", "red", "green", "yellow_r", "red_r", "green_r",
+        };
+    };
+
+    template <>
+    struct DataString_c<PATH_DIRECTION_e> {
+        static constexpr const char* mapping[] = {
+            "normal",
+            "reverse",
+            "initial",
+        };
+    };
 };
