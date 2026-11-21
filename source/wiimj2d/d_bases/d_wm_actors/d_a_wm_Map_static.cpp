@@ -3,10 +3,12 @@
 
 #include "d_a_wm_Map.h"
 
+#include "d_mj2d_game.h"
+
 [[nsmbw_data(0x8042A46C)]]
 daWmMap_c* daWmMap_c::m_instance;
 
-STAGE_e    daWmMap_c::m_setStageRndizer;
+STAGE_e    daWmMap_c::m_setStageRndizer = STAGE_e::COUNT;
 
 [[nsmbw(0x80100310)]]
 mVec3_c daWmMap_c::GetPos(int node);

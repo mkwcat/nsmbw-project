@@ -506,11 +506,15 @@ void dMj2dJson_c::unmarshalCheckpoint(
     };
 
     dMj2dGame_c::Cyuukan_s& checkpoint = *static_cast<dMj2dGame_c::Cyuukan_s*>(ptr);
+    checkpoint.area                    = 1;
+
     r.userError(!t.is_object_start());
     while (cJson::token_s key = r.key<pass>()) {
         visitFields(r, cCheckpointFields, key, &checkpoint);
     }
     r.endObject();
+
+    checkpoint.area--;
 }
 
 bool dMj2dJson_c::marshalPlayerData(
