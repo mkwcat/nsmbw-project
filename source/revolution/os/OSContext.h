@@ -22,4 +22,20 @@ struct OSContext {
     /* 0x1C8 */ f64 psfs[32];
 };
 
+void OSLoadFPUContext(OSContext* fpucontext);
+void OSSaveFPUContext(OSContext* fpucontext);
+void OSSetCurrentContext(OSContext* context);
+OSContext* OSGetCurrentContext(void);
+u32 OSSaveContext(OSContext* context);
+[[noreturn]] void OSLoadContext(OSContext* context);
+u32 OSGetStackPointer(void);
+u32 OSSwitchStack(u32 newsp);
+int OSSwitchFiber(u32 pc, u32 newsp);
+int OSSwitchFiberEx(u32, u32, u32, u32, u32 pc, u32 newsp);
+void OSClearContext(OSContext* context);
+void OSInitContext(OSContext* context, u32 pc, u32 newsp);
+void OSDumpContext(OSContext* context);
+void __OSContextInit(void);
+void OSFillFPUContext(OSContext* context);
+
 EXTERN_C_END

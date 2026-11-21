@@ -10,3 +10,6 @@ STAGE_e    daWmMap_c::m_setStageRndizer;
 
 [[nsmbw(0x80100310)]]
 mVec3_c daWmMap_c::GetPos(int node);
+
+[[nsmbw(0x801003D0)]]
+int daWmMap_c::GetIndex(const char* name);

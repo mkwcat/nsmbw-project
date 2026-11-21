@@ -2,66 +2,67 @@
 
 #include <cstddef>
 
-#if !__has_builtin(__builtin_invoke)
-// Note: this is not standard-compliant
-constexpr decltype(auto) __builtin_invoke(
-    auto fn, auto... args
-) {
-    return fn(args...);
-}
-#endif
-
 namespace std {
 
 // Internal Macros
 // ^^^^^^
 
-#define __trait_predicate_c(__type, __name, ...)                                                   \
-    template <class T> struct __name : integral_constant<__type, __VA_ARGS__> {                    \
-    };                                                                                             \
-    template <class T> constexpr __type __name##_v = __name<T>::value
+#define __trait_predicate_c(__type, __name, ...) \
+    template <class T> \
+    struct __name : integral_constant<__type, __VA_ARGS__> {}; \
+    template <class T> \
+    constexpr __type __name##_v = __name<T>::value
 
-#define __trait_predicate_cc(__type, __name, ...)                                                  \
-    template <class T, class U> struct __name : integral_constant<__type, __VA_ARGS__> {           \
-    };                                                                                             \
-    template <class T, class U> constexpr __type __name##_v = __name<T, U>::value
+#define __trait_predicate_cc(__type, __name, ...) \
+    template <class T, class U> \
+    struct __name : integral_constant<__type, __VA_ARGS__> {}; \
+    template <class T, class U> \
+    constexpr __type __name##_v = __name<T, U>::value
 
-#define __trait_predicate_cu(__type, __name, ...)                                                  \
-    template <class T, unsigned N = 0> struct __name : integral_constant<__type, __VA_ARGS__> {    \
-    };                                                                                             \
-    template <class T, unsigned N = 0> constexpr __type __name##_v = __name<T, N>::value
+#define __trait_predicate_cu(__type, __name, ...) \
+    template <class T, unsigned N = 0> \
+    struct __name : integral_constant<__type, __VA_ARGS__> {}; \
+    template <class T, unsigned N = 0> \
+    constexpr __type __name##_v = __name<T, N>::value
 
-#define __trait_predicate_ccv(__type, __name, ...)                                                 \
-    template <class T, class... Args> struct __name : integral_constant<__type, __VA_ARGS__> {     \
-    };                                                                                             \
-    template <class T, class... Args> constexpr __type __name##_v = __name<T, Args...>::value
+#define __trait_predicate_ccv(__type, __name, ...) \
+    template <class T, class... Args> \
+    struct __name : integral_constant<__type, __VA_ARGS__> {}; \
+    template <class T, class... Args> \
+    constexpr __type __name##_v = __name<T, Args...>::value
 
-#define __trait_identity(__name)                                                                   \
-    template <class T> struct __name {                                                             \
-        using type = T;                                                                            \
-    };                                                                                             \
-    template <class T> using __name##_t = typename __name<T>::type
+#define __trait_identity(__name) \
+    template <class T> \
+    struct __name { \
+        using type = T; \
+    }; \
+    template <class T> \
+    using __name##_t = typename __name<T>::type
 
-#define __trait_expression(__name, ...)                                                            \
-    template <class T> struct __name {                                                             \
-        using type = __VA_ARGS__;                                                                  \
-    };                                                                                             \
-    template <class T> using __name##_t = typename __name<T>::type
+#define __trait_expression(__name, ...) \
+    template <class T> \
+    struct __name { \
+        using type = __VA_ARGS__; \
+    }; \
+    template <class T> \
+    using __name##_t = typename __name<T>::type
 
-#define __trait_custom_expression(__name, __expression, ...)                                       \
-    struct __name __VA_ARGS__ {                                                                    \
-        using type = __expression;                                                                 \
+#define __trait_custom_expression(__name, __expression, ...) \
+    struct __name __VA_ARGS__ { \
+        using type = __expression; \
     }
 
-#define __trait_transform_expression(__name, __expression, ...)                                    \
-    template <class T> __trait_custom_expression(__name, __expression, __VA_ARGS__)
+#define __trait_transform_expression(__name, __expression, ...) \
+    template <class T> \
+    __trait_custom_expression(__name, __expression, __VA_ARGS__)
 
 #define __trait_transform(__name, ...) __trait_transform_expression(__name, T, __VA_ARGS__)
 
 // Helper Classes
 // ^^^^^^
 
-template <class T, T v> struct integral_constant {
+template <class T, T v>
+struct integral_constant {
     static constexpr T value = v;
     using value_type         = T;
     using type               = integral_constant<T, v>;
@@ -69,9 +70,10 @@ template <class T, T v> struct integral_constant {
     constexpr operator value_type() const noexcept { return value; }
 };
 
-template <bool B> using bool_constant = integral_constant<bool, B>;
-using true_type                       = bool_constant<true>;
-using false_type                      = bool_constant<false>;
+template <bool B>
+using bool_constant = integral_constant<bool, B>;
+using true_type     = bool_constant<true>;
+using false_type    = bool_constant<false>;
 
 // Primary type categories
 // ^^^^^^
@@ -188,52 +190,6 @@ __trait_predicate_cc(
     bool, is_pointer_interconvertible_base_of, __is_pointer_interconvertible_base_of(T, U)
 );
 
-template <class Fn, class... Args>
-concept __is_invocable =
-    requires(Fn fn, Args&&... args) { __builtin_invoke(fn, static_cast<Args&&>(args)...); };
-
-template <class R, class Fn, class... Args>
-concept __is_invocable_r = requires(Fn fn, Args&&... args) {
-    __builtin_invoke(fn, static_cast<Args&&>(args)...);
-    requires __is_convertible(decltype(__builtin_invoke(fn, static_cast<Args&&>(args)...)), R);
-};
-
-template <class Fn, class... Args>
-concept __is_nothrow_invocable = requires(Fn fn, Args&&... args) {
-    __builtin_invoke(fn, static_cast<Args&&>(args)...);
-    requires noexcept(__builtin_invoke(fn, static_cast<Args&&>(args)...));
-};
-
-template <class R, class Fn, class... Args>
-concept __is_nothrow_invocable_r = requires(Fn fn, Args&&... args) {
-    __builtin_invoke(fn, static_cast<Args&&>(args)...);
-    requires noexcept(__builtin_invoke(fn, static_cast<Args&&>(args)...));
-    requires __is_convertible(decltype(__builtin_invoke(fn, static_cast<Args&&>(args)...)), R);
-};
-
-template <class Fn, class... Args>
-struct is_invocable : integral_constant<bool, __is_invocable<Fn, Args...>> {
-};
-template <class Fn, class... Args> constexpr bool is_invocable_v = is_invocable<Fn, Args...>::value;
-
-template <class R, class Fn, class... Args>
-struct is_invocable_r : integral_constant<bool, __is_invocable_r<R, Fn, Args...>> {
-};
-template <class R, class Fn, class... Args>
-constexpr bool is_invocable_r_v = is_invocable_r<R, Fn, Args...>::value;
-
-template <class Fn, class... Args>
-struct is_nothrow_invocable : integral_constant<bool, __is_nothrow_invocable<Fn, Args...>> {
-};
-template <class Fn, class... Args>
-constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<Fn, Args...>::value;
-
-template <class R, class Fn, class... Args>
-struct is_nothrow_invocable_r : integral_constant<bool, __is_nothrow_invocable_r<R, Fn, Args...>> {
-};
-template <class R, class Fn, class... Args>
-constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, Fn, Args...>::value;
-
 // Const-volatile modifications
 // ^^^^^^
 
@@ -276,53 +232,189 @@ __trait_identity(type_identity);
 __trait_expression(remove_cvref, __remove_cvref(T));
 __trait_expression(decay, __decay(T));
 
-template <bool B, class T = void> struct enable_if {
-};
+template <bool B, class T = void>
+struct enable_if {};
 
-template <bool B, class T, class F> __trait_custom_expression(conditional, T);
-template <class T, class F> __trait_custom_expression(conditional, F, <false, T, F>);
-template <bool B, class T, class F> using conditional_t = typename conditional<B, T, F>::type;
+template <bool B, class T, class F>
+__trait_custom_expression(conditional, T);
+template <class T, class F>
+__trait_custom_expression(conditional, F, <false, T, F>);
+template <bool B, class T, class F>
+using conditional_t = typename conditional<B, T, F>::type;
 
 __trait_transform(enable_if, <true, T>);
-template <bool B, class T = void> using enable_if_t = typename enable_if<B, T>::type;
+template <bool B, class T = void>
+using enable_if_t = typename enable_if<B, T>::type;
 
 // common_type
 // basic_common_reference
 
 // common_reference
 __trait_expression(underlying_type, __underlying_type(T));
-// invoke_result
 // apply_result
 // unwrap_reference
 // unwrap_ref_decay
 
-template <class...> using void_t = void;
+template <class...>
+using void_t = void;
 
 // Logical operator traits
 // ^^^^^^
 
-template <class...> struct conjunction : std::true_type {
-};
+template <class...>
+struct conjunction : true_type {};
 
-template <class B1> struct conjunction<B1> : B1 {
-};
-
-template <class B1, class... Bn>
-struct conjunction<B1, Bn...> : conditional_t<bool(B1::value), conjunction<Bn...>, B1> {
-};
-
-template <class...> struct disjunction : std::false_type {
-};
-
-template <class B1> struct disjunction<B1> : B1 {
-};
+template <class B1>
+struct conjunction<B1> : B1 {};
 
 template <class B1, class... Bn>
-struct disjunction<B1, Bn...> : conditional_t<bool(B1::value), B1, disjunction<Bn...>> {
+struct conjunction<B1, Bn...> : conditional_t<bool(B1::value), conjunction<Bn...>, B1> {};
+
+template <class...>
+struct disjunction : false_type {};
+
+template <class B1>
+struct disjunction<B1> : B1 {};
+
+template <class B1, class... Bn>
+struct disjunction<B1, Bn...> : conditional_t<bool(B1::value), B1, disjunction<Bn...>> {};
+
+template <class B>
+struct negation : bool_constant<!static_cast<bool>(B::value)> {};
+
+// Invoke method
+// ^^^^^^
+
+template <class T>
+class reference_wrapper;
+
+namespace __::type_traits {
+
+template <class>
+static constexpr bool is_reference_wrapper_v = false;
+template <class U>
+static constexpr bool is_reference_wrapper_v<reference_wrapper<U>> = true;
+
+template <class T>
+static constexpr T&& forward(
+    remove_reference_t<T>& t
+) noexcept {
+    return static_cast<T&&>(t);
+}
+
+template <class T>
+static constexpr T&& forward(
+    remove_reference_t<T>&& t
+) noexcept {
+    return static_cast<T&&>(t);
+}
+
+template <typename T>
+add_rvalue_reference_t<T> declval() noexcept {
+    static_assert(false, "declval not allowed in an evaluated context");
+}
+
+template <class C, class Pointed, class Object, class... Args>
+static constexpr decltype(auto) invoke_memptr(
+    Pointed C::* member, Object&& object, Args&&... args
+) {
+    constexpr bool is_member_function = is_function_v<Pointed>;
+    constexpr bool is_wrapped         = is_reference_wrapper_v<remove_cvref_t<Object>>;
+    constexpr bool is_derived_object =
+        is_same_v<C, remove_cvref_t<Object>> || is_base_of_v<C, remove_cvref_t<Object>>;
+
+    if constexpr (is_member_function) {
+        if constexpr (is_derived_object) {
+            return (forward<Object>(object).*member)(__::type_traits::forward<Args>(args)...);
+        } else if constexpr (is_wrapped) {
+            return (object.get().*member)(__::type_traits::forward<Args>(args)...);
+        } else {
+            return ((*__::type_traits::forward<Object>(object)).*member)(
+                __::type_traits::forward<Args>(args)...
+            );
+        }
+    } else {
+        static_assert(is_object_v<Pointed> && sizeof...(args) == 0);
+        if constexpr (is_derived_object) {
+            return __::type_traits::forward<Object>(object).*member;
+        } else if constexpr (is_wrapped) {
+            return object.get().*member;
+        } else {
+            return (*__::type_traits::forward<Object>(object)).*member;
+        }
+    }
+}
+
+template <class F, class... Args>
+constexpr decltype(auto) invoke(
+    F&& f, Args&&... args
+) {
+    if constexpr (is_member_pointer_v<remove_cvref_t<F>>) {
+        return __::type_traits::invoke_memptr(f, forward<Args>(args)...);
+    } else {
+        return __::type_traits::forward<F>(f)(forward<Args>(args)...);
+    }
+}
+
+struct empty {};
+
+template <class Fn, class... Args>
+concept is_invocable =
+    requires(Fn fn, Args&&... args) { __::type_traits::invoke(fn, static_cast<Args&&>(args)...); };
+
+template <class R, class Fn, class... Args>
+concept is_invocable_r = requires(Fn fn, Args&&... args) {
+    __::type_traits::invoke(fn, static_cast<Args&&>(args)...);
+    requires is_convertible_v<
+        decltype(__::type_traits::invoke(fn, static_cast<Args&&>(args)...)), R>;
 };
 
-template <class B> struct negation : bool_constant<!static_cast<bool>(B::value)> {
+template <class Fn, class... Args>
+concept is_nothrow_invocable = requires(Fn fn, Args&&... args) {
+    __::type_traits::invoke(fn, static_cast<Args&&>(args)...);
+    requires noexcept(__::type_traits::invoke(fn, static_cast<Args&&>(args)...));
 };
+
+template <class R, class Fn, class... Args>
+concept is_nothrow_invocable_r = requires(Fn fn, Args&&... args) {
+    invoke(fn, static_cast<Args&&>(args)...);
+    requires noexcept(__::type_traits::invoke(fn, static_cast<Args&&>(args)...));
+    requires is_convertible_v<
+        decltype(__::type_traits::invoke(fn, static_cast<Args&&>(args)...)), R>;
+};
+
+} // namespace __::type_traits
+
+template <class Fn, class... Args>
+struct is_invocable : integral_constant<bool, __::type_traits::is_invocable<Fn, Args...>> {};
+template <class Fn, class... Args>
+constexpr bool is_invocable_v = is_invocable<Fn, Args...>::value;
+
+template <class R, class Fn, class... Args>
+struct is_invocable_r : integral_constant<bool, __::type_traits::is_invocable_r<R, Fn, Args...>> {};
+template <class R, class Fn, class... Args>
+constexpr bool is_invocable_r_v = is_invocable_r<R, Fn, Args...>::value;
+
+template <class Fn, class... Args>
+struct is_nothrow_invocable
+    : integral_constant<bool, __::type_traits::is_nothrow_invocable<Fn, Args...>> {};
+template <class Fn, class... Args>
+constexpr bool is_nothrow_invocable_v = is_nothrow_invocable<Fn, Args...>::value;
+
+template <class R, class Fn, class... Args>
+struct is_nothrow_invocable_r
+    : integral_constant<bool, __::type_traits::is_nothrow_invocable_r<R, Fn, Args...>> {};
+template <class R, class Fn, class... Args>
+constexpr bool is_nothrow_invocable_r_v = is_nothrow_invocable_r<R, Fn, Args...>::value;
+
+template <class Fn, class... Args>
+struct invoke_result : conditional_t<
+                           !is_invocable_v<Fn, Args...>, __::type_traits::empty,
+                           type_identity<decltype(__::type_traits::invoke(
+                               __::type_traits::declval<Fn>(), __::type_traits::declval<Args>()...
+                           ))>> {};
+template <class Fn, class... Args>
+using invoke_result_t = invoke_result<Fn, Args...>::type;
 
 // Constant evaluation context
 // ^^^^^^

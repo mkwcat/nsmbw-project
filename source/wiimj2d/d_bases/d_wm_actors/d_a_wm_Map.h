@@ -25,6 +25,9 @@ public:
     /* 0x80100310 */
     mVec3_c GetPos(int node);
 
+    /* 0x801003D0 */
+    int GetIndex(const char* name);
+
     /* 0x808DFE50 */
     void createEnemyActors();
 
@@ -63,7 +66,7 @@ public:
     // Instance Variables
     // ^^^^^
 
-    u8 FILL(0x00184, 0x03388);
+    u8                         FILL(0x00184, 0x03388);
 
     /* 0x03388 */ u32          mCurrentWorld;
     /* 0x0338C */ int          mCurrentMap;
@@ -71,5 +74,5 @@ public:
     /* 0x03394 */ dCsvData_c   mCsvData[4];
     /* 0x5C7F4 */ dWmConnect_c mConnect[4];
 
-    u8 FILL(0x6C414, 0x6C510);
+    u8                         FILL(0x6C414, 0x6C510);
 };

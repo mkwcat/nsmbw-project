@@ -3,9 +3,11 @@
 
 #include "c_json.h"
 
+#include "slu/to_string.hpp"
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
+#include <magic_enum/magic_enum.hpp>
 #include <revolution/os/OSError.h>
 
 namespace cJson {
@@ -180,8 +182,9 @@ bool Parser_c::parse(
 
 Parser_c::token_s Parser_c::next() {
     token_s t = {};
+    t.parser  = this;
 
-    int     c = consume();
+    int c     = consume();
 
     if (mNeedComma) {
         mNeedComma = false;
@@ -376,6 +379,72 @@ Parser_c::token_s Parser_c::next() {
     }
 
     return t;
+}
+
+[[noreturn]]
+void Parser_c::userError(
+    const char* fileName, int line
+) {
+    DEBUG_REPORT(
+        "E: cJson::Parser_c::userError called at %s line %d, lr: %p->%p->.\n", fileName, line,
+        __builtin_return_address(0), __builtin_return_address(1)
+    );
+    mTokenError(mTokenErrorUserData);
+    std::unreachable();
+}
+
+token_s Reader_c::consume(
+    token_type_e type
+) {
+    if (!mToken) {
+        mToken = next();
+    }
+    if (type != mToken.type) {
+        return {};
+    }
+    token_s token = mToken;
+    mToken        = {};
+    return token;
+}
+
+template <>
+token_s Reader_c::consume<ErrorPolicy_e::except>(
+    token_type_e type, const char* fileName, int line
+) {
+    if (!mToken) {
+        mToken = next();
+        if (!mToken) {
+            userError();
+        }
+    }
+    if (type != mToken.type) {
+        DEBUG_REPORT(
+            "E: Token type is %s; expected %s\n", magic_enum::enum_name(mToken.type).data(),
+            magic_enum::enum_name(type).data()
+        );
+        userError(true, fileName, line);
+    }
+    token_s token = mToken;
+    mToken        = {};
+    return token;
+}
+
+token_s Reader_c::anyValueOrError(
+    const char* fileName, int line
+) {
+    if (!mToken) {
+        mToken = next();
+    }
+    if (mToken.is_key() || mToken.is_object_start() || mToken.is_object_end() ||
+        mToken.is_array_start() || mToken.is_array_end()) {
+        DEBUG_REPORT(
+            "E: Token type is %s; not a value type\n", magic_enum::enum_name(mToken.type).data()
+        );
+        userError(true, fileName, line);
+    }
+    token_s token = mToken;
+    mToken        = {};
+    return token;
 }
 
 Writer_c::Writer_c(
@@ -638,6 +707,15 @@ bool cJson::Writer_c::keyFmt(
     va_end(args);
 
     return key({buffer, static_cast<std::size_t>(len)});
+}
+
+void cJson::token_s::print() const {
+    OS_REPORT("Print %s token @ %p\n", valid ? "valid" : "invalid", static_cast<const void*>(this));
+    OS_REPORT("type = %s (%d)\n", magic_enum::enum_name(type).data(), static_cast<int>(type));
+    OS_REPORT("string = \"%.*s\"\n", static_cast<int>(string.size()), string.data());
+    OS_REPORT("number = %lld (%spresent)\n", number, has_number ? "" : "not ");
+    OS_REPORT("float = %f\n", floating_point);
+    OS_REPORT("boolean = %s\n", slu::to_string(boolean));
 }
 
 } // namespace cJson

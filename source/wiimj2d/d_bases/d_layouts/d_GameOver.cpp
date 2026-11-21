@@ -16,12 +16,12 @@ void dGameOver_c::finalizeState_ExitAnimeEndWait() {
     dInfo_c*     info = dInfo_c::m_instance;
 
     // Back up some stuff since dSaveMng_c::initLoadGame() overwrites it
-    s8 backup_continues[PLAYER_COUNT];
+    s8 backup_continues[CHARACTER_COUNT];
     u8 backup_deathCounts[WORLD_COUNT][STAGE_COUNT];
     u8 backup_switchDeathCount; // W3-4 with the red switch on
 
-    for (int i = 0; i < PLAYER_COUNT; i++) {
-        backup_continues[i] = save->getContinue(i);
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
+        backup_continues[i] = save->getContinue(static_cast<PLAYER_TYPE_e>(i));
     }
 
     for (int world = 0; world < WORLD_COUNT; world++) {
@@ -61,7 +61,7 @@ void dGameOver_c::finalizeState_ExitAnimeEndWait() {
     daPyMng_c::mScore = backup_score;
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        save->setContinue(i, backup_continues[i]);
+        save->setContinue(static_cast<PLAYER_TYPE_e>(i), backup_continues[i]);
     }
 
     for (int world = 0; world < WORLD_COUNT; world++) {

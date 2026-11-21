@@ -141,15 +141,17 @@ void dSaveMng_c::prepareSave() {
     dGameCom::setWorldClearFlag();
 
     game->setScore(daPyMng_c::mScore);
-    for (int ply = 0; ply < PLAYER_COUNT; ply++) {
-        game->setPlrID(ply, daPyMng_c::mPlayerType[ply]);
 
-        // Repurpose ply iterator as player type
+    for (int ply = 0; ply < PLAYER_COUNT; ply++) {
+        game->setPlrID(daPyMng_c::mPlayerType[ply], ply);
+    }
+
+    for (int ply = 0; ply < CHARACTER_COUNT; ply++) {
         PLAYER_TYPE_e type = static_cast<PLAYER_TYPE_e>(ply);
-        game->setPlrMode(static_cast<int>(type), daPyMng_c::mPlayerMode[type]);
-        game->setRest(static_cast<int>(type), daPyMng_c::mRest[type]);
-        game->setCreateItem(static_cast<int>(type), daPyMng_c::mCreateItem[type]);
-        game->setCoin(static_cast<int>(type), daPyMng_c::mCoin[type]);
+        game->setPlrMode(type, daPyMng_c::mPlayerMode[type]);
+        game->setRest(type, daPyMng_c::mRest[type]);
+        game->setCreateItem(type, daPyMng_c::mCreateItem[type]);
+        game->setCoin(type, daPyMng_c::mCoin[type]);
     }
 
     dInfo_c* info = dInfo_c::m_instance;
@@ -184,13 +186,13 @@ void dSaveMng_c::initLoadGame(
     dMj2dGame_c* game               = dSaveMng_c::getSaveGame(file);
 
     daPyMng_c::mScore               = game->getScore();
-    for (int i = 0; i < PLAYER_COUNT; i++) {
-        PLAYER_TYPE_e type                                          = static_cast<PLAYER_TYPE_e>(i);
-        daPyMng_c::mPlayerType[static_cast<int>(game->getPlrID(i))] = type;
-        daPyMng_c::mPlayerMode[type]                                = game->getPlrMode(i);
-        daPyMng_c::mRest[type]                                      = game->getRest(i);
-        daPyMng_c::mCreateItem[type]                                = game->getCreateItem(i);
-        daPyMng_c::mCoin[type]                                      = game->getCoin(i);
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
+        PLAYER_TYPE_e type                           = static_cast<PLAYER_TYPE_e>(i);
+        daPyMng_c::mPlayerType[game->getPlrID(type)] = type;
+        daPyMng_c::mPlayerMode[type]                 = game->getPlrMode(type);
+        daPyMng_c::mRest[type]                       = game->getRest(type);
+        daPyMng_c::mCreateItem[type]                 = game->getCreateItem(type);
+        daPyMng_c::mCoin[type]                       = game->getCoin(type);
     }
 
     dInfo_c* info = dInfo_c::m_instance;

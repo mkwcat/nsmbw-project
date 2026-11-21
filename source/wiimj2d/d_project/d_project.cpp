@@ -70,12 +70,13 @@ dProject_c::dProject_c() {
 }
 
 void dProject_c::loadVersionJson() {
-    if (cJson::DvdReader_c r("/Info/Version.json"); r.startObject()) {
-        if (auto key = r.key(); key) {
+    using enum cJson::ErrorPolicy_e;
+    if (cJson::DvdReader_c r("/Info/Version.json"); r.startObject<pass>()) {
+        if (cJson::token_s key = r.key<pass>()) {
             std::strncpy(
                 m_name, key.string.data(), std::min(key.string.length(), std::size(m_name))
             );
-            if (auto value = r.string(); value && r.endObject()) {
+            if (cJson::token_s value = r.string<pass>(); value && r.endObject<pass>()) {
                 std::strncpy(
                     m_version, value.string.data(),
                     std::min(value.string.length(), std::size(m_version))

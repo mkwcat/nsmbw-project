@@ -1,25 +1,23 @@
 #pragma once
 
+#include <functional>
 #include <new>
 #include <optional>
 #include <utility>
 
-namespace std
-{
+namespace std {
 
-class nullopt_t
-{
+class nullopt_t {
 public:
-    explicit constexpr nullopt_t(int) noexcept
-    {
-    }
+    explicit constexpr nullopt_t(
+        int
+    ) noexcept {}
 };
 
 constexpr nullopt_t nullopt{0};
 
 template <class T>
-class optional
-{
+class optional {
 public:
     // Type Aliases
     // ^^^^^^
@@ -31,29 +29,27 @@ public:
     // ^^^^^^
 
     constexpr optional() noexcept
-      : m_pointer(nullptr)
-    {
-    }
+        : m_pointer(nullptr) {}
 
-    constexpr optional(nullopt_t) noexcept
-      : m_pointer(nullptr)
-    {
-    }
+    constexpr optional(
+        nullopt_t
+    ) noexcept
+        : m_pointer(nullptr) {}
 
-    constexpr optional(const value_type& value) noexcept
-      : m_pointer(new (m_storage) value_type(value))
-    {
-    }
+    constexpr optional(
+        const value_type& value
+    ) noexcept
+        : m_pointer(new (m_storage) value_type(value)) {}
 
-    constexpr optional(const optional& other) noexcept
-    {
+    constexpr optional(
+        const optional& other
+    ) noexcept {
         if (other.has_value()) {
             m_pointer = new (m_storage) value_type(*other);
         }
     }
 
-    constexpr ~optional() noexcept
-    {
+    constexpr ~optional() noexcept {
         if (m_pointer) {
             m_pointer->~value_type();
         }
@@ -63,49 +59,69 @@ public:
     // Instance Methods
     // ^^^^^^
 
-    constexpr bool has_value() const noexcept
-    {
-        return m_pointer != nullptr;
+    constexpr bool has_value() const noexcept { return m_pointer != nullptr; }
+
+    constexpr value_type& value() & { return *m_pointer; }
+
+    constexpr const value_type& value() const& { return *m_pointer; }
+
+    constexpr value_type&& value() && { return std::move(*m_pointer); }
+
+    constexpr const value_type&& value() const&& { return std::move(*m_pointer); }
+
+    template <class F>
+    constexpr auto transform(
+        F&& f
+    ) & -> optional<remove_cv_t<invoke_result_t<F, T&>>> {
+        if (has_value()) {
+            return invoke(forward<F>(f), **this);
+        } else {
+            return nullopt;
+        }
     }
 
-    constexpr value_type& value() &
-    {
-        return *m_pointer;
+    template <class F>
+    constexpr auto transform(
+        F&& f
+    ) const& -> optional<remove_cv_t<invoke_result_t<F, const T&>>> {
+        if (has_value()) {
+            return invoke(forward<F>(f), **this);
+        } else {
+            return nullopt;
+        }
     }
 
-    constexpr const value_type& value() const&
-    {
-        return *m_pointer;
+    template <class F>
+    constexpr auto transform(
+        F&& f
+    ) && -> optional<remove_cv_t<invoke_result_t<F, T>>> {
+        if (has_value()) {
+            return invoke(forward<F>(f), move(**this));
+        } else {
+            return nullopt;
+        }
     }
 
-    constexpr value_type&& value() &&
-    {
-        return std::move(*m_pointer);
-    }
-
-    constexpr const value_type&& value() const&&
-    {
-        return std::move(*m_pointer);
+    template <class F>
+    constexpr auto transform(
+        F&& f
+    ) const&& -> optional<remove_cv_t<invoke_result_t<F, const T>>> {
+        if (has_value()) {
+            return invoke(forward<F>(f), move(**this));
+        } else {
+            return nullopt;
+        }
     }
 
 public:
     // Operators
     // ^^^^^^
 
-    constexpr explicit operator bool() const noexcept
-    {
-        return has_value();
-    }
+    constexpr explicit operator bool() const noexcept { return has_value(); }
 
-    constexpr const value_type& operator*() const noexcept
-    {
-        return *m_pointer;
-    }
+    constexpr const value_type& operator*() const noexcept { return *m_pointer; }
 
-    constexpr value_type& operator*() noexcept
-    {
-        return *m_pointer;
-    }
+    constexpr value_type& operator*() noexcept { return *m_pointer; }
 
 public:
     // Instance Variables

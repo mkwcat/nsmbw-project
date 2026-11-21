@@ -60,11 +60,11 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    u8 FILL(0x74, 0x7C);
+    u8                          FILL(0x74, 0x7C);
 
     /* 0x7C */ dSelectCursor_c* mpSelectCursor;
 
-    u8 FILL(0x80, 0xEC);
+    u8                          FILL(0x80, 0xEC);
 
 public:
     // Static Variables

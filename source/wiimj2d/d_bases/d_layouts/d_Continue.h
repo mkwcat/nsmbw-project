@@ -3,6 +3,7 @@
 #include "d_base.h"
 #include "d_lytbase.h"
 #include "d_lyttextbox.h"
+#include "d_mj2d_game.h"
 #include "s_FStateFct.h"
 #include "s_State.h"
 #include "s_StateInterfaces.h"
@@ -101,11 +102,11 @@ public:
 
     /* 0x2D8 */ bool                REMOVED(mMustRevive)[4];
 
-    u8 FILL(0x2DC, 0x2E0);
+    u8                              FILL(0x2DC, 0x2E0);
 
-    /* 0x2E0 */ bool mIsGameOver;
+    /* 0x2E0 */ bool                mIsGameOver;
 
-    u8 FILL(0x2E1, 0x2E4);
+    u8                              FILL(0x2E1, 0x2E4);
 
     // New (added 0xF0 bytes)
     /* 0x2E4 */ nw4r::lyt::Pane* mpNPos4P[4];
@@ -123,9 +124,9 @@ public:
     /* 0x34C */ LytTextBox_c*    mpTConTime[8];
     /* 0x36C */ LytTextBox_c*    mpTPlyZanki[8];
 
-    /* 0x38C */ int              mContinue[8];
-    /* 0x3AC */ int              mRestNum[8];
-    /* 0x3CC */ bool             mMustRevive[8];
+    /* 0x38C */ int              mContinue[CHARACTER_COUNT];
+    /* 0x3AC */ int              mRestNum[CHARACTER_COUNT];
+    /* 0x3CC */ bool             mMustRevive[CHARACTER_COUNT];
 
 public:
     // State IDs

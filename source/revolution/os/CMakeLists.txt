@@ -9,6 +9,9 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x801AC560 - 0x801ACC10
     OSCache.c
 
+# NSMBW          .text:  0x801ACC10 - 0x801AD620
+    OSContext.c
+
 # NSMBW          .text:  0x801AD620 - 0x801ADCE0
     OSError.c
 

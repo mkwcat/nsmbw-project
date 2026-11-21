@@ -29,4 +29,10 @@ void OSSetErrorHandler(void (*handler)(const char* file, int line, const char* m
 #define ASSERTMSG(exp, ...) (void) ((exp) || (OSPanic(__FILE_NAME__, __LINE__, __VA_ARGS__), 0))
 #define ASSERT(cond)        ((cond) || (OSPanic(__FILE_NAME__, __LINE__, "Failed assertion %s", #cond), 0))
 
+#ifndef NDEBUG
+#  define DEBUG_REPORT(fmt, ...) OS_REPORT(fmt __VA_OPT__(, ) __VA_ARGS__)
+#else
+#  define DEBUG_REPORT(fmt, ...) ((void) 0)
+#endif
+
 EXTERN_C_END

@@ -215,4 +215,11 @@ public:
 template <class T, concepts::enumerator S>
 using enum_array = array<T, static_cast<base_types::size_type>(S::COUNT), S>;
 
+template <class T, base_types::size_type N>
+static constexpr bool valid_index(
+    base_types::size_type n, const T (&)[N]
+) {
+    return n < N;
+}
+
 } // namespace slu

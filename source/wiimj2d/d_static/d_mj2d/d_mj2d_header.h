@@ -3,7 +3,7 @@
 #include "d_mj2d_game.h"
 
 class dSaveMng_c;
-class dMj2dJsonHandler_c;
+class dMj2dJson_c;
 
 /**
  * Represents the header of the game's save file. The save file header contains data that is not
@@ -16,7 +16,7 @@ class alignas(
     SIZE_ASSERT(0x6A0);
 
     friend class dSaveMng_c;
-    friend class dMj2dJsonHandler_c;
+    friend class dMj2dJson_c;
 
 public:
     // Instance Methods

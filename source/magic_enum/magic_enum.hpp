@@ -837,12 +837,20 @@ inline constexpr auto max_v = (count_v<E, S> > 0) ? static_cast<U>(values_v<E, S
 
 template <typename E, enum_subtype S, std::size_t... I>
 constexpr auto names(std::index_sequence<I...>) noexcept {
-  constexpr auto names = std::array<string_view, sizeof...(I)>{{enum_name_v<E, values_v<E, S>[I]>...}};
+   constexpr auto names = std::array<string_view, sizeof...(I)>{{enum_name_v<E, values_v<E, S>[I]>...}};
   return names;
 }
 
+namespace detail {
+  // For compatibility with custom mangling
 template <typename E, enum_subtype S>
-inline constexpr auto names_v = names<E, S>(std::make_index_sequence<count_v<E, S>>{});
+  struct names_storage {
+    static inline constexpr auto names_v = names<E, S>(std::make_index_sequence<count_v<E, S>>{});
+  };
+}
+
+template <typename E, enum_subtype S>
+inline constexpr auto& names_v = detail::names_storage<E, S>::names_v;
 
 template <typename E, enum_subtype S, typename D = std::decay_t<E>>
 using names_t = decltype((names_v<D, S>));

@@ -6,7 +6,7 @@
 #include "c_json.h"
 #include "d_mj2d_data.h"
 #include "d_mj2d_game.h"
-#include "d_mj2d_json_handler.h"
+#include "d_mj2d_json.h"
 #include "d_save_manager.h"
 #include "m_nandfile.h"
 #include "m_pipe.h"
@@ -132,13 +132,13 @@ int dNandThread_c::save() {
     mNandFile_c nandFile = std::move(l_fileInfo);
     mPipe_c     pipe(&nandFile, "wb", l_safeCopyBuf, std::size(l_safeCopyBuf));
 
-    bool        ok = dMj2dJsonHandler_c::writeJSON(pipe);
+    bool        ok = dMj2dJson_c::writeJSON(pipe);
     std::fclose(pipe);
     nandFile.close();
 
     setNandError(nandFile.getNandError());
     if (!ok || isError()) {
-        setNandError(NANDDelete(tmpPath));
+        //setNandError(NANDDelete(tmpPath));
         return 1;
     }
 
@@ -204,9 +204,8 @@ int dNandThread_c::load() {
         l_tmpSave.mTempGames[i].initialize();
     }
 
-    dMj2dJsonHandler_c handler;
-    bool               success = cJson::Parser_c::parse(
-        &handler, reinterpret_cast<char*>(l_safeCopyBuf), sizeof(l_safeCopyBuf),
+    cJson::Reader_c reader(
+        reinterpret_cast<char*>(l_safeCopyBuf), sizeof(l_safeCopyBuf),
         [](void* buffer, std::size_t size, void* userData) -> int {
             NANDResult result = NANDRead(&l_fileInfo, reinterpret_cast<u8*>(buffer), size);
             if (result < NAND_RESULT_OK) {
@@ -217,6 +216,8 @@ int dNandThread_c::load() {
         },
         this
     );
+
+    bool success = dMj2dJson_c::readJSON(reader);
 
     setNandError(NANDClose(&l_fileInfo));
     if (!success) {

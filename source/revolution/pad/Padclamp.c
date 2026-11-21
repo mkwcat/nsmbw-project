@@ -117,7 +117,7 @@ static void ClampCircle(
 
     squared = x * x + y * y;
     if (radius * radius < squared) {
-        length = sqrtf(squared);
+        length = std::sqrtf(squared);
         x      = (x * radius) / length;
         y      = (y * radius) / length;
     }

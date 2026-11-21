@@ -26,10 +26,14 @@ void dMj2dGame_c::initialize() {
     }
 
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        setPlrID(i, scDefaultPlayerTypes[i]);
-        setPlrMode(i, PLAYER_MODE_e::NONE);
-        setRest(i, 5);
-        setCreateItem(i, PLAYER_CREATE_ITEM_e::NONE);
+        setPlrID(scDefaultPlayerTypes[i], i);
+    }
+
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
+        PLAYER_TYPE_e type = static_cast<PLAYER_TYPE_e>(i);
+        setPlrMode(type, PLAYER_MODE_e::NONE);
+        setRest(type, 5);
+        setCreateItem(type, PLAYER_CREATE_ITEM_e::NONE);
     }
 
     for (int i = 0; i < WORLD_COUNT; i++) {
@@ -54,74 +58,72 @@ void dMj2dGame_c::versionUpdate() {
 
 [[nsmbw(0x800CE150)]]
 void dMj2dGame_c::setPlrID(
-    int player, PLAYER_TYPE_e character
+    PLAYER_TYPE_e player, int plrID
 ) {
-    mPlayerCharacter[player] = static_cast<PLAYER_TYPE_u8_e>(character);
+    mPlayer[player].player = plrID;
 }
 
 [[nsmbw(0x800CE160)]]
-PLAYER_TYPE_e dMj2dGame_c::getPlrID(
-    int player
+int dMj2dGame_c::getPlrID(
+    PLAYER_TYPE_e player
 ) const {
-    return static_cast<PLAYER_TYPE_e>(mPlayerCharacter[player]);
+    return mPlayer[player].player;
 }
 
 [[nsmbw(0x800CE170)]]
 void dMj2dGame_c::setPlrMode(
-    int player, PLAYER_MODE_e powerup
+    PLAYER_TYPE_e player, PLAYER_MODE_e powerup
 ) {
-    mPlayerPowerup[player] = static_cast<PLAYER_MODE_u8_e>(powerup);
+    mPlayer[player].powerup = powerup;
 }
 
 [[nsmbw(0x800CE180)]]
 PLAYER_MODE_e dMj2dGame_c::getPlrMode(
-    int player
+    PLAYER_TYPE_e player
 ) const {
-    return static_cast<PLAYER_MODE_e>(mPlayerPowerup[player]);
+    return mPlayer[player].powerup;
 }
 
 [[nsmbw(0x800CE190)]]
 void dMj2dGame_c::setRest(
-    int player, u8 lives
+    PLAYER_TYPE_e player, u8 lives
 ) {
-    mPlayerLife[player] = lives;
+    mPlayer[player].lives = lives;
 }
 
 [[nsmbw(0x800CE1A0)]]
 int dMj2dGame_c::getRest(
-    int player
+    PLAYER_TYPE_e player
 ) const {
-    return mPlayerLife[player];
+    return mPlayer[player].lives;
 }
 
 [[nsmbw(0x800CE1B0)]]
 void dMj2dGame_c::setCreateItem(
-    int player, PLAYER_CREATE_ITEM_e flag
+    PLAYER_TYPE_e player, PLAYER_CREATE_ITEM_e flag
 ) {
-    mPlayerCreateItem[player] =
-        static_cast<PLAYER_CREATE_ITEM_u8_e>(flag & PLAYER_CREATE_ITEM_e::STAR_POWER);
+    mPlayer[player].equip = flag & PLAYER_CREATE_ITEM_e::STAR_POWER;
 }
 
 [[nsmbw(0x800CE1C0)]]
 PLAYER_CREATE_ITEM_e dMj2dGame_c::getCreateItem(
-    int player
+    PLAYER_TYPE_e player
 ) const {
-    return static_cast<PLAYER_CREATE_ITEM_e>(mPlayerCreateItem[player]) &
-           PLAYER_CREATE_ITEM_e::STAR_POWER;
+    return mPlayer[player].equip & PLAYER_CREATE_ITEM_e::STAR_POWER;
 }
 
 [[nsmbw(0x800CE1D0)]]
 void dMj2dGame_c::setCoin(
-    int player, s8 coins
+    PLAYER_TYPE_e player, s8 coins
 ) {
-    mPlayerCoin[player] = coins;
+    mPlayer[player].coins = coins;
 }
 
 [[nsmbw(0x800CE1E0)]]
 s8 dMj2dGame_c::getCoin(
-    int player
+    PLAYER_TYPE_e player
 ) const {
-    return mPlayerCoin[player];
+    return mPlayer[player].coins;
 }
 
 [[nsmbw(0x800CE1F0)]]
@@ -200,7 +202,7 @@ void dMj2dGame_c::setStartKinokoKind(
 dMj2dGame_c::START_KINOKO_KIND_e dMj2dGame_c::getStartKinokoKind(
     WORLD_e world
 ) const {
-    return static_cast<START_KINOKO_KIND_e>(mStartKinokoType[+world]);
+    return mStartKinokoType[+world];
 }
 
 [[nsmbw(0x800CE350)]]
@@ -230,7 +232,7 @@ int dMj2dGame_c::getDeathCount(
     if (isSwitchPressed && world == WORLD_e::WORLD_3 && stage == STAGE_e::STAGE_4) {
         return getSwitchDeathCount();
     }
-    return mDeathCount[+world][int(stage)];
+    return mDeathCount[+world][+stage];
 }
 
 [[nsmbw(0x800CE3E0)]]
@@ -247,16 +249,16 @@ int dMj2dGame_c::getSwitchDeathCount() const {
 
 [[nsmbw(0x800CE400)]]
 void dMj2dGame_c::setContinue(
-    int player, s8 continues
+    PLAYER_TYPE_e player, s8 continues
 ) {
-    mPlayerContinue[player] = continues;
+    mPlayer[player].continues = continues;
 }
 
 [[nsmbw(0x800CE410)]]
 s8 dMj2dGame_c::getContinue(
-    int player
+    PLAYER_TYPE_e player
 ) const {
-    return mPlayerContinue[player];
+    return mPlayer[player].continues;
 }
 
 [[nsmbw(0x800CE420)]]

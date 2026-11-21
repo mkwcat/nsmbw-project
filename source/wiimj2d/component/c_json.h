@@ -10,6 +10,11 @@
 
 namespace cJson {
 
+enum class ErrorPolicy_e {
+    pass,
+    except,
+};
+
 class HandlerIf_c {
 public:
     ~HandlerIf_c() {}
@@ -61,8 +66,9 @@ public:
     virtual bool endArray() { return false; }
 };
 
-using ReadMethod  = int (*)(void* buffer, std::size_t size, void* userData);
-using WriteMethod = bool (*)(const void* buffer, std::size_t size, void* userData);
+using ReadMethod       = int (*)(void* buffer, std::size_t size, void* userData);
+using WriteMethod      = bool (*)(const void* buffer, std::size_t size, void* userData);
+using TokenErrorMethod = void (*)(void* userData);
 
 class Parser_c {
 public:
@@ -96,10 +102,12 @@ public:
     };
 
     struct token_s {
-        bool         valid = false;
-        token_type_e type  = token_type_e::none;
+        Parser_c*    parser = nullptr;
 
-        constexpr operator bool() const { return valid; }
+        bool         valid  = false;
+        token_type_e type   = token_type_e::none;
+
+        explicit constexpr operator bool() const { return valid; }
 
         constexpr bool is_key() const { return type == token_type_e::key; }
 
@@ -123,6 +131,22 @@ public:
 
         constexpr bool is_array_end() const { return type == token_type_e::array_end; }
 
+        constexpr bool operator==(
+            const std::string_view& s
+        ) const {
+            return string == s;
+        }
+
+        constexpr bool operator==(
+            const char* s
+        ) const {
+            return string == s;
+        }
+
+        constexpr operator const std::string_view&() const { return string; }
+
+        void print() const;
+
         std::string_view string;
         s64              number;
         double           floating_point;
@@ -132,6 +156,26 @@ public:
     };
 
     token_s next();
+
+    [[noreturn]]
+    void userError(const char* fileName, int line);
+
+    [[gnu::always_inline]]
+    void userError(
+        bool cond = true, const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        if (cond) {
+            userError(fileName, line);
+            std::unreachable();
+        }
+    }
+
+    void setUserErrorCallback(
+        TokenErrorMethod method, void* userData
+    ) {
+        mTokenError         = method;
+        mTokenErrorUserData = userData;
+    }
 
 protected:
     int take();
@@ -157,6 +201,8 @@ private:
     int              mRawPeekChar = -1;
     const ReadMethod mRead;
     void* const      mUserData;
+    TokenErrorMethod mTokenError         = nullptr;
+    void*            mTokenErrorUserData = nullptr;
     char             mTempStringBuffer[512];
 };
 
@@ -248,29 +294,86 @@ public:
     )
         : Parser_c(buffer, bufferSize, read, userData) {}
 
-    ~Reader_c() {}
+    constexpr ~Reader_c() {}
 
-    token_s key() { return consume(token_type_e::key); }
+private:
+public:
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s key(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::key, fileName, line);
+    }
 
-    token_s null() { return consume(token_type_e::null); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s null(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::null, fileName, line);
+    }
 
-    token_s number() { return consume(token_type_e::number); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s number(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::number, fileName, line);
+    }
 
-    token_s rawNumber() { return consume(token_type_e::raw_number); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s rawNumber(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::raw_number, fileName, line);
+    }
 
-    token_s floatNumber() { return consume(token_type_e::floating_point); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s floatNumber(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::floating_point, fileName, line);
+    }
 
-    token_s boolean() { return consume(token_type_e::boolean); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s boolean(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::boolean, fileName, line);
+    }
 
-    token_s string() { return consume(token_type_e::string); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s string(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::string, fileName, line);
+    }
 
-    token_s startObject() { return consume(token_type_e::object_start); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s startObject(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::object_start, fileName, line);
+    }
 
-    token_s endObject() { return consume(token_type_e::object_end); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s endObject(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::object_end, fileName, line);
+    }
 
-    token_s startArray() { return consume(token_type_e::array_start); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s startArray(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::array_start, fileName, line);
+    }
 
-    token_s endArray() { return consume(token_type_e::array_end); }
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    [[gnu::always_inline]] token_s endArray(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    ) {
+        return consume<E>(token_type_e::array_end, fileName, line);
+    }
 
     [[gnu::noinline]]
     token_s anyNumber() {
@@ -285,18 +388,30 @@ public:
         return token;
     }
 
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
     [[gnu::noinline]]
-    token_s anyValue() {
+    token_s anyValue()
+        requires(E == ErrorPolicy_e::pass)
+    {
         if (!mToken) {
             mToken = next();
         }
-        if (!mToken.is_key() && !mToken.is_object_start() && !mToken.is_object_end() &&
-            !mToken.is_array_start() && !mToken.is_array_end()) {
+        if (mToken.is_key() || mToken.is_object_start() || mToken.is_object_end() ||
+            mToken.is_array_start() || mToken.is_array_end()) {
             return {};
         }
         token_s token = mToken;
         mToken        = {};
         return token;
+    }
+
+    template <ErrorPolicy_e E = ErrorPolicy_e::except>
+    token_s anyValue(
+        const char* fileName = __builtin_FILE_NAME(), int line = __builtin_LINE()
+    )
+        requires(E == ErrorPolicy_e::except)
+    {
+        return anyValueOrError(fileName, line);
     }
 
     bool end() {
@@ -307,20 +422,27 @@ public:
     }
 
 private:
-    [[gnu::noinline]]
+    token_s consume(token_type_e type);
+
+    template <ErrorPolicy_e E>
     token_s consume(
-        token_type_e type
+        [[maybe_unused]] token_type_e type, [[maybe_unused]] const char* fileName,
+        [[maybe_unused]] int line
     ) {
-        if (!mToken) {
-            mToken = next();
-        }
-        if (type != mToken.type) {
-            return {};
-        }
-        token_s token = mToken;
-        mToken        = {};
-        return token;
+        static_assert(false);
     }
+
+    template <>
+    token_s consume<ErrorPolicy_e::pass>(
+        token_type_e type, [[maybe_unused]] const char* fileName, [[maybe_unused]] int line
+    ) {
+        return consume(type);
+    }
+
+    template <>
+    token_s consume<ErrorPolicy_e::except>(token_type_e type, const char* fileName, int line);
+
+    token_s anyValueOrError(const char* fileName, int line);
 
     token_s mToken;
 };
@@ -362,5 +484,7 @@ private:
     s32          mFileOffset = 0;
     alignas(32) char mBuffer[128];
 };
+
+using token_s = Parser_c::token_s;
 
 } // namespace cJson

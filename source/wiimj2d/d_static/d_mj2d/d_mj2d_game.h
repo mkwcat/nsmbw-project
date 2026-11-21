@@ -1,5 +1,6 @@
 #pragma once
 
+#include "slu/array.hpp"
 #include <bitset>
 #include <component/c_bitmask.h>
 #include <slu/enum.hpp>
@@ -245,11 +246,10 @@ enum PATH_DIRECTION_e : s8 {
 };
 
 class dSaveMng_c;
-class dMj2dJsonHandler_c;
+class dMj2dJson_c;
 class dScWMap_c;
 class dCyuukan_c;
 
-/* @unofficial? */
 struct StageNo_s {
     WORLD_e world;
     STAGE_e stage;
@@ -301,6 +301,10 @@ struct StageNo_s {
         return 0;
     }
 
+    constexpr bool isW3SwitchStage() const {
+        return world == WORLD_e::WORLD_3 && stage == STAGE_e::STAGE_4;
+    }
+
     static constexpr StageNo_s invalid() { return {WORLD_e::COUNT, STAGE_e::COUNT}; }
 
     constexpr bool isValid() const { return world != WORLD_e::COUNT && stage != STAGE_e::COUNT; }
@@ -317,7 +321,7 @@ class alignas(
     /* ORIGINAL SIZE: 0x980 */
 
     friend class dSaveMng_c;
-    friend class dMj2dJsonHandler_c;
+    friend class dMj2dJson_c;
     friend class dScWMap_c;
 
 public:
@@ -329,37 +333,10 @@ public:
         u8 mMinor;
     };
 
-    enum PLAYER_TYPE_u8_e : u8 {};
-
-    enum PLAYER_MODE_u8_e : u8 {};
-
-    enum PLAYER_CREATE_ITEM_u8_e : u8 {};
-
-    struct Cyuukan_s {
-        StageNo_s     stage                 = StageNo_s::invalid();
-        u8            area                  = 0;
-        u8            entrance              = 0xFF;
-        s32           index                 = -1;
-        PLAYER_TYPE_e flag[2]               = {PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT};
-        PLAYER_TYPE_e coin[STAR_COIN_COUNT] = {
-            PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT
-        };
-        bool face_left = false;
-
-        constexpr bool operator==(
-            const Cyuukan_s& other
-        ) const {
-            return stage == other.stage && area == other.area && entrance == other.entrance &&
-                   index == other.index && flag[0] == other.flag[0] && flag[1] == other.flag[1] &&
-                   coin[0] == other.coin[0] && coin[1] == other.coin[1] &&
-                   coin[2] == other.coin[2] && face_left == other.face_left;
-        }
-    };
-
     /**
      * The completion status of each stage.
      */
-    enum class COURSE_COMPLETION_e : u32 {
+    enum class COURSE_COMPLETION_e : /* u32 */ u16 {
         /**
          * The first Star Coin was obtained.
          */
@@ -400,6 +377,8 @@ public:
         SUPER_GUIDE_GOAL_SECRET = 8_bit,
 
         SUPER_GUIDE_GOAL_MASK   = SUPER_GUIDE_GOAL_NORMAL | SUPER_GUIDE_GOAL_SECRET,
+
+        ALL_GOAL_MASK           = SUPER_GUIDE_GOAL_MASK | GOAL_MASK,
     };
 
     /**
@@ -486,6 +465,12 @@ public:
         PER_EXIT,
     };
 
+    struct PlayerPosInfo_s {
+        WORLD_e worldNo;
+        int     sceneNo;
+        int     posIndex;
+    };
+
 public:
     /**
      * Constructs the holder.
@@ -503,57 +488,65 @@ public:
      */
     void initialize();
 
-    /**
-     * Sets a player's character. See PLAYER_TYPE_e.
-     */
-    void setPlrID(int player, PLAYER_TYPE_e character);
+    void onGameCompletionFlag(GAME_COMPLETION_e flag);
+
+    void offGameCompletionFlag(GAME_COMPLETION_e flag);
+
+    bool isGameCompletionFlag(GAME_COMPLETION_e flag) const;
+
+    GAME_COMPLETION_e getGameCompletion() const { return mGameCompletion; }
 
     /**
-     * Gets a player's character. See PLAYER_TYPE_e.
+     * Sets a player's index. See PLAYER_TYPE_e.
      */
-    PLAYER_TYPE_e getPlrID(int player) const;
+    void setPlrID(PLAYER_TYPE_e player, int plrID);
+
+    /**
+     * Gets a player's index. See PLAYER_TYPE_e.
+     */
+    int getPlrID(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's powerup. See PLAYER_MODE_e.
      */
-    void setPlrMode(int player, PLAYER_MODE_e powerup);
+    void setPlrMode(PLAYER_TYPE_e player, PLAYER_MODE_e powerup);
 
     /**
      * Gets a player's powerup. See PLAYER_MODE_e.
      */
-    PLAYER_MODE_e getPlrMode(int player) const;
+    PLAYER_MODE_e getPlrMode(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's life count.
      */
-    void setRest(int player, u8 lives);
+    void setRest(PLAYER_TYPE_e player, u8 lives);
 
     /**
      * Gets a player's life count.
      */
-    int getRest(int player) const;
+    int getRest(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's createItem flag. See PLAYER_CREATE_ITEM_e. Flags other than
      * PLAYER_CREATE_ITEM_e::STAR_POWER are ignored.
      */
-    void setCreateItem(int player, PLAYER_CREATE_ITEM_e flag);
+    void setCreateItem(PLAYER_TYPE_e player, PLAYER_CREATE_ITEM_e flag);
 
     /**
      * Gets a player's createItem flag. See PLAYER_CREATE_ITEM_e. Flags other than
      * PLAYER_CREATE_ITEM_e::STAR_POWER are ignored.
      */
-    PLAYER_CREATE_ITEM_e getCreateItem(int player) const;
+    PLAYER_CREATE_ITEM_e getCreateItem(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's coin count.
      */
-    void setCoin(int player, s8 coins);
+    void setCoin(PLAYER_TYPE_e player, s8 coins);
 
     /**
      * Gets a player's coin count.
      */
-    s8 getCoin(int player) const;
+    s8 getCoin(PLAYER_TYPE_e player) const;
 
     /**
      * Sets the score.
@@ -634,14 +627,14 @@ public:
     int getDeathCount(WORLD_e world, STAGE_e stage, bool isSwitchPressed) const;
 
     /**
-     * Sets a player 's continue count.
+     * Sets a player's continue count.
      */
-    void setContinue(int player, s8 continues);
+    void setContinue(PLAYER_TYPE_e player, s8 continues);
 
     /**
      * Gets a player's continue count.
      */
-    s8 getContinue(int player) const;
+    s8 getContinue(PLAYER_TYPE_e player) const;
 
     /**
      * Sets the inventory amount for the given item.
@@ -739,6 +732,18 @@ public:
      */
     PATH_DIRECTION_e getCSEnemyWalkDir(WORLD_e world, int enemy) const;
 
+    void setPlayerPosInfo(
+        PlayerPosInfo_s ppi
+    ) {
+        mCurrentWorld    = ppi.worldNo;
+        mCurrentSubWorld = ppi.sceneNo;
+        mCurrentPathNode = ppi.posIndex;
+    }
+
+    PlayerPosInfo_s getPlayerPosInfo() const {
+        return {mCurrentWorld, mCurrentSubWorld, mCurrentPathNode};
+    }
+
     /**
      * Sets the Toad rescue stage for the given world.
      */
@@ -820,7 +825,7 @@ private:
     /**
      * The world the player is currently in.
      */
-    /* 0x03 */ u8 mCurrentWorld;
+    /* 0x03 */ WORLD_e mCurrentWorld;
 
     /**
      * The subworld the player is currently in.
@@ -855,35 +860,19 @@ private:
      */
     /* 0x10 */ START_KINOKO_KIND_e mStartKinokoType[WORLD_COUNT];
 
-    /**
-     * The continue count for each player.
-     */
-    /* 0x1A */ u8 mPlayerContinue[PLAYER_COUNT];
+    struct Player_s {
+        u8                   continues;
+        s8                   coins;
+        u8                   lives;
+        u8                   player;
+        PLAYER_MODE_e        powerup;
+        PLAYER_CREATE_ITEM_e equip;
+    };
 
     /**
-     * The coin count for each player.
+     * The data for each player type.
      */
-    /* 0x1E */ s8 mPlayerCoin[PLAYER_COUNT];
-
-    /**
-     * The life count for each player.
-     */
-    /* 0x22 */ u8 mPlayerLife[PLAYER_COUNT];
-
-    /**
-     * The Star Power flag for each player. See PLAYER_CREATE_ITEM_e.
-     */
-    /* 0x26 */ PLAYER_CREATE_ITEM_u8_e mPlayerCreateItem[PLAYER_COUNT];
-
-    /**
-     * The character for each player. See PLAYER_TYPE_e.
-     */
-    /* 0x2A */ PLAYER_TYPE_u8_e mPlayerCharacter[PLAYER_COUNT];
-
-    /**
-     * The powerup for each player. See PLAYER_MODE_e.
-     */
-    /* 0x2E */ PLAYER_MODE_u8_e mPlayerPowerup[PLAYER_COUNT];
+    slu::enum_array<Player_s, PLAYER_TYPE_e> mPlayer;
 
     /**
      * The completion flags for each world. See WORLD_COMPLETION_e.
@@ -916,6 +905,7 @@ private:
      * The hint movie bought status for each movie.
      */
     std::bitset<HINT_MOVIE_COUNT> mOtehonMenuOpen;
+
     /* 0x6FC */ // bool mOtehonMenuOpen[HINT_MOVIE_COUNT];
 
     /**
@@ -948,6 +938,20 @@ private:
      * The death count for the worldmap switch variant of World 3-4. See mDeathCount.
      */
     /* 0x968 */ u8 mDeathCountSwitch;
+
+    struct Cyuukan_s {
+        StageNo_s     stage                 = StageNo_s::invalid();
+        u8            area                  = 0;
+        u8            entrance              = 0xFF;
+        s32           index                 = -1;
+        PLAYER_TYPE_e flag[2]               = {PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT};
+        PLAYER_TYPE_e coin[STAR_COIN_COUNT] = {
+            PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT, PLAYER_TYPE_e::COUNT
+        };
+        bool face_left                                          = false;
+
+        constexpr bool operator==(const Cyuukan_s& other) const = default;
+    };
 
     /**
      * The saved checkpoint data.
@@ -982,3 +986,21 @@ public:
 ENUM_ALLOW_BITWISE(dMj2dGame_c::COURSE_COMPLETION_e);
 ENUM_ALLOW_BITWISE(dMj2dGame_c::WORLD_COMPLETION_e);
 ENUM_ALLOW_BITWISE(dMj2dGame_c::GAME_COMPLETION_e);
+
+inline void dMj2dGame_c::onGameCompletionFlag(
+    GAME_COMPLETION_e flag
+) {
+    mGameCompletion |= flag;
+}
+
+inline void dMj2dGame_c::offGameCompletionFlag(
+    GAME_COMPLETION_e flag
+) {
+    mGameCompletion &= ~flag;
+}
+
+inline bool dMj2dGame_c::isGameCompletionFlag(
+    GAME_COMPLETION_e flag
+) const {
+    return !!(mGameCompletion & flag);
+}

@@ -35,9 +35,9 @@ fBase_c::PACK_RESULT_e dContinue_c::create() {
             return PACK_RESULT_e::NOT_READY;
         }
 
-        for (int i = 0; i < PLAYER_COUNT; i++) {
+        for (int i = 0; i < CHARACTER_COUNT; i++) {
             dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame(-1);
-            mContinue[i]      = save->getContinue(i);
+            mContinue[i]      = save->getContinue(static_cast<PLAYER_TYPE_e>(i));
         }
 
         setPlayerInfo();
@@ -129,9 +129,10 @@ bool dContinue_c::createLayout() {
     );
 
     mLayout.PPaneRegister(
-        &mpP_bg_PContinue, {
-                               "P_bg_PContinue",
-                           }
+        &mpP_bg_PContinue, //
+        {
+            "P_bg_PContinue",
+        }
     );
 
     mLayout.TPaneNameRegister(
@@ -159,35 +160,37 @@ bool dContinue_c::createLayout() {
     );
 
     mLayout.NPaneRegister(
-        mpNPos4P, {
-                      "N_4P_Pos_00",    "N_4P_Pos_01",    "N_4P_Pos_02",    "N_4P_Pos_03",
-                      "N_3P_Pos_00",    "N_3P_Pos_01",    "N_3P_Pos_02",    "N_2P_Pos_00",
-                      "N_2P_Pos_01",    "N_1P_Pos_00",    "N_4P_Pos_10",    "N_4P_Pos_11",
-                      "N_4P_Pos_12",    "N_4P_Pos_13",    "N_5P_Pos_00",    "N_6P_Pos_00",
-                      "N_7P_Pos_00",    "N_8P_Pos_00",    "N_dateFile_01P", "N_dateFile_02P",
-                      "N_dateFile_03P", "N_dateFile_04P", "N_dateFile_05P", "N_dateFile_06P",
-                      "N_dateFile_07P", "N_dateFile_08P",
-                  }
+        mpNPos4P, //
+        {
+            "N_4P_Pos_00",    "N_4P_Pos_01",    "N_4P_Pos_02",    "N_4P_Pos_03",
+            "N_3P_Pos_00",    "N_3P_Pos_01",    "N_3P_Pos_02",    "N_2P_Pos_00",
+            "N_2P_Pos_01",    "N_1P_Pos_00",    "N_4P_Pos_10",    "N_4P_Pos_11",
+            "N_4P_Pos_12",    "N_4P_Pos_13",    "N_5P_Pos_00",    "N_6P_Pos_00",
+            "N_7P_Pos_00",    "N_8P_Pos_00",    "N_dateFile_01P", "N_dateFile_02P",
+            "N_dateFile_03P", "N_dateFile_04P", "N_dateFile_05P", "N_dateFile_06P",
+            "N_dateFile_07P", "N_dateFile_08P",
+        }
     );
     mLayout.TPaneRegister(
-        mpTConTime, {
-                        "T_conTime_00",
-                        "T_conTime_01",
-                        "T_conTime_02",
-                        "T_conTime_03",
-                        "T_conTime_04",
-                        "T_conTime_05",
-                        "T_conTime_06",
-                        "T_conTime_07",
-                        "T_playerZanki_04",
-                        "T_playerZanki_05",
-                        "T_playerZanki_06",
-                        "T_playerZanki_07",
-                        "T_playerZanki_09",
-                        "T_playerZanki_11",
-                        "T_playerZanki_13",
-                        "T_playerZanki_15",
-                    }
+        mpTConTime, //
+        {
+            "T_conTime_00",
+            "T_conTime_01",
+            "T_conTime_02",
+            "T_conTime_03",
+            "T_conTime_04",
+            "T_conTime_05",
+            "T_conTime_06",
+            "T_conTime_07",
+            "T_playerZanki_04",
+            "T_playerZanki_05",
+            "T_playerZanki_06",
+            "T_playerZanki_07",
+            "T_playerZanki_09",
+            "T_playerZanki_11",
+            "T_playerZanki_13",
+            "T_playerZanki_15",
+        }
     );
 
     // Rescale the layout for 4:3 mode
@@ -241,7 +244,7 @@ void dContinue_c::setCardPosition() {
 
 [[nsmbw(0x80777DA0)]]
 void dContinue_c::setContinue() {
-    for (int i = 0; i < PLAYER_COUNT; i++) {
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
         if (mMustRevive[i]) {
             const int& continues = mContinue[i];
             dGameCom::LayoutDispNumberDigit(continues, mpTConTime[i], false);
@@ -251,7 +254,7 @@ void dContinue_c::setContinue() {
 
 [[nsmbw(0x80777E30)]]
 void dContinue_c::setRest() {
-    for (int i = 0; i < PLAYER_COUNT; i++) {
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
         if (mMustRevive[i]) {
             const int& restNum = mRestNum[i];
             dGameCom::LayoutDispNumberDigit(restNum, mpTPlyZanki[i], false);
@@ -263,7 +266,7 @@ void dContinue_c::setRest() {
 void dContinue_c::setPlayerInfo() {
     mPlayCount = 0;
 
-    for (int i = 0; i < PLAYER_COUNT; i++) {
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
         int player                = daPyMng_c::findPlayerWithType(static_cast<PLAYER_TYPE_e>(i));
         mRestNum[i]               = daPyMng_c::mRest[daPyMng_c::mPlayerType[player]];
 
@@ -401,8 +404,8 @@ void dContinue_c::executeState_EndWait() {
 [[nsmbw(0x807789B0)]]
 void dContinue_c::finalizeState_EndWait() {
     dMj2dGame_c* save = dSaveMng_c::m_instance->getSaveGame();
-    for (int i = 0; i < PLAYER_COUNT; i++) {
+    for (int i = 0; i < CHARACTER_COUNT; i++) {
         s8 newContinue = mContinue[i];
-        save->setContinue(i, newContinue);
+        save->setContinue(static_cast<PLAYER_TYPE_e>(i), newContinue);
     }
 }

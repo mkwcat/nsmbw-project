@@ -330,7 +330,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x800CE660 - 0x800CE7F0
     d_mj2d/d_mj2d_header.cpp
 # nsmbw-project
-    d_mj2d/d_mj2d_json_handler.cpp
+    d_mj2d/d_mj2d_json.cpp
 # NSMBW          .text:  0x800CE7F0 - 0x800CE8F0
   # d_lyt/d_msgres.cpp
 # NSMBW          .text:  0x800CE8F0 - 0x800CED00

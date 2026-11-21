@@ -48,4 +48,41 @@ concept unsigned_integral = integral<T> && __is_unsigned(T);
 template <class T>
 concept address = pointer<T> || unsigned_integral<T>;
 
+namespace detail {
+template <class T, template <class...> class Template>
+struct same_templated_type {
+    enum {
+        value = false,
+    };
+};
+
+template <template <class...> class Template, class... Args>
+struct same_templated_type<Template<Args...>, Template> {
+    enum {
+        value = true,
+    };
+};
+
+template <class T, template <auto...> class Template>
+struct same_value_templated_type {
+    enum {
+        value = false,
+    };
+};
+
+template <template <auto...> class Template, auto... Args>
+struct same_value_templated_type<Template<Args...>, Template> {
+    enum {
+        value = true,
+    };
+};
+} // namespace detail
+
+template <class T, template <class...> class Template>
+concept same_templated_type = !!detail::same_templated_type<__remove_cvref(T), Template>::value;
+
+template <class T, template <auto...> class Template>
+concept same_value_templated_type =
+    !!detail::same_value_templated_type<__remove_cvref(T), Template>::value;
+
 } // namespace slu::concepts

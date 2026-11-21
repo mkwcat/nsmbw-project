@@ -423,7 +423,7 @@ fProfName getWorldBossProfID(WorldNo);
 void savePlayerPosInfo();
 
 /* 0x800FD3F0 */
-void IsAllComplete();
+bool IsAllComplete();
 
 /* 0x800FD420 */
 void IsKoopaJrEvent(int, int);

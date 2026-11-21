@@ -3,7 +3,13 @@
 
 #include "d_wm_lib.h"
 
+#include "d_a_wm_Map.h"
+#include "d_a_wm_player.h"
 #include "d_game_key.h"
+#include "d_info.h"
+#include "d_mj2d_game.h"
+#include "d_s_world_map.h"
+#include "d_save_manager.h"
 
 namespace dWmLib {
 
@@ -358,10 +364,30 @@ int getSpecialWorldMessageId(int);
 fProfName getWorldBossProfID(WorldNo);
 
 [[nsmbw(0x800FD300)]]
-void savePlayerPosInfo();
+void savePlayerPosInfo() {
+    using enum WORLD_e;
+
+    dInfo_c*                     info = dInfo_c::m_instance;
+    dMj2dGame_c::PlayerPosInfo_s posInfo;
+    if (IsCourseFirstOmoteClear(+WORLD_8, +STAGE_e::CASTLE, info->mWmNode)) {
+        posInfo = {WORLD_1, 0, 0};
+    } else if (daWmMap_c* map = daWmMap_c::m_instance;
+               map && dScWMap_c::m_WorldNo == WORLD_8 && info->mWmNode == map->GetIndex("F101")) {
+        posInfo = {WORLD_8, dScWMap_c::m_SceneNo, map->GetIndex("W8A0")};
+    } else {
+        daWmPlayer_c* player = daWmPlayer_c::ms_instance;
+        posInfo              = {dScWMap_c::m_WorldNo, dScWMap_c::m_SceneNo, player->m_PosIndex};
+    }
+
+    dSaveMng_c::m_instance->getSaveGame()->setPlayerPosInfo(posInfo);
+}
 
 [[nsmbw(0x800FD3F0)]]
-void IsAllComplete();
+bool IsAllComplete() {
+    return dSaveMng_c::m_instance->getSaveGame()->isGameCompletionFlag(
+        dMj2dGame_c::GAME_COMPLETION_e::GAME_COMPLETED
+    );
+}
 
 [[nsmbw(0x800FD420)]]
 void IsKoopaJrEvent(int, int);

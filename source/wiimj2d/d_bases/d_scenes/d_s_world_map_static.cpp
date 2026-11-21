@@ -63,7 +63,7 @@ void dScWMap_c::initLoadGame() {
     dMj2dGame_c* save   = dSaveMng_c::m_instance->getSaveGame(-1);
     dInfo_c*     info   = dInfo_c::m_instance;
 
-    info->mWmMapNo      = save->mCurrentWorld;
+    info->mWmMapNo      = +save->mCurrentWorld;
     info->mWmSceneNo    = save->mCurrentSubWorld;
     info->mWmNode       = save->mCurrentPathNode;
     info->mWmCourseNode = -1;
