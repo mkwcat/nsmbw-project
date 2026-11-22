@@ -239,14 +239,14 @@ u8 daPyMng_c::getPlayerCreateAction();
 
 [[nsmbw(0x8005EEE0)]]
 bool daPyMng_c::create(
-    int player, mVec3_c position, int gotoKind, u8 faceLeft
+    int plrNo, mVec3_c position, int gotoKind, u8 faceLeft
 ) {
-    if (!(mPlayerEntry[player])) {
+    if (!(mPlayerEntry[plrNo])) {
         return false;
     }
 
     dActor_c::construct(
-        dProf::PLAYER, u32(faceLeft) << 24 | u32(gotoKind & 0xFF) << 16 | u32(player & 63),
+        dProf::PLAYER, u32(faceLeft) << 24 | u32(gotoKind & 0xFF) << 16 | u32(plrNo & 63),
         &position, nullptr, 0
     );
     return true;
@@ -269,7 +269,7 @@ void daPyMng_c::createCourseInit() {
         daPyDemoMng_c::mspInstance->genCourseInList();
         f32 dispCenter = dGameCom::getDispCenterX();
         for (int i = 0; i < PLAYER_COUNT; i++) {
-            create(i, playerSetPos, entType, dispCenter < 0);
+            create(i, playerSetPos, entType, static_cast<u8>(dispCenter < 0));
         }
 
         return;
@@ -329,14 +329,14 @@ void daPyMng_c::createCourseInit() {
             playerSetPos.x += playerSetOffset;
         }
 
-        for (int i = 0; i < PLAYER_COUNT; i++) {
-            if (createOrder[i] == -1) {
+        for (int plr : createOrder) {
+            if (plr == -1) {
                 continue;
             }
 
-            bool result = create(createOrder[i], playerSetPos, entType, faceLeft);
+            bool result = create(plr, playerSetPos, entType, static_cast<u8>(faceLeft));
 
-            if (result && !isCreateBalloon(createOrder[i])) {
+            if (result && !isCreateBalloon(plr)) {
                 if (faceLeft) {
                     playerSetPos.x += playerSetDist;
                 } else {
@@ -376,13 +376,13 @@ void daPyMng_c::createCourseInit() {
 
 [[nsmbw(0x8005F570)]]
 void daPyMng_c::initKinopioPlayer(
-    PLAYER_MODE_e playerMode, int index
+    PLAYER_MODE_e playerMode, int player
 ) {
-    mActPlayerInfo |= 1 << index;
-    mOldActPlayerInfo |= 1 << index;
-    mPlayerEntry[index]             = 1;
-    mCreateItem[mPlayerType[index]] = PLAYER_CREATE_ITEM_e::RESCUE_TOAD;
-    mKinopioMode                    = playerMode;
+    mActPlayerInfo |= 1 << player;
+    mOldActPlayerInfo |= 1 << player;
+    mPlayerEntry[player]             = 1;
+    mCreateItem[mPlayerType[player]] = PLAYER_CREATE_ITEM_e::RESCUE_TOAD;
+    mKinopioMode                     = playerMode;
 }
 
 static slu::array<int, PLAYER_COUNT, PLAYER_TYPE_e> mDeathCount = {};
@@ -522,7 +522,7 @@ daYoshi_c* daPyMng_c::getYoshi(
     int plrNo
 ) {
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
+        auto* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
         if (yoshi != nullptr && yoshi->getPlrNo() == plrNo) {
             return yoshi;
         }
@@ -658,7 +658,7 @@ bool daPyMng_c::addNum(
 
     mActPlayerInfo |= 1 << num;
     mOldActPlayerInfo |= 1 << num;
-    if (auto player = getPlayer(num); !player || !player->isItemKinopio()) {
+    if (auto* player = getPlayer(num); !player || !player->isItemKinopio()) {
         addNum();
     }
     return true;
@@ -674,7 +674,7 @@ bool daPyMng_c::decNum(
 
     mActPlayerInfo &= ~(1 << num);
     mOldActPlayerInfo &= ~(1 << num);
-    if (auto player = getPlayer(num); !player || !player->isItemKinopio()) {
+    if (auto* player = getPlayer(num); !player || !player->isItemKinopio()) {
         decNum();
     }
     decideCtrlPlrNo();
@@ -869,7 +869,7 @@ void daPyMng_c::checkLastAlivePlayer();
 [[nsmbw(0x80060970)]]
 void daPyMng_c::executeLastPlayer() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
+        auto* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
         if (yoshi != nullptr) {
             yoshi->executeLastPlayer();
         }
@@ -886,7 +886,7 @@ void daPyMng_c::executeLastPlayer() {
 [[nsmbw(0x80060A10)]]
 void daPyMng_c::executeLastAll() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
-        daYoshi_c* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
+        auto* yoshi = static_cast<daYoshi_c*>(fManager_c::searchBaseByID(m_yoshiID[i]));
         if (yoshi != nullptr) {
             yoshi->executeLastAll();
         }
@@ -1033,9 +1033,7 @@ void daPyMng_c::checkCorrectCreateInfo() {
         }
     }
 
-    if (mScore > MAX_SCORE) {
-        mScore = MAX_SCORE;
-    }
+    mScore = std::min(mScore, MAX_SCORE);
 }
 
 PATCH_REFERENCES(

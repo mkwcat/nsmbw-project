@@ -96,7 +96,7 @@ void dNextGotoList_c::randomize(
     rndizer.createLookupTable();
 }
 
-bool dNextGotoList_c::value(
+bool dNextGotoList_c::number(
     s64 number
 ) {
     if (m_state != State_e::COURSE && m_state != State_e::GROUP) {
@@ -156,8 +156,8 @@ bool dNextGotoList_c::key(
 bool dNextGotoList_c::string(
     std::string_view str
 ) {
-    int number = std::atoi(str.data());
-    return value(static_cast<s64>(number));
+    int num = std::atoi(str.data());
+    return number(num);
 }
 
 bool dNextGotoList_c::startObject() {
@@ -266,11 +266,13 @@ dNextGotoList_c::Randomizer_c::Randomizer_c(
             assert(inGroup || m_pInput[i].group_start);
             inGroup = false;
             continue;
-        } else if (m_pInput[i].group_start) {
+        }
+        if (m_pInput[i].group_start) {
             assert(!inGroup);
             inGroup = true;
             continue;
-        } else if (inGroup) {
+        }
+        if (inGroup) {
             continue;
         }
 

@@ -276,21 +276,27 @@ struct StageNo_s {
 
     constexpr operator WORLD_e() const { return world; }
 
-    constexpr bool isInSaveGame() const { return world < WORLD_e::COUNT && stage < STAGE_e::COUNT; }
+    [[nodiscard]] constexpr bool isInSaveGame() const {
+        return world < WORLD_e::COUNT && stage < STAGE_e::COUNT;
+    }
 
-    constexpr bool isTower() const { return stage == STAGE_e::TOWER || stage == STAGE_e::TOWER_2; }
+    [[nodiscard]] constexpr bool isTower() const {
+        return stage == STAGE_e::TOWER || stage == STAGE_e::TOWER_2;
+    }
 
-    constexpr bool isCastle() const {
+    [[nodiscard]] constexpr bool isCastle() const {
         return stage == STAGE_e::CASTLE || stage == STAGE_e::CASTLE_2;
     }
 
-    constexpr bool isNumberedStage() const {
+    [[nodiscard]] constexpr bool isNumberedStage() const {
         return stage >= STAGE_e::STAGE_1 && stage <= STAGE_e::STAGE_19;
     }
 
-    constexpr bool isEnemy() const { return stage >= STAGE_e::ENEMY && stage <= STAGE_e::ENEMY_3; }
+    [[nodiscard]] constexpr bool isEnemy() const {
+        return stage >= STAGE_e::ENEMY && stage <= STAGE_e::ENEMY_3;
+    }
 
-    constexpr u8 getWorldSceneNo() const {
+    [[nodiscard]] constexpr u8 getWorldSceneNo() const {
         if (world != WORLD_e::WORLD_3) {
             return 0u;
         }
@@ -301,13 +307,15 @@ struct StageNo_s {
         return 0;
     }
 
-    constexpr bool isW3SwitchStage() const {
+    [[nodiscard]] constexpr bool isW3SwitchStage() const {
         return world == WORLD_e::WORLD_3 && stage == STAGE_e::STAGE_4;
     }
 
     static constexpr StageNo_s invalid() { return {WORLD_e::COUNT, STAGE_e::COUNT}; }
 
-    constexpr bool isValid() const { return world != WORLD_e::COUNT && stage != STAGE_e::COUNT; }
+    [[nodiscard]] constexpr bool isValid() const {
+        return world != WORLD_e::COUNT && stage != STAGE_e::COUNT;
+    }
 };
 
 /**
@@ -492,9 +500,9 @@ public:
 
     void offGameCompletionFlag(GAME_COMPLETION_e flag);
 
-    bool isGameCompletionFlag(GAME_COMPLETION_e flag) const;
+    [[nodiscard]] bool isGameCompletionFlag(GAME_COMPLETION_e flag) const;
 
-    GAME_COMPLETION_e getGameCompletion() const { return mGameCompletion; }
+    [[nodiscard]] GAME_COMPLETION_e getGameCompletion() const { return mGameCompletion; }
 
     /**
      * Sets a player's index. See PLAYER_TYPE_e.
@@ -504,7 +512,7 @@ public:
     /**
      * Gets a player's index. See PLAYER_TYPE_e.
      */
-    int getPlrID(PLAYER_TYPE_e player) const;
+    [[nodiscard]] int getPlrID(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's powerup. See PLAYER_MODE_e.
@@ -514,7 +522,7 @@ public:
     /**
      * Gets a player's powerup. See PLAYER_MODE_e.
      */
-    PLAYER_MODE_e getPlrMode(PLAYER_TYPE_e player) const;
+    [[nodiscard]] PLAYER_MODE_e getPlrMode(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's life count.
@@ -524,7 +532,7 @@ public:
     /**
      * Gets a player's life count.
      */
-    int getRest(PLAYER_TYPE_e player) const;
+    [[nodiscard]] int getRest(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's createItem flag. See PLAYER_CREATE_ITEM_e. Flags other than
@@ -536,7 +544,7 @@ public:
      * Gets a player's createItem flag. See PLAYER_CREATE_ITEM_e. Flags other than
      * PLAYER_CREATE_ITEM_e::STAR_POWER are ignored.
      */
-    PLAYER_CREATE_ITEM_e getCreateItem(PLAYER_TYPE_e player) const;
+    [[nodiscard]] PLAYER_CREATE_ITEM_e getCreateItem(PLAYER_TYPE_e player) const;
 
     /**
      * Sets a player's coin count.
@@ -546,7 +554,7 @@ public:
     /**
      * Gets a player's coin count.
      */
-    s8 getCoin(PLAYER_TYPE_e player) const;
+    [[nodiscard]] s8 getCoin(PLAYER_TYPE_e player) const;
 
     /**
      * Sets the score.
@@ -556,7 +564,7 @@ public:
     /**
      * Gets the score.
      */
-    int getScore() const;
+    [[nodiscard]] int getScore() const;
 
     /**
      * Sets the staff credit high score.
@@ -566,7 +574,7 @@ public:
     /**
      * Gets the staff credit high score.
      */
-    int getStaffCreditHighScore();
+    [[nodiscard]] int getStaffCreditHighScore();
 
     /**
      * Sets the given hint movie as bought.
@@ -576,7 +584,7 @@ public:
     /**
      * Checks if the given hint movie was bought.
      */
-    bool isOtehonMenuOpenFlag(int movie) const;
+    [[nodiscard]] bool isOtehonMenuOpenFlag(int movie) const;
 
     /**
      * 0x800CE270
@@ -589,23 +597,23 @@ public:
      * 0x800CE280
      * Gets the obtainable Star Coin count for the given world.
      */
-    int getTotalWorldCollectCoin(WORLD_e world);
+    [[nodiscard]] int getTotalWorldCollectCoin(WORLD_e world);
 
     /**
      * 0x800CE300
      * Checks if the given Star Coin has been obtained in the given world/stage.
      */
-    u8 isCollectCoin(WORLD_e world, STAGE_e stage, int coin) const;
+    [[nodiscard]] u8 isCollectCoin(WORLD_e world, STAGE_e stage, int coin) const;
 
     /**
      * Sets the starting Toad House type in the given world. See START_KINOKO_KIND_e.
      */
-    void setStartKinokoKind(WORLD_e world, START_KINOKO_KIND_e type);
+    void setStartKinokoKind(WORLD_e world, START_KINOKO_KIND_e kind);
 
     /**
      * Gets the starting Toad House type in the given world. See START_KINOKO_KIND_e.
      */
-    START_KINOKO_KIND_e getStartKinokoKind(WORLD_e world) const;
+    [[nodiscard]] START_KINOKO_KIND_e getStartKinokoKind(WORLD_e world) const;
 
     /**
      * 0x800CE350
@@ -624,7 +632,7 @@ public:
      * @param isSwitchPressed If the worldmap switch was activated [only used for stage 3-4].
      * @return The death count.
      */
-    int getDeathCount(WORLD_e world, STAGE_e stage, bool isSwitchPressed) const;
+    [[nodiscard]] int getDeathCount(WORLD_e world, STAGE_e stage, bool isSwitchPressed) const;
 
     /**
      * Sets a player's continue count.
@@ -634,14 +642,14 @@ public:
     /**
      * Gets a player's continue count.
      */
-    s8 getContinue(PLAYER_TYPE_e player) const;
+    [[nodiscard]] s8 getContinue(PLAYER_TYPE_e player) const;
 
     /**
      * Sets the inventory amount for the given item.
      */
     void setStockItem(int item, s8 count);
 
-    inline s8 getStockItem(
+    [[nodiscard]] s8 getStockItem(
         int item
     ) {
         return mStockItemCount[item];
@@ -651,7 +659,7 @@ public:
      * 0x800CE440
      * Checks if the completion flag(s) for the given world is set.
      */
-    WORLD_COMPLETION_e isWorldDataFlag(WORLD_e world, WORLD_COMPLETION_e flag) const;
+    [[nodiscard]] WORLD_COMPLETION_e isWorldDataFlag(WORLD_e world, WORLD_COMPLETION_e flag) const;
 
     /**
      * 0x800CE450
@@ -669,7 +677,8 @@ public:
      * 0x800CE4B0
      * Checks if the completion flag for the given world/stage is set.
      */
-    bool isCourseDataFlag(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag) const;
+    [[nodiscard]] bool
+    isCourseDataFlag(WORLD_e world, STAGE_e stage, COURSE_COMPLETION_e flag) const;
 
     /**
      * 0x800CE4E0
@@ -687,7 +696,7 @@ public:
      * 0x800CE490
      * Gets all the completion flags for the given world/stage.
      */
-    COURSE_COMPLETION_e getCourseDataFlag(WORLD_e world, STAGE_e stage) const;
+    [[nodiscard]] COURSE_COMPLETION_e getCourseDataFlag(WORLD_e world, STAGE_e stage) const;
 
     /**
      * Sets the revival counter for the given map enemy.
@@ -697,7 +706,7 @@ public:
     /**
      * Gets the revival counter for the given map enemy.
      */
-    u8 getCSEnemyRevivalCnt(WORLD_e world, int enemy) const;
+    [[nodiscard]] u8 getCSEnemyRevivalCnt(WORLD_e world, int enemy) const;
 
     /**
      * Sets the subworld number for the given map enemy.
@@ -707,7 +716,7 @@ public:
     /**
      * Gets the subworld number for the given map enemy.
      */
-    u8 getCSEnemySceneNo(WORLD_e world, int enemy) const;
+    [[nodiscard]] u8 getCSEnemySceneNo(WORLD_e world, int enemy) const;
 
     /**
      * Sets the path node for the given map enemy.
@@ -717,7 +726,7 @@ public:
     /**
      * Gets the path node for the given map enemy.
      */
-    s8 getCSEnemyPosIndex(WORLD_e world, int enemy) const;
+    [[nodiscard]] s8 getCSEnemyPosIndex(WORLD_e world, int enemy) const;
 
     /**
      * Sets the path direction for the given map enemy.
@@ -730,7 +739,7 @@ public:
     /**
      * Gets the path direction for the given map enemy.
      */
-    PATH_DIRECTION_e getCSEnemyWalkDir(WORLD_e world, int enemy) const;
+    [[nodiscard]] PATH_DIRECTION_e getCSEnemyWalkDir(WORLD_e world, int enemy) const;
 
     void setPlayerPosInfo(
         PlayerPosInfo_s ppi
@@ -740,7 +749,7 @@ public:
         mCurrentPathNode = ppi.posIndex;
     }
 
-    PlayerPosInfo_s getPlayerPosInfo() const {
+    [[nodiscard]] PlayerPosInfo_s getPlayerPosInfo() const {
         return {mCurrentWorld, mCurrentSubWorld, mCurrentPathNode};
     }
 
@@ -752,7 +761,7 @@ public:
     /**
      * Gets the Toad rescue stage for the given world.
      */
-    STAGE_e getKinopioCourseNo(WORLD_e world) const;
+    [[nodiscard]] STAGE_e getKinopioCourseNo(WORLD_e world) const;
 
     /**
      * Sets the worldmap vine reshuffle counter.
@@ -762,21 +771,25 @@ public:
     /**
      * Gets the worldmap vine reshuffle counter.
      */
-    u8 getIbaraNow() const;
+    [[nodiscard]] u8 getIbaraNow() const;
 
-    bool isFlag(
+    [[nodiscard]] bool isFlag(
         GAME_COMPLETION_e flag
     ) const {
         return !!(static_cast<u8>(mGameCompletion) & static_cast<u8>(flag));
     }
 
-    bool isEmpty() const { return u8(mGameCompletion) & u8(GAME_COMPLETION_e::SAVE_EMPTY); }
+    [[nodiscard]] bool isEmpty() const {
+        return u8(mGameCompletion) & u8(GAME_COMPLETION_e::SAVE_EMPTY);
+    }
 
     void setEmpty() { mGameCompletion = GAME_COMPLETION_e::SAVE_EMPTY; }
 
-    PIPE_RANDOMIZER_MODE_e getPipeRandomizerMode() const { return mPipeRandomizerMode; }
+    [[nodiscard]] PIPE_RANDOMIZER_MODE_e getPipeRandomizerMode() const {
+        return mPipeRandomizerMode;
+    }
 
-    s32 getPipeRandomizerSeed() const { return mPipeRandomizerSeed; }
+    [[nodiscard]] s32 getPipeRandomizerSeed() const { return mPipeRandomizerSeed; }
 
     void setPipeRandomizerMode(
         PIPE_RANDOMIZER_MODE_e mode
@@ -808,7 +821,7 @@ private:
     /**
      * Gets the death count for World 3-4 for the worldmap switch-enabled variant.
      */
-    int getSwitchDeathCount() const;
+    [[nodiscard]] int getSwitchDeathCount() const;
 
     // Note: Commented offsets reflect the original layout, and are not updated with changes.
 

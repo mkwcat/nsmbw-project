@@ -58,7 +58,7 @@ public:
 
     void randomize(s32 seed);
 
-    s32 getSeed() const { return m_seed; }
+    [[nodiscard]] s32 getSeed() const { return m_seed; }
 
 private:
     // Instance Variables
@@ -101,13 +101,7 @@ private:
 
     bool null() override { return false; }
 
-    bool value(s64 number) override;
-
-    bool value(
-        double number
-    ) override {
-        return false;
-    }
+    bool number(s64 number) override;
 
     bool rawNumber(
         std::string_view str
@@ -135,7 +129,7 @@ public:
 
     Randomizer_c(Entry_s* input, Index inputCount, Index* lookupTable, cRandom_c&& rnd);
 
-    ~Randomizer_c() {}
+    ~Randomizer_c() = default;
 
 public:
     // Instance Methods
@@ -144,9 +138,9 @@ public:
     void createLookupTable();
     LookupEntry_s select1();
     LookupEntry_s select2();
-    void setExclusive(Index idx);
-    void remove(Index idx);
-    void removeUpdate(Index idx);
+    void setExclusive(Index index);
+    void remove(Index index);
+    void removeUpdate(Index index);
 
 private:
     // Instance Variables

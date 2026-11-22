@@ -75,7 +75,7 @@ public:
     constexpr pointer end() noexcept { return m_data + static_cast<base_types::size_type>(N); }
 
     constexpr const_pointer end() const noexcept {
-        return m_data + static_cast<base_types::size_type>(N);
+        return m_data + N;
     }
 
     constexpr size_type index(

@@ -18,7 +18,7 @@ dWmSeManager_c* dWmSeManager_c::m_pInstance;
 
 [[nsmbw(0x80103F50)]]
 dWmSeManager_c* dWmSeManager_c::construct() {
-    dWmSeManager_c* seManager = new dWmSeManager_c();
+    auto* seManager = new dWmSeManager_c();
     seManager->initialize();
     return m_pInstance = seManager;
 }
@@ -31,7 +31,7 @@ dWmSeManager_c::SeParam_t::~SeParam_t();
 
 /* VT+0x8 */
 [[nsmbw(0x801041E0)]]
-dWmSeManager_c::~dWmSeManager_c() {}
+dWmSeManager_c::~dWmSeManager_c() = default;
 
 [[nsmbw(0x80104250)]]
 void dWmSeManager_c::initialize() {

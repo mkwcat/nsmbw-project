@@ -51,14 +51,14 @@ void readConfig() {
     cJson::DvdReader_c r(cDebugConfigName);
 
     OSContext          context;
-    if (OSSaveContext(&context)) {
+    if (OSSaveContext(&context) != 0) {
         DEBUG_REPORT("Terminating debug config JSON reader\n");
         return;
     }
 
     r.setUserErrorCallback(
         [](void* userData) {
-            OSContext* context = static_cast<OSContext*>(userData);
+            auto* context = static_cast<OSContext*>(userData);
             OSLoadContext(context);
             std::unreachable();
         },

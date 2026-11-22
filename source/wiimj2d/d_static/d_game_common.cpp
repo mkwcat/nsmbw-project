@@ -132,9 +132,8 @@ bool CalculateTiltShoulder(
             newTarget = std::clamp<short>(newTarget, -max, max);
         }
         return sLib::chaseAngle(target_var, newTarget, increment);
-    } else {
-        return sLib::chaseAngle(target_var, target_value, increment);
     }
+    return sLib::chaseAngle(target_var, target_value, increment);
 }
 
 [[nsmbw(0x800B3600)]]
@@ -411,10 +410,8 @@ void StaffCreditAddCoin(
     int player
 ) {
     if (dStaffCreditScore_c* staffCredit = dScStage_c::m_instance->mpStaffCreditScore) {
-        int num = staffCredit->mCoinNum[player] + 1;
-        if (num > 999) {
-            num = 999;
-        }
+        int num                       = staffCredit->mCoinNum[player] + 1;
+        num                           = std::min(num, 999);
         staffCredit->mCoinNum[player] = num;
     }
 }

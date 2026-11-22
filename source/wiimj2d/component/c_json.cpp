@@ -16,7 +16,7 @@ namespace {
 bool writeToFile(
     const void* buffer, std::size_t length, void* userData
 ) {
-    std::FILE* const file = static_cast<std::FILE*>(userData);
+    auto* const file = static_cast<std::FILE*>(userData);
     return std::fwrite(buffer, sizeof(char), length, file) == length;
 }
 } // namespace
@@ -88,7 +88,8 @@ int Parser_c::consume() {
                     }
                 }
                 continue;
-            } else if (c == '/' && peekRaw() == '*') {
+            }
+            if (c == '/' && peekRaw() == '*') {
                 // Skip block comment
                 take();
                 while (true) {
@@ -140,16 +141,16 @@ bool Parser_c::parse(
             result = handler->key(t.string);
             break;
         case token_type_e::number:
-            result = handler->value(t.number);
+            result = handler->number(t.number);
             break;
         case token_type_e::raw_number:
             result = handler->rawNumber(t.string);
             break;
         case token_type_e::floating_point:
-            result = handler->value(t.floating_point);
+            result = handler->floatNumber(t.floating_point);
             break;
         case token_type_e::boolean:
-            result = handler->value(t.boolean);
+            result = handler->boolean(t.boolean);
             break;
         case token_type_e::null:
             result = handler->null();
@@ -366,6 +367,8 @@ Parser_c::token_s Parser_c::next() {
         mNeedComma = true;
         break;
     }
+
+    default:
     }
 
     if (!t.valid) {
@@ -419,8 +422,7 @@ token_s Reader_c::consume<ErrorPolicy_e::except>(
     }
     if (type != mToken.type) {
         DEBUG_REPORT(
-            "E: Token type is %s; expected %s\n", magic_enum::enum_name(mToken.type).data(),
-            magic_enum::enum_name(type).data()
+            "E: Token type is %s; expected %s\n", slu::to_string(mToken.type), slu::to_string(type)
         );
         userError(true, fileName, line);
     }
@@ -437,9 +439,7 @@ token_s Reader_c::anyValueOrError(
     }
     if (mToken.is_key() || mToken.is_object_start() || mToken.is_object_end() ||
         mToken.is_array_start() || mToken.is_array_end()) {
-        DEBUG_REPORT(
-            "E: Token type is %s; not a value type\n", magic_enum::enum_name(mToken.type).data()
-        );
+        DEBUG_REPORT("E: Token type is %s; not a value type\n", slu::to_string(mToken.type));
         userError(true, fileName, line);
     }
     token_s token = mToken;
@@ -467,8 +467,8 @@ bool Writer_c::null() {
     return postValue(result);
 }
 
-bool Writer_c::value(
-    bool number
+bool Writer_c::boolean(
+    bool num
 ) {
     if (!mExpectValue) {
         return false;
@@ -479,7 +479,7 @@ bool Writer_c::value(
     }
 
     bool result;
-    if (number) {
+    if (num) {
         result = write("true");
     } else {
         result = write("false");
@@ -487,7 +487,7 @@ bool Writer_c::value(
     return postValue(result);
 }
 
-bool Writer_c::value(
+bool Writer_c::number(
     s64 number
 ) {
     if (!mExpectValue) {
@@ -499,7 +499,7 @@ bool Writer_c::value(
     return postValue(write({buffer, static_cast<std::size_t>(len)}));
 }
 
-bool Writer_c::value(
+bool Writer_c::floatNumber(
     double number
 ) {
     if (!mExpectValue) {
@@ -632,9 +632,10 @@ bool Writer_c::writeQuoted(
         return false;
     }
 
-    std::size_t i = 0, writePos = 0;
+    std::size_t i        = 0;
+    std::size_t writePos = 0;
 
-    const auto  commit = [this, str, &writePos, &i](const std::string_view& escape) -> bool {
+    const auto  commit   = [this, str, &writePos, &i](const std::string_view& escape) -> bool {
         bool result = true;
         if (writePos < i) {
             result   = write(str.substr(writePos, i));
@@ -670,6 +671,9 @@ bool Writer_c::writeQuoted(
             break;
         case '\0':
             c[1] = '0';
+            break;
+
+        default:
             break;
         }
 
@@ -711,7 +715,7 @@ bool cJson::Writer_c::keyFmt(
 
 void cJson::token_s::print() const {
     OS_REPORT("Print %s token @ %p\n", valid ? "valid" : "invalid", static_cast<const void*>(this));
-    OS_REPORT("type = %s (%d)\n", magic_enum::enum_name(type).data(), static_cast<int>(type));
+    OS_REPORT("type = %s (%d)\n", slu::to_string(type), std::to_underlying(type));
     OS_REPORT("string = \"%.*s\"\n", static_cast<int>(string.size()), string.data());
     OS_REPORT("number = %lld (%spresent)\n", number, has_number ? "" : "not ");
     OS_REPORT("float = %f\n", floating_point);

@@ -21,20 +21,20 @@ public:
 
     virtual bool null() { return false; }
 
-    virtual bool value(
-        bool number
+    virtual bool boolean(
+        bool num
     ) {
-        return value(s64(number));
+        return number(static_cast<s64>(num));
     }
 
-    virtual bool value(
-        s64 number
+    virtual bool number(
+        s64 num
     ) {
         return false;
     }
 
-    virtual bool value(
-        double number
+    virtual bool floatNumber(
+        double num
     ) {
         return false;
     }
@@ -109,41 +109,53 @@ public:
 
         explicit constexpr operator bool() const { return valid; }
 
-        constexpr bool is_key() const { return type == token_type_e::key; }
+        [[nodiscard]] constexpr bool is_key() const { return type == token_type_e::key; }
 
-        constexpr bool is_number() const { return type == token_type_e::number; }
+        [[nodiscard]] constexpr bool is_number() const { return type == token_type_e::number; }
 
-        constexpr bool is_raw_number() const { return type == token_type_e::raw_number; }
+        [[nodiscard]] constexpr bool is_raw_number() const {
+            return type == token_type_e::raw_number;
+        }
 
-        constexpr bool is_floating_point() const { return type == token_type_e::floating_point; }
+        [[nodiscard]] constexpr bool is_floating_point() const {
+            return type == token_type_e::floating_point;
+        }
 
-        constexpr bool is_boolean() const { return type == token_type_e::boolean; }
+        [[nodiscard]] constexpr bool is_boolean() const { return type == token_type_e::boolean; }
 
-        constexpr bool is_null() const { return type == token_type_e::null; }
+        [[nodiscard]] constexpr bool is_null() const { return type == token_type_e::null; }
 
-        constexpr bool is_string() const { return type == token_type_e::string; }
+        [[nodiscard]] constexpr bool is_string() const { return type == token_type_e::string; }
 
-        constexpr bool is_object_start() const { return type == token_type_e::object_start; }
+        [[nodiscard]] constexpr bool is_object_start() const {
+            return type == token_type_e::object_start;
+        }
 
-        constexpr bool is_object_end() const { return type == token_type_e::object_end; }
+        [[nodiscard]] constexpr bool is_object_end() const {
+            return type == token_type_e::object_end;
+        }
 
-        constexpr bool is_array_start() const { return type == token_type_e::array_start; }
+        [[nodiscard]] constexpr bool is_array_start() const {
+            return type == token_type_e::array_start;
+        }
 
-        constexpr bool is_array_end() const { return type == token_type_e::array_end; }
+        [[nodiscard]] constexpr bool is_array_end() const {
+            return type == token_type_e::array_end;
+        }
 
-        constexpr bool operator==(
+        [[nodiscard]] constexpr bool operator==(
             const std::string_view& s
         ) const {
             return string == s;
         }
 
-        constexpr bool operator==(
+        [[nodiscard]] constexpr bool operator==(
             const char* s
         ) const {
             return string == s;
         }
 
-        constexpr operator const std::string_view&() const { return string; }
+        [[nodiscard]] constexpr operator const std::string_view&() const { return string; }
 
         void print() const;
 
@@ -217,9 +229,9 @@ public:
     explicit Writer_c(std::FILE* file);
 
     bool null() final;
-    bool value(bool number) final;
-    bool value(s64 number) final;
-    bool value(double number) final;
+    bool boolean(bool num) final;
+    bool number(s64 num) final;
+    bool floatNumber(double num) final;
     bool rawNumber(std::string_view str) final;
     bool string(std::string_view str) final;
     bool key(std::string_view str) final;
@@ -230,19 +242,19 @@ public:
 
     template <std::integral T>
     bool field(
-        std::string_view name, const T& number
+        std::string_view name, const T& num
     ) {
         if constexpr (std::same_as<T, bool>) {
-            return key(name) && value(number);
+            return key(name) && boolean(num);
         } else {
-            return key(name) && value(static_cast<s64>(number));
+            return key(name) && number(static_cast<s64>(num));
         }
     }
 
     bool field(
-        std::string_view name, std::floating_point auto number
+        std::string_view name, std::floating_point auto num
     ) {
-        return key(name) && value(number);
+        return key(name) && boolean(num);
     }
 
     bool field(
@@ -257,9 +269,8 @@ public:
         if constexpr (std::convertible_to<decltype(str), bool>) {
             if (str) {
                 return field(name, std::string_view{str});
-            } else {
-                return field(name, std::string_view{});
             }
+            return field(name, std::string_view{});
         } else {
             return field(name, str);
         }
@@ -271,7 +282,7 @@ public:
     [[gnu::format(printf, 2, 3)]]
     bool keyFmt(const char* format, ...);
 
-    std::size_t getTotalSize() const { return mTotalSize; }
+    [[nodiscard]] std::size_t getTotalSize() const { return mTotalSize; }
 
 private:
     bool postValue(bool result);

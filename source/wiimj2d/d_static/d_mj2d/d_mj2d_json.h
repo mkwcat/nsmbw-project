@@ -17,6 +17,7 @@
 #include <type_traits>
 
 class dMj2dJson_c final : dMj2dGame_c {
+public:
     dMj2dJson_c() = delete;
 
     using enum cJson::ErrorPolicy_e;
@@ -614,7 +615,7 @@ inline bool dMj2dJson_c::marshalBitIndices(
     cJson::Writer_c& w, const std::bitset<N>& bits
 ) {
     for (std::size_t i = 0; i < N; i++) {
-        if (bits[i] && !w.value(static_cast<s64>(i))) {
+        if (bits[i] && !w.number(i)) {
             return false;
         }
     }
@@ -704,7 +705,8 @@ constexpr std::optional<std::size_t> dMj2dJson_c::readEnumGeneric(
 ) {
     if (t.has_number) {
         return t.number;
-    } else if (t.is_string() || t.is_key()) {
+    }
+    if (t.is_string() || t.is_key()) {
         return fromStringGeneric(t.string, mapping);
     }
     return std::nullopt;

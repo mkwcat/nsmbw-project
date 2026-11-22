@@ -33,7 +33,7 @@ std::optional<int> dMj2dJson_c::decodeNumber(
         if (c < '0' || c > '9') {
             return std::nullopt;
         }
-        number = number * 10 + (c - '0');
+        number = (number * 10) + (c - '0');
     }
     return negative ? -number : number;
 }
@@ -158,7 +158,7 @@ bool dMj2dJson_c::readJSON(
     cJson::Reader_c& r
 ) {
     OSContext context;
-    if (OSSaveContext(&context)) {
+    if (OSSaveContext(&context) != 0) {
         OSLoadFPUContext(&context);
         DEBUG_REPORT("Terminating JSON reader due to errors\n");
         return false;
@@ -167,7 +167,7 @@ bool dMj2dJson_c::readJSON(
 
     r.setUserErrorCallback(
         [](void* userData) {
-            OSContext* context = static_cast<OSContext*>(userData);
+            auto* context = static_cast<OSContext*>(userData);
             OSLoadContext(context);
             std::unreachable();
         },
@@ -228,7 +228,9 @@ void dMj2dJson_c::visitFields(
         }
 
         field.func(
-            r, t, field.getter && field.ptr.getter ? field.ptr.getter(getterObj) : field.ptr.ptr
+            r, t,
+            (field.getter && field.ptr.getter != nullptr) ? field.ptr.getter(getterObj)
+                                                          : field.ptr.ptr
         );
         return;
     }
@@ -280,7 +282,7 @@ bool dMj2dJson_c::marshalPlayCounts(
             if (!w.key(
                     encodeStageNo({static_cast<WORLD_e>(world), static_cast<STAGE_e>(stage)}, temp)
                 ) ||
-                !w.value(static_cast<s64>(v))) {
+                !w.number(static_cast<s64>(v))) {
                 return false;
             }
         }
@@ -308,7 +310,7 @@ bool dMj2dJson_c::marshalAvailableWorlds(
     int world = 0;
     for (; world < WORLD_COUNT; world++) {
         if (header.mMultiWorldOpenFlag & (1 << world)) {
-            if (!w.value(static_cast<s64>(world + 1))) {
+            if (!w.number(world + 1)) {
                 return false;
             }
         }
@@ -520,8 +522,8 @@ void dMj2dJson_c::unmarshalCheckpoint(
 bool dMj2dJson_c::marshalPlayerData(
     cJson::Writer_c& w, const dMj2dGame_c& g
 ) {
-    for (std::size_t i = 0; i < std::size(scDefaultPlayerTypes); i++) {
-        if (!marshalPlayerData(w, g, scDefaultPlayerTypes[i])) {
+    for (auto plrType : scDefaultPlayerTypes) {
+        if (!marshalPlayerData(w, g, plrType)) {
             return false;
         }
     }
@@ -747,9 +749,8 @@ bool dMj2dJson_c::marshalWorldCourseData(
             .goal_normal = true,
             .goal_secret = true,
         };
-        if (stage != +STAGE_e::RESCUE && entry == stageDefault) {
-            continue;
-        } else if (stage == +STAGE_e::RESCUE && entry == stageRescueDefault) {
+        if ((stage != +STAGE_e::RESCUE && entry == stageDefault) ||
+            (stage == +STAGE_e::RESCUE && entry == stageRescueDefault)) {
             continue;
         }
 
@@ -762,9 +763,9 @@ bool dMj2dJson_c::marshalWorldCourseData(
                 (!entry.goal_super_guide_secret || w.string("super_guide_secret"))
             ) && w.endArray() &&
             w.key("star_coin") && w.startArray() && (
-                (!entry.star_coin[0] || w.value(1ll)) &&
-                (!entry.star_coin[1] || w.value(2ll)) &&
-                (!entry.star_coin[2] || w.value(3ll))
+                (!entry.star_coin[0] || w.number(1ll)) &&
+                (!entry.star_coin[1] || w.number(2ll)) &&
+                (!entry.star_coin[2] || w.number(3ll))
             ) && w.endArray() &&
             w.field("deaths", entry.deaths) &&
             (!stageNo.isW3SwitchStage() || w.field("deaths_switch", entry.deaths_switch))

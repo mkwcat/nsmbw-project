@@ -9,8 +9,8 @@ dCyuukan_c::dCyuukan_c();
 [[nsmbw(0x8008EDB0)]]
 void dCyuukan_c::clear() {
     mFlags             = 0;
-    mWorld             = WORLD_e(-1);
-    mStage             = STAGE_e(-1);
+    mWorld             = static_cast<WORLD_e>(-1);
+    mStage             = static_cast<STAGE_e>(-1);
     mCourse            = -1;
     mIsKinopioInChukan = false;
     mPlayerSetPos      = {};

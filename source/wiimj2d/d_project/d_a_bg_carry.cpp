@@ -16,7 +16,7 @@ void daBgCarry_c::callBackF(
     dActor_c* self, dActor_c* other
 ) {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
-        daPlBase_c* player = static_cast<daPlBase_c*>(other);
+        auto* player = static_cast<daPlBase_c*>(other);
         player->setStatus5D(self->mPosDelta.x);
         if (self->mPosDelta.y <= 0.0f) {
             player->setBgPressReq(self, daPlBase_c::BgPress_e(9));
@@ -30,7 +30,7 @@ void daBgCarry_c::callBackH(
     dActor_c* self, dActor_c* other
 ) {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
-        daPlBase_c* player = static_cast<daPlBase_c*>(other);
+        auto* player = static_cast<daPlBase_c*>(other);
         if (self->mPosDelta.y < 0.0f) {
             player->setBgPressReq(self, daPlBase_c::BgPress_e(2));
         } else {
@@ -43,7 +43,7 @@ void daBgCarry_c::callBackW(
     dActor_c* self, dActor_c* other, u8 direction
 ) {
     if (other->mKind == ACTOR_TYPE_e::PLAYER) {
-        daPlBase_c* player = static_cast<daPlBase_c*>(other);
+        auto* player = static_cast<daPlBase_c*>(other);
         if (direction == 1) {
             if (self->mPosDelta.x > 0.0f) {
                 player->setBgPressReq(self, daPlBase_c::BgPress_e(6));
@@ -77,35 +77,34 @@ bool daBgCarry_c::checkRevWall(
 ) {
     if (direction == 0) {
         return self->mPosDelta.x < 0.0f;
-    } else {
-        return self->mPosDelta.x > 0.0f;
     }
+    return self->mPosDelta.x > 0.0f;
 }
 
 void daBgCarry_c::collisionCallback(
     dCc_c* self, dCc_c* other
 ) {
-    daBgCarry_c* bgCarry = static_cast<daBgCarry_c*>(self->mpOwner);
-    if (bgCarry->isState(StateID_Throw)) {
-        if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
-            dAcPy_c* player = static_cast<dAcPy_c*>(other->mpOwner);
-            if (player != daPyMng_c::getPlayer(bgCarry->mCarryNo)) {
-                // Knock players back if they git hit by a thrown block
-                player->setDamage(self->mpOwner, dAcPy_c::DamageType_e::KNOCKBACK_LONG);
+    auto* bgCarry = static_cast<daBgCarry_c*>(self->mpOwner);
+    if (!bgCarry->isState(StateID_Throw)) {
+        return;
+    }
+    if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::PLAYER) {
+        auto* player = static_cast<dAcPy_c*>(other->mpOwner);
+        if (player != daPyMng_c::getPlayer(bgCarry->mCarryNo)) {
+            // Knock players back if they git hit by a thrown block
+            player->setDamage(self->mpOwner, dAcPy_c::DamageType_e::KNOCKBACK_LONG);
 
-                if (bgCarry->mTileNum == 0x30) {
-                    // Brick Block, destroy it
-                    bgCarry->destroyBrick();
-                }
-            }
-        } else if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::ENEMY) {
             if (bgCarry->mTileNum == 0x30) {
                 // Brick Block, destroy it
                 bgCarry->destroyBrick();
             }
         }
+    } else if (other->mpOwner->mKind == dActor_c::ACTOR_TYPE_e::ENEMY) {
+        if (bgCarry->mTileNum == 0x30) {
+            // Brick Block, destroy it
+            bgCarry->destroyBrick();
+        }
     }
-    return;
 }
 
 dBaseActorProfile_s g_profile_AC_BG_CARRY{
@@ -143,7 +142,7 @@ sCcDatNewF l_bgcarry_cc = {
     &daBgCarry_c::collisionCallback,
 };
 
-daBgCarry_c::daBgCarry_c() {}
+daBgCarry_c::daBgCarry_c() = default;
 
 daBgCarry_c::~daBgCarry_c() {
     mPanelObj.~dPanelObjList_c();
@@ -224,10 +223,10 @@ void daBgCarry_c::finalUpdate() {
 void daBgCarry_c::setSpinLiftUpActor(
     dActor_c* actor
 ) {
-    mCarryNo        = actor->getPlrNo();
-    mCarryOffset.y  = 6.0f;
+    mCarryNo       = actor->getPlrNo();
+    mCarryOffset.y = 6.0f;
 
-    dAcPy_c* player = static_cast<dAcPy_c*>(actor);
+    auto* player   = static_cast<dAcPy_c*>(actor);
     if (player->mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
         mCarryOffset.y = 3.0f;
     }
@@ -314,7 +313,7 @@ void daBgCarry_c::executeState_Throw() {
     calcSpeedY();
     posMove();
 
-    if (mBc.checkFootEnm() || mBc.checkHead(mBc.mFlags) || mBc.checkWallEnm(0)) {
+    if (mBc.checkFootEnm() || mBc.checkHead(mBc.mFlags) || mBc.checkWallEnm(nullptr)) {
         placeTile();
     }
 }

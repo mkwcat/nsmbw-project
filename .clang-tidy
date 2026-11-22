@@ -1,0 +1,46 @@
+Checks: >
+  clang-diagnostic-*,
+  bugprone-*,
+  -bugprone-assignment-in-if-condition,
+  -bugprone-dynamic-static-initializers,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-invalid-enum-default-initialization,
+  -bugprone-multi-level-implicit-pointer-conversion,
+  -bugprone-narrowing-conversions,
+  -bugprone-signed-char-misuse,
+  misc-*,
+  -misc-non-private-member-variables-in-classes,
+  -misc-unused-parameters,
+  -misc-use-anonymous-namespace,
+  -misc-use-internal-linkage,
+  modernize-*,
+  -modernize-avoid-c-arrays,
+  -modernize-use-designated-initializers,
+  -modernize-use-ranges,
+  -modernize-use-std-print,
+  -modernize-use-trailing-return-type,
+  readability-*,
+  -readability-avoid-return-with-void-value,
+  -readability-convert-member-functions-to-static,
+  -readability-enum-initial-value,
+  -readability-function-cognitive-complexity,
+  -readability-identifier-length,
+  -readability-implicit-bool-conversion,
+  -readability-magic-numbers,
+  -readability-make-member-function-const,
+  -readability-math-missing-parentheses,
+  -readability-static-accessed-through-instance,
+  -readability-redundant-access-specifiers,
+  -readability-redundant-declaration,
+  -readability-uppercase-literal-suffix,
+  -readability-use-anyofallof
+
+HeaderFileExtensions:
+  - ''
+  - h
+  - hpp
+ImplementationFileExtensions:
+  - c
+  - cpp
+HeaderFilterRegex: ''
+SystemHeaders: true

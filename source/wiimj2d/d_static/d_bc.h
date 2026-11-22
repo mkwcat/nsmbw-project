@@ -64,6 +64,7 @@ public:
     // ^^^^^^
 
     enum Flag_e {
+        NONE        = 0,
         FLAG_0      = 0_bit,
         FLAG_1      = 1_bit,
         FLAG_2      = 2_bit,
@@ -97,9 +98,8 @@ public:
 
         FLAG_WALL_R = FLAG_0 | FLAG_2 | FLAG_4,
         FLAG_WALL_L = FLAG_1 | FLAG_3 | FLAG_5,
-        FLAG_FOOT = FLAG_13 | FLAG_14 | FLAG_15 | FLAG_16 | FLAG_14 | FLAG_15 | FLAG_16 | FLAG_17 |
-                    FLAG_18 | FLAG_19 | FLAG_20,
-        FLAG_HEAD = FLAG_26 | FLAG_27 | FLAG_28 | FLAG_29,
+        FLAG_FOOT   = FLAG_13 | FLAG_14 | FLAG_15 | FLAG_16 | FLAG_17 | FLAG_18 | FLAG_19 | FLAG_20,
+        FLAG_HEAD   = FLAG_26 | FLAG_27 | FLAG_28 | FLAG_29,
     };
 
     enum WATER_TYPE_e {
@@ -197,13 +197,13 @@ public:
     /* 0x88 */ u32            mFlags;
     /* 0x8C */ u32            mPrevFlags;
 
-    u8 FILL(0x90, 0xE5);
+    u8                        FILL(0x90, 0xE5);
 
-    /* 0xE5 */ u8  mAmiLine;
-    /* 0xE6 */ u8  m0xE6;
-    /* 0xE7 */ u8  m0xE7;
-    /* 0xE8 */ u8* mpLayer;
-    /* 0xEC */ u8  mLayer;
+    /* 0xE5 */ u8             mAmiLine;
+    /* 0xE6 */ u8             m0xE6;
+    /* 0xE7 */ u8             m0xE7;
+    /* 0xE8 */ u8*            mpLayer;
+    /* 0xEC */ u8             mLayer;
 
 public:
     // Static Methods

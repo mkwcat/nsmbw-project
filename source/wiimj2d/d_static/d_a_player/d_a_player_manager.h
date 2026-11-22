@@ -202,7 +202,7 @@ public:
     static void deleteCullingYoshi();
 
     /* 0x80060C10 */
-    static void setHipAttackQuake(int param1, u8 param2);
+    static void setHipAttackQuake(int type, u8 player);
 
     /* 0x80060DB0 @unofficial */
     static void setHipAttackSpecialEffect();
@@ -218,7 +218,7 @@ public:
 
     /* 0x80061110 */
     [[nodiscard]]
-    static bool isCreateBalloon(int index);
+    static bool isCreateBalloon(int plrNo);
 
     /* 0x80061160 */
     static void checkCorrectCreateInfo();

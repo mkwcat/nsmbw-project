@@ -124,4 +124,11 @@ T exchange(T& obj, U&& set)
     return old;
 }
 
+template <class Enum>
+constexpr underlying_type_t<Enum> to_underlying(
+    Enum e
+) noexcept {
+    return static_cast<underlying_type_t<Enum>>(e);
+}
+
 } // namespace std

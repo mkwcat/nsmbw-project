@@ -5,6 +5,7 @@
 
 #include "d_cyuukan.h"
 #include "f_feature.h"
+#include <algorithm>
 
 const PLAYER_TYPE_e dMj2dGame_c::scDefaultPlayerTypes[PLAYER_COUNT] = {
     PLAYER_TYPE_e::MARIO,       PLAYER_TYPE_e::LUIGI,     PLAYER_TYPE_e::YELLOW_TOAD,
@@ -30,7 +31,7 @@ void dMj2dGame_c::initialize() {
     }
 
     for (int i = 0; i < CHARACTER_COUNT; i++) {
-        PLAYER_TYPE_e type = static_cast<PLAYER_TYPE_e>(i);
+        auto type = static_cast<PLAYER_TYPE_e>(i);
         setPlrMode(type, PLAYER_MODE_e::NONE);
         setRest(type, 5);
         setCreateItem(type, PLAYER_CREATE_ITEM_e::NONE);
@@ -142,9 +143,7 @@ int dMj2dGame_c::getScore() const {
 void dMj2dGame_c::setStaffCreditHighScore(
     u16 score
 ) {
-    if (mStaffRollHighScore < score) {
-        mStaffRollHighScore = score;
-    }
+    mStaffRollHighScore = std::max(mStaffRollHighScore, score);
 }
 
 [[nsmbw(0x800CE230)]]
@@ -265,10 +264,7 @@ s8 dMj2dGame_c::getContinue(
 void dMj2dGame_c::setStockItem(
     int item, s8 count
 ) {
-    if (count > MAX_STOCK_ITEM) {
-        count = MAX_STOCK_ITEM;
-    }
-    mStockItemCount[item] = count;
+    mStockItemCount[item] = std::min<s8>(count, MAX_STOCK_ITEM);
 }
 
 [[nsmbw(0x800CE440)]]
