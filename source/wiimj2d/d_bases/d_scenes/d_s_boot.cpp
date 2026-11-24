@@ -94,7 +94,7 @@ void dScBoot_c::executeState_ProcEnd() {
                 .demoTime   = 0,
                 .otehonType = {},
                 .nextGotoNo = dDebugOpt::autoboot::entrance,
-                .courseNo   = dDebugOpt::autoboot::area,
+                .courseNo   = static_cast<u8>(dDebugOpt::autoboot::area - 1),
                 .isDemo     = false,
                 .demoType   = dInfo_c::DemoType_e::NONE,
                 .stage1     = {dDebugOpt::autoboot::world, dDebugOpt::autoboot::stage},

@@ -117,6 +117,7 @@ UNDEF_80038b84:;
 /* 80038B88 2C000000 */  cmpwi    r0, 0;
 /* 80038B8C 41820030 */  beq-     UNDEF_80038bbc;
 
+                         mr       r3, r27;
 /* 80038B94          */  mr       r4, r30;
 /* 80038B98          */  li       r5, 16;
                          bl       setCollTimer__5dEn_cFP8dActor_cUc;
