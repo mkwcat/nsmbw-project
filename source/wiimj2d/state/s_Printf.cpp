@@ -2,6 +2,7 @@
 // NSMBW .text: 0x8015F810 - 0x8015F900
 
 #include "d_exception.h"
+#include "d_project.h"
 #include <cstdarg>
 #include <cstdio>
 #include <revolution/base/PPCArch.h>
@@ -47,12 +48,19 @@ void OSPanic(
         }
     );
 
+    const char *name = nullptr, *version = nullptr;
+    if (dProject_c::initialized()) {
+        name    = dProject_c::instance().getName();
+        version = dProject_c::instance().getVersion();
+    }
+
     n += std::snprintf(
         report + n, sizeof(report) - n,
         "\nin file \"%s\" on line %d.\n"
         "Region Info: %s.\n"
+        "Version: %s %s\n"
         "Address:    Back Chain  LR Save\n",
-        file, line, dException_c::getRegionInfo()
+        file, line, dException_c::getRegionInfo(), name, version
     );
 
     // Print the first LR which may not be on the stack
