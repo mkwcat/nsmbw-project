@@ -3,6 +3,7 @@
 #include <bit>
 #include <cassert>
 #include <iterator>
+#include <type_traits>
 
 namespace std {
 
@@ -38,11 +39,7 @@ public:
         constexpr reference& operator=(
             bool value
         ) noexcept {
-            if (value) {
-                m_bitset.set(m_pos);
-            } else {
-                m_bitset.reset(m_pos);
-            }
+            m_bitset.set(m_pos, value);
             return *this;
         }
     };
@@ -96,22 +93,8 @@ public:
         std::size_t pos
     ) const {
         assert(pos < N);
-
-        if constexpr (N <= 32) {
-            return std::rotr(m_bits[0], pos) & 1;
-        } else if constexpr (N <= 64) {
-            // OR optimization
-            return (std::rotr(m_bits[0], pos) | std::rotr(m_bits[1], pos - 32)) & 1;
-        } else if constexpr (N <= 96) {
-            // OR optimization
-            return (std::rotr(m_bits[0], pos) | std::rotr(m_bits[1], pos - 32) |
-                    std::rotr(m_bits[2], pos - 64)) &
-                   1;
-        } else {
-            // More than 96 bits, get index by divide
-            u32 index = ((N >> 5) - 1) - (pos >> 5);
-            return std::rotr(m_bits[index], pos & ~31) & 1;
-        }
+        u32 index = ((N >> 5) - 1) - (pos >> 5);
+        return (m_bits[index] >> (pos % 32)) & 1;
     }
 
     constexpr bool all() const noexcept { return count() == N; }
@@ -163,7 +146,7 @@ public:
             result.m_bits[i] = ~m_bits[i];
         }
         // Clear unused bits in the last element
-        if constexpr (N % 32 != 0) {
+        if constexpr (N % 32 != 0 && N != 16 && N != 8) {
             result.m_bits[std::size(m_bits) - 1] &= (1u << (N % 32)) - 1;
         }
         return result;
@@ -171,10 +154,10 @@ public:
 
     constexpr bitset& set() noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
-            m_bits[i] = static_cast<value_type>(~0u);
+            m_bits[i] = ~static_cast<value_type>(0);
         }
         // Clear unused bits in the last element
-        if constexpr (N % 32 != 0) {
+        if constexpr (N % 32 != 0 && N != 16 && N != 8) {
             m_bits[std::size(m_bits) - 1] &= (1u << (N % 32)) - 1;
         }
         return *this;
@@ -185,26 +168,9 @@ public:
     ) {
         assert(pos < N);
 
-        if constexpr (N <= 32) {
-            m_bits[0] &= ~std::rotl(1u, pos);
-            m_bits[0] |= std::rotl<value_type>(value, pos);
-        } else if constexpr (N <= 64) {
-            m_bits[0] &= ~std::rotl(1u, pos);
-            m_bits[0] |= std::rotl<value_type>(value, pos);
-            m_bits[1] &= ~std::rotl(1u, pos - 32);
-            m_bits[1] |= std::rotl<value_type>(value, pos - 32);
-        } else if constexpr (N <= 96) {
-            m_bits[0] &= ~std::rotl(1u, pos);
-            m_bits[0] |= std::rotl<value_type>(value, pos);
-            m_bits[1] &= ~std::rotl(1u, pos - 32);
-            m_bits[1] |= std::rotl<value_type>(value, pos - 32);
-            m_bits[2] &= ~std::rotl(1u, pos - 64);
-            m_bits[2] |= std::rotl<value_type>(value, pos - 64);
-        } else {
-            u32 index = ((N >> 5) - 1) - (pos >> 5);
-            m_bits[index] &= ~std::rotl(1u, pos - (pos & ~31));
-            m_bits[index] |= std::rotl<value_type>(value, pos - (pos & ~31));
-        }
+        u32 index = ((N >> 5) - 1) - (pos >> 5);
+        m_bits[index] &= ~(1u << (pos % 32));
+        m_bits[index] |= value << (pos % 32);
         return *this;
     }
 
@@ -219,20 +185,8 @@ public:
         std::size_t pos
     ) {
         assert(pos < N);
-
-        if constexpr (N <= 32) {
-            m_bits[0] &= ~std::rotl(1u, pos);
-        } else if constexpr (N <= 64) {
-            m_bits[0] &= ~std::rotl(1u, pos);
-            m_bits[1] &= ~std::rotl(1u, pos - 32);
-        } else if constexpr (N <= 96) {
-            m_bits[0] &= ~std::rotl(1u, pos);
-            m_bits[1] &= ~std::rotl(1u, pos - 32);
-            m_bits[2] &= ~std::rotl(1u, pos - 64);
-        } else {
-            u32 index = ((N >> 5) - 1) - (pos >> 5);
-            m_bits[index] &= ~std::rotl(1u, pos - (pos & ~31));
-        }
+        u32 index = ((N >> 5) - 1) - (pos >> 5);
+        m_bits[index] &= ~(1u << (pos - (pos & ~31)));
         return *this;
     }
 

@@ -72,11 +72,9 @@ public:
 
     constexpr const_pointer begin() const noexcept { return m_data; }
 
-    constexpr pointer end() noexcept { return m_data + static_cast<base_types::size_type>(N); }
+    constexpr pointer end() noexcept { return m_data + N; }
 
-    constexpr const_pointer end() const noexcept {
-        return m_data + N;
-    }
+    constexpr const_pointer end() const noexcept { return m_data + N; }
 
     constexpr size_type index(
         const_pointer ptr
@@ -102,7 +100,7 @@ public:
         const value_type& value
     ) noexcept {
         array array = {};
-        for (base_types::size_type i = 0; i < static_cast<base_types::size_type>(N); i++) {
+        for (base_types::size_type i = 0; i < N; i++) {
             array.m_data[i] = value;
         }
         return array;
@@ -170,12 +168,7 @@ public:
         return m_data[static_cast<base_types::size_type>(index)];
     }
 
-    constexpr ref& operator=(
-        const ref& other
-    ) noexcept {
-        m_data = other.m_data;
-        return *this;
-    }
+    constexpr ref& operator=(const ref& other) noexcept = default;
 
     constexpr ref& operator*() noexcept { return *this; }
 
@@ -187,11 +180,9 @@ public:
 
     constexpr const_pointer begin() const noexcept { return m_data; }
 
-    constexpr pointer end() noexcept { return m_data + static_cast<base_types::size_type>(N); }
+    constexpr pointer end() noexcept { return m_data + N; }
 
-    constexpr const_pointer end() const noexcept {
-        return m_data + static_cast<base_types::size_type>(N);
-    }
+    constexpr const_pointer end() const noexcept { return m_data + N; }
 
     constexpr size_type index(
         const_pointer ptr
@@ -217,7 +208,7 @@ using enum_array = array<T, static_cast<base_types::size_type>(S::COUNT), S>;
 
 template <class T, base_types::size_type N>
 static constexpr bool valid_index(
-    base_types::size_type n, const T (&)[N]
+    base_types::size_type n, const T (&a)[N]
 ) {
     return n < N;
 }

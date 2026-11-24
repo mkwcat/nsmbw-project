@@ -36,19 +36,19 @@ private:
     static bool marshalPlayerType(cJson::Writer_c& w, PLAYER_TYPE_e type, bool null = true);
 
     static bool marshalStockItem(cJson::Writer_c& w, const dMj2dGame_c& g);
-    static void unmarshalStockItem(cJson::Reader_c& r, cJson::token_s& t, void* ptr);
+    static void unmarshalStockItem(cJson::Reader_c& r, cJson::token_s&& t, void* ptr);
 
     static bool
     marshalPlayCounts(cJson::Writer_c& w, const u16 (&counts)[WORLD_COUNT][STAGE_COUNT]);
-    static void unmarshalPlayCounts(cJson::Reader_c& r, cJson::token_s& t, void* ptr);
+    static void unmarshalPlayCounts(cJson::Reader_c& r, cJson::token_s&& t, void* ptr);
 
     static bool marshalAvailableWorlds(cJson::Writer_c& w, const dMj2dHeader_c& header);
-    static void unmarshalAvailableWorlds(cJson::Reader_c& r, cJson::token_s& t, void* ptr);
+    static void unmarshalAvailableWorlds(cJson::Reader_c& r, cJson::token_s&& t, void* ptr);
 
     static bool marshalFileData(cJson::Writer_c& w, const dMj2dData_c* data);
     static void unmarshalFileData(cJson::Reader_c& r, dMj2dGame_c& g);
 
-    static void unmarshalCheckpoint(cJson::Reader_c& r, cJson::token_s& t, void* ptr);
+    static void unmarshalCheckpoint(cJson::Reader_c& r, cJson::token_s&& t, void* ptr);
 
     static bool marshalPlayerData(cJson::Writer_c& w, const dMj2dGame_c& g, PLAYER_TYPE_e player);
     static bool marshalPlayerData(cJson::Writer_c& w, const dMj2dGame_c& g);
@@ -209,10 +209,10 @@ public:
     template <class Struct>
     struct MemberField_c;
 
-    using UnmarshalFunc = void(cJson::Reader_c& r, cJson::token_s& t, void* ptr);
+    using UnmarshalFunc = void(cJson::Reader_c& r, cJson::token_s&& t, void* ptr);
 
     static void unmarshalArray(
-        cJson::Reader_c& r, const cJson::token_s& startT, void* ptr, std::size_t n, std::size_t vs,
+        cJson::Reader_c& r, cJson::token_s&& startT, void* ptr, std::size_t n, std::size_t vs,
         UnmarshalFunc* func
     );
 
@@ -331,7 +331,7 @@ struct dMj2dJson_c::Field_c {
 
     template <class T = void>
     consteval Field_c(
-        const char* name, std::type_identity<T>, UnmarshalFunc* func = &Type_c<T>::unmarshal,
+        const char* name, std::type_identity<T> type, UnmarshalFunc* func = &Type_c<T>::unmarshal,
         Getter* getter = nullptr
     )
         : name(name)
@@ -344,7 +344,7 @@ struct dMj2dJson_c::Field_c {
         slu::concepts::member_object_pointer auto MemObjPtr,
         class Parts = slu::member_pointer_parts_obj<MemObjPtr>>
     consteval Field_c(
-        const char*    name, slu::value_identity<MemObjPtr>,
+        const char* name, slu::value_identity<MemObjPtr> value,
         UnmarshalFunc* func = &Type_c<typename Parts::value_type>::unmarshal
     )
         : Field_c(
@@ -496,21 +496,25 @@ constexpr bool dMj2dJson_c::isEnumBitMap() {
 
 template <slu::concepts::enumerator T>
 constexpr dMj2dJson_c::EnumMap dMj2dJson_c::getEnumMap() {
-    return hasEnumMap<T>()      ? EnumMap_c<T>::cMap
-           : hasEnumBitMap<T>() ? EnumMap_c<T>::cBitMap
-                                : EnumMap{};
+    if (hasEnumMap<T>()) {
+        return EnumMap_c<T>::cMap;
+    }
+    if (hasEnumBitMap<T>()) {
+        return EnumMap_c<T>::cBitMap;
+    }
+    return {};
 }
 
 template <class T>
 struct dMj2dJson_c::Type_c {
-    static void unmarshal(cJson::Reader_c& r, cJson::token_s& t, void* ptr);
+    static void unmarshal(cJson::Reader_c& r, cJson::token_s&& t, void* ptr);
 
     static_assert(std::is_same_v<decltype(unmarshal), UnmarshalFunc>);
 
-    static T unmarshal(cJson::Reader_c& r, cJson::token_s& t);
+    static T unmarshal(cJson::Reader_c& r, cJson::token_s&& t);
 
     static T unmarshal(
-        cJson::Reader_c& r, cJson::token_s& t
+        cJson::Reader_c& r, cJson::token_s&& t
     )
         requires std::integral<T>
     {
@@ -519,7 +523,7 @@ struct dMj2dJson_c::Type_c {
     }
 
     static T unmarshal(
-        cJson::Reader_c& r, cJson::token_s& t
+        cJson::Reader_c& r, cJson::token_s&& t
     )
         requires(slu::concepts::enumerator<T> && hasEnumMap<T>())
     {
@@ -529,7 +533,7 @@ struct dMj2dJson_c::Type_c {
     }
 
     static T unmarshal(
-        cJson::Reader_c& r, cJson::token_s& t
+        cJson::Reader_c& r, cJson::token_s&& t
     )
         requires(slu::concepts::enumerator<T> && hasEnumBitMap<T>())
     {
@@ -537,7 +541,7 @@ struct dMj2dJson_c::Type_c {
         std::underlying_type_t<T> bits = 0;
         while (cJson::token_s t = r.anyValue<pass>()) {
             if (std::optional<T> value = dMj2dJson_c::readEnum<T>(t)) {
-                bits |= static_cast<std::underlying_type_t<T>>(*value);
+                bits |= std::to_underlying(*value);
             } else {
                 DEBUG_REPORT(
                     "W: Unknown value \"%.*s\" of type \"%s\"\n", static_cast<int>(t.string.size()),
@@ -551,7 +555,7 @@ struct dMj2dJson_c::Type_c {
     }
 
     static T unmarshal(
-        cJson::Reader_c& r, cJson::token_s& t
+        cJson::Reader_c& r, cJson::token_s&& t
     )
         requires slu::concepts::same_value_templated_type<T, std::bitset>
     {
@@ -570,41 +574,41 @@ struct dMj2dJson_c::Type_c {
 };
 
 template <>
-WORLD_e dMj2dJson_c::Type_c<WORLD_e>::unmarshal(cJson::Reader_c& r, cJson::token_s& t);
+WORLD_e dMj2dJson_c::Type_c<WORLD_e>::unmarshal(cJson::Reader_c& r, cJson::token_s&& t);
 
 template <>
-STAGE_e dMj2dJson_c::Type_c<STAGE_e>::unmarshal(cJson::Reader_c& r, cJson::token_s& t);
+STAGE_e dMj2dJson_c::Type_c<STAGE_e>::unmarshal(cJson::Reader_c& r, cJson::token_s&& t);
 
 template <>
-StageNo_s dMj2dJson_c::Type_c<StageNo_s>::unmarshal(cJson::Reader_c& r, cJson::token_s& t);
+StageNo_s dMj2dJson_c::Type_c<StageNo_s>::unmarshal(cJson::Reader_c& r, cJson::token_s&& t);
 
 template <>
 dMj2dGame_c::GAME_COMPLETION_e dMj2dJson_c::Type_c<dMj2dGame_c::GAME_COMPLETION_e>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 );
 
 template <>
 dMj2dGame_c::WORLD_COMPLETION_e dMj2dJson_c::Type_c<dMj2dGame_c::WORLD_COMPLETION_e>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 );
 
 template <>
 dMj2dGame_c::Revision_s
-dMj2dJson_c::Type_c<dMj2dGame_c::Revision_s>::unmarshal(cJson::Reader_c& r, cJson::token_s& t);
+dMj2dJson_c::Type_c<dMj2dGame_c::Revision_s>::unmarshal(cJson::Reader_c& r, cJson::token_s&& t);
 
 template <class T>
 void dMj2dJson_c::Type_c<T>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t, void* ptr
+    cJson::Reader_c& r, cJson::token_s&& t, void* ptr
 ) {
-    *static_cast<T*>(ptr) = unmarshal(r, t);
+    *static_cast<T*>(ptr) = unmarshal(r, std::move(t));
 }
 
 template <class T, std::size_t N>
 struct dMj2dJson_c::Type_c<T[N]> {
     static void unmarshal(
-        cJson::Reader_c& r, cJson::token_s& t, void* ptr
+        cJson::Reader_c& r, cJson::token_s&& t, void* ptr
     ) {
-        return unmarshalArray(r, t, ptr, N, sizeof(T), &Type_c<T>::unmarshal);
+        return unmarshalArray(r, std::move(t), ptr, N, sizeof(T), &Type_c<T>::unmarshal);
     }
 
     static_assert(std::is_same_v<decltype(unmarshal), UnmarshalFunc>);
@@ -626,7 +630,7 @@ template <slu::concepts::enumerator T>
 constexpr std::size_t dMj2dJson_c::getEnumMapIndex(
     T e
 ) {
-    std::integral auto index = static_cast<std::underlying_type_t<T>>(e);
+    auto index = std::to_underlying(e);
     if constexpr (isEnumBitMap<T>()) {
         return std::countr_zero<std::make_unsigned_t<std::underlying_type_t<T>>>(index);
     } else {

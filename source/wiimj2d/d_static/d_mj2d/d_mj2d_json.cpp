@@ -40,7 +40,7 @@ std::optional<int> dMj2dJson_c::decodeNumber(
 
 template <>
 WORLD_e dMj2dJson_c::Type_c<WORLD_e>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 ) {
     std::optional<int> number = decodeNumber(t.string, false);
     r.userError(!number || !isValidWorldNo(*number - 1));
@@ -49,7 +49,7 @@ WORLD_e dMj2dJson_c::Type_c<WORLD_e>::unmarshal(
 
 template <>
 STAGE_e dMj2dJson_c::Type_c<STAGE_e>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 ) {
     if (t.is_null() || t.string == "none") {
         return STAGE_e::COUNT;
@@ -108,7 +108,7 @@ StageNo_s dMj2dJson_c::decodeStageNo(
 
 template <>
 StageNo_s dMj2dJson_c::Type_c<StageNo_s>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 ) {
     r.userError(!t.is_string());
     StageNo_s stage = decodeStageNo(t);
@@ -118,7 +118,7 @@ StageNo_s dMj2dJson_c::Type_c<StageNo_s>::unmarshal(
 
 template <>
 dMj2dGame_c::Revision_s dMj2dJson_c::Type_c<dMj2dGame_c::Revision_s>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 ) {
     r.userError(!t.is_string());
     auto&       str      = t.string;
@@ -134,7 +134,7 @@ dMj2dGame_c::Revision_s dMj2dJson_c::Type_c<dMj2dGame_c::Revision_s>::unmarshal(
 }
 
 void dMj2dJson_c::unmarshalArray(
-    cJson::Reader_c& r, const cJson::token_s& startT, void* ptr, std::size_t n, std::size_t vs,
+    cJson::Reader_c& r, cJson::token_s&& startT, void* ptr, std::size_t n, std::size_t vs,
     UnmarshalFunc* func
 ) {
     r.userError(!startT.is_array_start());
@@ -147,7 +147,7 @@ void dMj2dJson_c::unmarshalArray(
             DEBUG_REPORT("E: Array overflow\n");
             r.userError();
         }
-        (*func)(r, t, ptr);
+        (*func)(r, std::move(t), ptr);
         ptr = slu::pointer::offset<void>(ptr, vs);
     }
 
@@ -228,7 +228,7 @@ void dMj2dJson_c::visitFields(
         }
 
         field.func(
-            r, t,
+            r, std::move(t),
             (field.getter && field.ptr.getter != nullptr) ? field.ptr.getter(getterObj)
                                                           : field.ptr.ptr
         );
@@ -291,7 +291,7 @@ bool dMj2dJson_c::marshalPlayCounts(
 }
 
 void dMj2dJson_c::unmarshalPlayCounts(
-    cJson::Reader_c& r, cJson::token_s& t, void* ptr
+    cJson::Reader_c& r, cJson::token_s&& t, void* ptr
 ) {
     auto& counts = *static_cast<u16(*)[WORLD_COUNT][STAGE_COUNT]>(ptr);
 
@@ -319,7 +319,7 @@ bool dMj2dJson_c::marshalAvailableWorlds(
 }
 
 void dMj2dJson_c::unmarshalAvailableWorlds(
-    cJson::Reader_c& r, cJson::token_s& t, void* ptr
+    cJson::Reader_c& r, cJson::token_s&& t, void* ptr
 ) {
     u16 flag = 0;
 
@@ -443,7 +443,7 @@ void dMj2dJson_c::unmarshalFileData(
 
 template <>
 dMj2dGame_c::GAME_COMPLETION_e dMj2dJson_c::Type_c<dMj2dGame_c::GAME_COMPLETION_e>::unmarshal(
-    cJson::Reader_c& r, cJson::token_s& t
+    cJson::Reader_c& r, cJson::token_s&& t
 ) {
     auto flag = GAME_COMPLETION_e::SAVE_EMPTY;
 
@@ -474,7 +474,7 @@ bool dMj2dJson_c::marshalStockItem(
 ) {
     std::underlying_type_t<STOCK_ITEM_e> i = 0;
     while (const char* name = toString(static_cast<STOCK_ITEM_e>(i++))) {
-        if (auto value = g.mStockItemCount[i]; value != 0) {
+        if (auto value = g.mStockItemCount[i - 1]; value != 0) {
             if (!w.field(name, value)) {
                 return false;
             }
@@ -484,7 +484,7 @@ bool dMj2dJson_c::marshalStockItem(
 }
 
 void dMj2dJson_c::unmarshalStockItem(
-    cJson::Reader_c& r, cJson::token_s& t, void* ptr
+    cJson::Reader_c& r, cJson::token_s&& t, void* ptr
 ) {
     u8(&counts)[STOCK_ITEM_COUNT] = *static_cast<u8(*)[STOCK_ITEM_COUNT]>(ptr);
     r.userError(!t.is_object_start());
@@ -497,7 +497,7 @@ void dMj2dJson_c::unmarshalStockItem(
 }
 
 void dMj2dJson_c::unmarshalCheckpoint(
-    cJson::Reader_c& r, cJson::token_s& t, void* ptr
+    cJson::Reader_c& r, cJson::token_s&& t, void* ptr
 ) {
     static constinit dMj2dJson_c::Field_c cCheckpointFields[] = {
 #define X(string, member, ...) \
@@ -614,7 +614,7 @@ void dMj2dJson_c::unmarshalWorldData(
 ) {
     r.startObject();
     while (auto key = r.key<pass>()) {
-        WORLD_e world = Type_c<WORLD_e>::unmarshal(r, key);
+        WORLD_e world = Type_c<WORLD_e>::unmarshal(r, std::move(key));
 
         r.startObject();
         while (auto key = r.key<pass>()) {
@@ -625,11 +625,10 @@ void dMj2dJson_c::unmarshalWorldData(
                     g.mWorldCompletion[+world] |= WORLD_COMPLETION_e::WORLD_UNLOCKED;
                 }
             } else if (key == "toad_rescue_course") {
-                auto value = r.anyValue();
-                Type_c<STAGE_e>::unmarshal(r, value, &g.mKinopioCourseNo);
+                g.mKinopioCourseNo[+world] = Type_c<STAGE_e>::unmarshal(r, r.anyValue());
             } else if (key == "start_minigame_type") {
-                auto value = r.anyValue();
-                Type_c<START_KINOKO_KIND_e>::unmarshal(r, value, &g.mKinopioCourseNo);
+                g.mStartKinokoType[+world] =
+                    Type_c<START_KINOKO_KIND_e>::unmarshal(r, r.anyValue());
             } else if (key == "ambush_enemy") {
                 static constinit dMj2dJson_c::Field_c cAmbushEnemyFields[] = {
                     {"revival_count", slu::value_identity<&AmbushEnemy_s::revival_count>{}},
@@ -656,7 +655,7 @@ void dMj2dJson_c::unmarshalWorldData(
             } else if (key == "course") {
                 r.startObject();
                 while (auto key = r.key<pass>()) {
-                    STAGE_e     stage     = Type_c<STAGE_e>::unmarshal(r, key);
+                    STAGE_e     stage     = Type_c<STAGE_e>::unmarshal(r, std::move(key));
                     StageData_s stageData = {};
 
                     r.startObject();

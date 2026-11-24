@@ -228,6 +228,8 @@ public:
 
     explicit Writer_c(std::FILE* file);
 
+    constexpr ~Writer_c() {}
+
     bool null() final;
     bool boolean(bool num) final;
     bool number(s64 num) final;
@@ -481,9 +483,9 @@ private:
     static int readCallback(
         void* buffer, std::size_t size, void* userData
     ) {
-        DvdReader_c* self   = static_cast<DvdReader_c*>(userData);
+        auto* self   = static_cast<DvdReader_c*>(userData);
 
-        s32          result = self->mFile.readData(
+        s32   result = self->mFile.readData(
             buffer, std::min<s32>(size, self->mFile.getFileSize() - self->mFileOffset),
             self->mFileOffset
         );
