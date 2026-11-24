@@ -8,3 +8,6 @@ dAttention_c* dAttention_c::mspInstance;
 
 [[nsmbw(0x800691B0)]]
 void dAttention_c::update();
+
+[[nsmbw(0x80069240)]]
+void dAttention_c::entry(fBaseID_e);

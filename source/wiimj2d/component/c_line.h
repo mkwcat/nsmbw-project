@@ -54,7 +54,7 @@ public:
      * @param node The node to remove.
      * @return If the operation was successful.
      */
-    bool removeLineNode(cLineNd_c* node);
+    /* 0x801610A0 */ bool removeLineNode(cLineNd_c* node);
 
     /**
      * Adds a node to the end of the line.

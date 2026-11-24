@@ -10,6 +10,17 @@ class fBase_c;
 class fManager_c {
     SIZE_ASSERT(0x40);
 
+    friend class fBase_c;
+
+public:
+    // Instance Methods
+    // ^^^^^^
+
+    /**
+     * Gets the index of the search list the owning base was added to. See #m_searchManage.
+     */
+    /* 0x80162E30 */ int getSearchTableNum();
+
 public:
     // Static Methods
     // ^^^^^^
@@ -74,4 +85,10 @@ private:
      * A list of all the bases scheduled for deletion.
      */
     /* 0x80377D5C */ static fLiMgBaFuPr_c m_deleteManage;
+
+    /**
+     * An array of lists used for base lookup. Bases are distributed across the lists in a
+     * round-robin fashion, allowing bases to be located more efficiently.
+     */
+    /* 0x80377D70 */ static fLiMgBa_c m_searchManage[8];
 };

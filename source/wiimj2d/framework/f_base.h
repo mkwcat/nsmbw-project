@@ -5,11 +5,26 @@
 #include "f_profile.h"
 #include <cstdlib>
 
-class fBaHelper_c;
+class fArcLoad_c;
 
 namespace EGG {
 class FrmHeap;
 }
+
+/**
+ * New class for storing extended data in base classes.
+ */
+class fExBase_c {
+public:
+    virtual ~fExBase_c() {}
+
+    enum class BaseType_e : u8 {
+        fBase,
+        dActor,
+    };
+
+    BaseType_e mBaseType;
+};
 
 class fBase_c {
     SIZE_ASSERT(0x64);
@@ -237,17 +252,19 @@ protected:
      */
     /* 0x10 */ fManager_c mMng;
 
-    /* @unused */
-    /* 0x54 */ fBaHelper_c* mpUnusedHelper;
+    /* 0x50 */ union {
+        fArcLoad_c* REMOVED(mArcLoad);
+        fExBase_c*  mExData;
+    };
 
     /* @unused */
-    /* 0x58 */ fLiMgBa_c mUnusedList;
+    /* 0x54 */ fLiMgBa_c mUnusedList;
 
     /**
      * The base's dedicated heap.
      * @unused
      */
-    /* 0x60 */ EGG::FrmHeap* mHeap;
+    /* 0x5C */ EGG::FrmHeap* mHeap;
 
 public:
     // Virtual Functions
@@ -368,17 +385,40 @@ public:
     virtual ~fBase_c();
 
 public:
-    // Functions
+    // Instance Methods
     // ^^^^^^
 
-    /* 0x80162B60 */
-    bool checkChildProcessCreateState() const;
+    [[nodiscard]] fBaseID_e getID() const { return mUniqueID; }
+
+    [[nodiscard]] fExBase_c* getEx() { return mExData; }
+
+    [[nodiscard]] const fExBase_c* getEx() const { return mExData; }
 
     /**
-     * 0x80162650
      * Requests deletion of the base. Calling this function multiple times has no effect.
      */
-    void deleteRequest();
+    /* 0x80162650 */ void deleteRequest();
+
+    /**
+     * Gets the base's parent.
+     */
+    /* 0x801626D0 */ [[nodiscard]] fBase_c* getConnectParent() const;
+
+    /**
+     * Gets the base's first child.
+     */
+    /* 0x801626F0 */ [[nodiscard]] fBase_c* getConnectChild() const;
+
+    /**
+     * Gets the base's next sibling.
+     */
+    /* 0x80162710 */ [[nodiscard]] fBase_c* getConnectBrNext() const;
+
+    /**
+     * Checks if the base has at least one child in the LIFECYCLE_e::CREATING state.
+     * @returns If such a child base exists.
+     */
+    /* 0x80162B60 */ [[nodiscard]] bool checkChildProcessCreateState() const;
 
 public:
     // Static Methods

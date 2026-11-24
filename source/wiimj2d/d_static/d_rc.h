@@ -14,6 +14,12 @@ public:
     virtual ~dRc_c();
 
 public:
+    // Instance Methods
+    // ^^^^^^
+
+    /* 0x800D9BC0 */ void chkLink();
+
+public:
     // Instance Variables
     // ^^^^^^
 
@@ -55,7 +61,7 @@ public:
     /* 0x0C */ dRide_ctr_c* mpNext;
     /* 0x10 */ dRc_c*       mpChain;
 
-    u8 FILL(0x14, 0x4C);
+    u8                      FILL(0x14, 0x4C);
 };
 
 class dRideRoll_c : public dRide_ctr_c {

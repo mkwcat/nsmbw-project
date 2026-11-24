@@ -162,6 +162,8 @@ public:
 
     constexpr operator nw4r::math::VEC3() const { return nw4r::math::VEC3{x, y, z}; }
 
+    constexpr operator mVec2_c() const { return mVec2_c{x, y}; }
+
     /**
      * Augmented addition operator.
      */

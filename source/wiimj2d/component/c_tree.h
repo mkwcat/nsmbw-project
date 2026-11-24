@@ -73,7 +73,7 @@ public:
      * @param node The node to remove.
      * @return If the operation was successful.
      */
-    bool removeTreeNode(cTreeNd_c* node);
+    /* 0x80161760 */ bool removeTreeNode(cTreeNd_c* node);
 
     constexpr cTreeNd_c* getRootNode() const { return mpRootNode; }
 

@@ -5,8 +5,10 @@
 #include "d_bc.h"
 #include "d_cc.h"
 #include "d_rc.h"
+#include "f_base.h"
 #include "f_base_id.h"
 #include "m_vec.h"
+#include "slu/delegate.hpp"
 #include <nw4r/ut/Rect.h>
 
 class dPropelParts_c;
@@ -22,7 +24,7 @@ public:
     dActor_c();
 
     /* VT+0x44 0x800642B0 */
-    virtual ~dActor_c();
+    ~dActor_c() override;
 
 public:
     // Static Constants
@@ -54,55 +56,55 @@ public:
      * VT+0x0C 0x80064350
      * pre method for the create operation.
      */
-    virtual PACK_RESULT_e preCreate() override;
+    PACK_RESULT_e preCreate() override;
 
     /**
      * VT+0x10 0x80064380
      * post method for the create operation.
      */
-    virtual void postCreate(fBase_c::MAIN_STATE_e status) override;
+    void postCreate(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x18 0x80064390
      * pre method for the delete operation.
      */
-    virtual PACK_RESULT_e preDelete() override;
+    PACK_RESULT_e preDelete() override;
 
     /**
      * VT+0x1C 0x800643E0
      * post method for the delete operation.
      */
-    virtual void postDelete(fBase_c::MAIN_STATE_e status) override;
+    void postDelete(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x24 0x800643F0
      * pre method for the execute operation.
      */
-    virtual PACK_RESULT_e preExecute() override;
+    PACK_RESULT_e preExecute() override;
 
     /**
      * VT+0x28 0x80064490
      * post method for the execute operation.
      */
-    virtual void postExecute(fBase_c::MAIN_STATE_e status) override;
+    void postExecute(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x30 0x80064540
      * pre method for the draw operation.
      */
-    virtual PACK_RESULT_e preDraw() override;
+    PACK_RESULT_e preDraw() override;
 
     /**
      * VT+0x34 0x800645E0
      * post method for the draw operation.
      */
-    virtual void postDraw(fBase_c::MAIN_STATE_e status) override;
+    void postDraw(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x4C 0x800645F0
      * Gets a string describing the kind of this base.
      */
-    virtual const char* getKindString() const override;
+    const char* getKindString() const override;
 
     /* VT+0x60 0x80065080 */
     virtual bool ActorDrawCullCheck();
@@ -252,6 +254,14 @@ public:
     void ActorScrOutCheck(u16);
 
 public:
+    // Static Methods
+    // ^^^^^^
+
+    [[nodiscard]] static dActor_c* searchNearAnyActor(
+        mVec2_c& delta, const mVec2_c& pos, slu::delegate_ref<bool(dActor_c*)> isEligible
+    );
+
+public:
     // Instance Variables
     // ^^^^^^
 
@@ -375,6 +385,30 @@ public:
     /* 0x80429FD8 */ static u8 mExecStopReq;
 
     /* 0x80429FDA */ static u8 mExecStop;
+};
+
+// +++
+class dActorEx_c : public fExBase_c {
+public:
+    dActorEx_c() { mBaseType = BaseType_e::dActor; }
+
+    static dActorEx_c* get(
+        fBase_c* base
+    ) {
+        if (auto* ex = base->getEx(); ex && ex->mBaseType >= BaseType_e::dActor) {
+            return static_cast<dActorEx_c*>(ex);
+        }
+        return nullptr;
+    }
+
+    static dActorEx_c* get(
+        dActor_c* base
+    ) {
+        return static_cast<dActorEx_c*>(base->getEx());
+    }
+
+    u8 mIsCarried     : 1 = 0;
+    u8 mCarryCooldown : 7 = 0;
 };
 
 extern const u8 l_Ami_Line[];

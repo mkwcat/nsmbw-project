@@ -9,6 +9,9 @@ dCc_c::dCc_c();
 [[nsmbw(0x8008C260)]]
 dCc_c::~dCc_c();
 
+[[nsmbw(0x8008C2C0)]]
+void dCc_c::clear();
+
 [[nsmbw(0x8008C330)]]
 void dCc_c::entry();
 

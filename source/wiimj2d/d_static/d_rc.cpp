@@ -3,6 +3,9 @@
 
 #include "d_rc.h"
 
+[[nsmbw(0x800D9BC0)]]
+void dRc_c::chkLink();
+
 [[nsmbw(0x800DB220)]]
 dRideRoll_c::dRideRoll_c();
 

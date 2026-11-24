@@ -4,12 +4,16 @@
 #include "d_actor.h"
 
 #include "d_a_player.h"
+#include "d_a_player_manager.h"
+#include "d_attention.h"
+#include "d_bg.h"
 #include "d_cc.h"
 #include "d_fukidashiManager.h"
 #include "d_game_common.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
 #include "d_s_stage.h"
+#include <limits>
 
 [[nsmbw_data(0x80429FD8)]]
 u8 dActor_c::mExecStopReq;
@@ -24,7 +28,12 @@ dActor_c::dActor_c();
 dActor_c::~dActor_c();
 
 [[nsmbw(0x80064350)]]
-fBase_c::PACK_RESULT_e dActor_c::preCreate();
+fBase_c::PACK_RESULT_e dActor_c::preCreate() {
+    if (!getEx()) {
+        mExData = new dActorEx_c;
+    }
+    return dBaseActor_c::preCreate();
+}
 
 [[nsmbw(0x80064380)]]
 void dActor_c::postCreate(fBase_c::MAIN_STATE_e status);
@@ -39,7 +48,42 @@ void dActor_c::postDelete(fBase_c::MAIN_STATE_e status);
 fBase_c::PACK_RESULT_e dActor_c::preExecute();
 
 [[nsmbw(0x80064490)]]
-void dActor_c::postExecute(fBase_c::MAIN_STATE_e status);
+void dActor_c::postExecute(
+    fBase_c::MAIN_STATE_e status
+) {
+    if (status == MAIN_STATE_e::SUCCESS) {
+        if (!(mActorProperties & 0x400)) {
+            mPos.x = dScStage_c::getLoopPosX(mPos.x);
+        }
+        mCc.clear();
+        if (!mDeleteRequested) {
+            mBc.checkLink();
+            mRc.chkLink();
+        }
+        if (mActorProperties & 0x8) {
+            dAttention_c::mspInstance->entry(mUniqueID);
+        }
+        m0x310 = {0.0f, 0.0f};
+    }
+
+    if (auto* ex = dActorEx_c::get(this); ex->mIsCarried) {
+        ex->mCarryCooldown = 30;
+        // Update carry position
+        if (dAcPy_c* player = daPyMng_c::getPlayer(mPlrNo);
+            player && !player->isStatus(daPlBase_c::Status_e::OUT_OF_PLAY)) {
+            mVec3_c carryPos = player->getCarryPos();
+            mMtx_c  mtx;
+            MTXTrans(&mtx.mData, carryPos.x, carryPos.y, carryPos.z);
+            MTXConcat(&mtx.mData, &player->getModel()->mMtx.mData, &mtx.mData);
+            mtx.multVecZero(reinterpret_cast<nw4r::math::VEC3&>(mPos));
+        }
+
+    } else if (ex->mCarryCooldown) {
+        ex->mCarryCooldown--;
+    }
+
+    dBaseActor_c::postExecute(status);
+}
 
 [[nsmbw(0x80064540)]]
 fBase_c::PACK_RESULT_e dActor_c::preDraw();
@@ -334,5 +378,32 @@ void dActor_c::removeCc();
 
 [[nsmbw(0x80066090)]]
 void dActor_c::reviveCc();
+
+dActor_c* dActor_c::searchNearAnyActor(
+    mVec2_c& delta, const mVec2_c& pos, slu::delegate_ref<bool(dActor_c*)> isEligible
+) {
+    dActor_c* nearest     = nullptr;
+    float     nearestDist = std::numeric_limits<float>::max();
+
+    for (fBase_c* base = fManager_c::getNextBase(); base != nullptr;
+         base          = fManager_c::getNextBase(base)) {
+        if (dActorEx_c::get(base) == nullptr) {
+            continue;
+        }
+        auto* actor = static_cast<dActor_c*>(base);
+
+        float xDiff = actor->mPos.x + actor->mCenterOffs.x - pos.x;
+        float yDiff = actor->mPos.y + actor->mCenterOffs.y - pos.y;
+        float dist  = xDiff * xDiff + yDiff * yDiff;
+
+        if (dist < nearestDist && isEligible(actor)) {
+            delta       = {xDiff, yDiff};
+            nearest     = actor;
+            nearestDist = dist;
+        }
+    }
+
+    return nearest;
+}
 
 const u8 l_Ami_Line[] = {1, 2};

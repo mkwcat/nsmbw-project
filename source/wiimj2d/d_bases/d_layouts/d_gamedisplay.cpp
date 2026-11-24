@@ -190,7 +190,7 @@ UNDEF_801581b0:;
 [[nsmbw(0x801581E0)]]
 fBase_c::PACK_RESULT_e dGameDisplay_c::draw() {
     if (m0x452 && mLayoutLoaded) {
-        if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
+        if (dGameRule_s::current.death_messages != dGameRule_s::death_messages_e::disabled) {
             mDeathMsgMgr.entry();
         }
         mLayout.entry();

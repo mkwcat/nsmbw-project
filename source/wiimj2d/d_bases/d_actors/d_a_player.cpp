@@ -6,6 +6,7 @@
 #include "d_a_player_demo_manager.h"
 #include "d_a_player_manager.h"
 #include "d_a_yoshi.h"
+#include "d_actor.h"
 #include "d_audio.h"
 #include "d_bc.h"
 #include "d_bg.h"
@@ -19,7 +20,11 @@
 #include "d_s_stage.h"
 #include "f_base.h"
 #include "f_manager.h"
+#include <algorithm>
+#include <limits>
+#include <slu/delegate.hpp>
 #include <type_traits>
+#include <utility>
 
 [[nsmbw(0x801267F0)]]
 bool dAcPy_c::setHipAttackAction();
@@ -42,7 +47,7 @@ void dAcPy_c::setWallSlideEffect();
 [[nsmbw(0x80128AC0)]]
 void dAcPy_c::executeState_WallSlide() {
     if (isNowBgCross(BGC_FOOT)) {
-        changeState(StateID_Walk, reinterpret_cast<void*>(AnmBlend_e::NONE));
+        changeState(StateID_Walk, std::to_underlying(AnmBlend_e::NONE));
         return;
     }
     if (mKey.triggerJump()) {
@@ -56,13 +61,13 @@ void dAcPy_c::executeState_WallSlide() {
     if (mKey.buttonWalk(&dir) && dir != mDirection) {
         m_SubstateValue += 1;
         if (m_SubstateValue >= 15) {
-            changeState(StateID_Fall, reinterpret_cast<void*>(false));
+            changeState(StateID_Fall, false);
         }
     } else {
         m_SubstateValue = 0;
     }
     if (checkWallSlideEnable(mDirection)) {
-        changeState(StateID_Fall, reinterpret_cast<void*>(false));
+        changeState(StateID_Fall, false);
         return;
     }
 
@@ -87,13 +92,12 @@ void dAcPy_c::clearSpinLiftUpReserve();
 
 [[nsmbw(0x8012E330)]]
 void dAcPy_c::setSpinLiftUpReserve() {
-    if (!(!isStatus(122) && !isDemo() && !isCarry() && !isStatus(Status_e::OUT_OF_PLAY) &&
-          !isStatus(Status_e::STUNNED) && !isStatus(Status_e::QUAKE))) {
+    if (isStatus(122) || isDemo() || isCarry() || isStatus(Status_e::OUT_OF_PLAY) ||
+        isStatus(Status_e::STUNNED) || isStatus(Status_e::QUAKE)) {
         return;
     }
 
-    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
-    if (actor != nullptr && actor->isSpinLiftUpEnable()) {
+    const auto setSpinLiftUpActor = [&](dActor_c* actor) {
         mCarryActorID = actor->mUniqueID;
         m0x27E0       = 0;
         mPyMdlMng.mModel->mVisibilityFlags |= 4;
@@ -103,35 +107,77 @@ void dAcPy_c::setSpinLiftUpReserve() {
         changeState(StateID_LiftUp, 0);
         dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
         actor->setSpinLiftUpActor(this);
+    };
+
+    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
+    if (actor != nullptr && actor->isSpinLiftUpEnable()) {
+        setSpinLiftUpActor(actor);
         return clearSpinLiftUpReserve();
     }
 
-    if (!(dGameRule_s::current.liftable_tiles && mAttCc1.mCcData.mAttack == 18 &&
-          mKey.buttonOne())) {
+    if (dGameRule_s::current.liftable_mode == dGameRule_s::liftable_mode_e::disabled ||
+        mAttCc1.mCcData.mAttack != 18 || !mKey.buttonOne()) {
         return clearSpinLiftUpReserve();
     }
 
     // No actor found to lift
-    // Get foot sensor position
-    float footY = getFootBgPointData()->mOffsetY / 4096.0;
-    u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
-    u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
-    if (u16* tileBelow = dBg_c::m_bg_p->UNDEF_80077520(bgX, bgY, mLayer, nullptr, false);
-        *tileBelow > 0) {
-        // We're standing on a tile, clone it
-        dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
-        mCarryActorID    = liftBg->mUniqueID;
-        m0x27E0          = 0;
-        mPyMdlMng.mModel->mVisibilityFlags |= 4;
-        changeState(StateID_LiftUp, 0);
-        dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
-        liftBg->setSpinLiftUpActor(this);
 
-        // Duplicate the tile on layer 0
-        // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
+    bool clone = false;
+    switch (dGameRule_s::current.liftable_mode) {
+    case dGameRule_s::liftable_mode_e::tiles: {
+        // Get foot sensor position
+        float footY = getFootBgPointData()->mOffsetY / 4096.0;
+        u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
+        u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
+        if (u16* tileBelow = dBg_c::m_bg_p->GetUnitPointer(bgX, bgY, mLayer, nullptr, false);
+            *tileBelow > 0) {
+            // We're standing on a tile, clone it
+            dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
+            setSpinLiftUpActor(liftBg);
 
-        // Delete the tile we're standing on
-        dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
+            // Duplicate the tile on layer 0
+            // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
+
+            // Delete the tile we're standing on
+            dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
+        }
+    } break;
+
+    case dGameRule_s::liftable_mode_e::actors_clone:
+        clone = true;
+        [[fallthrough]];
+
+    case dGameRule_s::liftable_mode_e::actors: {
+        // Find the nearest actor to the player
+        mVec2_c   delta;
+        dActor_c* actor = searchNearAnyActor(
+            delta, mPos,
+            slu::lambda_delegate( //
+                [this, clone](dActor_c* actor) {
+                    if (actor == this) {
+                        // Can't lift yourself
+                        return false;
+                    }
+                    if (clone) {
+                        // Can't clone players or Yoshi
+                        return !actor->DynamicCast<daPlBase_c>();
+                    }
+                    auto* ex = dActorEx_c::get(actor);
+                    // Can't steal other player's carry
+                    return !ex->mIsCarried || actor->mPlrNo == mPlrNo;
+                }
+            )
+        );
+
+        if (actor) {
+            setSpinLiftUpActor(actor);
+            auto* ex       = dActorEx_c::get(actor);
+            ex->mIsCarried = true;
+            actor->mPlrNo  = mPlrNo;
+        }
+    } break;
+
+    default:
     }
 
     return clearSpinLiftUpReserve();
@@ -207,7 +253,7 @@ bool dAcPy_c::setBalloonInDispOutBase(
         }
     }
 
-    auto carryPlr = getCarryPlayer();
+    auto* carryPlr = getCarryPlayer();
     if (carryPlr) {
         if (!carryPlr->setBalloonInDispOutBase(type, false, true)) {
             carryPlr = nullptr;
@@ -233,7 +279,7 @@ bool dAcPy_c::setBalloonInDispOutBase(
         damageType = DamageType_e::SCROLL_OUT;
     }
 
-    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED &&
+    if (dGameRule_s::current.death_messages != dGameRule_s::death_messages_e::disabled &&
         !noDeathMsg) {
         if (carryPlr) {
             carryPlr->addDeathMessage(this, damageType, true);
@@ -284,7 +330,7 @@ void dAcPy_c::checkRest() {
     }
 
     dScStage_c::setNextScene(
-        gameOver ? dProf::GAMEOVER : dProf::WORLD_MAP, 0, dScStage_c::Exit_e(1),
+        gameOver ? dProf::GAMEOVER : dProf::WORLD_MAP, 0, dScStage_c::Exit_e::DOWN,
         dFader_c::fader_type_e::BOWSER
     );
 }
@@ -350,7 +396,7 @@ void dAcPy_c::setFallDownDemo() {
         return;
     }
 
-    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::death_messages_e::disabled) {
         addDeathMessage(nullptr, DamageType_e::FALL_DOWN, true);
     }
 
@@ -666,9 +712,7 @@ bool dAcPy_c::executeChangeInit() {
 
     if (mPlayerMode == PLAYER_MODE_e::MINI_MUSHROOM) {
         f32 jumpSpeed = getJumpSpeed();
-        if (jumpSpeed < mSpeed.y) {
-            mSpeed.y = jumpSpeed;
-        }
+        mSpeed.y      = std::min(jumpSpeed, mSpeed.y);
 
         releaseCarryActor();
     }
@@ -943,7 +987,7 @@ bool dAcPy_c::setDamage(
 
     dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
-    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::death_messages_e::disabled) {
         addDeathMessage(source, type, isStatus(Status_e::OUT_OF_PLAY));
     }
 
@@ -965,7 +1009,7 @@ bool dAcPy_c::setForcedDamage(
 
     dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::PLAYER_DAMAGE, 0, false);
 
-    if (dGameRule_s::current.death_messages != dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages != dGameRule_s::death_messages_e::disabled) {
         addDeathMessage(source, type, isStatus(Status_e::OUT_OF_PLAY));
     }
 

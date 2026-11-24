@@ -20,6 +20,12 @@ fLiMgBaFuPr_c fManager_c::m_drawManage{nullptr};
 [[nsmbw_data(0x80377D5C)]]
 fLiMgBaFuPr_c fManager_c::m_deleteManage{nullptr};
 
+[[nsmbw_data(0x80377D70)]]
+fLiMgBa_c fManager_c::m_searchManage[8];
+
+[[nsmbw(0x80162E30)]]
+int fManager_c::getSearchTableNum();
+
 [[nsmbw(0x80162E40)]]
 fBase_c* fManager_c::searchBaseByID(fBaseID_e id);
 

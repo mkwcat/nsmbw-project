@@ -10,7 +10,7 @@
 dBg_c* dBg_c::m_bg_p;
 
 [[nsmbw(0x80077520)]]
-u16* dBg_c::UNDEF_80077520(u16, u16, u8, int*, bool);
+u16* dBg_c::GetUnitPointer(u16, u16, u8, int*, bool);
 
 [[nsmbw(0x80077860)]]
 void dBg_c::BgUnitChange(u16, u16, int, u16);
@@ -19,7 +19,7 @@ void dBg_c::BgUnitChange(u16, u16, int, u16);
 dPanelObjMgr_c* dBg_c::getPanelObjMgr(int);
 
 [[nsmbw(0x800785E0)]]
-bool dBg_c::UNDEF_800785E0() {
+bool dBg_c::dBg_isCloudFlyPlayer() {
     u8 mask = daPyMng_c::getActScrollInfo();
 
     for (int i = 0; i < PLAYER_COUNT; i++) {

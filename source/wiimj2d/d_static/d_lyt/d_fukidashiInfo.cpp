@@ -18,14 +18,14 @@ void dfukidashiInfo_c::draw() {
         return;
     }
     switch (dGameRule_s::current.fukidashi_mode) {
-    case dGameRule_s::FUKIDASHI_MODE_e::ALWAYS_SHOW:
+    case dGameRule_s::fukidashi_mode_e::show_always:
         return mLayout.entry();
-    case dGameRule_s::FUKIDASHI_MODE_e::HIDE_IF_5_TO_8_PLAYER:
+    case dGameRule_s::fukidashi_mode_e::hide_if_5_plus_players:
         if (daPyMng_c::getNumInGame() < 5) {
             return mLayout.entry();
         }
         break;
-    case dGameRule_s::FUKIDASHI_MODE_e::ALWAYS_HIDE:
+    case dGameRule_s::fukidashi_mode_e::hide_always:
         return;
     }
 }
@@ -107,7 +107,7 @@ void dfukidashiInfo_c::executeState_Move() {
 void dfukidashiInfo_c::finalizeState_Move() {
     mLayout.AnimeEndSetup(m0x22C);
 
-    if (mVisible == false) {
+    if (!mVisible) {
         return;
     }
 

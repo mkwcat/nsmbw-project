@@ -43,7 +43,7 @@ s16 daEnBlockMain_c::yossy_color_search() {
             yoshiColor++;
         }
         return -1;
-    case dGameRule_s::YOSHI_COLOR_MODE_e::ALL_GREEN:
+    case dGameRule_s::yoshi_color_mode_e::all_green:
         return 0;
     }
 }

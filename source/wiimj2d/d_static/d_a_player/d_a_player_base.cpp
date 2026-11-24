@@ -16,6 +16,7 @@
 #include "d_s_stage.h"
 #include "f_manager.h"
 #include "s_Lib.h"
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstdio>
@@ -122,7 +123,6 @@ void daPlBase_c::initDemoInDokanLR(u8 param);
 
 [[nsmbw(0x80050870)]]
 void daPlBase_c::initializeState_DemoRailDokan() ASM_METHOD(
-  // clang-format off
 /* 80050870 9421FFD0 */  stwu     r1, -48(r1);
 /* 80050874 7C0802A6 */  mflr     r0;
 /* 80050878 388000BB */  li       r4, 187;
@@ -144,7 +144,7 @@ UNDEF_800508b4:;
 /* 800508B4 38600000 */  li       r3, 0;
 UNDEF_800508b8:;
 /* 800508B8 801F03F8 */  lwz      r0, 1016(r31);
-/* 800508BC 5404063E */  clrlwi   r4, r0, 24                ;
+/* 800508BC 5404063E */  clrlwi   r4, r0, 24;
 /* 800508C0 4803DB11 */  bl       UNDEF_8008e3d0;
 /* 800508C4 7C7E1B78 */  mr       r30, r3;
 /* 800508C8 8863000F */  lbz      r3, 15(r3);
@@ -223,8 +223,7 @@ AFTER_DIRECT_PIPE_END_CHECK:;
 /* 800509DC 80010034 */  lwz      r0, 52(r1);
 /* 800509E0 7C0803A6 */  mtlr     r0;
 /* 800509E4 38210030 */  addi     r1, r1, 48;
-/* 800509E8 4E800020 */  blr      ;
-  // clang-format on
+/* 800509E8 4E800020 */  blr;
 );
 
 [[nsmbw(0x80050D80)]]
@@ -327,9 +326,7 @@ void daPlBase_c::setControlDemoWalk(
     mControlDemoTargetPos.x = pos;
     mDemoState              = ControlDemoSubstate_e::WALK;
     mControlDemoSpeedF      = std::fabs(speed);
-    if (mControlDemoSpeedF > getSpeedData()->mHighSpeed) {
-        mControlDemoSpeedF = getSpeedData()->mHighSpeed;
-    }
+    mControlDemoSpeedF      = std::min(mControlDemoSpeedF, getSpeedData()->mHighSpeed);
 }
 
 [[nsmbw(0x80052170)]]
@@ -414,11 +411,9 @@ void daPlBase_c::executeState_DemoControl() {
         }
         int prevDirection = mItemKinopioDirection;
         sLib::calcTimer(&mItemKinopioTurnTimer);
-        if (isHitWallKinopioWalk(mItemKinopioDirection) || mItemKinopioTurnTimer == 0) {
-            mItemKinopioDirection ^= 1;
-            mControlDemoTargetPos.x = mPos.x + sc_DirSpeed[mItemKinopioDirection] * 24.0f;
-        } else if (!isHitGroundKinopioWalk(mItemKinopioDirection, 4.0f, 1) &&
-                   !isHitGroundKinopioWalk(mItemKinopioDirection, 8.0f, 1)) {
+        if (isHitWallKinopioWalk(mItemKinopioDirection) || mItemKinopioTurnTimer == 0 ||
+            (!isHitGroundKinopioWalk(mItemKinopioDirection, 4.0f, 1) &&
+             !isHitGroundKinopioWalk(mItemKinopioDirection, 8.0f, 1))) {
             mItemKinopioDirection ^= 1;
             mControlDemoTargetPos.x = mPos.x + sc_DirSpeed[mItemKinopioDirection] * 24.0f;
         }
@@ -510,10 +505,10 @@ void daPlBase_c::addDeathMessage(
     dActor_c* source, DamageType_e type, bool death
 ) {
     // TODO: Use BMG for messages
-    if (dGameRule_s::current.death_messages == dGameRule_s::DEATH_MESSAGES_MODE_e::DISABLED) {
+    if (dGameRule_s::current.death_messages == dGameRule_s::death_messages_e::disabled) {
         return;
     }
-    if (dGameRule_s::current.death_messages == dGameRule_s::DEATH_MESSAGES_MODE_e::DEATH_ONLY &&
+    if (dGameRule_s::current.death_messages == dGameRule_s::death_messages_e::death_only &&
         !death) {
         return;
     }
@@ -824,7 +819,7 @@ void daPlBase_c::addDeathMessage(
         selfName         = enemyName;
         enemyName        = temp;
         if (source) {
-            if (auto player2 = source->DynamicCast<daPlBase_c>()) {
+            if (auto* player2 = source->DynamicCast<daPlBase_c>()) {
                 player = player2;
             }
         }

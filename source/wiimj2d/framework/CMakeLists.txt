@@ -5,9 +5,9 @@ target_include_directories(project PRIVATE .)
 # NSMBW          .text:  0x80161A60 - 0x801632B0
 #
 target_sources(project PRIVATE
-# NSMBW          .text:  0x80161880 - 0x80161A60
-    f_ba_helper.cpp
-# NSMBW          .text:  0x80161A60 - 0x80162C80
+# NSMBW          .text:  0x80161A60 - 0x80161C10
+  # f_arc_load.cpp
+# NSMBW          .text:  0x80161C10 - 0x80162C80
     f_base.cpp
 # NSMBW          .text:  0x80162C80 - 0x80162E30
     f_line.cpp

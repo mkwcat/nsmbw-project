@@ -121,7 +121,7 @@ void dYoshiMdl_c::setDefaultColors() {
     if (dScStage_c::isNowReplay()) {
         return;
     }
-    if (dGameRule_s::current.yoshi_color_mode == fFeat::YOSHI_COLOR_MODE_e::RANDOM) {
+    if (dGameRule_s::current.yoshi_color_mode == fFeat::yoshi_color_mode_e::random) {
         // Shuffle the s_yoshiColors array
         for (int i = 0; i < dYoshiMdl_c::COLOR_COUNT; i++) {
             int j            = dGameCom::rndInt(i);
