@@ -156,7 +156,7 @@
     <patch id="all_paths_available">
         <memory offset="0x80006796" value="01"/>
     </patch>
-    <patch id="all_paths_available">
+    <patch id="no_projectile_limits">
         <memory offset="0x80006797" value="01"/>
     </patch>
     <patch id="loader">
