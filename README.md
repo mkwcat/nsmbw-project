@@ -9,8 +9,10 @@ Riivolution configuration menu.
 This is still in development, so many of the specified features may not function properly. Features that
 exist in some capacity include:
 - Expanded player count of up to 8 players, using 4 Wii Remotes and 4 GameCube controllers.
-- Death messages.
+- On-screen death messages.
 - Singleplayer Free-for-all and Coin Battle, for the lonely people out there.
+- Brand new Bubble Swarm mode, where players are chased by bubbles containing deadly 1-ups.
+- Liftable and throwable tiles.
 
 And more planned for the future, once the current features are stable enough!
 
@@ -33,12 +35,24 @@ is likely incompatible with any other mods you have enabled.
 
 ## Credits & Attribution
 
-Various credits go to many wonderful people in the New Super Mario Bros. Wii community who have made and shared tools and documentation.
+Various credits go to many wonderful people in the New Super Mario Bros. Wii community who have made and
+shared tools and documentation.
 Most notably [Ninji](https://github.com/Treeki), [CLF78](https://github.com/CLF78),
-[RoadrunnerWMC](https://github.com/RoadrunnerWMC), [RootCubed](https://github.com/RootCubed).
+[RoadrunnerWMC](https://github.com/RoadrunnerWMC), [RootCubed](https://github.com/RootCubed),
+[MandyIGuess](https://github.com/MandyIGuess), [vabold](https://github.com/vabold),
+[Ryguy](https://github.com/Ryguy0777).
 
 The following tools are included in this repository, all with some modifications:
-- **[elf2rel](https://github.com/PistonMiner/ttyd-tools/tree/master/ttyd-tools/elf2rel)**; created by [Linus S. (aka PistonMiner)](https://github.com/PistonMiner), licensed under [GPLv3][gpl-3.0] or later.
 - **[wuj5](https://github.com/stblr/wuj5)**; created by [Pablo Stebler](https://github.com/stblr), under the [MIT license](https://github.com/stblr/wuj5/blob/main/LICENSE).
+- **[wii-code-tools](https://github.com/RoadrunnerWMC/wii-code-tools)**; created by [RoadrunnerWMC](https://github.com/RoadrunnerWMC), under the [MIT license](https://github.com/RoadrunnerWMC/wii-code-tools/blob/master/LICENSE).
 
 [gpl-3.0]: https://www.gnu.org/licenses/gpl-3.0
+
+## Contributing
+
+This is primarily a personal project of mine that only involves me and people I directly want
+to work with, but general patches and such from outside people are accepted!! Testing and issue
+reporting are also very very much appreciated things!!
+
+**We do NOT accept any code generated or written with assistance from LLMs.**
+This is a passion project; machines cannot have passion.
