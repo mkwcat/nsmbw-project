@@ -17,10 +17,25 @@ public:
     daIceBall_c();
 
 public:
+    // Constants
+    // ^^^^^^
+
+    enum class CreateKind_e {
+        Slow = 0,
+        Fast = 1,
+    };
+
+public:
     // Virtual Methods
     // ^^^^^^
 
     /* 0x80123470 */ PACK_RESULT_e create() override;
+
+public:
+    // Static Methods
+    // ^^^^^^
+
+    /* 0x80124700 */ static bool isIceBallEnable(int plrNo, CreateKind_e createKind);
 
 public:
     // Instance Variables

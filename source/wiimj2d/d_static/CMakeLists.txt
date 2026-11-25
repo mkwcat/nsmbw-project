@@ -98,7 +98,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x8003DBD0 - 0x80040920
   # d_enemy/d_a_en_togezo_base.cpp
 # NSMBW          .text:  0x80040920 - 0x80041C00
-  # d_enemy/d_a_fireball_base.cpp
+    d_actor/d_a_fireball_base.cpp
 # NSMBW          .text:  0x80041C00 - 0x80042480
   # d_actor/d_a_fly_dokan.cpp
 # NSMBW          .text:  0x80042480 - 0x80042A70

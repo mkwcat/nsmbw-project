@@ -16,7 +16,7 @@ constexpr std::size_t BASE_COUNT = 754;
 
 constexpr std::size_t COUNT      = [] -> std::size_t {
     std::size_t max = 0;
-#define PROFILE(_ID, _NAME, _CLASS) _ID > max ? max = _ID : 0;
+#define PROFILE(_ID, _NAME, _CLASS) _ID > max ? max = (_ID) : 0;
 #include "d_profile_table.inc"
 #undef PROFILE
     return max + 1;
@@ -28,12 +28,12 @@ template <dProfName V>
 struct Name_c {
     static constexpr dProfName StaticNonRegionalValue = V;
 
-    static inline constexpr dProfName toNative();
+    static constexpr dProfName toNative();
 
     constexpr operator dProfName() const { return toNative(); }
 };
 
-#define PROFILE(_ID, _NAME, _CLASS) constexpr Name_c<_ID> _NAME;
+#define PROFILE(_ID, _NAME, _CLASS) constexpr Name_c<_ID>(_NAME);
 #include "d_profile_table.inc"
 #undef PROFILE
 

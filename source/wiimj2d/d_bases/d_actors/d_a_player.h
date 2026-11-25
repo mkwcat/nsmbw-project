@@ -588,117 +588,116 @@ public:
      */
     PACK_RESULT_e create() override;
 
-    virtual PACK_RESULT_e preExecute() override;
-    virtual void postExecute(MAIN_STATE_e status) override;
-    virtual PACK_RESULT_e doDelete() override;
-    virtual PACK_RESULT_e draw() override;
+    PACK_RESULT_e preExecute() override;
+    void postExecute(MAIN_STATE_e status) override;
+    PACK_RESULT_e doDelete() override;
+    PACK_RESULT_e draw() override;
 
-    virtual bool isSpinLiftUpEnable() override;
-    virtual void setSpinLiftUpActor(dActor_c* carryingActor) override;
+    bool isSpinLiftUpEnable() override;
+    void setSpinLiftUpActor(dActor_c* carryingActor) override;
 
-    virtual void setEatTongue(dActor_c* eatingActor) override;
-    virtual void setEatTongueOff(dActor_c* eatingActor) override;
-    virtual void setEatMouth(dActor_c* eatingActor) override;
-    virtual bool setEatSpitOut(dActor_c* eatingActor) override;
-    virtual void eatMove(dActor_c* eatingActor) override;
+    void setEatTongue(dActor_c* eatingActor) override;
+    void setEatTongueOff(dActor_c* eatingActor) override;
+    void setEatMouth(dActor_c* eatingActor) override;
+    bool setEatSpitOut(dActor_c* eatingActor) override;
+    void eatMove(dActor_c* eatingActor) override;
 
-    virtual void executeMain() override;
-    virtual void executeLastPlayer() override;
-    virtual void executeLastAll() override;
-    virtual bool isItemKinopio() override;
-    virtual void setPowerup(PLAYER_MODE_e, PLAYER_MODE_e) override;
-    virtual u8   getTallType(s8) override;
+    void executeMain() override;
+    void executeLastPlayer() override;
+    void executeLastAll() override;
+    bool isItemKinopio() override;
+    void setPowerup(PLAYER_MODE_e, PLAYER_MODE_e) override;
+    u8   getTallType(s8) override;
 
-    virtual const sBcPointData* getHeadBgPointData() override { return &getBgPointData()->mHead; }
+    const sBcPointData* getHeadBgPointData() override { return &getBgPointData()->mHead; }
 
-    virtual const sBcPointData* getWallBgPointData() override { return &getBgPointData()->mWall; }
+    const sBcPointData* getWallBgPointData() override { return &getBgPointData()->mWall; }
 
-    virtual const sBcPointData* getFootBgPointData() override { return &getBgPointData()->mFoot; }
+    const sBcPointData* getFootBgPointData() override { return &getBgPointData()->mFoot; }
 
-    virtual float getStandHeadBgPointY() override;
-    virtual void checkBgCrossSub() override;
-    virtual void postBgCross() override;
-    virtual float getSandSinkRate() override;
-    virtual bool setPressBgDamage(int, int) override;
-    /* VT+0x11C 0x80139340 */ virtual bool setBalloonInDispOut(int type) override;
-    virtual bool isChange() override;
-    virtual bool isEnableDokanInStatus() override;
-    virtual bool setHideNotGoalPlayer() override;
-    virtual int setDemoGoal(mVec3_c& landPos, float goalCastleX, u8 goalType) override;
-    virtual bool setDemoCannonWarp(int, short, short) override;
-    virtual void initialDoor() override;
-    virtual void initialVine() override;
-    virtual void initialJumpRight() override;
-    virtual void initialJumpLeft() override;
-    virtual void initialSwim() override;
-    virtual void initialBlockJump() override;
-    virtual void initialBlockJumpBelow() override;
+    float getStandHeadBgPointY() override;
+    void checkBgCrossSub() override;
+    void postBgCross() override;
+    float getSandSinkRate() override;
+    bool setPressBgDamage(int, int) override;
+    /* VT+0x11C 0x80139340 */ bool setBalloonInDispOut(int type) override;
+    bool isChange() override;
+    bool isEnableDokanInStatus() override;
+    bool setHideNotGoalPlayer() override;
+    int setDemoGoal(mVec3_c& landPos, float goalCastleX, u8 goalType) override;
+    bool setDemoCannonWarp(int, short, short) override;
+    void initialDoor() override;
+    void initialVine() override;
+    void initialJumpRight() override;
+    void initialJumpLeft() override;
+    void initialSwim() override;
+    void initialBlockJump() override;
+    void initialBlockJumpBelow() override;
 
-    virtual void setCreateAction(int) override;
-    virtual bool setTimeOverDemo() override;
-    /* VT+0x278 0x8013DF10 */ virtual void setFallDownDemo() override;
-    virtual bool setDokanIn(DokanDir_e dir) override;
-    virtual void initDemoOutDokan() override;
-    virtual bool updateDemoKimePose(ClearType_e clearType) override;
-    virtual void initDemoGoalBase() override;
-    /* VT+0x28C 0x801400B0 */ virtual void executeDemoGoal_Run() override;
-    virtual void initializeDemoControl() override;
-    virtual bool isWaitFrameCountMax() override;
-    virtual bool checkWalkNextAction() override;
-    virtual void setWaitActionAnm(AnmBlend_e) override;
-    virtual void setWalkActionAnm(AnmBlend_e) override;
-    virtual void walkActionInit_Wait(AnmBlend_e) override;
-    virtual void walkAction_Wait() override;
-    virtual void walkActionInit_Move(AnmBlend_e) override;
-    virtual void walkAction_Move() override;
-    virtual bool checkCrouch() override;
-    virtual bool setCancelCrouch() override;
-    virtual void setSlipAction() override;
-    virtual void slipActionMove(int) override;
-    virtual void setHipAttack_AttackStart() override;
+    void setCreateAction(int) override;
+    bool setTimeOverDemo() override;
+    /* VT+0x278 0x8013DF10 */ void setFallDownDemo() override;
+    bool setDokanIn(DokanDir_e dir) override;
+    void initDemoOutDokan() override;
+    bool updateDemoKimePose(ClearType_e clearType) override;
+    void initDemoGoalBase() override;
+    /* VT+0x28C 0x801400B0 */ void executeDemoGoal_Run() override;
+    void initializeDemoControl() override;
+    bool isWaitFrameCountMax() override;
+    bool checkWalkNextAction() override;
+    void setWaitActionAnm(AnmBlend_e) override;
+    void setWalkActionAnm(AnmBlend_e) override;
+    void walkActionInit_Wait(AnmBlend_e) override;
+    void walkAction_Wait() override;
+    void walkActionInit_Move(AnmBlend_e) override;
+    void walkAction_Move() override;
+    bool checkCrouch() override;
+    bool setCancelCrouch() override;
+    void setSlipAction() override;
+    void slipActionMove(int) override;
+    void setHipAttack_AttackStart() override;
 
-    virtual float getCloudOffsetY() override;
-    virtual bool setRideJrCrown(const dActor_c*) override;
-    virtual bool isRideJrCrownOwn(const dActor_c*) override;
-    virtual void setRideJrCrownMtx(const mMtx_c*) override;
-    virtual void setRideJrCrownAnm(int) override;
+    float getCloudOffsetY() override;
+    bool setRideJrCrown(const dActor_c*) override;
+    bool isRideJrCrownOwn(const dActor_c*) override;
+    void setRideJrCrownMtx(const mMtx_c*) override;
+    void setRideJrCrownAnm(int) override;
 
-    virtual const mVec3_c* getHeadTopPosP() override;
-    virtual const float* getGravityData() override;
+    const mVec3_c* getHeadTopPosP() override;
+    const float* getGravityData() override;
 
-    virtual bool isCarry() const override { return mCarryActorID != fBaseID_e::NONE; }
+    [[nodiscard]] bool isCarry() const override { return mCarryActorID != fBaseID_e::NONE; }
 
-    virtual bool isLiftUp() override;
-    virtual bool isLiftUpExceptMame() override;
+    bool isLiftUp() override;
+    bool isLiftUpExceptMame() override;
 
-    virtual void setStar(daPlBase_c::StarSet_e, int) override;
-    virtual void endStar() override;
-    virtual void setVirusStar(daPlBase_c*) override;
+    void setStar(daPlBase_c::StarSet_e, int) override;
+    void endStar() override;
+    void setVirusStar(daPlBase_c*) override;
 
-    virtual bool isNoDamage() override;
-    /* VT+0x3F4 0x80146230 */ virtual bool setDamage(dActor_c* source, DamageType_e type) override;
-    /* VT+0x3F8 0x80146310 */ virtual bool
-    setForcedDamage(dActor_c* source, DamageType_e type) override;
-    virtual bool
+    bool isNoDamage() override;
+    /* VT+0x3F4 0x80146230 */ bool setDamage(dActor_c* source, DamageType_e type) override;
+    /* VT+0x3F8 0x80146310 */ bool setForcedDamage(dActor_c* source, DamageType_e type) override;
+    bool
     setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode) override;
-    virtual bool
+    bool
     _setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode) override;
 
-    virtual bool setHipAttackOnEnemy(mVec3_c* hitPos) override;
+    bool setHipAttackOnEnemy(mVec3_c* hitPos) override;
 
-    virtual void clearJumpActionInfo(int) override;
-    virtual bool setSwimSpeed(float speedY, float speedF) override;
+    void clearJumpActionInfo(int) override;
+    bool setSwimSpeed(float speedY, float speedF) override;
 
-    /* VT+0x418 0x801436C0 */ virtual void set1UpKinokoEffect() override;
-    virtual void setFlagGetEffect() override;
-    virtual void setHipAttackEffect() override;
+    /* VT+0x418 0x801436C0 */ void set1UpKinokoEffect() override;
+    void setFlagGetEffect() override;
+    void setHipAttackEffect() override;
 
-    virtual void startQuakeShock(dQuake_c::TYPE_SHOCK_e) override;
-    virtual void startPatternRumble(const char* pattern) override;
+    void startQuakeShock(dQuake_c::TYPE_SHOCK_e) override;
+    void startPatternRumble(const char* pattern) override;
 
-    virtual bool setDamage2(dActor_c*, daPlBase_c::DamageType_e) override;
+    bool setDamage2(dActor_c*, daPlBase_c::DamageType_e) override;
 
-    virtual void maxFallSpeedSet() override;
+    void maxFallSpeedSet() override;
 
     virtual bool isCarryMamePlayer();
 
@@ -708,7 +707,7 @@ public:
 
     /* 0x14D4 */ PLAYER_TYPE_e mPlayerType;
 
-    u8 FILL(0x14D8, 0x14DC);
+    u8                         FILL(0x14D8, 0x14DC);
 
     /* 0x14DC */ int           mIsRescueKinopio;
     /* 0x14E0 */ PLAYER_MODE_e mNextMode;
@@ -795,9 +794,9 @@ public:
     /* 0x2518 */ int                m0x2518;
     /* 0x251C */ int                mSpinTimer; // Timer for the duration of a spin jump.
     /* 0x2520 */ s16                m0x2520;
-    u8 FILL(0x2522, 0x2528);
-    /* 0x2528 */ float mSpinHoldReqTarget;  // The target X position to
-                                            // move to while doing a spin in place.
+    u8                              FILL(0x2522, 0x2528);
+    /* 0x2528 */ float              mSpinHoldReqTarget; // The target X position to
+                                                        // move to while doing a spin in place.
     /* 0x252C */ u32 mSpinFireBallCooldown; // Timer to control how often fireballs the player
                                             // automatically shoots while spinning.
     /* 0x2530 */ u32 mStartSpinCooldown;    // Timer to disable spin jumps and
@@ -807,15 +806,15 @@ public:
     /* 0x264C */ dEf::followEffect_c mFollowEf3;
     /* 0x2760 */ u32                 m0x2760;
     /* 0x2764 */ u32                 m0x2764;
-    u8 FILL(0x2768, 0x2770);
-    /* 0x2770 */ int     m0x2770;
-    /* 0x2774 */ mVec2_c m0x2774;
-    u8 FILL(0x277C, 0x2780);
-    /* 0x2780 */ mVec3_c   m0x2780;
-    /* 0x278C */ u32       m0x278C;
-    /* 0x2790 */ int       m0x2790;
-    /* 0x2794 */ u32       mAllBalloonFadeTimer;
-    /* 0x2798 */ mMtx_c    mRideJrClownMtx;
+    u8                               FILL(0x2768, 0x2770);
+    /* 0x2770 */ int                 m0x2770;
+    /* 0x2774 */ mVec2_c             m0x2774;
+    u8                               FILL(0x277C, 0x2780);
+    /* 0x2780 */ mVec3_c             m0x2780;
+    /* 0x278C */ u32                 m0x278C;
+    /* 0x2790 */ int                 m0x2790;
+    /* 0x2794 */ u32                 mAllBalloonFadeTimer;
+    /* 0x2798 */ mMtx_c              mRideJrClownMtx;
     /* 0x27C8 */ int       mSpinCooldown; // Timer to disable another spin action while active.
     /* 0x27CC */ u8        m0x27CC;
     /* 0x27D0 */ float     m0x27D0;

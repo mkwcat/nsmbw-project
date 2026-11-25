@@ -45,55 +45,55 @@ protected:
      * VT+0x0C 0x8006C870
      * pre method for the create operation.
      */
-    virtual PACK_RESULT_e preCreate() override;
+    PACK_RESULT_e preCreate() override;
 
     /**
      * VT+0x10 0x8006C8A0
      * post method for the create operation.
      */
-    virtual void postCreate(fBase_c::MAIN_STATE_e status) override;
+    void postCreate(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x18 0x8006C8B0
      * pre method for the delete operation.
      */
-    virtual PACK_RESULT_e preDelete() override;
+    PACK_RESULT_e preDelete() override;
 
     /**
      * VT+0x1C 0x8006C8E0
      * post method for the delete operation.
      */
-    virtual void postDelete(fBase_c::MAIN_STATE_e status) override;
+    void postDelete(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x24 0x8006C8F0
      * pre method for the execute operation.
      */
-    virtual PACK_RESULT_e preExecute() override;
+    PACK_RESULT_e preExecute() override;
 
     /**
      * VT+0x28 0x8006C980
      * post method for the execute operation.
      */
-    virtual void postExecute(fBase_c::MAIN_STATE_e status) override;
+    void postExecute(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x30 0x8006C9F0
      * pre method for the draw operation.
      */
-    virtual PACK_RESULT_e preDraw() override;
+    PACK_RESULT_e preDraw() override;
 
     /**
      * VT+0x34 0x8006CA40
      * post method for the draw operation.
      */
-    virtual void postDraw(fBase_c::MAIN_STATE_e status) override;
+    void postDraw(fBase_c::MAIN_STATE_e status) override;
 
     /**
      * VT+0x48 0x8006C7F0
      * Destroys the base.
      */
-    virtual ~dBaseActor_c() override;
+    ~dBaseActor_c() override;
 
     /**
      * VT+0x50 0x8006CA50
@@ -171,7 +171,7 @@ public:
      * 0x8006CED0
      * Gets the actor's centered position.
      */
-    mVec3_c getCenterPos() const;
+    [[nodiscard]] mVec3_c getCenterPos() const;
 
     /**
      * 0x8006CD00

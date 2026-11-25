@@ -104,7 +104,7 @@ public:
      * VT+0x4C 0x800645F0
      * Gets a string describing the kind of this base.
      */
-    const char* getKindString() const override;
+    [[nodiscard]] const char* getKindString() const override;
 
     /* VT+0x60 0x80065080 */
     virtual bool ActorDrawCullCheck();
@@ -119,7 +119,7 @@ public:
     virtual const s8& getPlrNo() { return mPlrNo; }
 
     /* VT+0x70 0x80065620 */
-    virtual mVec3_c getLookatPos() const;
+    [[nodiscard]] virtual mVec3_c getLookatPos() const;
 
     /* VT+0x74 0x8001D1F0 */
     virtual bool isSpinLiftUpEnable() { return true; }
@@ -258,8 +258,8 @@ public:
     // ++++++
 
     void finalUpdateCarry();
-    bool checkNoCollide(dActor_c* other);
-    bool isCloneAllowed() const;
+    [[nodiscard]] bool checkNoCollide(dActor_c* other);
+    [[nodiscard]] bool isCloneAllowed() const;
 
 public:
     // Static Methods

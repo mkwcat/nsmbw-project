@@ -131,8 +131,8 @@ fBase_c::PACK_RESULT_e daLastActorStage_c::execute() {
                 dWarningManager_c::m_WarningForbid--;
             }
 
-            for (int i = 0; i < PLAYER_COUNT; i++) {
-                dRemoconMng_c::m_instance->mpConnect[i]->onRumbleEnable();
+            for (auto& connect : dRemoconMng_c::m_instance->mpConnect) {
+                connect->onRumbleEnable();
             }
 
             VIEnableDimming(1);

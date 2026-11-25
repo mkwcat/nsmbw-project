@@ -118,7 +118,7 @@ void dAcPy_c::setSpinLiftUpReserve() {
         return !dActorEx_c::get(actor)->mIsCarried || actor->mPlrNo == mPlrNo;
     };
 
-    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
+    auto* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
     if (!checkSpinLiftUpEnable_(actor)) {
         actor = nullptr;
     }
@@ -186,7 +186,7 @@ void dAcPy_c::setSpinLiftUpReserve() {
 bool dAcPy_c::cancelCarry(
     dActor_c* carriedActor
 ) {
-    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(mCarryActorID));
+    auto* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(mCarryActorID));
     if (carriedActor != nullptr && actor != carriedActor) {
         return false;
     }
@@ -245,9 +245,9 @@ bool dAcPy_c::setBalloonInDispOutByYoshi(
 /* VT+0x11C */
 [[nsmbw(0x80139340)]]
 bool dAcPy_c::setBalloonInDispOut(
-    int param
+    int type
 ) {
-    return setBalloonInDispOutBase(param, 0, false);
+    return setBalloonInDispOutBase(type, 0, false);
 }
 
 [[nsmbw(0x80139350)]]
@@ -741,7 +741,7 @@ void dAcPy_c::setSceneChangeInfo() {
     if (isItemKinopio()) {
         if (dScStage_c::getExitMode() == dScStage_c::Exit_e::CARRY_OVER ||
             dScStage_c::getExitMode() == dScStage_c::Exit_e::CARRY_OVER_RNDIZER) {
-            dAcPy_c* ctrlPlayer = static_cast<dAcPy_c*>(daPyMng_c::getCtrlPlayer(mPlrNo));
+            auto* ctrlPlayer = static_cast<dAcPy_c*>(daPyMng_c::getCtrlPlayer(mPlrNo));
             if (ctrlPlayer != nullptr && !ctrlPlayer->isStatus(101) && !isStatus(4) &&
                 !isStatus(6)) {
                 daPyMng_c::initKinopioPlayer(mPlayerMode, mPlrNo);

@@ -8,6 +8,12 @@ class daFireBall_Base_c : public dActorState_c {
     VTABLE(0x60, fBase_c, 0x80306D20);
 
 public:
+    // Virtual Methods
+    // ^^^^^^
+
+    /* 0x80040DD0 */ PACK_RESULT_e doDelete() override;
+
+public:
     // Instance Variables
     // ^^^^^^
 

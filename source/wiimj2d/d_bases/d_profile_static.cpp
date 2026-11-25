@@ -8,7 +8,6 @@
 #include "d_a_yoshi.h"
 #include "d_base.h"
 #include "d_player_model_manager.h"
-#include "d_profile.h"
 #include "d_yoshi_model.h"
 #include <algorithm>
 #include <array>
@@ -23,15 +22,14 @@ struct ActorName {
     consteval ActorName(
         const auto& profName, const auto& nameString
     )
-        : profile(profName.StaticNonRegionalValue)
-        , name() {
+        : profile(profName.StaticNonRegionalValue) {
         for (unsigned i = 0; i < sizeof(nameString); i++) {
             name[i] = nameString[i];
         }
     }
 
     dProfName profile;
-    char      name[256];
+    char      name[256]{};
 }; // namespace dProfstruct ActorName
 
 constexpr auto s_formatted_name_data = [] consteval {
@@ -78,7 +76,7 @@ constexpr auto s_formatted_name_data = [] consteval {
                     j += 3;
                     continue;
                 }
-                u32 len = (packed[j + 1] << 8) & 0x1F;
+                u32 len = (packed[j + 1] << 8) & 0x1F00;
                 len |= packed[j + 2];
                 u32 next = j + 3 + len;
                 if (next > offset - 2) {
@@ -126,8 +124,8 @@ const char*                                     s_base_name_table[BASE_COUNT];
 const std::array<const char*, CUSTOM_COUNT + 1> s_extra_name_table = [] {
     std::array<const char*, CUSTOM_COUNT + 1> table{};
 #define PROFILE(_ID, _NAME, _CLASS) \
-    if constexpr (_ID >= dProf::BASE_COUNT) { \
-        table[_ID - dProf::BASE_COUNT] = STRINGIFY(_NAME); \
+    if constexpr ((_ID) >= dProf::BASE_COUNT) { \
+        table[(_ID) - dProf::BASE_COUNT] = STRINGIFY(_NAME); \
     }
 #include "d_profile_table.inc"
 #undef PROFILE
@@ -145,19 +143,19 @@ const char* getName(
 }
 
 const char* getFormattedName(
-    dBase_c* actor
+    dBase_c* base
 ) {
-    if (actor == nullptr) {
+    if (base == nullptr) {
         return nullptr;
     }
 
-    if (auto player = actor->DynamicCast<dAcPy_c>()) {
+    if (auto* player = base->DynamicCast<dAcPy_c>()) {
         if (player->isItemKinopio()) {
             return "Road";
         }
 
-        int           colorType  = daPyMng_c::getPlayerColorType(player->mPlayerType);
-        PLAYER_TYPE_e playerType = static_cast<PLAYER_TYPE_e>(colorType);
+        int  colorType  = daPyMng_c::getPlayerColorType(player->mPlayerType);
+        auto playerType = static_cast<PLAYER_TYPE_e>(colorType);
 
         switch (playerType) {
         default:
@@ -180,8 +178,8 @@ const char* getFormattedName(
         case PLAYER_TYPE_e::BLACK_TOAD:
             return "Blaod";
         }
-    } else if (auto yoshi = actor->DynamicCast<daYoshi_c>()) {
-        dYoshiMdl_c* yoshiMdl = static_cast<dYoshiMdl_c*>(yoshi->mpModelMng->mModel);
+    } else if (auto* yoshi = base->DynamicCast<daYoshi_c>()) {
+        auto* yoshiMdl = static_cast<dYoshiMdl_c*>(yoshi->mpModelMng->mModel);
         switch (yoshiMdl->mColor) {
         default:
         case dYoshiMdl_c::COLOR_e::COLOR_GREEN:
@@ -203,7 +201,7 @@ const char* getFormattedName(
         }
     }
 
-    return getFormattedName(actor->mProfName);
+    return getFormattedName(base->mProfName);
 }
 
 const char* getFormattedName(

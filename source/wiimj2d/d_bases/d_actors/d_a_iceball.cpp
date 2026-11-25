@@ -3,6 +3,7 @@
 
 #include "d_a_iceball.h"
 
+#include "d_gamerule.h"
 #include "d_mj2d_game.h"
 #include <slu/relocate.hpp>
 
@@ -196,6 +197,18 @@ UNDEF_80123700:;
 /* 80123714 38210040 */  addi     r1, r1, 64;
 /* 80123718 4E800020 */  blr;
 );
+
+[[nsmbw(0x80124700)]]
+bool daIceBall_c::isIceBallEnable(
+    int plrNo, CreateKind_e createKind
+) {
+    if (dGameRule_s::current.no_projectile_limits) {
+        return true;
+    }
+
+    return sm_IceBallCount[plrNo] < 6 &&
+           (createKind == CreateKind_e::Fast || sm_IceBallAliveCount[plrNo] < 2);
+}
 
 PATCH_REFERENCES(
     &daIceBall_c::sm_IceBallCount, //

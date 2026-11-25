@@ -1409,7 +1409,7 @@ public:
     virtual const float* getGravityData();
 
     /* VT+0x3C8 0x80048B90 */
-    virtual bool isCarry() const;
+    [[nodiscard]] virtual bool isCarry() const;
 
     /* VT+0x3CC 0x80053DE0 */
     virtual bool isLiftUp();
@@ -1418,7 +1418,7 @@ public:
     virtual bool isLiftUpExceptMame();
 
     /* VT+0x3D4 0x80022170 */
-    virtual bool isStar() const;
+    [[nodiscard]] virtual bool isStar() const;
 
     /* VT+0x3D8 0x80058190 */
     virtual void setStar(StarSet_e, int);
@@ -1433,7 +1433,7 @@ public:
     virtual void clearStarCount();
 
     /* VT+0x3E8 0x8002D970 */
-    virtual int getStarCount() const;
+    [[nodiscard]] virtual int getStarCount() const;
 
     /* VT+0x3EC 0x800581E0 */
     virtual s8 calcStarCount(int max);
@@ -1623,20 +1623,20 @@ public:
     [[nodiscard]]
     bool isStatus(int flag);
 
-    inline void onStatus(
+     void onStatus(
         Status_e flag
     ) {
         onStatus(static_cast<int>(flag));
     }
 
-    inline void offStatus(
+     void offStatus(
         Status_e flag
     ) {
         offStatus(static_cast<int>(flag));
     }
 
     [[nodiscard]]
-    inline bool isStatus(
+     bool isStatus(
         Status_e flag
     ) {
         return isStatus(static_cast<int>(flag));

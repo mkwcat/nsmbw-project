@@ -69,7 +69,7 @@ target_sources(project PRIVATE
 # NSMBW          .text:  0x80115BD0 - 0x8011A5B0
   # d_actors/d_a_farBG.cpp
 # NSMBW          .text:  0x8011A5B0 - 0x8011B640
-  # d_actors/d_a_fireball_player.cpp
+    d_actors/d_a_fireball_player.cpp
 # NSMBW          .text:  0x8011B640 - 0x801233F0
     d_actors/d_a_ice.cpp
 # NSMBW          .text:  0x801233F0 - 0x80124D40
