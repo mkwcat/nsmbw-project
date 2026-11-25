@@ -6,15 +6,21 @@ but for much larger changes that don't fit into a few hundred lines of text. Eve
 consolidated into one big Riivolution pack; individual features can be disabled in the
 Riivolution configuration menu.
 
-This is still in development, so many of the specified features may not function properly. Features that
-exist in some capacity include:
+This is still in development, so many of the specified features may not function properly. The mod
+contains the following **optional** new features:
 - Expanded player count of up to 8 players, using 4 Wii Remotes and 4 GameCube controllers.
+  - The Classic Controller extension can also be used as an additional controller alongside
+    the connected Wii Remote. Press (+) on the Classic Controller on the character select screen
+    to split the Wii Remote and the extension into two separate players.
 - On-screen death messages.
 - Singleplayer Free-for-all and Coin Battle, for the lonely people out there.
 - Brand new Bubble Swarm mode, where players are chased by bubbles containing deadly 1-ups.
-- Liftable and throwable tiles.
+- Ability to lift literally anything, including enemies, still objects, or ground tiles.
+- Quality of life options, such as disabling the brief pause that occurs when obtaining powerups.
+- Uncapped fire rate of fireballs and ice balls.
 
-And more planned for the future, once the current features are stable enough!
+And more planned for the future, once the current features are stable enough! None of the features
+specified are required and can be individually toggled.
 
 ## How to use
 
