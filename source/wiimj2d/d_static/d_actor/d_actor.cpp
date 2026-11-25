@@ -64,22 +64,12 @@ void dActor_c::postExecute(
             dAttention_c::mspInstance->entry(mUniqueID);
         }
         m0x310 = {0.0f, 0.0f};
-    }
 
-    if (auto* ex = dActorEx_c::get(this); ex->mIsCarried) {
-        ex->mCarryCooldown = 30;
-        // Update carry position
-        if (dAcPy_c* player = daPyMng_c::getPlayer(mPlrNo);
-            player && !player->isStatus(daPlBase_c::Status_e::OUT_OF_PLAY)) {
-            mVec3_c carryPos = player->getCarryPos();
-            mMtx_c  mtx;
-            MTXTrans(&mtx.mData, carryPos.x, carryPos.y, carryPos.z);
-            MTXConcat(&mtx.mData, &player->getModel()->mMtx.mData, &mtx.mData);
-            mtx.multVecZero(reinterpret_cast<nw4r::math::VEC3&>(mPos));
+        if (auto* ex = dActorEx_c::get(this); ex && ex->mIsCarried) {
+            ex->mCarryCooldown = 30;
+        } else if (ex && ex->mCarryCooldown) {
+            ex->mCarryCooldown--;
         }
-
-    } else if (ex->mCarryCooldown) {
-        ex->mCarryCooldown--;
     }
 
     dBaseActor_c::postExecute(status);
@@ -179,6 +169,26 @@ bool dActor_c::ActorDrawCullCheck();
 
 [[nsmbw(0x80064F50)]]
 void dActor_c::ActorScrOutCheck(u16);
+
+void dActor_c::finalUpdateCarry() {
+    if (auto* ex = dActorEx_c::get(this); !ex || !ex->mIsCarried) {
+        return;
+    }
+
+    // Update carry position
+    if (dAcPy_c* player = daPyMng_c::getPlayer(mPlrNo);
+        player && !player->isStatus(daPlBase_c::Status_e::OUT_OF_PLAY)) {
+        mVec3_c carryPos = player->getCarryPos();
+        mMtx_c  mtx;
+        MTXTrans(&mtx.mData, carryPos.x, carryPos.y, carryPos.z);
+        MTXConcat(&mtx.mData, &player->getModel()->mMtx.mData, &mtx.mData);
+        nw4r::math::VEC3 calcPos;
+        mtx.multVecZero(calcPos);
+        // Leave Z untouched
+        mPos.x = calcPos.x;
+        mPos.y = calcPos.y;
+    }
+}
 
 [[nsmbw(0x800651C0)]]
 bool dActor_c::carryFukidashiCheck(

@@ -19,6 +19,8 @@ struct dBaseActorProfile_s : dBaseProfile_s {
 class dBaseActor_c : public dBase_c {
     SIZE_ASSERT(0x125);
 
+    friend class dActorMng_c;
+
 public:
     /**
      * An identifier that represents the actor's kind. This is only used in world maps.
@@ -116,7 +118,7 @@ protected:
     virtual ACTOR_KIND_e GetActorType() { return ACTOR_GENERIC; }
 
     /**
-     * VT+0x5C 0x8001D1B0, 0x807B6C70 - d_a_boss_demo.o, ?
+     * VT+0x5C 0x8001D1B0, 0x807B6C70, 0x809A5490 - d_a_boss_demo.o, ?, ?
      * Code to be executed after all actors' execute operation has run.
      */
     virtual void finalUpdate() {}

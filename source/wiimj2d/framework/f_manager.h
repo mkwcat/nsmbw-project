@@ -31,6 +31,9 @@ public:
     /* 0x80162E90 */
     static fBase_c* searchBaseByProfName(fProfName profName, const fBase_c* from = nullptr);
 
+    /* 0x80162EF0 */
+    static fBase_c* searchBaseByGroupType(u8 type, const fBase_c* from = nullptr);
+
     // Static Methods
     // ++++++
 

@@ -19,6 +19,7 @@
 #include "d_quake.h"
 #include "d_s_stage.h"
 #include "f_base.h"
+#include "f_base_id.h"
 #include "f_manager.h"
 #include <algorithm>
 #include <limits>
@@ -184,7 +185,23 @@ void dAcPy_c::setSpinLiftUpReserve() {
 }
 
 [[nsmbw(0x8012E650)]]
-bool dAcPy_c::cancelCarry(dActor_c* carriedActor);
+bool dAcPy_c::cancelCarry(
+    dActor_c* carriedActor
+) {
+    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(mCarryActorID));
+    if (carriedActor != nullptr && actor != carriedActor) {
+        return false;
+    }
+    mPyMdlMng.mModel->mVisibilityFlags &= ~0x6;
+    mPyMdlMng.mModel->releaseBodyAnm(0.0f);
+    mPyMdlMng.mModel->mpSpinLiftParentMdl = nullptr;
+    mCarryActorID                         = fBaseID_e::NONE;
+
+    if (carriedActor) {
+        dActorEx_c::get(carriedActor)->mIsCarried = false;
+    }
+    return true;
+}
 
 [[nsmbw(0x8012E6E0)]]
 void dAcPy_c::releaseCarryActor();
@@ -973,6 +990,14 @@ bool dAcPy_c::switchMode(PLAYER_MODE_e mode);
 bool dAcPy_c::setDamage(
     dActor_c* source, DamageType_e type
 ) {
+    if (source) {
+        // Don't do damage if the actor is in carry cooldown
+        auto* ex = dActorEx_c::get(source);
+        if (ex->mCarryCooldown != 0 && source->mPlrNo == mPlrNo) {
+            return false;
+        }
+    }
+
     if (mPlayerMode != mNextMode || isChange()) {
         return false;
     }

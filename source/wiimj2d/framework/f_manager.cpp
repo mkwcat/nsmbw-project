@@ -32,6 +32,9 @@ fBase_c* fManager_c::searchBaseByID(fBaseID_e id);
 [[nsmbw(0x80162E90)]]
 fBase_c* fManager_c::searchBaseByProfName(fProfName profName, const fBase_c* from);
 
+[[nsmbw(0x80162EF0)]]
+fBase_c* fManager_c::searchBaseByGroupType(u8 type, const fBase_c* from);
+
 fBase_c* fManager_c::getNextBase(
     const fBase_c* from
 ) {

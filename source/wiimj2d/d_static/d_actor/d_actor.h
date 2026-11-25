@@ -253,6 +253,8 @@ public:
     /* 0x80064F50 */
     void ActorScrOutCheck(u16);
 
+    void finalUpdateCarry();
+
 public:
     // Static Methods
     // ^^^^^^
