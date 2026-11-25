@@ -212,7 +212,7 @@ void daEnGlpole_c::poleCollisionCheck(
         return;
     }
 
-    daPlBase_c* player = other->mpOwner->DynamicCast<daPlBase_c>();
+    auto* player = other->mpOwner->DynamicCast<daPlBase_c>();
     if (player == nullptr || player->m0x43C) {
         return;
     }
@@ -228,7 +228,7 @@ void daEnGlpole_c::oneupCollisionCheck(
         return;
     }
 
-    daPlBase_c* player = other->mpOwner->DynamicCast<daPlBase_c>();
+    auto* player = other->mpOwner->DynamicCast<daPlBase_c>();
     if (player == nullptr || player->m0x43C) {
         return;
     }
@@ -238,9 +238,9 @@ void daEnGlpole_c::oneupCollisionCheck(
 
 [[nsmbw(0x80A0A700)]]
 bool daEnGlpole_c::bitToPlayerNoCheck(
-    u32 mask, int player
+    u32 mask, int plrNo
 ) {
-    return mask & (1u << player);
+    return mask & (1u << plrNo);
 }
 
 [[nsmbw(0x80A0AB10)]]

@@ -30,7 +30,7 @@ public:
     // ^^^^^^
 
     /* 0x80A0A700 */
-    bool bitToPlayerNoCheck(u32 mask, int plrNo);
+    [[nodiscard]] bool bitToPlayerNoCheck(u32 mask, int plrNo);
 
     /* 0x80A0A9F0 */
     void FUN_80A0A9F0();
@@ -73,8 +73,8 @@ public:
     /* 0xA9C */ int         m0xA9C;
     u8                      FILL(0xAA0, 0xAAC);
     /* 0xAAC */ u8          mPlayerCatchBit;
-    /* 0xAAD */ u8          mPlayerPoleBit;
-    /* 0xAAE */ u8          mPlayerOneupBit;
+    /* 0xAAD */ u8          mPlayerOneupBit;
+    /* 0xAAE */ u8          mPlayerPoleBit;
 
     u8                      FILL(0xAAF, 0xAB0);
     OFFSET_ASSERT(0xAB0);
