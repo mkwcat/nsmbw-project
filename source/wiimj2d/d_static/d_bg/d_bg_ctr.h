@@ -3,13 +3,13 @@
 #include "d_bc.h"
 #include "m_vec.h"
 
-typedef void (*callbackF)(dActor_c* self, dActor_c* other);
-typedef void (*callbackH)(dActor_c* self, dActor_c* other);
-typedef void (*callbackW)(dActor_c* self, dActor_c* other, u8 direction);
+using callbackF = void (*)(dActor_c* self, dActor_c* other);
+using callbackH = void (*)(dActor_c* self, dActor_c* other);
+using callbackW = void (*)(dActor_c* self, dActor_c* other, u8 direction);
 
-typedef bool (*checkF)(dActor_c* self, dActor_c* other);
-typedef bool (*checkH)(dActor_c* self, dActor_c* other);
-typedef bool (*checkW)(dActor_c* self, dActor_c* other, u8 direction);
+using checkF    = bool (*)(dActor_c* self, dActor_c* other);
+using checkH    = bool (*)(dActor_c* self, dActor_c* other);
+using checkW    = bool (*)(dActor_c* self, dActor_c* other, u8 direction);
 
 struct sBgSetInfo {
     /* 0x00 */ mVec2_c   mLeftTop;
@@ -61,6 +61,9 @@ public:
 
     /* 0x8007FD80 */
     void setAngleY3(short*);
+
+    /* 0x80080E40 @unofficial */
+    bool crossCheckEnabled(dBc_c* bc, u32 flags, u8 flagType);
 
 public:
     // Instance Variables

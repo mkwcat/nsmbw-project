@@ -74,7 +74,7 @@ struct sRangeDataF {
         mSize   = {l, r};
     }
 
-    mVec2_c getSize() const { return mSize; }
+    [[nodiscard]] mVec2_c getSize() const { return mSize; }
 
     mVec2_c mOffset, mSize;
 };
@@ -139,6 +139,10 @@ public:
     /* 0x8008C9E0 */
     static void execute();
 
+private:
+    /* 0x8008C6E0 */
+    static bool checkCollision(dCc_c* c1, dCc_c* c2, int active);
+
 public:
     // Instance Variables
     // ^^^^^^
@@ -180,10 +184,10 @@ public:
     // Static Variables
     // ^^^^^^
 
-    typedef bool (*hitCheck)(dCc_c*, dCc_c*);
+    using hitCheck = bool (*)(dCc_c*, dCc_c*);
 
     static hitCheck _hitCheck[4][4];
 
-    static dCc_c*   mEntryN; /// The first collider in the list.
-    static dCc_c*   mEntryB; /// The last collider in the list.
+    static dCc_c*   mEntryN; // The first collider in the list.
+    static dCc_c*   mEntryB; // The last collider in the list.
 };

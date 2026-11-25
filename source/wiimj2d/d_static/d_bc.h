@@ -149,6 +149,9 @@ public:
     /* 0x80070720 */
     u16 getFootAttr();
 
+    /* 0x80070C80 */
+    int getActorKind();
+
     bool hasSensorFoot() { return mpSensorFoot != nullptr; }
 
     bool hasSensorHead() { return mpSensorHead != nullptr; }

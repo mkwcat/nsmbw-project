@@ -41,6 +41,9 @@ dBc_c::Flag_e dBc_c::checkFootEnm();
 [[nsmbw(0x80070720)]]
 u16 dBc_c::getFootAttr();
 
+[[nsmbw(0x80070C80)]]
+int dBc_c::getActorKind();
+
 [[nsmbw(0x80076530)]]
 int dBc_c::checkWaterDepth(float, float, u8, u8, float*);
 

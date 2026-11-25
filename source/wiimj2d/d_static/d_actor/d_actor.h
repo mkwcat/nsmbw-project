@@ -253,7 +253,12 @@ public:
     /* 0x80064F50 */
     void ActorScrOutCheck(u16);
 
+public:
+    // Instance Methods
+    // ++++++
+
     void finalUpdateCarry();
+    bool checkNoCollide(dActor_c* other);
 
 public:
     // Static Methods

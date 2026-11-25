@@ -3,6 +3,8 @@
 
 #include "d_bg_ctr.h"
 
+#include "d_actor.h"
+
 [[nsmbw_data(0x8042A0C0)]]
 dBg_ctr_c* dBg_ctr_c::mEntryN;
 
@@ -46,3 +48,57 @@ void dBg_ctr_c::setAngleY3(short*);
 
 [[nsmbw(0x80080630)]]
 void dBg_ctr_c::updateObjBg();
+
+[[nsmbw(0x80080E40)]]
+bool dBg_ctr_c::crossCheckEnabled(
+    dBc_c* bc, u32 flags, u8 flagType
+) {
+    static const u32 cFlagsValue[]  = {0x80000000, 0x80000000, 0x40000000, 0x20000000};
+    static const u32 cFlagsValue2[] = {0x00000000, 0x00000000, 0x10000000, 0x08000000};
+
+    if (!mLinked || mpOwner == nullptr || m0xD4 != 0 || (bc->mAmiLine & mAmiLine) == 0 ||
+        bc->mpOwner == mpOwner || bc->mpOwner == mpCarryingActor || bc->mFriendActor == mpOwner ||
+        *bc->mpLayer != mLayer) {
+        return false;
+    }
+
+    if (mpOwner->checkNoCollide(bc->mpOwner)) {
+        return false;
+    }
+
+    if (mFlags & cFlagsValue[flagType & 0xff]) {
+        return false;
+    }
+    auto type = static_cast<dActor_c::ACTOR_TYPE_e>(bc->getActorKind());
+    if (type == dActor_c::ACTOR_TYPE_e::PLAYER || type == dActor_c::ACTOR_TYPE_e::YOSHI) {
+        if (mFlags & cFlagsValue2[flagType & 0xff]) {
+            return false;
+        }
+    } else {
+        if (mFlags & 0x4000000) {
+            return false;
+        }
+    }
+
+    if (m0xCC == 1) {
+        if (flags & 0x40) {
+            return false;
+        }
+    } else if (m0xCC == 2) {
+        if (flags & 0x80) {
+            return false;
+        }
+    } else if (m0xCC == 3) {
+        if ((flags & 0x100) || (flags & 0x10000000)) {
+            return false;
+        }
+    } else if (m0xCC == 4) {
+        if (flags & 0x200) {
+            return false;
+        }
+    }
+    if ((mFlags & 0x800) && (flags & 0x400)) {
+        return false;
+    }
+    return !(mFlags & 0x1000) || !(flags & 0x800);
+}

@@ -6,7 +6,6 @@
 #include "d_a_player.h"
 #include "d_a_player_manager.h"
 #include "d_attention.h"
-#include "d_bg.h"
 #include "d_cc.h"
 #include "d_fukidashiManager.h"
 #include "d_game_common.h"
@@ -188,6 +187,31 @@ void dActor_c::finalUpdateCarry() {
         mPos.x = calcPos.x;
         mPos.y = calcPos.y;
     }
+}
+
+bool dActor_c::checkNoCollide(
+    dActor_c* other
+) {
+    if (this == other) {
+        // No self-collisions
+        return true;
+    }
+
+    // True if a1 is a player carrying a2
+    auto checkCarry = [](dActor_c* a1, dActor_c* a2) -> bool {
+        if (a1->mProfName != dProf::PLAYER) {
+            return false;
+        }
+
+        auto* ex = dActorEx_c::get(a2);
+        if (ex == nullptr) {
+            return false;
+        }
+
+        return ex->mIsCarried && a1->mPlrNo == a2->mPlrNo;
+    };
+
+    return checkCarry(this, other) || checkCarry(other, this);
 }
 
 [[nsmbw(0x800651C0)]]
