@@ -29,8 +29,19 @@
                     <patch id="infinite_lives"/>
                 </choice>
             </option>
+            <option name="Lift anything">
+                <choice name="Actors &#x2026;">
+                    <patch id="liftable_actors"/>
+                </choice>
+                <choice name="Clone actors &#x2026;">
+                    <patch id="liftable_actors_clone"/>
+                </choice>
+                <choice name="Tiles">
+                    <patch id="liftable_tiles"/>
+                </choice>
+            </option>
             <option name="Display death messages">
-                <choice name="On all damage">
+                <choice name="On all damage &#x2026;">
                     <patch id="death_messages_death_and_damage"/>
                 </choice>
                 <choice name="Only on death">
@@ -63,20 +74,15 @@
                 </choice>
             </option>
             <option name="Hide motion control guides">
+                <choice name="Always &#x2026;">
+                    <patch id="fukidashi_hide_always"/>
+                </choice>
                 <choice name="With 5+ players">
                     <patch id="fukidashi_hide_players"/>
                 </choice>
-                <choice name="Always">
-                    <patch id="fukidashi_hide_always"/>
-                </choice>
-            </option>
-            <option name="Liftable tiles">
-                <choice name="Enabled">
-                    <patch id="liftable_tiles"/>
-                </choice>
             </option>
             <option name="Yoshi color modifier">
-                <choice name="Random colors">
+                <choice name="Random colors &#x2026;">
                     <patch id="yoshi_random_colors"/>
                 </choice>
                 <choice name="Always green">
@@ -127,8 +133,14 @@
     <patch id="yoshi_all_green">
         <memory offset="0x8000678E" value="02"/>
     </patch>
-    <patch id="liftable_tiles">
+    <patch id="liftable_actors">
         <memory offset="0x8000678F" value="01"/>
+    </patch>
+    <patch id="liftable_actors_clone">
+        <memory offset="0x8000678F" value="02"/>
+    </patch>
+    <patch id="liftable_tiles">
+        <memory offset="0x8000678F" value="03"/>
     </patch>
     <patch id="bubble_swarm_mode">
         <memory offset="0x80006794" value="01"/>
