@@ -19,15 +19,20 @@ public:
 
     /* 0x800D9BC0 */ void chkLink();
 
+    /* 0x800D9A30 */ bool check(u32, u32, u32);
+
+private:
+    /* 0x800D9C70 */ bool _rideCheckNormal(dRide_ctr_c*, u32, u32, u32);
+
 public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x04 */ dActor_c*    mpOwner;
-    /* 0x08 */ mVec3_c*     mpOwnerPos;
-    /* 0x0C */ dRc_c*       mpNext;
-    /* 0x10 */ dRide_ctr_c* mpRide[2];
-    /* 0x18 */ dBc_c*       mpBc;
+    /* 0x04 */ dActor_c*    mOwner;
+    /* 0x08 */ mVec3_c*     mOwnerPos;
+    /* 0x0C */ dRc_c*       mNext;
+    /* 0x10 */ dRide_ctr_c* mRide[2];
+    /* 0x18 */ dBc_c*       mBc;
     /* 0x1C */ float        m0x1C[4];
     /* 0x2C */ short        mRotation;
     /* 0x2E */ u8           mLineKind;
@@ -35,6 +40,16 @@ public:
     /* 0x30 */ u8           m0x30;
     /* 0x31 */ u8           m0x31;
     /* 0x32 */ u8           mLayer;
+
+public:
+    // Static Variables
+    // ^^^^^^
+
+private:
+    /* 0x8042A2F0 */ static float        mSavePosY;
+    /* 0x8042A2F4 */ static dRide_ctr_c* mRideLast;
+
+    /* 0x80371B10 */ static bool (dRc_c::*_rideCheck)(dRide_ctr_c*, u32, u32, u32);
 };
 
 class dRide_ctr_c {
@@ -53,15 +68,31 @@ public:
     virtual ~dRide_ctr_c();
 
 public:
+    // Instance Methods
+    // ^^^^^^
+
+private:
+    bool _rideCheckNormal(dRide_ctr_c*, u32, u32, u32);
+
+    using _rideCheckFn = bool (dRide_ctr_c::*)(dRide_ctr_c*, u32, u32, u32);
+
+public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x04 */ dActor_c*    mpOwner;
-    /* 0x08 */ dRide_ctr_c* mpPrev;
-    /* 0x0C */ dRide_ctr_c* mpNext;
-    /* 0x10 */ dRc_c*       mpChain;
+    /* 0x04 */ dActor_c*    mOwner;
+    /* 0x08 */ dRide_ctr_c* mNext;
+    /* 0x0C */ dRide_ctr_c* mPrev;
+    /* 0x10 */ dRc_c*       mChain;
 
     u8                      FILL(0x14, 0x4C);
+
+public:
+    // Static Variables
+    // ^^^^^^
+
+    /* 0x8042A2FC */ static dRide_ctr_c* mEntryN;
+    /* 0x8042A300 */ static dRide_ctr_c* mEntryB;
 };
 
 class dRideRoll_c : public dRide_ctr_c {
@@ -74,7 +105,7 @@ public:
     dRideRoll_c();
 
     /* VT+0x08 */
-    virtual ~dRideRoll_c() override;
+    ~dRideRoll_c() override;
 
 public:
     // Instance Variables

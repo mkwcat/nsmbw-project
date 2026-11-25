@@ -6,26 +6,27 @@
 #include "d_a_ice.h"
 #include "d_a_player.h"
 #include "d_a_yoshi.h"
+#include <algorithm>
 
 [[nsmbw(0x808377B0)]]
 bool daLiftFall_c::checkRideStart() const {
     int count = 0;
-    for (dRc_c* rc = mRc.mpChain; rc != nullptr; rc = rc->mpNext) {
-        dActor_c* actor = rc->mpOwner;
+    for (dRc_c* rc = mRc.mChain; rc != nullptr; rc = rc->mNext) {
+        dActor_c* actor = rc->mOwner;
         if (!actor) {
             continue;
         }
 
-        if (dAcPy_c* player = actor->DynamicCast<dAcPy_c>()) {
+        if (auto* player = actor->DynamicCast<dAcPy_c>()) {
             count++;
             if (player->getCarryPlayer()) {
                 count++;
             }
-        } else if (daYoshi_c* yoshi = actor->DynamicCast<daYoshi_c>()) {
+        } else if (auto* yoshi = actor->DynamicCast<daYoshi_c>()) {
             if (yoshi->mEatStage != 0) {
                 count++;
             }
-        } else if (daIce_c* ice = actor->DynamicCast<daIce_c>()) {
+        } else if (auto* ice = actor->DynamicCast<daIce_c>()) {
             if (ice->checkPlAttach_Head(nullptr)) {
                 count++;
             }
@@ -43,9 +44,7 @@ bool daLiftFall_c::checkRideStart() const {
         // 3 = 100%
         u32 r  = (minPlr + 1) * 0x4000;
         minPlr = s16((r * daPyMng_c::getEntryNum()) >> 16);
-        if (minPlr < 1) {
-            minPlr = 1;
-        }
+        minPlr = std::max(minPlr, 1);
     }
 
     return count >= minPlr;

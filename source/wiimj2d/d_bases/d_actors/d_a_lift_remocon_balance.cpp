@@ -30,11 +30,11 @@ void daRemoconBalance_c::nodeCallbackB_c::timingA(u32, nw4r::g3d::ChrAnmResult*,
 [[nsmbw(0x8083D380)]]
 void daRemoconBalance_c::FUN_8083D380() {
     bool isRide[PLAYER_COUNT] = {};
-    for (dRc_c* rc = mRideRoll.mpChain; rc != nullptr; rc = rc->mpNext) {
-        if (rc->mpOwner == nullptr) {
+    for (dRc_c* rc = mRideRoll.mChain; rc != nullptr; rc = rc->mNext) {
+        if (rc->mOwner == nullptr) {
             continue;
         }
-        if (daPlBase_c* player = rc->mpOwner->DynamicCast<daPlBase_c>()) {
+        if (auto* player = rc->mOwner->DynamicCast<daPlBase_c>()) {
             if (const s8& plrNo = player->getPlrNo(); plrNo != -1) {
                 isRide[plrNo] = true;
             }

@@ -10,12 +10,12 @@
 bool daLiftRideMove_c::isAllPlayerOnLift() {
     int numPlayer = 0;
 
-    for (dRc_c* rc = mRideRoll.mpChain; rc != nullptr; rc = rc->mpNext) {
-        if (rc->mpOwner == nullptr) {
+    for (dRc_c* rc = mRideRoll.mChain; rc != nullptr; rc = rc->mNext) {
+        if (rc->mOwner == nullptr) {
             continue;
         }
 
-        if (dAcPy_c* player = rc->mpOwner->DynamicCast<dAcPy_c>()) {
+        if (auto* player = rc->mOwner->DynamicCast<dAcPy_c>()) {
             numPlayer++;
 
             if (player->getCarryPlayer()) {
@@ -23,7 +23,7 @@ bool daLiftRideMove_c::isAllPlayerOnLift() {
             }
         }
 
-        if (daYoshi_c* yoshi = rc->mpOwner->DynamicCast<daYoshi_c>()) {
+        if (auto* yoshi = rc->mOwner->DynamicCast<daYoshi_c>()) {
             if (yoshi->mEatStage != 0 && yoshi->getPlrNo() != -1) {
                 numPlayer++;
             }

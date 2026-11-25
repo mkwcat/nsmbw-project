@@ -25,14 +25,14 @@ u8 daLiftRemoconMain_c::UpdateControlPlayerNo(
 
     u32 playerMask = 0;
 
-    for (dRc_c* chain = mRideRoll.mpChain; chain != nullptr; chain = chain->mpNext) {
-        dActor_c* actor = chain->mpOwner;
+    for (dRc_c* chain = mRideRoll.mChain; chain != nullptr; chain = chain->mNext) {
+        dActor_c* actor = chain->mOwner;
         if (actor == nullptr || (actor->mKind != dActor_c::ACTOR_TYPE_e::PLAYER &&
                                  actor->mKind != dActor_c::ACTOR_TYPE_e::YOSHI)) {
             continue;
         }
 
-        daPlBase_c* player = static_cast<daPlBase_c*>(actor);
+        auto* player = static_cast<daPlBase_c*>(actor);
         if (player == nullptr || player->isItemKinopio()) {
             continue;
         }
