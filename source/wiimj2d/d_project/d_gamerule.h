@@ -20,7 +20,7 @@ struct dGameRule_s {
     fukidashi_mode_e   fukidashi_mode              = fFeat::fukidashi_mode;
     yoshi_color_mode_e yoshi_color_mode            = fFeat::yoshi_color_mode;
     death_messages_e   death_messages              = fFeat::death_messages;
-    liftable_mode_e    liftable_mode               = liftable_mode_e::actors;
+    liftable_mode_e    liftable_mode               = liftable_mode_e::actors_clone;
     bool               bubble_swarm_mode           = fFeat::bubble_swarm_mode;
     bool               deadly_1up                  = fFeat::deadly_1up;
     bool               mega_bowser_in_every_course = fFeat::mega_bowser_in_every_course;

@@ -259,6 +259,7 @@ public:
 
     void finalUpdateCarry();
     bool checkNoCollide(dActor_c* other);
+    bool isCloneAllowed() const;
 
 public:
     // Static Methods

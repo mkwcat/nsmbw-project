@@ -12,6 +12,7 @@
 #include "d_game_common.h"
 #include "d_info.h"
 #include "d_mj2d_game.h"
+#include "d_profile.h"
 #include "d_s_stage.h"
 #include <limits>
 
@@ -217,6 +218,32 @@ bool dActor_c::checkNoCollide(
     };
 
     return checkCarry(this, other) || checkCarry(other, this);
+}
+
+constexpr std::bitset<dProf::COUNT> cCloneActorAllowed = [] {
+    std::bitset<dProf::COUNT> b;
+    b.set();
+
+    b[dProf::PLAYER]        = false;
+    b[dProf::YOSHI]         = false;
+    b[dProf::EN_KARON_HEAD] = false;
+    b[dProf::ICE_ACTOR]     = false;
+
+    // Disable all tags except TAG_BG_FOR_CASTLE_LUDWIG
+    b[dProf::TAG_ENVSOUND]  = false;
+    b[dProf::TAG_SCROLL]    = false;
+    b[dProf::TAG_THUNDER]   = false;
+    b[dProf::TAG_WATER]     = false;
+    b[dProf::TAG_WIND]      = false;
+
+    // Other
+    b[dProf::EN_COIN_ANGLE] = false;
+
+    return b;
+}();
+
+bool dActor_c::isCloneAllowed() const {
+    return cCloneActorAllowed[dProf::toStatic(mProfName)];
 }
 
 [[nsmbw(0x800651C0)]]

@@ -21,8 +21,8 @@
 #include "f_base.h"
 #include "f_base_id.h"
 #include "f_manager.h"
+#include "revolution/os/OSError.h"
 #include <algorithm>
-#include <limits>
 #include <slu/delegate.hpp>
 #include <type_traits>
 #include <utility>
@@ -98,7 +98,76 @@ void dAcPy_c::setSpinLiftUpReserve() {
         return;
     }
 
-    const auto setSpinLiftUpActor = [&](dActor_c* actor) {
+    const auto mode          = dGameRule_s::current.liftable_mode;
+    const bool allowAnyActor = mode == dGameRule_s::liftable_mode_e::actors ||
+                               mode == dGameRule_s::liftable_mode_e::actors_clone;
+
+    const auto checkSpinLiftUpEnable_ = [this, mode, allowAnyActor](dActor_c* actor) {
+        if (actor == this || actor == nullptr) {
+            // Can't lift yourself or null actor
+            return false;
+        }
+        if (!allowAnyActor && !actor->isSpinLiftUpEnable()) {
+            return false;
+        }
+        if (mode == dGameRule_s::liftable_mode_e::actors_clone) {
+            // Some actors can't be cloned
+            return actor->isCloneAllowed();
+        }
+        // Can't steal other player's carry
+        return !dActorEx_c::get(actor)->mIsCarried || actor->mPlrNo == mPlrNo;
+    };
+
+    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
+    if (!checkSpinLiftUpEnable_(actor)) {
+        actor = nullptr;
+    }
+
+    if (actor == nullptr && mode != dGameRule_s::liftable_mode_e::disabled &&
+        mAttCc1.mCcData.mAttack == 18 && mKey.buttonOne()) {
+        // Spin lift up action but no actor was found
+        if (allowAnyActor) {
+            // _Any_ actor is allowed here; find the nearest to the player
+            mVec2_c delta;
+            actor = searchNearAnyActor(delta, mPos, slu::lambda_delegate(checkSpinLiftUpEnable_));
+
+            if (actor != nullptr && mode == dGameRule_s::liftable_mode_e::actors_clone) {
+                // Create a new actor with the same settings
+                DEBUG_REPORT(
+                    "Clone actor of type %s with settings 0x%08lX\n",
+                    dProf::getName(actor->mProfName), mParam
+                );
+                actor = dActor_c::construct(
+                    actor->mProfName, actor->mParam, &mPos, &actor->mAngle, actor->mLayer
+                );
+            }
+
+            if (actor != nullptr) {
+                // Set the custom carried data
+                auto* ex       = dActorEx_c::get(actor);
+                ex->mIsCarried = true;
+                actor->mPlrNo  = mPlrNo;
+            }
+        } else if (mode == dGameRule_s::liftable_mode_e::tiles) {
+            // Create a tile to lift. Get foot sensor position
+            float footY = getFootBgPointData()->mOffsetY / 4096.0;
+            u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
+            u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
+            if (u16* tileBelow = dBg_c::m_bg_p->GetUnitPointer(bgX, bgY, mLayer, nullptr, false);
+                *tileBelow > 0) {
+                // We're standing on a tile, clone it
+                actor = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
+
+                // Delete the tile we're standing on
+                dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
+
+                // Duplicate the tile on layer 0
+                // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
+            }
+        }
+    }
+
+    if (actor != nullptr) {
         mCarryActorID = actor->mUniqueID;
         m0x27E0       = 0;
         mPyMdlMng.mModel->mVisibilityFlags |= 4;
@@ -108,77 +177,6 @@ void dAcPy_c::setSpinLiftUpReserve() {
         changeState(StateID_LiftUp, 0);
         dQuake_c::m_instance->shockMotor(mPlrNo, dQuake_c::TYPE_SHOCK_e::HIP_ATTACK2, 0, false);
         actor->setSpinLiftUpActor(this);
-    };
-
-    dActor_c* actor = static_cast<dActor_c*>(fManager_c::searchBaseByID(m0x27D4));
-    if (actor != nullptr && actor->isSpinLiftUpEnable()) {
-        setSpinLiftUpActor(actor);
-        return clearSpinLiftUpReserve();
-    }
-
-    if (dGameRule_s::current.liftable_mode == dGameRule_s::liftable_mode_e::disabled ||
-        mAttCc1.mCcData.mAttack != 18 || !mKey.buttonOne()) {
-        return clearSpinLiftUpReserve();
-    }
-
-    // No actor found to lift
-
-    bool clone = false;
-    switch (dGameRule_s::current.liftable_mode) {
-    case dGameRule_s::liftable_mode_e::tiles: {
-        // Get foot sensor position
-        float footY = getFootBgPointData()->mOffsetY / 4096.0;
-        u16   bgX   = static_cast<u16>(mPos.x) & 0xFFF0;
-        u16   bgY   = static_cast<u16>(-(mPos.y - footY)) & 0xFFF0;
-        if (u16* tileBelow = dBg_c::m_bg_p->GetUnitPointer(bgX, bgY, mLayer, nullptr, false);
-            *tileBelow > 0) {
-            // We're standing on a tile, clone it
-            dActor_c* liftBg = construct(dProf::AC_BG_CARRY, *tileBelow, &mPos, nullptr, 0);
-            setSpinLiftUpActor(liftBg);
-
-            // Duplicate the tile on layer 0
-            // dBg_c::m_bg_p->BgUnitChange(bgX, bgY, 2, *tileBelow | 0x8000);
-
-            // Delete the tile we're standing on
-            dBg_c::m_bg_p->BgUnitChange(bgX, bgY, mLayer, 0);
-        }
-    } break;
-
-    case dGameRule_s::liftable_mode_e::actors_clone:
-        clone = true;
-        [[fallthrough]];
-
-    case dGameRule_s::liftable_mode_e::actors: {
-        // Find the nearest actor to the player
-        mVec2_c   delta;
-        dActor_c* actor = searchNearAnyActor(
-            delta, mPos,
-            slu::lambda_delegate( //
-                [this, clone](dActor_c* actor) {
-                    if (actor == this) {
-                        // Can't lift yourself
-                        return false;
-                    }
-                    if (clone) {
-                        // Can't clone players or Yoshi
-                        return !actor->DynamicCast<daPlBase_c>();
-                    }
-                    auto* ex = dActorEx_c::get(actor);
-                    // Can't steal other player's carry
-                    return !ex->mIsCarried || actor->mPlrNo == mPlrNo;
-                }
-            )
-        );
-
-        if (actor) {
-            setSpinLiftUpActor(actor);
-            auto* ex       = dActorEx_c::get(actor);
-            ex->mIsCarried = true;
-            actor->mPlrNo  = mPlrNo;
-        }
-    } break;
-
-    default:
     }
 
     return clearSpinLiftUpReserve();
@@ -441,7 +439,6 @@ void dAcPy_c::endDemoDokanCannon(mVec3_c&);
  */
 [[nsmbw(0x801400B0)]]
 void dAcPy_c::executeDemoGoal_Run() ASM_METHOD(
-  // clang-format off
 /* 801400B0 9421FFE0 */  stwu     r1, -32(r1);
 /* 801400B4 7C0802A6 */  mflr     r0;
 /* 801400B8 90010024 */  stw      r0, 36(r1);
@@ -696,7 +693,6 @@ UNDEF_80140420:;
 /* 8014042C 7C0803A6 */  mtlr     r0;
 /* 80140430 38210020 */  addi     r1, r1, 32;
 /* 80140434 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x80141020)]]
@@ -803,7 +799,6 @@ void dAcPy_c::setSceneChangeInfo() {
  */
 [[nsmbw(0x80144EA0)]]
 fBase_c::PACK_RESULT_e dAcPy_c::create() ASM_METHOD(
-  // clang-format off
 /* 80144EA0 9421FFF0 */  stwu     r1, -16(r1);
 /* 80144EA4 7C0802A6 */  mflr     r0;
 /* 80144EA8 38C00000 */  li       r6, 0;
@@ -979,13 +974,11 @@ UNDEF_80145100:;
 /* 80145174 7C0803A6 */  mtlr     r0;
 /* 80145178 38210010 */  addi     r1, r1, 16;
 /* 8014517C 4E800020 */  blr;
-  // clang-format on
 );
 
 [[nsmbw(0x80145C00)]]
 bool dAcPy_c::switchMode(PLAYER_MODE_e mode);
 
-/* VT+0x3F4  */
 [[nsmbw(0x80146230)]]
 bool dAcPy_c::setDamage(
     dActor_c* source, DamageType_e type
@@ -1019,7 +1012,6 @@ bool dAcPy_c::setDamage(
     return true;
 }
 
-/* VT+0x3F8 */
 [[nsmbw(0x80146310)]]
 bool dAcPy_c::setForcedDamage(
     dActor_c* source, DamageType_e type

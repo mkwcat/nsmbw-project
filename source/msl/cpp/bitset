@@ -61,7 +61,7 @@ public:
     // Operator Overloads
     // ^^^^^^
 
-    bool operator==(
+    constexpr bool operator==(
         const bitset& rhs
     ) const noexcept {
         for (std::size_t i = 0; i < std::size(m_bits); i++) {
@@ -78,7 +78,7 @@ public:
         return test(pos);
     }
 
-    reference operator[](
+    constexpr reference operator[](
         std::size_t pos
     ) {
         assert(pos < N);
