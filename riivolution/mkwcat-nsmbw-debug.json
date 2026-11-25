@@ -6,13 +6,15 @@
     "force_all_wm_subplayers_present": false,
     // One player can trigger a special ground pound
     "one_player_special_hip_attack_quake": false,
+    // Re-enables collision checks with carried actors when lift any actor is enabled
+    "disable_no_collide": false,
 
     // Configure a test scenario for the game to boot into;
     // either "world" and "stage", "staffroll", "movie", "title_demo", or "hint_movie_demo"
     // must be set for autoboot to be enabled
     "autoboot": {
         "world": null,           // World number
-        "stage": null,           // Stage number (or string e.g. "castle")
+        "stage": null,           // Stage number (or string e.g. "tower")
         "area": 1,               // Area number
         "entrance": 0,           // Entrance number
         "num_players": 1,        // Number of players

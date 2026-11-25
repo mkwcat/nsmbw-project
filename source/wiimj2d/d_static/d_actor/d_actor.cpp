@@ -7,6 +7,7 @@
 #include "d_a_player_manager.h"
 #include "d_attention.h"
 #include "d_cc.h"
+#include "d_debug_option.h"
 #include "d_fukidashiManager.h"
 #include "d_game_common.h"
 #include "d_info.h"
@@ -192,6 +193,10 @@ void dActor_c::finalUpdateCarry() {
 bool dActor_c::checkNoCollide(
     dActor_c* other
 ) {
+    if (dDebugOpt::disable_no_collide) {
+        return false;
+    }
+
     if (this == other) {
         // No self-collisions
         return true;
