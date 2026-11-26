@@ -1,8 +1,8 @@
 #pragma once
 
-#include "d_base.h"
+#include "d_wm_demo_actor.h"
 
-class dWCamera_c : public dBase_c {
+class dWCamera_c : public dWmDemoActor_c {
 public:
     // Static Variables
     // ^^^^^^

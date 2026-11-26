@@ -305,11 +305,11 @@ public:
     }
 
     std::size_t mPosStrings      = 0;
-    char        mStrings[0x8000] = {};
+    char        mStrings[0x20000] = {};
     std::size_t mPosTokens       = 0;
-    u8          mTokens[0x4000]  = {};
+    u8          mTokens[0x20000]  = {};
     std::size_t mPosOffsets      = 0;
-    const void* mOffsets[0x1000] = {};
+    const void* mOffsets[0x8000] = {};
     int         mSkipDepth       = 0;
 };
 

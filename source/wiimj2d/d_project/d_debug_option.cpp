@@ -38,6 +38,7 @@ constexpr dMj2dJson_c::Field_c cAutobootFields[] = {
 constexpr dMj2dJson_c::Field_c cFields[] = {
     {"print_base_creation", print_base_creation},
     {"print_state_changes", print_state_changes},
+    {"print_worldmap_demo", print_worldmap_demo},
     {"one_player_special_hip_attack_quake", one_player_special_hip_attack_quake},
     {"end_battles_immediately", end_battles_immediately},
     {"force_all_wm_subplayers_present", force_all_wm_subplayers_present},

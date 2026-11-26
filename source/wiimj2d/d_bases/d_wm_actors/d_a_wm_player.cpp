@@ -256,12 +256,16 @@ u32 daWmPlayer_c::checkCsGuideKey() {
             }
             daWmKinoBalloon_c::UNDEF_808D8720();
             // SMC_DEMO_VIEW_WORLD
-            return csSeqMng->addScriptToQueue(0x1E, this, dWCamera_c::m_instance, 0x80);
+            return csSeqMng->requestNextDemo(
+                dCsSeqMng_c::demo_name_e::view_world, this, dWCamera_c::m_instance, 128
+            );
         }
         // Omitting some unused dWmLib::isYokoCon calls here...
         if (core->downTrigger(EGG::cCORE_BUTTON_PLUS)) {
             // SMC_DEMO_PAUSE_MENU
-            return csSeqMng->addScriptToQueue(0x2F, nullptr, nullptr, 0x80);
+            return csSeqMng->requestNextDemo(
+                dCsSeqMng_c::demo_name_e::Pause_Menu, nullptr, nullptr, 128
+            );
         }
 
         u32 checkButton;
@@ -276,12 +280,16 @@ u32 daWmPlayer_c::checkCsGuideKey() {
 
         if (core->downTrigger(checkButton)) {
             // SMC_DEMO_STOCK_MENU
-            return csSeqMng->addScriptToQueue(0x31, nullptr, nullptr, 0x80);
+            return csSeqMng->requestNextDemo(
+                dCsSeqMng_c::demo_name_e::Stock_Menu, nullptr, nullptr, 128
+            );
         }
 
         if (core->downTrigger(EGG::cCORE_BUTTON_MINUS)) {
             // SMC_DEMO_WORLDSELECT_MENU
-            return csSeqMng->addScriptToQueue(0x32, nullptr, nullptr, 0x80);
+            return csSeqMng->requestNextDemo(
+                dCsSeqMng_c::demo_name_e::WorldSelect_Menu, nullptr, nullptr, 128
+            );
         }
     }
 

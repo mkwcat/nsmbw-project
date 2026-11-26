@@ -1,6 +1,7 @@
 {
     "print_base_creation": false,     // Log base creation and deletion to OSReport
     "print_state_changes": false,     // Log all state changes to OSReport
+    "print_worldmap_demo": false,     // Log the state of world map demo sequences
     "end_battles_immediately": false, // End all boss battles immediately after starting
     // Force all 8 sub-players to be present on the world map, regardless of player count
     "force_all_wm_subplayers_present": false,

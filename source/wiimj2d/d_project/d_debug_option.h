@@ -6,6 +6,7 @@ namespace dDebugOpt {
 
 inline constinit bool print_base_creation                 = false;
 inline constinit bool print_state_changes                 = false;
+inline constinit bool print_worldmap_demo                 = false;
 
 inline constinit bool one_player_special_hip_attack_quake = false;
 inline constinit bool end_battles_immediately             = false;
