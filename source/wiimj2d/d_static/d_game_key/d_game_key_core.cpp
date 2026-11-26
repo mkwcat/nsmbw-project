@@ -35,7 +35,7 @@ void dGameKeyCore_c::read() {
 
     dReplayPlay_c*   replayData = dScStage_c::m_replayPlay_p[mPlayerNo];
     if (replayData == nullptr) {
-        // Replay is not active for this channel, sssign controller type
+        // Replay is not active for this channel; assign controller type
         using Extension_e = dRemoconMng_c::dConnect_c::dExtension_c::Type_e;
         Extension_e devType =
             dRemoconMng_c::m_instance->mpConnect[mPlayerNo]->getExtension()->getType();

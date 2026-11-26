@@ -239,7 +239,7 @@ void dRemoconMng_c::dConnect_c::executeState_Shutdown() {
 void dRemoconMng_c::dConnect_c::initializeState_Setup() {
     // Call to dRemoconMng_c::dConnect_c::dExtension_c::setup removed because it's just a blr
 
-    OS_REPORT("Remocon Setup: %s\n", slu::to_string<mPad::CH_e>(mChannel));
+    OS_REPORT("Remocon Setup: %s\n", slu::to_string(static_cast<mPad::CH_e>(mChannel)));
 
     mBattery = mPad::getBatteryLevel_ch(mChannel);
 
@@ -262,7 +262,9 @@ void dRemoconMng_c::dConnect_c::finalizeState_Setup() {
 
     deregisterOrder();
 
-    mExtension.shutdown();
+    if (mExtension.mType != dExtension_c::Type_e::DOLPHIN) {
+        mExtension.shutdown();
+    }
 
     if (mChannel >= mPad::CH_e::CHAN_0 && mChannel <= mPad::CH_e::CHAN_LAST) {
         EGG::AudioRmtSpeaker::setup(std::to_underlying(mChannel), nullptr);
@@ -293,7 +295,7 @@ void dRemoconMng_c::dConnect_c::executeState_Setup() {
 
     mExtension.execute();
 
-    mBattery = mPad::getBatteryLevel_ch(mPad::CH_e(mChannel));
+    mBattery = mPad::getBatteryLevel_ch(mChannel);
 }
 
 [[nsmbw(0x800DCA60)]]
