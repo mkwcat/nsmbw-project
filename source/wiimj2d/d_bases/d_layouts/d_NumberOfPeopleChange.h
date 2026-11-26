@@ -32,7 +32,7 @@ public:
     dNumberOfPeopleChange_c();
 
     /* VT+0x48 0x8079F8D0 */
-    virtual ~dNumberOfPeopleChange_c() override;
+    ~dNumberOfPeopleChange_c() override;
 
 public:
     // Constants
@@ -137,23 +137,23 @@ public:
 
     void setEasyPairingWait(bool enable);
 
-    inline void setPlayer(
+    void setPlayer(
         PLAYER_TYPE_e type, da2DPlayer_c* player
     ) {
         mp2DPlayer[type] = player;
     }
 
     [[nodiscard]]
-    inline nw4r::lyt::Picture* getControllerLight(
+    nw4r::lyt::Picture* getControllerLight(
         std::size_t index
     ) const {
         if (index < 4) {
             return mpPRemoLight[index];
-        } else if (index < 8) {
-            return mpPDolphinLight[index - 4];
-        } else {
-            return nullptr;
         }
+        if (index < 8) {
+            return mpPDolphinLight[index - 4];
+        }
+        return nullptr;
     }
 
 private:
@@ -164,21 +164,20 @@ private:
     std::size_t getCcFromPly(std::size_t ply) const;
 
     [[nodiscard]]
-    inline bool isBottomIndex(
+    bool isBottomIndex(
         std::size_t cc
     ) const {
         if (mPlayerCount <= 6) {
             return cc >= 3u;
-        } else {
-            return cc >= 4u;
         }
+        return cc >= 4u;
     }
 
 public:
     // Instance Variables
     // ^^^^^^
 
-    u8                                            FILL(0x070, 0x074);
+    /* 0x070 */ u8                                FILL(0x070, 0x074);
 
     /* 0x074 */ dCharacterChangeSelectBase_c*     REMOVED(mpCcSelBase)[4];
     /* 0x084 */ dCharacterChangeSelectContents_c* REMOVED(mpCcSelContents)[4];
@@ -216,7 +215,7 @@ public:
 
     /* 0x64C */ da2DPlayer_c*                   REMOVED(mp2DPlayer)[4];
 
-    u8                                          FILL(0x65C, 0x67C);
+    /* 0x65C */ u8                              FILL(0x65C, 0x67C);
 
     /* 0x67C */ bool                            mReady = false;
     /* 0x67D */ bool                            m0x67D;
@@ -245,7 +244,7 @@ public:
     /* 0x6E0 */ PLAYER_TYPE_e                   REMOVED(mPlyDecidedPlayerType)[4];
     /* 0x6F0 */ PLAYER_TYPE_e                   REMOVED(mCcDecidedPlayerType)[4];
 
-    u8                                          FILL(0x700, 0x710);
+    /* 0x700 */ u8                              FILL(0x700, 0x710);
     OFFSET_ASSERT(0x710);
 
     // Instance Variables
@@ -260,7 +259,7 @@ public:
 
     slu::enum_array<da2DPlayer_c*, PLAYER_TYPE_e> mp2DPlayer;
 
-    int                                           mConnectPlrNo[REMOCON_CONNECT_COUNT];
+    int                                           mConnectPlrNo[dRemoconMng_c::CONNECT_COUNT];
     dInfo_c::PlyConnectStage_e                    mPlyConnectStage[PLAYER_COUNT];
     int                                           mCcPlrBaseIndex[MAX_CC_COUNT];
     int                                           mPlyPlrBaseIndex[PLAYER_COUNT];

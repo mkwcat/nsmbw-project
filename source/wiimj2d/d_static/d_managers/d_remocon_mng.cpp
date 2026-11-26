@@ -28,31 +28,33 @@ dRemoconMng_c::dRemoconMng_c(
     dRemoconMng_c* old
 )
     : mDummyConnect(*new dConnect_c(mPad::CH_e::COUNT)) {
-    for (std::size_t connect = 0; connect < 4; connect++) {
-        dConnect_c* pConnect = mpConnectAll[connect] = old->mpConnect[connect];
-        pConnect->mChannel                           = connect;
-        pConnect->mPlayerNo                          = -1;
+    for (std::size_t i = 0; i < 4; i++) {
+        auto        ch       = static_cast<mPad::CH_e>(i);
+        dConnect_c* pConnect = mpConnectAll[ch] = old->mpConnect[i];
+        pConnect->mChannel                      = ch;
+        pConnect->mPadID                        = -1;
     }
     dConnect_c* pAllConnect = std::allocator<dConnect_c>{}.allocate(CONNECT_COUNT - 4);
-    for (std::size_t connect = 4; connect < CONNECT_COUNT; connect++) {
-        mpConnectAll[connect] =
-            std::construct_at<dConnect_c>(pAllConnect + (connect - 4), mPad::CH_e(connect));
+    for (std::size_t i = 4; i < CONNECT_COUNT; i++) {
+        auto ch          = static_cast<mPad::CH_e>(i);
+        mpConnectAll[ch] = std::construct_at<dConnect_c>(pAllConnect + (i - 4), ch);
     }
 
     operator delete(old);
 
-    std::size_t connect = 0, player = 0;
-    for (; connect < 4 && player < 4; connect++) {
-        if (!mpConnectAll[connect]->isSetup()) {
+    std::size_t player = 0;
+    for (dConnect_c* pConnect : mpConnectAll) {
+        if (player >= 4) {
+            break;
+        }
+        if (!pConnect->isSetup()) {
             continue;
         }
 
-        dConnect_c* pConnect = mpConnectAll[connect];
-        pConnect->mPlayerNo  = player;
-        mpConnect[player]    = pConnect;
+        pConnect->mPadID  = player;
+        mpConnect[player] = pConnect;
         mPad::setPlayerOrder(player++, pConnect->getChannel());
     }
-
     for (; player < PLAYER_COUNT; player++) {
         mpConnect[player] = &mDummyConnect;
     }
@@ -60,10 +62,8 @@ dRemoconMng_c::dRemoconMng_c(
 
 [[nsmbw(0x800DC0D0)]]
 dRemoconMng_c::~dRemoconMng_c() {
-    for (std::size_t connect = 0; connect < CONNECT_COUNT; connect++) {
-        dConnect_c* pConnect = mpConnectAll[connect];
-        mpConnect[connect]   = nullptr;
-        delete pConnect;
+    for (dConnect_c*& connect : mpConnectAll) {
+        delete std::exchange(connect, nullptr);
     }
 }
 
@@ -79,15 +79,15 @@ dRemoconMng_c::dConnect_c::dExtension_c::~dExtension_c() {}
 
 [[nsmbw(0x800DC570)]]
 void dRemoconMng_c::execute() {
-    for (int i = 0; i < CONNECT_COUNT; i++) {
-        m_instance->mpConnectAll[i]->execute();
+    for (auto& connect : m_instance->mpConnectAll) {
+        connect->execute();
     }
 
     bool allowConnect = false;
 
-    // Only the first 4 matter because the rest are GameCube controllers
-    for (int i = mPad::CH_e::CHAN_0; i <= mPad::CH_e::CHAN_LAST; i++) {
-        dConnect_c* connect = m_instance->mpConnectAll[i];
+    // Only the first four matter because the rest are GameCube controllers
+    for (int i = 0; i < 4; i++) {
+        dConnect_c* connect = m_instance->mpConnectAll[static_cast<mPad::CH_e>(i)];
 
         if (!connect->mAllowConnect) {
             continue;
@@ -140,7 +140,7 @@ void dRemoconMng_c::setFirstConnect(
 dRemoconMng_c::dConnect_c::dConnect_c(
     mPad::CH_e channel
 )
-    : mPlayerNo(-1)
+    : mPadID(-1)
     , mExtension(channel)
     , mBattery(-1)
     , mAllowConnect(true)
@@ -148,49 +148,44 @@ dRemoconMng_c::dConnect_c::dConnect_c(
     , mChannel(channel)
     , mStateMgr(*this, StateID_Shutdown) {
     if (channel != mPad::CH_e::COUNT) {
-        mPad::g_core[channel]->createRumbleMgr(8);
+        mPad::g_coreUnordered[channel]->createRumbleMgr(8);
     }
 }
 
 void dRemoconMng_c::dConnect_c::registerOrder() {
-    if (mPlayerNo >= 0) {
+    if (mPadID >= 0) {
         return;
     }
 
-    auto* mng = dRemoconMng_c::m_instance;
+    auto* mng = m_instance;
     for (std::size_t player = mng->mFirstConnect; player < PLAYER_COUNT; player++) {
         if (mng->mpConnect[player] == &mng->mDummyConnect) {
             mng->mpConnect[player] = this;
-            mPad::setPlayerOrder(player, mPad::CH_e(mChannel));
-            mPlayerNo = player;
+            mPad::setPlayerOrder(player, mChannel);
+            mPadID = player;
             break;
         }
     }
 }
 
 void dRemoconMng_c::dConnect_c::deregisterOrder() {
-    if (mPlayerNo < 0) {
+    if (mPadID < 0) {
         return;
     }
 
-    auto* mng                 = dRemoconMng_c::m_instance;
-    mng->mpConnect[mPlayerNo] = &mng->mDummyConnect;
-    mPlayerNo                 = -1;
+    m_instance->mpConnect[mPadID] = &m_instance->mDummyConnect;
+    mPadID                        = -1;
 }
 
 bool dRemoconMng_c::dConnect_c::splitExtension() {
-    if (mPlayerNo < 0 || mExtension.getType() != dExtension_c::Type_e::CLASSIC ||
+    if (mPadID < 0 || mExtension.getType() != dExtension_c::Type_e::CLASSIC ||
         (mChannel >= mPad::CH_e::CHAN_CL_0 && mChannel <= mPad::CH_e::CHAN_CL_LAST)) {
         return false;
     }
 
-    int         classic        = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
-
-    auto*       mng            = dRemoconMng_c::m_instance;
-
-    dConnect_c* classicConnect = mng->mpConnectAll[classic];
-    classicConnect->mStateMgr.changeState(StateID_Setup);
-    classicConnect->mExtension.mStateMgr.changeState(*mExtension.mStateMgr.getStateID());
+    dConnect_c* pClassic = m_instance->mpConnectAll[mPad::getClassicChannel(mChannel)];
+    pClassic->mStateMgr.changeState(StateID_Setup);
+    pClassic->mExtension.mStateMgr.changeState(*mExtension.mStateMgr.getStateID());
 
     mExtension.mStateMgr.changeState(dExtension_c::StateID_Split);
 
@@ -199,7 +194,7 @@ bool dRemoconMng_c::dConnect_c::splitExtension() {
 
 [[nsmbw(0x800DC7E0)]]
 void dRemoconMng_c::dConnect_c::executeState_Shutdown() {
-    EGG::Controller* controller = mPad::g_core[mChannel];
+    EGG::Controller* controller = mPad::g_coreUnordered[mChannel];
     if (controller->getClassicController()) {
         return;
     }
@@ -209,7 +204,8 @@ void dRemoconMng_c::dConnect_c::executeState_Shutdown() {
             return;
         }
         if (mChannel >= mPad::CH_e::CHAN_0 && mChannel <= mPad::CH_e::CHAN_LAST) {
-            if (core->mStatus->getDevType() != mPad::g_padMg->mDevTypes(mChannel)) {
+            if (core->mStatus->getDevType() !=
+                mPad::g_padMg->mDevTypes(std::to_underlying(mChannel))) {
                 return;
             }
             if (!mAllowConnect) {
@@ -243,17 +239,17 @@ void dRemoconMng_c::dConnect_c::executeState_Shutdown() {
 void dRemoconMng_c::dConnect_c::initializeState_Setup() {
     // Call to dRemoconMng_c::dConnect_c::dExtension_c::setup removed because it's just a blr
 
-    OS_REPORT("Remocon Setup: %s\n", slu::to_string(static_cast<mPad::CH_e>(mChannel)));
+    OS_REPORT("Remocon Setup: %s\n", slu::to_string<mPad::CH_e>(mChannel));
 
-    mBattery = mPad::getBatteryLevel_ch(mPad::CH_e(mChannel));
+    mBattery = mPad::getBatteryLevel_ch(mChannel);
 
     if (mChannel >= mPad::CH_e::CHAN_0 && mChannel <= mPad::CH_e::CHAN_LAST) {
-        EGG::AudioRmtSpeaker::setup(mChannel, nullptr);
+        EGG::AudioRmtSpeaker::setup(std::to_underlying(mChannel), nullptr);
 
         // The rumble when you connect a Wii Remote. I don't want this to play for GameCube
         // controllers preferably.
         if (!m_isBoot) {
-            mPad::g_core[mChannel]->startPowerFrameRumble(1.0f, 10, false);
+            mPad::g_coreUnordered[mChannel]->startPowerFrameRumble(1.0f, 10, false);
         }
     }
 
@@ -269,13 +265,13 @@ void dRemoconMng_c::dConnect_c::finalizeState_Setup() {
     mExtension.shutdown();
 
     if (mChannel >= mPad::CH_e::CHAN_0 && mChannel <= mPad::CH_e::CHAN_LAST) {
-        EGG::AudioRmtSpeaker::setup(mChannel, nullptr);
+        EGG::AudioRmtSpeaker::setup(std::to_underlying(mChannel), nullptr);
     }
 }
 
 [[nsmbw(0x800DC9D0)]]
 void dRemoconMng_c::dConnect_c::executeState_Setup() {
-    EGG::Controller* controller = mPad::g_core[mChannel];
+    EGG::Controller* controller = mPad::g_coreUnordered[mChannel];
     if (controller->getClassicController()) {
         auto type = mExtension.getType();
         if (type != dExtension_c::Type_e::CLASSIC && type != dExtension_c::Type_e::WAIT) {
@@ -307,7 +303,7 @@ void dRemoconMng_c::dConnect_c::execute();
 void dRemoconMng_c::dConnect_c::onRumbleEnable();
 
 void dRemoconMng_c::dConnect_c::dExtension_c::checkState() {
-    EGG::CoreController* core = mPad::g_core[mChannel]->getCoreController();
+    EGG::CoreController* core = mPad::g_coreUnordered[mChannel]->getCoreController();
     if (!core) {
         return;
     }
@@ -406,8 +402,7 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Split() {
 }
 
 void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Split() {
-    int classic = mChannel + (mPad::CH_e::CHAN_CL_0 - mPad::CH_e::CHAN_0);
-    if (!dRemoconMng_c::m_instance->mpConnectAll[classic]->isSetup()) {
+    if (!m_instance->mpConnectAll[mPad::getClassicChannel(mChannel)]->isSetup()) {
         mType = Type_e::WAIT;
         checkState();
     }
@@ -418,13 +413,11 @@ void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Split() {}
 void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Classic() {
     mType = Type_e::CLASSIC;
 
-    mPad::setPlayerOrder(
-        dRemoconMng_c::m_instance->mpConnectAll[mChannel]->mPlayerNo, getChannel()
-    );
+    mPad::setPlayerOrder(m_instance->mpConnectAll[mChannel]->mPadID, getChannel());
 }
 
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Classic() {
-    mPad::setPlayerOrder(dRemoconMng_c::m_instance->mpConnectAll[mChannel]->mPlayerNo, mChannel);
+    mPad::setPlayerOrder(m_instance->mpConnectAll[mChannel]->mPadID, mChannel);
 }
 
 void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Classic() {

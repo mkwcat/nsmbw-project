@@ -8,17 +8,18 @@
 #include <revolution/wpad.h>
 #include <slu/relocate.hpp>
 #include <slu/to_string.hpp>
+#include <utility>
 
 namespace mPad {
 
 /* 0x80377F88 */
-std::array<EGG::Controller*, CH_e::COUNT> g_core_order;
+std::array<EGG::Controller*, PAD_COUNT> g_core;
 
-std::array<EGG::Controller*, CH_e::COUNT> g_core;
+slu::enum_array<EGG::Controller*, CH_e> g_coreUnordered;
 
-constinit std::array<CH_e, CH_e::COUNT>   g_playerChannel = [] {
-    std::array<CH_e, CH_e::COUNT> arr{};
-    for (int i = 0; i < CH_e::COUNT; i++) {
+constinit std::array<CH_e, PAD_COUNT>   g_channel = [] {
+    std::array<CH_e, PAD_COUNT> arr{};
+    for (int i = 0; i < PAD_COUNT; i++) {
         arr[i] = static_cast<CH_e>(i);
     }
     return arr;
@@ -28,28 +29,29 @@ constinit std::array<CH_e, CH_e::COUNT>   g_playerChannel = [] {
 EGG::CoreControllerMgr* g_padMg;
 
 [[nsmbw_data(0x8042A744)]]
-CH_e g_currentCoreID;
+PadID g_currentCoreID;
 
 [[nsmbw_data(0x8042A748)]]
 EGG::Controller* g_currentCore;
 
 [[nsmbw_data(0x8042A74C)]] [[gnu::weak]]
-bool g_IsConnectedOld[4];
+bool                        REMOVED(g_IsConnected)[4];
 
-bool g_IsConnected[CH_e::COUNT] = {
-    g_IsConnectedOld[0], g_IsConnectedOld[1], g_IsConnectedOld[2], g_IsConnectedOld[3]
+slu::enum_array<bool, CH_e> g_IsConnected = {
+    REMOVED(g_IsConnected)[0], REMOVED(g_IsConnected)[1], REMOVED(g_IsConnected)[2],
+    REMOVED(g_IsConnected)[3]
 };
 
 [[nsmbw_data(0x8042A750)]]
 u32 g_PadFrame;
 
 [[nsmbw(0x8042A754)]] [[gnu::weak]]
-bool s_WPADInfoAvailableOld[4];
+bool REMOVED(s_WPADInfoAvailable)[4];
 
 /* 0x8042A754 */
-bool s_WPADInfoAvailable[CH_e::COUNT]{
-    s_WPADInfoAvailableOld[0], s_WPADInfoAvailableOld[1], s_WPADInfoAvailableOld[2],
-    s_WPADInfoAvailableOld[3]
+slu::enum_array<bool, CH_e> s_WPADInfoAvailable = {
+    REMOVED(s_WPADInfoAvailable)[0], REMOVED(s_WPADInfoAvailable)[1],
+    REMOVED(s_WPADInfoAvailable)[2], REMOVED(s_WPADInfoAvailable)[3]
 };
 
 [[nsmbw_data(0x8042A758)]]
@@ -59,19 +61,20 @@ s32 s_GetWPADInfoInterval;
 s32 s_GetWPADInfoCount;
 
 [[nsmbw(0x80378008)]] [[gnu::weak]]
-WPADInfo s_WPADInfoOld[4];
+WPADInfo REMOVED(s_WPADInfo)[4];
 
 [[nsmbw(0x80378068)]] [[gnu::weak]]
-WPADInfo s_WPADInfoTmpOld[4];
+WPADInfo REMOVED(s_WPADInfoTmp)[4];
 
 /* 0x80378008 */
-WPADInfo s_WPADInfo[CH_e::COUNT] = {
-    s_WPADInfoOld[0], s_WPADInfoOld[1], s_WPADInfoOld[2], s_WPADInfoOld[3]
+slu::enum_array<WPADInfo, CH_e> s_WPADInfo = {
+    REMOVED(s_WPADInfo)[0], REMOVED(s_WPADInfo)[1], REMOVED(s_WPADInfo)[2], REMOVED(s_WPADInfo)[3]
 };
 
 /* 0x80378068 */
-WPADInfo s_WPADInfoTmp[CH_e::COUNT] = {
-    s_WPADInfoTmpOld[0], s_WPADInfoTmpOld[1], s_WPADInfoTmpOld[2], s_WPADInfoTmpOld[3]
+slu::enum_array<WPADInfo, CH_e> s_WPADInfoTmp = {
+    REMOVED(s_WPADInfoTmp)[0], REMOVED(s_WPADInfoTmp)[1], REMOVED(s_WPADInfoTmp)[2],
+    REMOVED(s_WPADInfoTmp)[3]
 };
 
 [[nsmbw(0x80377FA8)]]
@@ -79,13 +82,19 @@ PadAdditionalData_s g_PadAdditionalData[4];
 
 void initWPADInfo();
 
+/* 0x8016F640 */
+void clearWPADInfo(CH_e chan);
+
+/* 0x8016F710 */
+int getWPADInfoAsync(CH_e chan);
+
 [[nsmbw(0x8016F330)]]
 void create() {
     g_padMg = EGG::CoreControllerMgr::instance();
     initWPADInfo();
     beginPad();
-    for (std::size_t c = 0; c < g_core_order.size(); c++) {
-        g_core_order[c] = g_core[c];
+    for (std::size_t i = 0; i < PAD_COUNT; i++) {
+        g_core[i] = g_coreUnordered[g_channel[i]];
     }
     endPad();
 }
@@ -98,12 +107,14 @@ void beginPad() {
     auto* gcPadMg = EGG::GCControllerMgr::instance();
     gcPadMg->beginFrame();
 
-    for (int i = CH_e::CHAN_0; i <= CH_e::CHAN_LAST; i++) {
+    // Normal Wii Remote channels
+    for (int i = 0; i < 4; i++) {
+        auto                 ch   = static_cast<CH_e>(i);
         EGG::CoreController* core = g_padMg->getNthController(i);
-        g_core[i]                 = core;
+        g_coreUnordered[ch]       = core;
 
         if (!core->connected()) {
-            if (!g_IsConnected[i]) {
+            if (!g_IsConnected[ch]) {
                 continue;
             }
 
@@ -112,9 +123,9 @@ void beginPad() {
 
             g_PadAdditionalData[i] = {};
 
-            clearWPADInfo(static_cast<CH_e>(i));
+            clearWPADInfo(ch);
 
-            g_IsConnected[i] = false;
+            g_IsConnected[ch] = false;
             continue;
         }
 
@@ -123,30 +134,31 @@ void beginPad() {
         mVec2_c z              = y - g_PadAdditionalData[i].mAccVertical[1];
         g_PadAdditionalData[i] = {x, y, z};
 
-        g_IsConnected[i]       = true;
+        g_IsConnected[ch]      = true;
 
         if (s_GetWPADInfoInterval != 0 &&
             (s_GetWPADInfoInterval == 1 || s_GetWPADInfoCount == i ||
              (s_GetWPADInfoInterval < 4 && ((s_GetWPADInfoCount & 1) == (i & 1))))) {
-            getWPADInfoAsync(static_cast<CH_e>(i));
+            getWPADInfoAsync(ch);
         }
     }
 
-    for (int i = CH_e::CHAN_CL_0; i <= CH_e::CHAN_CL_LAST; i++) {
-        EGG::ClassicController* classic = g_padMg->getNthClassic(i - CH_e::CHAN_CL_0);
-        g_core[i]                       = classic;
+    // Classic Controller channels
+    for (int i = 0; i < 4; i++) {
+        auto                    ch = static_cast<CH_e>(i + std::to_underlying(CH_e::CHAN_CL_0));
+        EGG::ClassicController* classic = g_padMg->getNthClassic(i);
+        g_coreUnordered[ch]             = classic;
 
-        g_IsConnected[i] =
-            g_IsConnected[i - (CH_e::CHAN_CL_0 - CH_e::CHAN_0)] && classic->connected();
-        if (!g_IsConnected[i]) {
+        g_IsConnected[ch] = g_IsConnected[static_cast<CH_e>(i)] && classic->connected();
+        if (!g_IsConnected[ch]) {
             continue;
         }
 
         if (s_GetWPADInfoInterval != 0 &&
-            (s_GetWPADInfoInterval == 1 || s_GetWPADInfoCount == i ||
+            (s_GetWPADInfoInterval == 1 || s_GetWPADInfoCount == std::to_underlying(ch) ||
              (s_GetWPADInfoInterval < 4 && ((s_GetWPADInfoCount & 1) == (i & 1))))) {
             // Fake WPAD info
-            s_WPADInfo[i] = {
+            s_WPADInfo[ch] = {
                 .dpd       = false,
                 .speaker   = false,
                 .attach    = false,
@@ -157,24 +169,26 @@ void beginPad() {
                 .protocol  = 0,
                 .firmware  = 0
             };
-            s_WPADInfoAvailable[i] = true;
+            s_WPADInfoAvailable[ch] = true;
         }
     }
 
-    for (int i = CH_e::CHAN_GC_0; i <= CH_e::CHAN_GC_LAST; i++) {
-        EGG::GCController* core = gcPadMg->getNthController(i - CH_e::CHAN_GC_0);
-        g_core[i]               = core;
+    // GameCube Controller channels
+    for (int i = 0; i < 4; i++) {
+        auto               ch   = static_cast<CH_e>(i + std::to_underlying(CH_e::CHAN_GC_0));
+        EGG::GCController* core = gcPadMg->getNthController(i);
+        g_coreUnordered[ch]     = core;
 
-        g_IsConnected[i]        = core->connected();
-        if (!g_IsConnected[i]) {
+        g_IsConnected[ch]       = core->connected();
+        if (!g_IsConnected[ch]) {
             continue;
         }
 
         if (s_GetWPADInfoInterval != 0 &&
-            (s_GetWPADInfoInterval == 1 || s_GetWPADInfoCount == i ||
+            (s_GetWPADInfoInterval == 1 || s_GetWPADInfoCount == std::to_underlying(ch) ||
              (s_GetWPADInfoInterval < 4 && ((s_GetWPADInfoCount & 1) == (i & 1))))) {
             // Fake WPAD info
-            s_WPADInfo[i] = {
+            s_WPADInfo[ch] = {
                 .dpd       = false,
                 .speaker   = false,
                 .attach    = false,
@@ -185,7 +199,7 @@ void beginPad() {
                 .protocol  = 0,
                 .firmware  = 0
             };
-            s_WPADInfoAvailable[i] = true;
+            s_WPADInfoAvailable[ch] = true;
         }
     }
 
@@ -193,7 +207,7 @@ void beginPad() {
         s_GetWPADInfoCount = 0;
     }
 
-    g_currentCore = g_core_order[g_currentCoreID];
+    setCurrentChannel(g_currentCoreID);
 }
 
 [[nsmbw(0x8016F550)]]
@@ -203,7 +217,15 @@ void endPad() {
 }
 
 [[nsmbw(0x8016F570)]]
-void setCurrentChannel(CH_e chan);
+PadID setCurrentChannel(
+    PadID id
+) {
+    if (std::exchange(g_currentCore, g_coreUnordered[g_channel[id]]) !=
+        g_coreUnordered[g_channel[id]]) {
+        OS_REPORT("New current core: %s\n", slu::to_string(g_channel[id]));
+    }
+    return std::exchange(g_currentCoreID, id);
+}
 
 [[nsmbw(0x8016F5A0)]]
 int getBatteryLevel_ch(
@@ -225,7 +247,7 @@ void clearWPADInfo(
 
 [[nsmbw(0x8016F690)]]
 void initWPADInfo() {
-    for (int i = 0; i < CH_e::COUNT; i++) {
+    for (int i = 0; i < CHAN_COUNT; i++) {
         clearWPADInfo(static_cast<CH_e>(i));
     }
 }
@@ -240,31 +262,27 @@ bool isGameCubeChannel(
 }
 
 void setPlayerOrder(
-    const std::array<CH_e, CH_e::COUNT>& order
+    const std::array<CH_e, PAD_COUNT>& order
 ) {
-    g_playerChannel = order;
-    for (int i = 0; i < CH_e::COUNT; i++) {
-        g_core_order[g_playerChannel[i]] = g_core[i];
+    g_channel = order;
+    for (int i = 0; i < PAD_COUNT; i++) {
+        g_core[i] = g_coreUnordered[g_channel[i]];
     }
-    auto* prevCore = g_currentCore;
-    g_currentCore  = g_core_order[g_currentCoreID];
-    if (prevCore != g_currentCore) {
-        OS_REPORT("New current core: %s\n", slu::to_string(order[g_currentCoreID]));
-    }
+    setCurrentChannel(g_currentCoreID);
 }
 
 void setPlayerOrder(
-    int player, CH_e channel
+    PadID id, CH_e chan
 ) {
-    OS_REPORT("Register player #%d: %s\n", player, slu::to_string(channel));
+    OS_REPORT("Register player #%d: %s\n", id, slu::to_string(chan));
 
-    g_playerChannel[player] = channel;
-    g_core_order[player]    = g_core[channel];
-    g_currentCore           = g_core_order[g_currentCoreID];
+    g_channel[id] = chan;
+    g_core[id]    = g_coreUnordered[chan];
+    g_currentCore = g_core[g_currentCoreID];
 }
 
 PATCH_REFERENCES(
-    &g_core_order, //
+    &g_core, //
     {
         {0x80017EEA, R_PPC_ADDR16_HA}, {0x80017EF6, R_PPC_ADDR16_LO}, {0x800582CA, R_PPC_ADDR16_HA},
         {0x800582CE, R_PPC_ADDR16_LO}, {0x800B540E, R_PPC_ADDR16_HA}, {0x800B5416, R_PPC_ADDR16_LO},
@@ -313,7 +331,7 @@ PATCH_REFERENCES(
 );
 
 PATCH_REFERENCES(
-    &s_WPADInfo, //
+    s_WPADInfo.data(), //
     {
         {0x8016F5B6, R_PPC_ADDR16_HA},
         {0x8016F5BA, R_PPC_ADDR16_LO},
@@ -325,7 +343,7 @@ PATCH_REFERENCES(
 );
 
 PATCH_REFERENCES(
-    &s_WPADInfo, //
+    s_WPADInfoTmp.data(), //
     {
         {0x8016F6F6, R_PPC_ADDR16_HA},
         {0x8016F6FA, R_PPC_ADDR16_LO},

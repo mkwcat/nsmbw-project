@@ -27,8 +27,7 @@ dInfo_c::PlyConnectStage_e daWmPlayer_c::ms_plyConnectStage[SUBPLAYER_COUNT];
 
 [[nsmbw(0x809027C0)]]
 daWmPlayer_c::daWmPlayer_c()
-    : dWmPlayerBase_c()
-    , mModelManager(dPyMdlMng_c::ModelType_e::MODEL_NONE)
+    : mModelManager(dPyMdlMng_c::ModelType_e::MODEL_NONE)
     , m0x1F0(mVec3_c::Zero)
     , m0x23C(6)
     , m0x240(6)
@@ -62,7 +61,7 @@ daWmPlayer_c::~daWmPlayer_c() {
 fBase_c::PACK_RESULT_e daWmPlayer_c::create() {
     mAngle.y = 0;
 
-    mPad::setCurrentChannel(mPad::CH_e::CHAN_0);
+    mPad::setCurrentChannel(0);
 
     initStartPoint();
 
@@ -73,7 +72,7 @@ fBase_c::PACK_RESULT_e daWmPlayer_c::create() {
 
     // Some shadow related thing maybe?
     UNDEF_80906FE0(0, -1);
-    CreateShadowModel("character_SV", "g3d/model.brres", "character_SV", 1);
+    CreateShadowModel("character_SV", "g3d/model.brres", "character_SV", true);
     mVisible = true;
 
     initCamera();
@@ -99,8 +98,8 @@ void daWmPlayer_c::CreateSubPlayers() {
     dWmPlayerBase_c* prevPlayer = this;
 
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
-        daWmSubPlayer_c* player =
-            reinterpret_cast<daWmSubPlayer_c*>(dWmActor_c::construct(dProf::WM_SUBPLAYER, this, i));
+        auto* player =
+            static_cast<daWmSubPlayer_c*>(dWmActor_c::construct(dProf::WM_SUBPLAYER, this, i));
 
         prevPlayer->mNextPlayer = player;
         player->mPrevPlayer     = prevPlayer;
@@ -139,7 +138,7 @@ void daWmPlayer_c::PlayerEntryUpdate() {
     for (u32 i = 0; i < SUBPLAYER_COUNT; i++) {
         if (info->getPlyConnectStage(i) == dInfo_c::PlyConnectStage_e::ENTER ||
             dDebugOpt::force_all_wm_subplayers_present) {
-            std::size_t index          = static_cast<std::size_t>(daPyMng_c::mPlayerType[i]);
+            std::size_t index          = +daPyMng_c::mPlayerType[i];
             daPyMng_c::mPlayerEntry[i] = 1;
             SetPlayerEntry(
                 index, i != 0, ms_plyConnectStage[index] != dInfo_c::PlyConnectStage_e::ENTER

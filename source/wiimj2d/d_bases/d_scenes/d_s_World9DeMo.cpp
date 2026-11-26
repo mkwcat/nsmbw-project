@@ -11,18 +11,15 @@
 #include "d_system.h"
 #include "d_wm_effectManager.h"
 #include "m_pad.h"
+#include <algorithm>
 #include <revolution/vi.h>
 
-/**
- * VT+0x08
- * do method for the create operation.
- */
 [[nsmbw(0x8091D350)]]
 fBase_c::PACK_RESULT_e dScWorld9DeMo_c::create() {
     dFader_c::setFader(dFader_c::fader_type_e::FADE);
 
-    dSys_c::setClearColor(nw4r::ut::Color{0, 0, 0, 255});
-    mPad::setCurrentChannel(mPad::CH_e::CHAN_0);
+    dSys_c::setClearColor("#000000");
+    mPad::setCurrentChannel(0);
 
     initLight();
 
@@ -39,9 +36,7 @@ fBase_c::PACK_RESULT_e dScWorld9DeMo_c::create() {
 
     // Make sure all players have at least 5 lives
     for (int& rest : daPyMng_c::mRest) {
-        if (rest < 5) {
-            rest = 5;
-        }
+        rest = std::max(rest, 5);
     }
 
     VIEnableDimming(true);

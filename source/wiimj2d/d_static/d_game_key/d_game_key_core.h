@@ -2,6 +2,7 @@
 
 #include "m_pad.h"
 #include "m_vec.h"
+#include <nw4r/math/arithmetic.h>
 #include <revolution/pad.h>
 
 class dGameKeyCore_c {
@@ -86,32 +87,32 @@ public:
     // Inline Methods
     // ^^^^^^
 
-    inline EGG::Controller* getController() const { return mPad::g_core_order[mPlayerNo]; }
+    [[nodiscard]] EGG::Controller* getController() const { return mPad::g_core[mPlayerNo]; }
 
     /**
      * Returns true if the controller is a sideways Wii Remote.
      */
-    inline bool isCore() const { return mType == Type_e::CORE; }
+    [[nodiscard]] bool isCore() const { return mType == Type_e::CORE; }
 
     /**
      * Returns true if the controller is a Wii Remote + Nunchuk.
      */
-    inline bool isFreestyle() const { return mType == Type_e::FREESTYLE; }
+    [[nodiscard]] bool isFreestyle() const { return mType == Type_e::FREESTYLE; }
 
     /**
      * Returns true if the controller is a Wii Classic Controller.
      */
-    inline bool isClassic() const { return mType == Type_e::CLASSIC; }
+    [[nodiscard]] bool isClassic() const { return mType == Type_e::CLASSIC; }
 
     /**
      * Returns true if the controller is a GameCube Controller.
      */
-    inline bool isDolphin() const { return mType == Type_e::DOLPHIN; }
+    [[nodiscard]] bool isDolphin() const { return mType == Type_e::DOLPHIN; }
 
     /**
      * Returns true if one of the button flags is set.
      */
-    inline bool isDown(
+    [[nodiscard]] bool isDown(
         u32 flags
     ) const {
         return mHeld & flags;
@@ -120,7 +121,7 @@ public:
     /**
      * Returns true if one of the button flags is set on this frame.
      */
-    inline bool isTrig(
+    [[nodiscard]] bool isTrig(
         u32 flags
     ) const {
         return mTriggered & flags;
@@ -129,42 +130,42 @@ public:
     /**
      * Checks if the confirm (2 or A) button is pressed.
      */
-    inline bool checkMenuConfirm() const {
+    [[nodiscard]] bool checkMenuConfirm() const {
         return getController()->downTrigger(EGG::cCORE_BUTTON_2 | EGG::cCORE_BUTTON_A);
     }
 
     /**
      * Checks if the cancel (1 or B) button is pressed.
      */
-    inline bool checkMenuCancel() const {
+    [[nodiscard]] bool checkMenuCancel() const {
         return getController()->downTrigger(EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_B);
     }
 
     /**
      * Checks if the left button is pressed.
      */
-    inline bool checkLeft() const { return isTrig(LEFT); }
+    [[nodiscard]] bool checkLeft() const { return isTrig(LEFT); }
 
     /**
      * Checks if the right button is pressed.
      */
-    inline bool checkRight() const { return isTrig(RIGHT); }
+    [[nodiscard]] bool checkRight() const { return isTrig(RIGHT); }
 
     /**
      * Checks if the up button is pressed.
      */
-    inline bool checkUp() const { return isTrig(UP); }
+    [[nodiscard]] bool checkUp() const { return isTrig(UP); }
 
     /**
      * Checks if the down button is pressed.
      */
-    inline bool checkDown() const { return isTrig(DOWN); }
+    [[nodiscard]] bool checkDown() const { return isTrig(DOWN); }
 
     /**
      * Gets the mTilt value as a usable s16 for actors.
      */
-    inline s16 getTiltLR() const {
-        return static_cast<s16>(static_cast<int>((mAccelVerticalX.y / 30.0) * 16384.0));
+    [[nodiscard]] s16 getTiltLR() const {
+        return nw4r::math::F32ToS16(mAccelVerticalX.y / 30.0f * 16384.0f);
     }
 
 public:

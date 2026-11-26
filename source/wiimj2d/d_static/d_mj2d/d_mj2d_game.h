@@ -1,8 +1,8 @@
 #pragma once
 
-#include "slu/array.hpp"
 #include <bitset>
 #include <component/c_bitmask.h>
+#include <slu/array.hpp>
 #include <slu/enum.hpp>
 
 /**

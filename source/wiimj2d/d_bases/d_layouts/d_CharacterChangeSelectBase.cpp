@@ -17,10 +17,11 @@
 #include "d_remocon_mng.h"
 #include "d_scene.h"
 #include <revolution/os.h>
+#include <utility>
 
 fBase_c* dCharacterChangeSelectBase_c_classInit() {
-    dCharacterChangeSelectBase_c* base = new dCharacterChangeSelectBase_c();
-    base->mCcCount                     = 4;
+    auto* base     = new dCharacterChangeSelectBase_c();
+    base->mCcCount = 4;
     return base;
 }
 
@@ -514,7 +515,7 @@ void dCharacterChangeSelectBase_c::initializeState_ExitAnimeEndForPlayerOnStageW
 
 [[nsmbw(0x80771090)]]
 void dCharacterChangeSelectBase_c::initializeState_PlayerOnStageWait() {
-    std::size_t   index  = static_cast<std::size_t>(mDecidedCharacter);
+    std::size_t   index  = +mDecidedCharacter;
     da2DPlayer_c* player = mp2DPlayer[mDecidedCharacter];
 
     u16           sound  = (u16[][2]) {
@@ -771,15 +772,16 @@ u32 dCharacterChangeSelectBase_c::getLampPattern(
 
     dRemoconMng_c::dConnect_c* connect = dRemoconMng_c::m_instance->mpConnect[playerNo];
     mPad::CH_e                 channel = connect->getChannel();
+    int                        ch      = std::to_underlying(channel);
 
     if (channel >= mPad::CH_e::CHAN_0 && channel <= mPad::CH_e::CHAN_LAST) {
-        return 0b1000 >> (channel - mPad::CH_e::CHAN_0);
+        return 0b1000 >> (ch - std::to_underlying(mPad::CH_e::CHAN_0));
     }
     if (channel >= mPad::CH_e::CHAN_GC_0 && channel <= mPad::CH_e::CHAN_GC_LAST) {
-        return 0b10000 | (0b1000 >> (channel - mPad::CH_e::CHAN_GC_0));
+        return 0b10000 | (0b1000 >> (ch - std::to_underlying(mPad::CH_e::CHAN_GC_0)));
     }
     if (channel >= mPad::CH_e::CHAN_CL_0 && channel <= mPad::CH_e::CHAN_CL_LAST) {
-        return 0b100000 | (0b1000 >> (channel - mPad::CH_e::CHAN_CL_0));
+        return 0b100000 | (0b1000 >> (ch - std::to_underlying(mPad::CH_e::CHAN_CL_0)));
     }
 
     return 0b000000;

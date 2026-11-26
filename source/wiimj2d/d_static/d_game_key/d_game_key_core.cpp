@@ -82,14 +82,14 @@ void dGameKeyCore_c::read() {
                 std::swap(mAccel.x, mAccel.z);
             }
 
-            mPad::CH_e channel = mPad::g_playerChannel[mPlayerNo];
-            mAccelVerticalX    = mPad::g_PadAdditionalData[channel].mAccVertical[0];
-            mAccelVerticalY    = mPad::g_PadAdditionalData[channel].mAccVertical[1];
-            mAccelVerticalZ    = mPad::g_PadAdditionalData[channel].mAccVertical[2];
+            int channel     = std::to_underlying(mPad::getChannel(mPlayerNo));
+            mAccelVerticalX = mPad::g_PadAdditionalData[channel].mAccVertical[0];
+            mAccelVerticalY = mPad::g_PadAdditionalData[channel].mAccVertical[1];
+            mAccelVerticalZ = mPad::g_PadAdditionalData[channel].mAccVertical[2];
 
             // Pointer
-            mAngle.x           = core->mStatus->horizon.x;
-            mAngle.y           = core->mStatus->horizon.y;
+            mAngle.x        = core->mStatus->horizon.x;
+            mAngle.y        = core->mStatus->horizon.y;
         } else if (isClassic() && classic) {
             mRawHeld        = classic->mDown;
 
@@ -166,9 +166,8 @@ void dGameKeyCore_c::read() {
     }
 
     handleTilting();
-    mMoveDistance = EGG::Math<float>::sqrt(
-        static_cast<float>(mAccel.z * mAccel.z + mAccel.x * mAccel.x + mAccel.y * mAccel.y)
-    );
+    mMoveDistance =
+        EGG::Math<float>::sqrt(mAccel.z * mAccel.z + mAccel.x * mAccel.x + mAccel.y * mAccel.y);
     if (mMoveDistance < 1.2) {
         mMoveDistance = 1.0;
     }
@@ -178,69 +177,68 @@ void dGameKeyCore_c::read() {
         mTriggered |= m0x30;
     }
     if (mShakeOld) {
-        mShake    = mShakeOld;
-        mShakeOld = 0;
+        mShake = std::exchange(mShakeOld, false);
     }
 }
 
 [[nsmbw(0x800B60D0)]]
 u32 dGameKeyCore_c::setConfigKey(
-    u32 input
+    u32 button
 ) {
     u32 processed;
     switch (mType) {
     default:
     case Type_e::CORE:
-        processed = input;
-        if (dGameRule_s::current.shake_with_button && (input & EGG::cCORE_BUTTON_B)) {
+        processed = button;
+        if (dGameRule_s::current.shake_with_button && (button & EGG::cCORE_BUTTON_B)) {
             processed |= SHAKE;
         }
         break;
 
     case Type_e::FREESTYLE:
         // Home, Minus, and Plus can stay the same
-        processed = input & (HOME | MINUS | PLUS);
+        processed = button & (HOME | MINUS | PLUS);
 
         // Clear D-Pad if stick is pushed in any direction
-        if (input & EGG::cCORE_FSSTICK_BUTTONS) {
-            input &= ~(UP | DOWN | LEFT | RIGHT);
+        if (button & EGG::cCORE_FSSTICK_BUTTONS) {
+            button &= ~(UP | DOWN | LEFT | RIGHT);
         }
 
-        if (input & (EGG::cCORE_BUTTON_DOWN | EGG::cCORE_FSSTICK_DOWN)) {
+        if (button & (EGG::cCORE_BUTTON_DOWN | EGG::cCORE_FSSTICK_DOWN)) {
             processed |= DOWN;
-        } else if (input & (EGG::cCORE_BUTTON_UP | EGG::cCORE_FSSTICK_UP)) {
+        } else if (button & (EGG::cCORE_BUTTON_UP | EGG::cCORE_FSSTICK_UP)) {
             processed |= UP;
         }
 
-        if (input & (EGG::cCORE_BUTTON_RIGHT | EGG::cCORE_FSSTICK_RIGHT)) {
+        if (button & (EGG::cCORE_BUTTON_RIGHT | EGG::cCORE_FSSTICK_RIGHT)) {
             processed |= RIGHT;
-        } else if (input & (EGG::cCORE_BUTTON_LEFT | EGG::cCORE_FSSTICK_LEFT)) {
+        } else if (button & (EGG::cCORE_BUTTON_LEFT | EGG::cCORE_FSSTICK_LEFT)) {
             processed |= LEFT;
         }
 
         if (dGameRule_s::current.shake_with_button) {
             // C is replaced with shake
-            if (input & EGG::cCORE_BUTTON_FS_C) {
+            if (button & EGG::cCORE_BUTTON_FS_C) {
                 processed |= SHAKE;
             }
 
-            if (input & (EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_2)) {
+            if (button & (EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_2)) {
                 processed |= BTN_A;
             }
 
-        } else if (input & (EGG::cCORE_BUTTON_FS_C | EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_2)) {
+        } else if (button & (EGG::cCORE_BUTTON_FS_C | EGG::cCORE_BUTTON_1 | EGG::cCORE_BUTTON_2)) {
             processed |= BTN_A;
         }
 
-        if (input & EGG::cCORE_BUTTON_B) {
+        if (button & EGG::cCORE_BUTTON_B) {
             processed |= (BTN_B | BTN_1);
         }
 
-        if (input & EGG::cCORE_BUTTON_FS_Z) {
+        if (button & EGG::cCORE_BUTTON_FS_Z) {
             processed |= (BTN_Z | BTN_1);
         }
 
-        if (input & EGG::cCORE_BUTTON_A) {
+        if (button & EGG::cCORE_BUTTON_A) {
             processed |= BTN_2;
         }
         break;
@@ -248,35 +246,35 @@ u32 dGameKeyCore_c::setConfigKey(
     case Type_e::CLASSIC:
         processed = 0;
 
-        if (input & (EGG::cCLASSIC_BUTTON_DOWN | EGG::cCLASSIC_LSTICK_DOWN)) {
+        if (button & (EGG::cCLASSIC_BUTTON_DOWN | EGG::cCLASSIC_LSTICK_DOWN)) {
             processed |= DOWN;
-        } else if (input & (EGG::cCLASSIC_BUTTON_UP | EGG::cCLASSIC_LSTICK_UP)) {
+        } else if (button & (EGG::cCLASSIC_BUTTON_UP | EGG::cCLASSIC_LSTICK_UP)) {
             processed |= UP;
         }
 
-        if (input & (EGG::cCLASSIC_BUTTON_RIGHT | EGG::cCLASSIC_LSTICK_RIGHT)) {
+        if (button & (EGG::cCLASSIC_BUTTON_RIGHT | EGG::cCLASSIC_LSTICK_RIGHT)) {
             processed |= RIGHT;
-        } else if (input & (EGG::cCLASSIC_BUTTON_LEFT | EGG::cCLASSIC_LSTICK_LEFT)) {
+        } else if (button & (EGG::cCLASSIC_BUTTON_LEFT | EGG::cCLASSIC_LSTICK_LEFT)) {
             processed |= LEFT;
         }
 
-        if (input & (EGG::cCLASSIC_BUTTON_A | EGG::cCLASSIC_BUTTON_B)) {
+        if (button & (EGG::cCLASSIC_BUTTON_A | EGG::cCLASSIC_BUTTON_B)) {
             processed |= BTN_2;
         }
 
-        if (input & (EGG::cCLASSIC_BUTTON_X | EGG::cCLASSIC_BUTTON_Y)) {
+        if (button & (EGG::cCLASSIC_BUTTON_X | EGG::cCLASSIC_BUTTON_Y)) {
             processed |= BTN_1;
         }
 
-        if (input & (EGG::cCLASSIC_BUTTON_ZL | EGG::cCLASSIC_BUTTON_ZR)) {
+        if (button & (EGG::cCLASSIC_BUTTON_ZL | EGG::cCLASSIC_BUTTON_ZR)) {
             processed |= SHAKE;
         }
 
-        if (input & EGG::cCLASSIC_BUTTON_MINUS) {
+        if (button & EGG::cCLASSIC_BUTTON_MINUS) {
             processed |= (BTN_A | MINUS);
         }
 
-        if (input & EGG::cCLASSIC_BUTTON_PLUS) {
+        if (button & EGG::cCLASSIC_BUTTON_PLUS) {
             processed |= PLUS;
         }
         break;
@@ -284,39 +282,39 @@ u32 dGameKeyCore_c::setConfigKey(
     case Type_e::DOLPHIN:
         processed = 0;
 
-        if (input & (EGG::cDOLPHIN_BUTTON_DOWN | EGG::cDOLPHIN_STICK_DOWN)) {
+        if (button & (EGG::cDOLPHIN_BUTTON_DOWN | EGG::cDOLPHIN_STICK_DOWN)) {
             processed |= DOWN;
-        } else if (input & (EGG::cDOLPHIN_BUTTON_UP | EGG::cDOLPHIN_STICK_UP)) {
+        } else if (button & (EGG::cDOLPHIN_BUTTON_UP | EGG::cDOLPHIN_STICK_UP)) {
             processed |= UP;
         }
 
-        if (input & (EGG::cDOLPHIN_BUTTON_RIGHT | EGG::cDOLPHIN_STICK_RIGHT)) {
+        if (button & (EGG::cDOLPHIN_BUTTON_RIGHT | EGG::cDOLPHIN_STICK_RIGHT)) {
             processed |= RIGHT;
-        } else if (input & (EGG::cDOLPHIN_BUTTON_LEFT | EGG::cDOLPHIN_STICK_LEFT)) {
+        } else if (button & (EGG::cDOLPHIN_BUTTON_LEFT | EGG::cDOLPHIN_STICK_LEFT)) {
             processed |= LEFT;
         }
 
-        if (input & EGG::cDOLPHIN_BUTTON_A) {
+        if (button & EGG::cDOLPHIN_BUTTON_A) {
             processed |= BTN_2;
         }
 
-        if (input & EGG::cDOLPHIN_BUTTON_B) {
+        if (button & EGG::cDOLPHIN_BUTTON_B) {
             processed |= (BTN_Z | BTN_1);
         }
 
-        if (input & EGG::cDOLPHIN_BUTTON_Y) {
+        if (button & EGG::cDOLPHIN_BUTTON_Y) {
             processed |= (BTN_B | BTN_1);
         }
 
-        if (input & EGG::cDOLPHIN_BUTTON_Z) {
+        if (button & EGG::cDOLPHIN_BUTTON_Z) {
             processed |= (SHAKE | MINUS);
         }
 
-        if (input & EGG::cDOLPHIN_BUTTON_X) {
+        if (button & EGG::cDOLPHIN_BUTTON_X) {
             processed |= BTN_A;
         }
 
-        if (input & EGG::cDOLPHIN_BUTTON_START) {
+        if (button & EGG::cDOLPHIN_BUTTON_START) {
             processed |= PLUS;
         }
         break;

@@ -21,6 +21,7 @@
 #include "d_profile.h"
 #include "d_remocon_mng.h"
 #include "d_scene.h"
+#include <algorithm>
 
 static const float l_2d_player_offset = 50.0f;
 
@@ -111,8 +112,8 @@ fBase_c::PACK_RESULT_e dNumberOfPeopleChange_c::create() {
     for (std::size_t cc = 0; cc < mCcCount; cc++) {
         mPlyPlrBaseIndex[cc] = 10;
     }
-    for (std::size_t ply = 0; ply < PLAYER_COUNT; ply++) {
-        mCcPlrBaseIndex[ply] = 10;
+    for (int& ply : mCcPlrBaseIndex) {
+        ply = 10;
     }
 
     mpPBase[0]->SetVisible(true);
@@ -382,7 +383,7 @@ void dNumberOfPeopleChange_c::set2dPlyPosition() {
         scale.x                           = paneScale.x;
         scale.y                           = paneScale.y;
         for (std::size_t i = 0; i < CHARACTER_COUNT; i++) {
-            PLAYER_TYPE_e type     = static_cast<PLAYER_TYPE_e>(i);
+            auto type              = static_cast<PLAYER_TYPE_e>(i);
             mp2DPlayer[type]->mPos = {mp2DPlayer[type]->mPos.x, pos.y, mp2DPlayer[type]->mPos.z};
             mp2DPlayer[type]->mBaseScale = scale;
             mp2DPlayer[type]->mAddY      = l_2d_player_offset;
@@ -434,15 +435,16 @@ void dNumberOfPeopleChange_c::disableInactiveControllers() {
 void dNumberOfPeopleChange_c::checkRemoConnect() {
     dRemoconMng_c* remocons = dRemoconMng_c::m_instance;
     dInfo_c*       info     = dInfo_c::m_instance;
-    for (std::size_t connect = 0; connect < REMOCON_CONNECT_COUNT; connect++) {
-        dRemoconMng_c::dConnect_c* pConnect = remocons->mpConnectAll[connect];
+    for (std::size_t connect = 0; connect < dRemoconMng_c::CONNECT_COUNT; connect++) {
+        auto                       ch       = static_cast<mPad::CH_e>(connect);
+        dRemoconMng_c::dConnect_c* pConnect = remocons->mpConnectAll[ch];
         int                        ply      = pConnect->getPlayerNo();
         if (ply == mConnectPlrNo[connect]) {
             continue;
         }
 
-        std::size_t channel = pConnect->getCoreChannel();
-        if (nw4r::lyt::Picture* remoLight = getControllerLight(channel)) {
+        std::size_t coreChannel = std::to_underlying(pConnect->getCoreChannel());
+        if (nw4r::lyt::Picture* remoLight = getControllerLight(coreChannel)) {
             remoLight->SetVisible(ply >= 0);
         }
 
@@ -465,9 +467,7 @@ void dNumberOfPeopleChange_c::calcBasesForPlayerCount() {
 
     // Cap the player count to 4 currently
     // TODO
-    if (playerCount > 4) {
-        playerCount = 4;
-    }
+    playerCount     = std::min(playerCount, 4);
 
     for (std::size_t i = 0; i < mCcCount; i++) {
         mCcPlrBaseIndex[i] = mPlyPlrBaseIndex[i] = getBaseForPlayerCount(playerCount - 1, i % 4);
@@ -557,7 +557,7 @@ void dNumberOfPeopleChange_c::setEasyPairingWait(
         mpCcSelContents[cc]->mEasyPairingWait = enable;
     }
     for (std::size_t i = 0; i < CHARACTER_COUNT; i++) {
-        PLAYER_TYPE_e type                 = static_cast<PLAYER_TYPE_e>(i);
+        auto type                          = static_cast<PLAYER_TYPE_e>(i);
         mp2DPlayer[type]->mEasyPairingWait = enable;
     }
 }
@@ -642,8 +642,8 @@ void dNumberOfPeopleChange_c::executeState_InitialSetup() {
 [[nsmbw(0x807A1170)]]
 void dNumberOfPeopleChange_c::finalizeState_InitialSetup() {
     dRemoconMng_c* remocons = dRemoconMng_c::m_instance;
-    for (std::size_t ply = 0; ply < PLAYER_COUNT; ply++) {
-        remocons->mpConnect[ply]->setAllowConnect(true);
+    for (auto& connect : remocons->mpConnect) {
+        connect->setAllowConnect(true);
     }
 }
 
@@ -671,7 +671,7 @@ void dNumberOfPeopleChange_c::initializeState_OnStageAnimeEndWait() {
     }
 
     for (std::size_t i = 0; i < CHARACTER_COUNT; i++) {
-        PLAYER_TYPE_e type = static_cast<PLAYER_TYPE_e>(i);
+        auto type = static_cast<PLAYER_TYPE_e>(i);
         mp2DPlayer[type]->mModelMng->mModel->updateBonusCap();
     }
 }
@@ -687,7 +687,7 @@ void dNumberOfPeopleChange_c::executeState_OnStageAnimeEndWait() {
 void dNumberOfPeopleChange_c::finalizeState_OnStageAnimeEndWait() {
     mExiting = false;
     for (std::size_t type = 0; type < CHARACTER_COUNT; type++) {
-        mp2DPlayer[static_cast<PLAYER_TYPE_e>(type)]->m0x267 = 0;
+        mp2DPlayer[static_cast<PLAYER_TYPE_e>(type)]->m0x267 = false;
     }
 }
 
@@ -765,7 +765,8 @@ void dNumberOfPeopleChange_c::executeState_NowEntrantRecruit() {
             mpCcSelBase[cc]->m0x29B = true;
         }
         return mStateMgr.changeState(StateID_ExitAnimeEndCheck);
-    } else if (!isWorldMap) {
+    }
+    if (!isWorldMap) {
         for (std::size_t cc = 0; cc < mPlayerCount; cc++) {
             if (!mpCcSelBase[cc]->mDecided) {
                 return;
@@ -836,7 +837,7 @@ void dNumberOfPeopleChange_c::initializeState_ButtonOnStageAnimeEndWait() {
     mLayout.AnimeStartSetup(inYesNoButtons_noButton);
 
     for (std::size_t type = 0; type < CHARACTER_COUNT; type++) {
-        mp2DPlayer[static_cast<PLAYER_TYPE_e>(type)]->m0x266 = 1;
+        mp2DPlayer[static_cast<PLAYER_TYPE_e>(type)]->m0x266 = true;
     }
 
     for (std::size_t cc = 0; cc < mCcCount; cc++) {
@@ -985,9 +986,9 @@ void dNumberOfPeopleChange_c::executeState_ExitAnimeEndCheck() {
             mCcDecidedPlayerType[cc]   = type;
             daPyMng_c::mPlayerType[cc] = dMj2dGame_c::scDefaultPlayerTypes[cc];
         }
-        std::size_t type = static_cast<std::size_t>(daPyMng_c::mPlayerType[cc]);
-        if (mp2DPlayer[static_cast<PLAYER_TYPE_e>(type)]->m0x261) {
-            mp2DPlayer[static_cast<PLAYER_TYPE_e>(type)]->m0x269 = 1;
+        auto type = daPyMng_c::mPlayerType[cc];
+        if (mp2DPlayer[type]->m0x261) {
+            mp2DPlayer[type]->m0x269 = true;
         }
 
         auto* indicator = mpCcIndicator[cc];
@@ -1019,9 +1020,9 @@ void dNumberOfPeopleChange_c::executeState_ExitAnimeEndCheck() {
 [[nsmbw(0x807A2080)]]
 void dNumberOfPeopleChange_c::finalizeState_ExitAnimeEndCheck() {
     for (std::size_t i = 0; i < CHARACTER_COUNT; i++) {
-        PLAYER_TYPE_e type       = static_cast<PLAYER_TYPE_e>(i);
-        mp2DPlayer[type]->m0x266 = 0;
-        mp2DPlayer[type]->m0x269 = 1;
+        auto type                = static_cast<PLAYER_TYPE_e>(i);
+        mp2DPlayer[type]->m0x266 = false;
+        mp2DPlayer[type]->m0x269 = true;
 
         if (dScene_c::isWorldMap()) {
             mp2DPlayer[type]->mForbidJump = false;
@@ -1029,9 +1030,9 @@ void dNumberOfPeopleChange_c::finalizeState_ExitAnimeEndCheck() {
     }
 
     for (std::size_t cc = 0; cc < mCcCount; cc++) {
-        mpCcSelBase[cc]->m0x298     = 1;
-        mpCcSelContents[cc]->m0x2A0 = 1;
-        mpCcSelArrow[cc]->m0x26C    = 1;
+        mpCcSelBase[cc]->m0x298     = true;
+        mpCcSelContents[cc]->m0x2A0 = true;
+        mpCcSelArrow[cc]->m0x26C    = true;
     }
 
     mExitWithGuide = mExiting = false;

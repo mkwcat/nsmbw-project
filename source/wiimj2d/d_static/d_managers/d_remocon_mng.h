@@ -4,16 +4,15 @@
 #include "m_pad.h"
 #include "s_State.h"
 #include "s_StateMgrDefault.h"
+#include "slu/enum.hpp"
 #include <egg/core/eggHeap.h>
-
-#define REMOCON_CONNECT_COUNT 12
 
 class dRemoconMng_c {
 public:
     // Constants and Types
     // ^^^^^^
 
-    static constexpr int CONNECT_COUNT = REMOCON_CONNECT_COUNT;
+    static constexpr int CONNECT_COUNT = mPad::CHAN_COUNT;
 
     class dConnect_c;
 
@@ -33,10 +32,10 @@ public:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x04 */ dConnect_c* mpConnect[PLAYER_COUNT];
-    dConnect_c*            mpConnectAll[CONNECT_COUNT];
-    dConnect_c&            mDummyConnect;
-    int                    mFirstConnect = 0;
+    /* 0x04 */ dConnect_c*                   mpConnect[PLAYER_COUNT];
+    slu::enum_array<dConnect_c*, mPad::CH_e> mpConnectAll;
+    dConnect_c&                              mDummyConnect;
+    int                                      mFirstConnect = 0;
 
 public:
     // Static Methods
@@ -85,7 +84,7 @@ public:
         // Structors
         // ^^^^^^
 
-        inline dExtension_c(
+        dExtension_c(
             mPad::CH_e channel
         )
             : mChannel(channel)
@@ -118,21 +117,21 @@ public:
         /* 0x800DCFF0 */
         void execute();
 
-        inline mPad::CH_e getChannel() const {
+        [[nodiscard]] mPad::CH_e getChannel() const {
             if (mType == Type_e::CLASSIC && !isSplitChannel()) {
-                return static_cast<mPad::CH_e>(mChannel + (mPad::CHAN_CL_0 - mPad::CHAN_0));
+                return mPad::getClassicChannel(mChannel);
             }
             return mChannel;
         }
 
-        inline Type_e getType() const { return mType; }
+        [[nodiscard]] Type_e getType() const { return mType; }
 
-        inline bool isDolphinChannel() const {
-            return mChannel >= mPad::CHAN_GC_0 && mChannel <= mPad::CHAN_GC_LAST;
+        [[nodiscard]] bool isDolphinChannel() const {
+            return mChannel >= mPad::CH_e::CHAN_GC_0 && mChannel <= mPad::CH_e::CHAN_GC_LAST;
         }
 
-        inline bool isSplitChannel() const {
-            return mChannel >= mPad::CHAN_CL_0 && mChannel <= mPad::CHAN_CL_LAST;
+        [[nodiscard]] bool isSplitChannel() const {
+            return mChannel >= mPad::CH_e::CHAN_CL_0 && mChannel <= mPad::CH_e::CHAN_CL_LAST;
         }
 
     private:
@@ -183,21 +182,21 @@ public:
     void deregisterOrder();
     bool splitExtension();
 
-    inline int getPlayerNo() const { return mPlayerNo; }
+    [[nodiscard]] int getPlayerNo() const { return mPadID; }
 
-    inline bool isSetup() const { return mStateMgr.getStateID()->isEqual(StateID_Setup); }
+    [[nodiscard]] bool isSetup() const { return mStateMgr.getStateID()->isEqual(StateID_Setup); }
 
-    inline mPad::CH_e getChannel() const { return mExtension.getChannel(); }
+    [[nodiscard]] mPad::CH_e getChannel() const { return mExtension.getChannel(); }
 
-    inline mPad::CH_e getCoreChannel() const { return mPad::CH_e(mChannel); }
+    [[nodiscard]] mPad::CH_e getCoreChannel() const { return mPad::CH_e(mChannel); }
 
-    inline dExtension_c* getExtension() { return &mExtension; }
+    [[nodiscard]] dExtension_c* getExtension() { return &mExtension; }
 
-    inline int getBattery() const { return mBattery; }
+    [[nodiscard]] int getBattery() const { return mBattery; }
 
-    inline bool getAllowConnect() const { return mAllowConnect; }
+    [[nodiscard]] bool getAllowConnect() const { return mAllowConnect; }
 
-    inline bool setAllowConnect(
+    bool setAllowConnect(
         bool set
     ) {
         return mAllowConnect = set;
@@ -207,14 +206,14 @@ private:
     // Instance Variables
     // ^^^^^^
 
-    /* 0x04 @renamed */ int                   mPlayerNo;
-    /* 0x08 */ dExtension_c                   mExtension;
-    /* 0x50 */ int                            mBattery;
-    /* 0x54 */ bool                           mAllowConnect;
-    /* 0x55 */ bool                           mEnableMotor;
-    /* 0x56 */ s8                             mChannel;
-    /* 0x58 */ int                            m0x58;
-    /* 0x5C */ sStateMgrDefault_c<dConnect_c> mStateMgr;
+    /* 0x04 @renamed */ mPad::PadID            mPadID;
+    /* 0x08 */ dExtension_c                    mExtension;
+    /* 0x50 */ int                             mBattery;
+    /* 0x54 */ bool                            mAllowConnect;
+    /* 0x55 */ bool                            mEnableMotor;
+    /* 0x56 */ slu::enum_value<s8, mPad::CH_e> mChannel;
+    /* 0x58 */ int                             m0x58;
+    /* 0x5C */ sStateMgrDefault_c<dConnect_c>  mStateMgr;
 
 public:
     // Static Variables
