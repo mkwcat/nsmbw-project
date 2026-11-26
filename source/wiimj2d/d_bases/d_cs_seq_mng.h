@@ -48,7 +48,7 @@ public:
 
         kinoko_out                 = 60,
 
-        player_land_wait           = 76,
+        player_enemy_jump          = 76,
 
         show_continues             = 80,
 
@@ -124,6 +124,11 @@ public:
         GameStart           = 52,
     };
 
+    enum class state_e {
+        wait = 0,
+        run  = 6,
+    };
+
 public:
     // Nested Types
     // ^^^^^^
@@ -175,7 +180,7 @@ public:
     // ^^^^^^
 
     /* 0x138 */ dHeapAllocator_c m_allocator;
-    /* 0x154 */ int              m_demoNow;
+    /* 0x154 */ int              m_state;
     /* 0x158 */ int              m_cutNow;
     /* 0x15C */ int              m_cutPrev;
     /* 0x160 */ int              m_0x160;

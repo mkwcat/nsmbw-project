@@ -68,6 +68,9 @@ public:
     // Instance Methods
     // ^^^^^^
 
+    /* 0x800F64A0 */
+    bool procJumpBase();
+
     /* 0x800F6820 */
     void CreateShadowModel(const char* param1, const char* param2, const char* param3, bool param4);
 
