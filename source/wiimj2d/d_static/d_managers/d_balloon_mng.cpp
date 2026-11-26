@@ -81,7 +81,7 @@ void dBalloonMng_c::execute() {
         return;
     }
 
-    if (mPlyAvailable == false) {
+    if (!mPlyAvailable) {
         for (int ply = 0; ply < PLAYER_COUNT; ply++) {
             if (!daPyMng_c::isPlayerActive(ply)) {
                 continue;
@@ -122,7 +122,8 @@ void dBalloonMng_c::execute() {
     int timer;
     if (noPowerPlayersCount == 0) {
         return;
-    } else if (noPowerPlayersCount == 1) {
+    }
+    if (noPowerPlayersCount == 1) {
         timer = 1200;
     } else if (noPowerPlayersCount == 2) {
         timer = 900;
@@ -148,8 +149,10 @@ void dBalloonMng_c::execute1UpSwarm() {
 
     int rampUp =
         EGG::Math<int>().lerp(float(mTotalTimer++) / float(SWARM_TIMER_MAX), 60 * 16, 60 * 4);
-    if (++mSwarmTimer < rampUp && mSwarmTimer != 1) {
-        return;
+    if (++mSwarmTimer < rampUp) {
+        if (mSwarmTimer != 1) {
+            return;
+        }
     }
     mSwarmTimer = 1;
 

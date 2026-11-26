@@ -29,7 +29,7 @@ public:
     // ^^^^^^
 
     struct Param_s {
-        u32             : 15;
+        u32             : 19;
         u32 green_demon : 1 = 0; // +++
         u32 has_item    : 4 = 0;
         u32 unk         : 4 = 0;
@@ -78,30 +78,30 @@ public:
     /* 0x6F8 */ m3d::anmChr_c      mItemAnmChr;
     /* 0x730 */ m3d::anmTexPat_c   mItemAnmTexPat;
 
-    u8 FILL(0x75C, 0x7A4);
+    u8                             FILL(0x75C, 0x7A4);
 
-    /* 0x7A4 */ mVec3_c mItemScale;
+    /* 0x7A4 */ mVec3_c            mItemScale;
 
-    u8 FILL(0x7B0, 0x7E0);
+    u8                             FILL(0x7B0, 0x7E0);
 
-    /* 0x7E0 */ int m_shake_check_timer;
-    /* 0x7E4 */ int m_countdown_anm;
+    /* 0x7E0 */ int                m_shake_check_timer;
+    /* 0x7E4 */ int                m_countdown_anm;
 
-    u8 FILL(0x7E8, 0x7EC);
+    u8                             FILL(0x7E8, 0x7EC);
 
-    /* 0x7EC */ int mHasItem;
+    /* 0x7EC */ int                mHasItem;
 
-    u8 FILL(0x7F0, 0x810);
+    u8                             FILL(0x7F0, 0x810);
 
-    /* 0x810 */ u32 mPlayerNo;
+    /* 0x810 */ u32                mPlayerNo;
 
-    u8 FILL(0x814, 0x86C);
+    u8                             FILL(0x814, 0x86C);
 
-    /* 0x86C */ bool    mPopReady;
+    /* 0x86C */ bool               mPopReady;
 
-    /* 0x870 */ mVec3_c mBalloonPopPos;
+    /* 0x870 */ mVec3_c            mBalloonPopPos;
 
-    u8 FILL(0x87C, 0x8A0);
+    u8                             FILL(0x87C, 0x8A0);
 
 public:
     // State IDs
